@@ -35,7 +35,7 @@ class WhiteboardModelBottomSheetContentTest {
         composeTestRule.setContent {
             WhiteboardModalBottomSheetContent(
                 textEditorState = textEditorState,
-                onTextDismiss = { isTextDismissed = true },
+                onTextDismissed = { isTextDismissed = true },
                 onTextConfirmed = { confirmedText = it }
             )
         }

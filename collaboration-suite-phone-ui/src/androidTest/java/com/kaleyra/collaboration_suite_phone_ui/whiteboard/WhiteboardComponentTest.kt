@@ -53,8 +53,8 @@ class WhiteboardComponentTest {
                 uiState = uiState,
                 editorSheetState = sheetState,
                 onReloadClick = { isReloadClicked = true },
-                onTextConfirm = { confirmedText = it },
-                onTextDismiss = { isTextDismissed = true },
+                onTextConfirmed = { confirmedText = it },
+                onTextDismissed = { isTextDismissed = true },
                 onWhiteboardViewCreated = { whiteboardView = it },
                 onWhiteboardViewDispose = { },
             )

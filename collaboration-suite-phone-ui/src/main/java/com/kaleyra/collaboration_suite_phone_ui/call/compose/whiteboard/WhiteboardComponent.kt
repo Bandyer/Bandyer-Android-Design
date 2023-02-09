@@ -39,8 +39,8 @@ internal fun WhiteboardComponent(
         uiState = uiState,
         editorSheetState = sheetState,
         onReloadClick = viewModel::onReloadClick,
-        onTextDismiss = viewModel::onTextDismiss,
-        onTextConfirm = viewModel::onTextConfirm,
+        onTextDismissed = viewModel::onTextDismissed,
+        onTextConfirmed = viewModel::onTextConfirmed,
         onWhiteboardViewCreated = viewModel::onWhiteboardViewCreated,
         onWhiteboardViewDispose = viewModel::onWhiteboardViewDispose,
         modifier = modifier
@@ -53,8 +53,8 @@ internal fun WhiteboardComponent(
     uiState: WhiteboardUiState,
     editorSheetState: ModalBottomSheetState,
     onReloadClick: () -> Unit,
-    onTextDismiss: () -> Unit,
-    onTextConfirm: (String) -> Unit,
+    onTextDismissed: () -> Unit,
+    onTextConfirmed: (String) -> Unit,
     onWhiteboardViewCreated: (WhiteboardView) -> Unit,
     onWhiteboardViewDispose: () -> Unit,
     modifier: Modifier = Modifier
@@ -78,8 +78,8 @@ internal fun WhiteboardComponent(
         sheetContent = {
             WhiteboardModalBottomSheetContent(
                 textEditorState = textEditorState,
-                onTextDismiss = onTextDismiss,
-                onTextConfirmed = onTextConfirm,
+                onTextDismissed = onTextDismissed,
+                onTextConfirmed = onTextConfirmed,
                 modifier = Modifier.navigationBarsPadding()
             )
         },
@@ -137,8 +137,8 @@ private fun WhiteboardComponentPreview(uiState: WhiteboardUiState) {
                 uiState = uiState,
                 editorSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded),
                 onReloadClick = {},
-                onTextDismiss = {},
-                onTextConfirm = {},
+                onTextDismissed = {},
+                onTextConfirmed = {},
                 onWhiteboardViewCreated = {},
                 onWhiteboardViewDispose = {}
             )

@@ -4,93 +4,94 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite.phonebox.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMapper.getWhiteboardTextEvents
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMapper.isWhiteboardLoading
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import kotlinx.coroutines.flow.*
 
-internal class WhiteboardViewModel(configure: suspend () -> Configuration) : BaseViewModel<WhiteboardUiState>(configure) {
+internal class WhiteboardViewModel(configure: suspend () -> Configuration) :
+    BaseViewModel<WhiteboardUiState>(configure) {
     override fun initialState() = WhiteboardUiState()
 
-    val whiteboard = phoneBox.flatMapLatest { it.call }.map { it.whiteboard }.shareInEagerly(viewModelScope)
+    private val call = phoneBox
+        .flatMapLatest { it.call }
+        .shareInEagerly(viewModelScope)
 
-    private val onTextConfirmedLambda = MutableStateFlow<((String) -> Unit)?>(null)
+    private val whiteboard: Whiteboard?
+        get() = call.getValue()?.whiteboard
+
+    private val onTextConfirmed = MutableStateFlow<((String) -> Unit)?>(null)
 
     init {
-
-        whiteboard
+        call
             .flatMapLatest { it.state }
-            .map { it is Whiteboard.State.Loading }
-            .onEach { isLoading ->
-                _uiState.update { it.copy(isLoading = isLoading) }
-            }
+            .onEach {
+                if (it !is Call.State.Disconnected.Ended) return@onEach
+                whiteboard?.unload()
+            }.launchIn(viewModelScope)
+
+        call
+            .isWhiteboardLoading()
+            .onEach { isLoading -> _uiState.update { it.copy(isLoading = isLoading) } }
             .launchIn(viewModelScope)
 
-        whiteboard
-            .flatMapLatest { it.events }
-            .filterIsInstance<Whiteboard.Event.Text>()
+        call
+            .getWhiteboardTextEvents()
             .onEach { event ->
-                val text = when (event) {
-                    is Whiteboard.Event.Text.Edit -> {
-                        onTextConfirmedLambda.value = event.completion
-                        event.oldText
-                    }
-                    is Whiteboard.Event.Text.Add -> {
-                        onTextConfirmedLambda.value = event.completion
-                        ""
-                    }
+                val (onCompletion, text) = when (event) {
+                    is Whiteboard.Event.Text.Edit -> Pair(event.completion, event.oldText)
+                    is Whiteboard.Event.Text.Add -> Pair(event.completion, "")
                 }
+                onTextConfirmed.value = onCompletion
                 _uiState.update { it.copy(text = text) }
             }.launchIn(viewModelScope)
     }
 
     fun onReloadClick() {
-        val whiteboard = whiteboard.getValue() ?: return
-        whiteboard.load()
+        whiteboard?.load()
     }
 
-    fun onTextDismiss() {
-        onTextConfirmedLambda.value = null
-        _uiState.update { it.copy(text = null) }
-    }
+    fun onTextDismissed() = resetTextState()
 
-    fun onTextConfirm(text: String) {
-        onTextConfirmedLambda.value?.invoke(text)
+    fun onTextConfirmed(text: String) {
+        onTextConfirmed.value?.invoke(text)
         _uiState.update { it.copy(text = null) }
     }
 
     fun onWhiteboardViewCreated(view: WhiteboardView) {
-        val whiteboard = whiteboard.getValue() ?: return
+        val whiteboard = whiteboard ?: return
         whiteboard.view.value = view
         whiteboard.load()
     }
 
     fun onWhiteboardViewDispose() {
-        val whiteboard = whiteboard.getValue() ?: return
-        whiteboard.unload()
+        val whiteboard = whiteboard ?: return
         whiteboard.view.value = null
-        onTextConfirmedLambda.value = null
-        _uiState.update { it.copy(text = null) }
+        resetTextState()
     }
 
     fun uploadMediaFile(uri: Uri) {
-        val whiteboard = whiteboard.getValue() ?: return
-        whiteboard.addMediaFile(uri)
+        whiteboard?.addMediaFile(uri)
     }
 
-//    fun Flow<Call>.toWhiteboard(): Flow<Whiteboard> {
-//        return map { it.whiteboard }
-//    }
+    private fun resetTextState() {
+        onTextConfirmed.value = null
+        _uiState.update { it.copy(text = null) }
+    }
 
     companion object {
-        fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return WhiteboardViewModel(configure) as T
+        fun provideFactory(configure: suspend () -> Configuration) =
+            object : ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return WhiteboardViewModel(configure) as T
+                }
             }
-        }
     }
 }
 
