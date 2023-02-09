@@ -15,7 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.ringin
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun CallScreenContent(
-    callState: CallState,
+    callState: CallStateUi,
     maxWidth: Dp,
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
@@ -32,9 +32,10 @@ internal fun CallScreenContent(
             }
         ) { target ->
             when(target) {
-                CallState.Ringing -> RingingComponent(onBackPressed = onBackPressed)
-                CallState.Dialing -> DialingComponent(onBackPressed = onBackPressed)
-                else -> CallComponent(maxWidth = maxWidth, onBackPressed = onBackPressed)
+                CallStateUi.Ringing -> RingingComponent(onBackPressed = onBackPressed)
+                CallStateUi.Dialing -> DialingComponent(onBackPressed = onBackPressed)
+                // TODO add test for onFullscreen
+                else -> CallComponent(maxWidth = maxWidth, onBackPressed = onBackPressed, onFullscreen = onFullscreen)
             }
         }
     }

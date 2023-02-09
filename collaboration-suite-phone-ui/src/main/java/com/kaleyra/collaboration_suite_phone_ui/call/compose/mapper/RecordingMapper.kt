@@ -1,19 +1,19 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.Recording
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.RecordingUi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
 internal object RecordingMapper {
 
-    fun Flow<Call>.toRecordingUi(): Flow<Recording?> =
+    fun Flow<Call>.toRecordingUi(): Flow<RecordingUi?> =
         map { it.extras.recording }
             .map {
                 when (it.type) {
-                    is Call.Recording.Type.OnConnect -> Recording.OnConnect
-                    is Call.Recording.Type.OnDemand -> Recording.OnDemand
+                    is Call.Recording.Type.OnConnect -> RecordingUi.OnConnect
+                    is Call.Recording.Type.OnDemand -> RecordingUi.OnDemand
                     else -> null
                 }
             }

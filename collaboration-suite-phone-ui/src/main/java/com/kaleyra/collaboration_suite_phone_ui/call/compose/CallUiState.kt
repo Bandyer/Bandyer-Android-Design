@@ -7,7 +7,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 @Immutable
 data class CallUiState(
-    val callState: CallState = CallState.Disconnected,
+    val callState: CallStateUi = CallStateUi.Disconnected,
     val thumbnailStreams: ImmutableList<StreamUi> = ImmutableList(listOf()),
     val featuredStreams: ImmutableList<StreamUi> = ImmutableList(listOf()),
     val watermarkInfo: WatermarkInfo? = null,

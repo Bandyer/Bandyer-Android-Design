@@ -52,14 +52,14 @@ class CallComponentTest {
 
     @Test
     fun userClicksCallInfoWidgetBackButton_onBackPressedInvoked() {
-        state = defaultState(CallUiState(callState = CallState.Connecting))
+        state = defaultState(CallUiState(callState = CallStateUi.Connecting))
         composeTestRule.onNodeWithContentDescription(getBackText()).performClick()
         assert(isBackPressed)
     }
 
     @Test
     fun userClicksStreamBackButton_onBackPressedInvoked() {
-        state = defaultState(CallUiState(callState = CallState.Connected, featuredStreams = featuredStreamsMock))
+        state = defaultState(CallUiState(callState = CallStateUi.Connected, featuredStreams = featuredStreamsMock))
         composeTestRule.onNodeWithContentDescription(getBackText()).performClick()
         assert(isBackPressed)
     }
@@ -84,7 +84,7 @@ class CallComponentTest {
     @Test
     fun fullscreenStream_userClicksCallInfoWidgetBackButton_streamsGridIsDisplayed() {
         state = defaultState(
-            callUiState = CallUiState(callState = CallState.Connecting, featuredStreams = featuredStreamsMock),
+            callUiState = CallUiState(callState = CallStateUi.Connecting, featuredStreams = featuredStreamsMock),
             fullscreenStream = streamUiMock.copy(username = "user1")
         )
         composeTestRule.onAllNodesWithContentDescription(getExitFullscreenText()).assertCountEquals(1)
@@ -95,7 +95,7 @@ class CallComponentTest {
     @Test
     fun fullscreenStream_userClicksStreamBackButton_streamsGridIsDisplayed() {
         state = defaultState(
-            callUiState = CallUiState(callState = CallState.Connected, featuredStreams = featuredStreamsMock),
+            callUiState = CallUiState(callState = CallStateUi.Connected, featuredStreams = featuredStreamsMock),
             fullscreenStream = streamUiMock.copy(username = "user1")
         )
         composeTestRule.onAllNodesWithContentDescription(getExitFullscreenText()).assertCountEquals(1)
@@ -182,14 +182,14 @@ class CallComponentTest {
         val configurationMock = mockk<Configuration> { orientation = Configuration.ORIENTATION_PORTRAIT }
         val maxWidth = 400.dp
         state = defaultState(
-            callUiState = CallUiState(callState = CallState.Connected, featuredStreams = featuredStreamsMock),
+            callUiState = CallUiState(callState = CallStateUi.Connected, featuredStreams = featuredStreamsMock),
             configuration = configurationMock,
             maxWidth = maxWidth
         )
         val streamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
         val streamTwoTextTop = composeTestRule.onNodeWithText("user2", useUnmergedTree = true).getBoundsInRoot().top
         state = defaultState(
-            callUiState = CallUiState(callState = CallState.Connecting, featuredStreams = featuredStreamsMock),
+            callUiState = CallUiState(callState = CallStateUi.Connecting, featuredStreams = featuredStreamsMock),
             configuration = configurationMock,
             maxWidth = maxWidth
         )
@@ -205,14 +205,14 @@ class CallComponentTest {
         val configurationMock = mockk<Configuration> { orientation = Configuration.ORIENTATION_PORTRAIT }
         val maxWidth = 800.dp
         state = defaultState(
-            callUiState = CallUiState(callState = CallState.Connected, featuredStreams = featuredStreamsMock),
+            callUiState = CallUiState(callState = CallStateUi.Connected, featuredStreams = featuredStreamsMock),
             configuration = configurationMock,
             maxWidth = maxWidth
         )
         val streamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
         val streamTwoTextTop = composeTestRule.onNodeWithText("user2", useUnmergedTree = true).getBoundsInRoot().top
         state = defaultState(
-            callUiState = CallUiState(callState = CallState.Connecting, featuredStreams = featuredStreamsMock),
+            callUiState = CallUiState(callState = CallStateUi.Connecting, featuredStreams = featuredStreamsMock),
             configuration = configurationMock,
             maxWidth = maxWidth
         )
@@ -226,13 +226,13 @@ class CallComponentTest {
     @Test
     fun fullscreenStreamAndCallInfoWidgetIsDisplayed_streamHeaderIsShifted() {
         state = defaultState(
-            callUiState = CallUiState(callState = CallState.Connected, featuredStreams = featuredStreamsMock),
+            callUiState = CallUiState(callState = CallStateUi.Connected, featuredStreams = featuredStreamsMock),
             fullscreenStream = streamUiMock.copy(username = "user1")
         )
         val streamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
         state = defaultState(
             callUiState = CallUiState(
-                callState = CallState.Connecting,
+                callState = CallStateUi.Connecting,
                 featuredStreams = featuredStreamsMock
             ),
             configuration = mockk { orientation = Configuration.ORIENTATION_PORTRAIT },
@@ -262,7 +262,7 @@ class CallComponentTest {
     fun watermarkInfoNotNull_titleIsDisplayedBelowWatermark() {
         state = defaultState(
             callUiState = CallUiState(
-                callState = CallState.Connecting,
+                callState = CallStateUi.Connecting,
                 watermarkInfo = WatermarkInfo(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = "watermark")
             )
         )
@@ -276,7 +276,7 @@ class CallComponentTest {
 
     @Test
     fun watermarkInfoNull_titleIsDisplayedToEndOfBackButton() {
-        state = defaultState(CallUiState(callState = CallState.Connecting, watermarkInfo = null))
+        state = defaultState(CallUiState(callState = CallStateUi.Connecting, watermarkInfo = null))
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
         val subtitleLeft = composeTestRule.onNodeWithContentDescription(connecting).getBoundsInRoot().left
         val backRight = composeTestRule.findBackButton().getBoundsInRoot().right
@@ -287,85 +287,85 @@ class CallComponentTest {
     // It is findable by using the content description because it is added in the AndroidView's semantics
     @Test
     fun callStateConnecting_connectingTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Connecting))
+        state = defaultState(CallUiState(callState = CallStateUi.Connecting))
         composeTestRule.assertConnectingTitleIsDisplayed()
     }
 
     @Test
     fun callStateReconnecting_connectingTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Reconnecting))
+        state = defaultState(CallUiState(callState = CallStateUi.Reconnecting))
         composeTestRule.assertConnectingTitleIsDisplayed()
     }
 
     @Test
     fun callStateDisconnected_endedTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected))
         composeTestRule.assertEndedTitleIsDisplayed()
     }
 
     @Test
     fun callStateAnsweredOnAnotherDevice_endedTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.AnsweredOnAnotherDevice))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.AnsweredOnAnotherDevice))
         composeTestRule.assertEndedTitleIsDisplayed()
     }
 
     @Test
     fun callStateEnded_endedTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended))
         composeTestRule.assertEndedTitleIsDisplayed()
     }
 
     @Test
     fun callStateDeclined_endedTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.Declined))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.Declined))
         composeTestRule.assertEndedTitleIsDisplayed()
     }
 
     @Test
     fun callStateError_endedTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.Error))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.Error))
         composeTestRule.assertEndedTitleIsDisplayed()
     }
 
     @Test
     fun callStateServerError_endedTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.Error.Server))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.Error.Server))
         composeTestRule.assertEndedTitleIsDisplayed()
     }
 
     @Test
     fun callStateUnknownError_endedTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.Error.Unknown))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.Error.Unknown))
         composeTestRule.assertEndedTitleIsDisplayed()
     }
 
     @Test
     fun callStateHangUp_endedTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.HungUp))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.HungUp))
         composeTestRule.assertEndedTitleIsDisplayed()
     }
 
     @Test
     fun callStateKicked_endedTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.Kicked("")))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.Kicked("")))
         composeTestRule.assertEndedTitleIsDisplayed()
     }
 
     @Test
     fun callStateLineBusy_endedTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.LineBusy))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.LineBusy))
         composeTestRule.assertEndedTitleIsDisplayed()
     }
 
     @Test
     fun callStateTimeout_endedTitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.Timeout))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.Timeout))
         composeTestRule.assertEndedTitleIsDisplayed()
     }
 
     @Test
     fun callStateAnsweredOnAnotherDevice_answeredOnAnotherDeviceSubtitleIsDisplayed() {
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.AnsweredOnAnotherDevice))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.AnsweredOnAnotherDevice))
         val answered = composeTestRule.activity.getString(R.string.kaleyra_call_status_answered_on_other_device)
         composeTestRule.onNodeWithText(answered).assertIsDisplayed()
     }
@@ -375,9 +375,9 @@ class CallComponentTest {
         val resources = composeTestRule.activity.resources
         val declinedQuantityOne = resources.getQuantityString(R.plurals.kaleyra_call_status_declined, 1)
         val declinedQuantityOther = resources.getQuantityString(R.plurals.kaleyra_call_status_declined, 2)
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.Declined, isGroupCall = false))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.Declined, isGroupCall = false))
         composeTestRule.onNodeWithText(declinedQuantityOne).assertIsDisplayed()
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.Declined, isGroupCall = true))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.Declined, isGroupCall = true))
         composeTestRule.onNodeWithText(declinedQuantityOther).assertIsDisplayed()
     }
 
@@ -386,9 +386,9 @@ class CallComponentTest {
         val resources = composeTestRule.activity.resources
         val timeoutQuantityOne = resources.getQuantityString(R.plurals.kaleyra_call_status_no_answer, 1)
         val timeoutQuantityOther = resources.getQuantityString(R.plurals.kaleyra_call_status_no_answer, 2)
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.Timeout, isGroupCall = false))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.Timeout, isGroupCall = false))
         composeTestRule.onNodeWithText(timeoutQuantityOne).assertIsDisplayed()
-        state = defaultState(CallUiState(callState = CallState.Disconnected.Ended.Timeout, isGroupCall = true))
+        state = defaultState(CallUiState(callState = CallStateUi.Disconnected.Ended.Timeout, isGroupCall = true))
         composeTestRule.onNodeWithText(timeoutQuantityOther).assertIsDisplayed()
     }
 

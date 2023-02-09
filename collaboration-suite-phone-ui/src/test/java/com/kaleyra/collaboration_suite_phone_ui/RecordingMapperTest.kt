@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.Recording
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.isRecording
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
 import io.mockk.every
@@ -48,14 +48,14 @@ class RecordingMapperTest {
     fun recordingTypeOnConnect_toRecordingUi_onConnect() = runTest {
         every { recordingMock.type } returns Call.Recording.Type.OnConnect
         val result = MutableStateFlow( callMock).toRecordingUi()
-        Assert.assertEquals(Recording.OnConnect, result.first())
+        Assert.assertEquals(RecordingUi.OnConnect, result.first())
     }
 
     @Test
     fun recordingTypeOnDemand_toRecordingUi_onDemand() = runTest {
         every { recordingMock.type } returns Call.Recording.Type.OnDemand
         val result = MutableStateFlow( callMock).toRecordingUi()
-        Assert.assertEquals(Recording.OnDemand, result.first())
+        Assert.assertEquals(RecordingUi.OnDemand, result.first())
     }
 
     @Test

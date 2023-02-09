@@ -1,18 +1,18 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
-sealed class CallState {
+sealed class CallStateUi {
 
-    object Ringing : CallState()
+    object Ringing : CallStateUi()
 
-    object Dialing : CallState()
+    object Dialing : CallStateUi()
 
-    object Connecting : CallState()
+    object Connecting : CallStateUi()
 
-    object Connected : CallState()
+    object Connected : CallStateUi()
 
-    object Reconnecting : CallState()
+    object Reconnecting : CallStateUi()
 
-    sealed class Disconnected : CallState() {
+    sealed class Disconnected : CallStateUi() {
 
         companion object : Disconnected()
 

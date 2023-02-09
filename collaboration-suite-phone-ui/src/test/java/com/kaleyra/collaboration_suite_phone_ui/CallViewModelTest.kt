@@ -8,7 +8,7 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -112,10 +112,10 @@ class CallViewModelTest {
     fun testCallUiState_callStateUpdated() = runTest {
         every { callMock.state } returns MutableStateFlow(Call.State.Connected)
         val current = viewModel.uiState.first().callState
-        assertEquals(CallState.Disconnected, current)
+        assertEquals(CallStateUi.Disconnected, current)
         advanceUntilIdle()
         val new = viewModel.uiState.first().callState
-        assertEquals(CallState.Connected, new)
+        assertEquals(CallStateUi.Connected, new)
     }
 
     @Test

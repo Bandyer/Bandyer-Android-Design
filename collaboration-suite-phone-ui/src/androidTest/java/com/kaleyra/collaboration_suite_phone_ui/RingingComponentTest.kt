@@ -8,7 +8,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.Recording
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.ringing.RingingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
@@ -63,7 +63,7 @@ class RingingComponentTest: PreCallComponentTest() {
         val automatic =
             composeTestRule.activity.getString(R.string.kaleyra_automatic_recording_disclaimer)
         composeTestRule.assertRecordingTextIsDisplayed(
-            recordingValue = Recording.OnConnect,
+            recordingValue = RecordingUi.OnConnect,
             expectedText = automatic
         )
     }
@@ -73,7 +73,7 @@ class RingingComponentTest: PreCallComponentTest() {
         val manual =
             composeTestRule.activity.getString(R.string.kaleyra_manual_recording_disclaimer)
         composeTestRule.assertRecordingTextIsDisplayed(
-            recordingValue = Recording.OnDemand,
+            recordingValue = RecordingUi.OnDemand,
             expectedText = manual
         )
     }
@@ -130,7 +130,7 @@ class RingingComponentTest: PreCallComponentTest() {
     }
 
     private fun ComposeTestRule.assertRecordingTextIsDisplayed(
-        recordingValue: Recording,
+        recordingValue: RecordingUi,
         expectedText: String
     ) {
         uiState.value = PreCallUiState(recording = null)

@@ -216,25 +216,25 @@ internal fun CallComponent(
 
 internal fun CallUiState.shouldShowCallInfo(): State<Boolean> {
     return derivedStateOf {
-        callState is CallState.Reconnecting || callState is CallState.Connecting || callState is CallState.Disconnected
+        callState is CallStateUi.Reconnecting || callState is CallStateUi.Connecting || callState is CallStateUi.Disconnected
     }
 }
 
 @Composable
-private fun titleFor(callState: CallState) =
+private fun titleFor(callState: CallStateUi) =
     when(callState) {
-        CallState.Connecting, CallState.Reconnecting -> stringResource(id = R.string.kaleyra_call_status_connecting)
-        is CallState.Disconnected -> stringResource(id = R.string.kaleyra_call_status_ended)
+        CallStateUi.Connecting, CallStateUi.Reconnecting -> stringResource(id = R.string.kaleyra_call_status_connecting)
+        is CallStateUi.Disconnected -> stringResource(id = R.string.kaleyra_call_status_ended)
         else -> ""
     }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun subtitleFor(callState: CallState, groupCall: Boolean) =
+private fun subtitleFor(callState: CallStateUi, groupCall: Boolean) =
     when(callState) {
-        CallState.Disconnected.Ended.AnsweredOnAnotherDevice -> stringResource(id = R.string.kaleyra_call_status_answered_on_other_device)
-        CallState.Disconnected.Ended.Declined -> pluralStringResource(id = R.plurals.kaleyra_call_status_declined, count = if (groupCall) 2 else 1)
-        CallState.Disconnected.Ended.Timeout -> pluralStringResource(id = R.plurals.kaleyra_call_status_no_answer, count =  if (groupCall) 2 else 1)
+        CallStateUi.Disconnected.Ended.AnsweredOnAnotherDevice -> stringResource(id = R.string.kaleyra_call_status_answered_on_other_device)
+        CallStateUi.Disconnected.Ended.Declined -> pluralStringResource(id = R.plurals.kaleyra_call_status_declined, count = if (groupCall) 2 else 1)
+        CallStateUi.Disconnected.Ended.Timeout -> pluralStringResource(id = R.plurals.kaleyra_call_status_no_answer, count =  if (groupCall) 2 else 1)
         else -> null
     }
 
@@ -257,7 +257,7 @@ fun CallContentPreview() {
             state = rememberCallComponentState(
                 callUiState = CallUiState(
                     featuredStreams = ImmutableList(listOf(streamUiMock, streamUiMock)),
-                    callState = CallState.Connected,
+                    callState = CallStateUi.Connected,
                     isGroupCall = true
                 ),
                 configuration = LocalConfiguration.current,
