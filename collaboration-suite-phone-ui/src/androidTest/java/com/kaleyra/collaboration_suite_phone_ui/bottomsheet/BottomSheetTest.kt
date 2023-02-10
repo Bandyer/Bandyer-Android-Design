@@ -18,6 +18,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Rule
@@ -35,6 +36,11 @@ class BottomSheetTest {
     private val contentHeight = 400.dp
 
     private var sheetInsets by mutableStateOf(WindowInsets(0.dp, 0.dp, 0.dp, 0.dp))
+
+    @After
+    fun tearDown() {
+        sheetInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp)
+    }
 
     @Test
     fun initialStateHidden_sheetIsHidden() {

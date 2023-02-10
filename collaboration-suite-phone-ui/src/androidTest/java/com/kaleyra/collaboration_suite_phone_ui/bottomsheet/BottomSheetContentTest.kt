@@ -13,6 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.MockCallViewModelsStatesRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -57,6 +58,15 @@ class BottomSheetContentTest {
                 )
             }
         }
+    }
+
+    @After
+    fun tearDown() {
+        contentState = BottomSheetContentState(initialComponent = BottomSheetComponent.CallActions, initialLineState = LineState.Expanded)
+        isLineClicked = false
+        isCallActionClicked = false
+        isAudioDeviceClicked = false
+        isScreenShareTargetClicked = false
     }
 
     @Test

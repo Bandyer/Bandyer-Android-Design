@@ -8,6 +8,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,6 +20,11 @@ class BottomSheetLineTest {
     val composeTestRule = createComposeRule()
 
     private var isLineClicked = false
+
+    @After
+    fun tearDown() {
+        isLineClicked = false
+    }
 
     @Test
     fun lineStateCollapsed_lineIsCollapsed() {
