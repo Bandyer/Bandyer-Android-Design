@@ -84,7 +84,7 @@ internal fun BottomSheetContent(
     onCallActionClick: (CallAction) -> Unit = { },
     onAudioDeviceClick: () -> Unit = { },
     onScreenShareTargetClick: () -> Unit = { },
-    contentVisible: Boolean = true,
+    contentVisible: Boolean = true
 ) {
     Column(modifier) {
         Line(
@@ -139,9 +139,6 @@ internal fun BottomSheetContent(
                     }
                     BottomSheetComponent.FileShare -> {
                         FileShareComponent(
-                            onFabClick = { /*TODO*/ },
-                            onItemClick = { /*TODO*/ },
-                            onItemActionClick = { /*TODO*/ },
                             modifier = Modifier
                                 .padding(top = 20.dp)
                                 .testTag(FileShareComponentTag)

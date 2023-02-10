@@ -15,9 +15,9 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadTransfer
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadTransfer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloaSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
@@ -26,9 +26,9 @@ private val ContentBottomPadding = 72.dp
 
 @Composable
 internal fun FileShareContent(
-    items: ImmutableList<TransferUi>,
-    onItemClick: (TransferUi) -> Unit,
-    onItemActionClick: (TransferUi) -> Unit,
+    items: ImmutableList<SharedFileUi>,
+    onItemClick: (SharedFileUi) -> Unit,
+    onItemActionClick: (SharedFileUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -38,10 +38,10 @@ internal fun FileShareContent(
     ) {
         items(items = items.value, key = { it.id }) {
             FileShareItem(
-                transfer = it,
+                sharedFile = it,
                 modifier = Modifier
                     .clickable(
-                        enabled = it.state is TransferUi.State.Success,
+                        enabled = it.state is SharedFileUi.State.Success,
                         onClickLabel = stringResource(R.string.kaleyra_fileshare_open_file),
                         role = Role.Button,
                         onClick = { onItemClick(it) }
@@ -60,7 +60,7 @@ internal fun FileShareContentPreview() {
     KaleyraTheme {
         Surface {
             FileShareContent(
-                items = ImmutableList(listOf(mockDownloadTransfer, mockUploadTransfer)),
+                items = ImmutableList(listOf(mockDownloaSharedFile, mockUploadSharedFile)),
                 onItemClick = {},
                 onItemActionClick = {}
             )

@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model
 
 import android.net.Uri
 
-data class TransferUi(
+data class SharedFileUi(
     val id: String,
     val file: FileUi,
     val sender: String,

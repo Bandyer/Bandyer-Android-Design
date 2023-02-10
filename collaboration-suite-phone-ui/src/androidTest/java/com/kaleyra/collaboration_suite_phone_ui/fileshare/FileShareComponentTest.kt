@@ -11,9 +11,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadTransfer
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadTransfer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloaSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItemTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
@@ -29,20 +29,20 @@ class FileShareComponentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var items by mutableStateOf(ImmutableList(emptyList<TransferUi>()))
+    private var items by mutableStateOf(ImmutableList(emptyList<SharedFileUi>()))
 
     private var isFabClicked = false
 
-    private var actualTransfer: TransferUi? = null
+    private var actualSharedFile: SharedFileUi? = null
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             FileShareComponent(
-                uiState = FileShareUiState(transferList = items),
+                uiState = FileShareUiState(sharedFiles = items),
                 onFabClick = { isFabClicked = true },
-                onItemClick = { actualTransfer = it },
-                onItemActionClick = { actualTransfer = it })
+                onItemClick = { actualSharedFile = it },
+                onItemActionClick = { actualSharedFile = it })
         }
     }
 
@@ -50,14 +50,14 @@ class FileShareComponentTest {
     fun tearDown() {
         items = ImmutableList(emptyList())
         isFabClicked = false
-        actualTransfer = null
+        actualSharedFile = null
     }
 
     @Test
     fun emptyItems_noItemsUIDisplayed() {
         val title = composeTestRule.activity.getString(R.string.kaleyra_no_file_shared)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_click_to_share_file)
-        items = ImmutableList(listOf(mockUploadTransfer))
+        items = ImmutableList(listOf(mockUploadSharedFile))
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
         items = ImmutableList(listOf())
@@ -75,7 +75,7 @@ class FileShareComponentTest {
 
     @Test
     fun atLeastOneItem_fabTextNotExist() {
-        items = ImmutableList(listOf(mockDownloadTransfer))
+        items = ImmutableList(listOf(mockDownloaSharedFile))
         val iconDescription = composeTestRule.activity.getString(R.string.kaleyra_fileshare_add_description)
         val text = composeTestRule.activity.getString(R.string.kaleyra_fileshare_add).uppercase()
         composeTestRule.onNodeWithContentDescription(iconDescription).assertIsDisplayed()
@@ -83,8 +83,8 @@ class FileShareComponentTest {
     }
 
     @Test
-    fun oneTransferItem_itemDisplayed() {
-        items = ImmutableList(listOf(mockDownloadTransfer))
+    fun oneSharedFileItem_itemDisplayed() {
+        items = ImmutableList(listOf(mockDownloaSharedFile))
         composeTestRule.onNodeWithTag(FileShareItemTag).assertIsDisplayed()
     }
 
@@ -97,21 +97,21 @@ class FileShareComponentTest {
 
     @Test
     fun userClicksSuccessStateItem_onItemClickInvoked() {
-        val transfer = mockDownloadTransfer.copy(state = TransferUi.State.Success(uri = Uri.EMPTY))
-        items = ImmutableList(listOf(transfer))
+        val sharedFile = mockDownloaSharedFile.copy(state = SharedFileUi.State.Success(uri = Uri.EMPTY))
+        items = ImmutableList(listOf(sharedFile))
         composeTestRule.onNodeWithTag(FileShareItemTag).performClick()
-        assertEquals(transfer, actualTransfer)
+        assertEquals(sharedFile, actualSharedFile)
     }
 
     @Test
     fun userClicksItemAction_onItemActionClickInvoked() {
-        val transfer = mockDownloadTransfer.copy(state = TransferUi.State.Pending)
-        items = ImmutableList(listOf(transfer))
+        val sharedFile = mockDownloaSharedFile.copy(state = SharedFileUi.State.Pending)
+        items = ImmutableList(listOf(sharedFile))
         composeTestRule
             .onNodeWithTag(FileShareItemTag)
             .onChildren()
             .filterToOne(hasClickAction())
             .performClick()
-        assertEquals(transfer, actualTransfer)
+        assertEquals(sharedFile, actualSharedFile)
     }
 }

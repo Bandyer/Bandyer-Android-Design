@@ -6,13 +6,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 @Immutable
 internal data class FileShareUiState(
-    val transferList: ImmutableList<TransferUi> = ImmutableList(emptyList()),
+    val sharedFiles: ImmutableList<SharedFileUi> = ImmutableList(emptyList()),
     override val userMessage: String? = null
-) : UiState {
-
-    fun transfersListUpdated(transferList: ImmutableList<TransferUi>) = copy(transferList = transferList)
-
-    fun userMessageReceived(message: String) = copy(userMessage = message)
-
-    fun userMessageShown() = copy(userMessage = null)
-}
+) : UiState

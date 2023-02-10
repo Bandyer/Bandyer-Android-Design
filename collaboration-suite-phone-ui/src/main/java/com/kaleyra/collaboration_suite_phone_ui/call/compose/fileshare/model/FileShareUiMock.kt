@@ -1,6 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model
 
-val mockUploadTransfer = TransferUi(
+val mockUploadSharedFile = SharedFileUi(
     id = "1",
     file = FileUi(
         name = "upload.txt",
@@ -9,11 +9,11 @@ val mockUploadTransfer = TransferUi(
     ),
     sender = "Mario",
     time = 324234L,
-    state = TransferUi.State.InProgress(progress = .7f),
-    type = TransferUi.Type.Upload
+    state = SharedFileUi.State.InProgress(progress = .7f),
+    type = SharedFileUi.Type.Upload
 )
 
-val mockDownloadTransfer = TransferUi(
+val mockDownloaSharedFile = SharedFileUi(
     id = "2",
     file = FileUi(
         name = "download.txt",
@@ -22,6 +22,6 @@ val mockDownloadTransfer = TransferUi(
     ),
     sender = "Keanu",
     time = 3254234L,
-    state = TransferUi.State.InProgress(progress = .4f),
-    type = TransferUi.Type.Download
+    state = SharedFileUi.State.InProgress(progress = .4f),
+    type = SharedFileUi.Type.Download
 )

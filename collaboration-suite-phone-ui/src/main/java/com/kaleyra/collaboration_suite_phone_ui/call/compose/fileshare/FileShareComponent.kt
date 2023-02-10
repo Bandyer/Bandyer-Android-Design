@@ -9,9 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareEmptyContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareFab
@@ -23,18 +24,17 @@ const val ProgressIndicatorTag = "ProgressIndicatorTag"
 
 @Composable
 internal fun FileShareComponent(
-    viewModel: FileShareViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    onFabClick: () -> Unit,
-    onItemClick: (TransferUi) -> Unit,
-    onItemActionClick: (TransferUi) -> Unit,
+    viewModel: FileShareViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = FileShareViewModel.provideFactory(::requestConfiguration)
+    ),
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     FileShareComponent(
         uiState = uiState,
-        onFabClick = onFabClick,
-        onItemClick = onItemClick,
-        onItemActionClick = onItemActionClick,
+        onFabClick = {  },
+        onItemClick = {  },
+        onItemActionClick = {  },
         modifier = modifier
     )
 }
@@ -43,8 +43,8 @@ internal fun FileShareComponent(
 internal fun FileShareComponent(
     uiState: FileShareUiState,
     onFabClick: () -> Unit,
-    onItemClick: (TransferUi) -> Unit,
-    onItemActionClick: (TransferUi) -> Unit,
+    onItemClick: (SharedFileUi) -> Unit,
+    onItemActionClick: (SharedFileUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -56,11 +56,11 @@ internal fun FileShareComponent(
             .weight(1f)
             .fillMaxWidth()
         ) {
-            if (uiState.transferList.count() < 1) {
+            if (uiState.sharedFiles.count() < 1) {
                 FileShareEmptyContent(modifier = Modifier.matchParentSize())
             } else {
                 FileShareContent(
-                    items = uiState.transferList,
+                    items = uiState.sharedFiles,
                     onItemClick = onItemClick,
                     onItemActionClick = onItemActionClick,
                     modifier = Modifier.matchParentSize()
@@ -68,7 +68,7 @@ internal fun FileShareComponent(
             }
 
             FileShareFab(
-                collapsed = uiState.transferList.count() > 0,
+                collapsed = uiState.sharedFiles.count() > 0,
                 onClick = onFabClick,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
