@@ -11,6 +11,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite.phonebox.WhiteboardView
@@ -24,9 +25,12 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.Whiteboa
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.LinearProgressIndicatorTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.TextEditorState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.TextEditorValue
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardViewTag
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Assert.assertEquals
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -39,6 +43,8 @@ class WhiteboardComponentTest {
     private var uiState by mutableStateOf(WhiteboardUiState())
 
     private var sheetState by mutableStateOf(ModalBottomSheetState(ModalBottomSheetValue.Hidden))
+
+    private var textEditorState by mutableStateOf(TextEditorState(TextEditorValue.Empty))
 
     private var isReloadClicked = false
 
@@ -54,6 +60,7 @@ class WhiteboardComponentTest {
             WhiteboardComponent(
                 uiState = uiState,
                 editorSheetState = sheetState,
+                textEditorState = textEditorState,
                 onReloadClick = { isReloadClicked = true },
                 onTextConfirmed = { confirmedText = it },
                 onTextDismissed = { isTextDismissed = true },
@@ -61,10 +68,17 @@ class WhiteboardComponentTest {
                 onWhiteboardViewDispose = { },
             )
         }
-        isReloadClicked = false
+    }
+
+    @After
+    fun tearDown() {
+        uiState = WhiteboardUiState()
+        sheetState = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
+        textEditorState = TextEditorState(TextEditorValue.Empty)
+        whiteboardView = null
         confirmedText = null
         isTextDismissed = false
-        whiteboardView = null
+        isReloadClicked = false
     }
 
     @Test
@@ -125,7 +139,6 @@ class WhiteboardComponentTest {
 
     @Test
     fun userDismissesEditorText_onTextDismissInvoked() {
-        // Set an empty text, so the editor is dismissed directly
         uiState = WhiteboardUiState(text = "")
         val dismiss = composeTestRule.activity.getString(R.string.kaleyra_action_dismiss)
         composeTestRule.onNodeWithContentDescription(dismiss).performClick()
@@ -208,26 +221,41 @@ class WhiteboardComponentTest {
     }
 
     @Test
-    fun textEditorDisplayed_userPerformsBack_editorIsHidden() {
+    fun textEditorInEditingState_userPerformsBack_textEditorInDiscardState() {
         sheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded)
-        uiState = WhiteboardUiState(text = "")
+        textEditorState = TextEditorState(TextEditorValue.Editing(TextFieldValue()))
+        uiState = WhiteboardUiState(text = "text")
         Espresso.pressBack()
-        assertEquals(ModalBottomSheetValue.Hidden, sheetState.currentValue)
+        assertEquals(TextEditorValue.Discard, textEditorState.currentValue)
     }
 
     @Test
-    fun textEditorDisplayed_userPerformsBack_onTextDismissedInvoked() {
+    fun textEditorInDiscardState_userPerformsBack_textEditorInEditingState() {
         sheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded)
+        textEditorState = TextEditorState(TextEditorValue.Discard)
+        uiState = WhiteboardUiState(text = "")
+        Espresso.pressBack()
+        assertEquals(TextEditorValue.Editing(TextFieldValue("")), textEditorState.currentValue)
+    }
+
+    @Test
+    fun textEditorInEmptyState_userPerformsBack_onTextDismissedInvoked() {
+        sheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded)
+        textEditorState = TextEditorState(TextEditorValue.Empty)
         uiState = WhiteboardUiState(text = "")
         Espresso.pressBack()
         assert(isTextDismissed)
     }
 
     @Test
-    fun textEditorDisplayed_userSwipeDownBottomSheet_onTextDismissedInvoked() {
+    fun textEditorDisplayed_userSwipeDownBottomSheet_textEditorIsStillDisplayed() {
         sheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded)
         uiState = WhiteboardUiState(text = "")
         composeTestRule.onNode(hasSetTextAction()).performTouchInput { swipeDown(startY = 0f, endY = 3000f) }
-        assert(isTextDismissed)
+        composeTestRule.waitForIdle()
+        runBlocking {
+            val currentValue = snapshotFlow { sheetState.currentValue }.first()
+            assertEquals(ModalBottomSheetValue.Expanded, currentValue)
+        }
     }
 }

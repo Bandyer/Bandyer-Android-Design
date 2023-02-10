@@ -4,10 +4,12 @@ import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,7 +24,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmode
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -36,11 +37,13 @@ internal fun WhiteboardComponent(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true
     )
+    val textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     WhiteboardComponent(
         uiState = uiState,
         editorSheetState = sheetState,
+        textEditorState = textEditorState,
         onReloadClick = viewModel::onReloadClick,
         onTextDismissed = viewModel::onTextDismissed,
         onTextConfirmed = viewModel::onTextConfirmed,
@@ -55,6 +58,7 @@ internal fun WhiteboardComponent(
 internal fun WhiteboardComponent(
     uiState: WhiteboardUiState,
     editorSheetState: ModalBottomSheetState,
+    textEditorState: TextEditorState,
     onReloadClick: () -> Unit,
     onTextDismissed: () -> Unit,
     onTextConfirmed: (String) -> Unit,
@@ -62,8 +66,6 @@ internal fun WhiteboardComponent(
     onWhiteboardViewDispose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty)
-
     val shouldShowTextEditor by rememberUpdatedState(newValue = uiState.text != null)
     LaunchedEffect(shouldShowTextEditor, editorSheetState) {
         if (shouldShowTextEditor) {
@@ -75,19 +77,9 @@ internal fun WhiteboardComponent(
         }
     }
 
-    // Needed when the user dismisses the modal bottom sheet by swiping down or on back press
-    LaunchedEffect(editorSheetState) {
-        snapshotFlow { editorSheetState.targetValue }
-            .filter { it == ModalBottomSheetValue.Hidden }
-            .onEach { onTextDismissed() }
-            .launchIn(this)
-    }
-
-    if (editorSheetState.currentValue != ModalBottomSheetValue.Hidden) {
-        val scope = rememberCoroutineScope()
-        BackHandler(onBack = {
-            scope.launch { editorSheetState.hide() }
-        })
+    when {
+        textEditorState.currentValue != TextEditorValue.Empty -> BackHandler(onBack = { if (textEditorState.cancel()) onTextDismissed() })
+        editorSheetState.currentValue != ModalBottomSheetValue.Hidden -> BackHandler(onBack = onTextDismissed)
     }
 
     ModalBottomSheetLayout(
@@ -98,7 +90,12 @@ internal fun WhiteboardComponent(
                 textEditorState = textEditorState,
                 onTextDismissed = onTextDismissed,
                 onTextConfirmed = onTextConfirmed,
-                modifier = Modifier.navigationBarsPadding()
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    // Disable gestures on the modal bottom sheet
+                    .pointerInput(Unit) {
+                        detectDragGestures { _, _ -> }
+                    }
             )
         },
         content = {
@@ -154,6 +151,7 @@ private fun WhiteboardComponentPreview(uiState: WhiteboardUiState) {
             WhiteboardComponent(
                 uiState = uiState,
                 editorSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded),
+                textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty),
                 onReloadClick = {},
                 onTextDismissed = {},
                 onTextConfirmed = {},
