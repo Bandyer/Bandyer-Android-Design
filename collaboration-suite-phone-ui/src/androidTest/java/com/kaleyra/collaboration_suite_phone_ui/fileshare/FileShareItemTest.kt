@@ -16,6 +16,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.ProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
@@ -147,7 +148,7 @@ class FileShareItemTest {
 
     @Test
     fun successState_formattedTimestampDisplayed() {
-        sharedFile = mockDownloaSharedFile.copy(state = SharedFileUi.State.Success(Uri.EMPTY), time = 45555)
+        sharedFile = mockDownloaSharedFile.copy(state = SharedFileUi.State.Success(ImmutableUri(Uri.EMPTY)), time = 45555)
         val text = TimestampUtils.parseTime(45555)
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }

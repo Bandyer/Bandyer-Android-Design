@@ -9,6 +9,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
@@ -97,7 +98,7 @@ class FileShareComponentTest {
 
     @Test
     fun userClicksSuccessStateItem_onItemClickInvoked() {
-        val sharedFile = mockDownloaSharedFile.copy(state = SharedFileUi.State.Success(uri = Uri.EMPTY))
+        val sharedFile = mockDownloaSharedFile.copy(state = SharedFileUi.State.Success(uri = ImmutableUri(Uri.EMPTY)))
         items = ImmutableList(listOf(sharedFile))
         composeTestRule.onNodeWithTag(FileShareItemTag).performClick()
         assertEquals(sharedFile, actualSharedFile)

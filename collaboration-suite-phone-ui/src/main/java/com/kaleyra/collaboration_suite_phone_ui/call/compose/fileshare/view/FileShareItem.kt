@@ -27,6 +27,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Ellipsize
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.EllipsizeText
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.ProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
@@ -289,7 +290,7 @@ internal fun FileShareItemPendingPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun FileShareItemSuccessPreview() {
-    FileShareItemPreview(sharedFile = mockDownloaSharedFile.copy(state = SharedFileUi.State.Success(Uri.EMPTY)))
+    FileShareItemPreview(sharedFile = mockDownloaSharedFile.copy(state = SharedFileUi.State.Success(ImmutableUri(Uri.EMPTY))))
 }
 
 @Composable
