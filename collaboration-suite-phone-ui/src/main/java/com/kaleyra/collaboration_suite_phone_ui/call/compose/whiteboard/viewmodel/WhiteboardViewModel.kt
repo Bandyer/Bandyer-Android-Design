@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,7 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMa
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import kotlinx.coroutines.flow.*
 
-internal class WhiteboardViewModel(configure: suspend () -> Configuration) :
+internal class WhiteboardViewModel(configure: suspend () -> Configuration, context: Context) :
     BaseViewModel<WhiteboardUiState>(configure) {
     override fun initialState() = WhiteboardUiState()
 
@@ -50,6 +51,13 @@ internal class WhiteboardViewModel(configure: suspend () -> Configuration) :
                 onTextConfirmed.value = onCompletion
                 _uiState.update { it.copy(text = text) }
             }.launchIn(viewModelScope)
+
+        setUpWhiteboardView(context)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        whiteboard?.view?.value = null
     }
 
     fun onReloadClick() {
@@ -63,20 +71,15 @@ internal class WhiteboardViewModel(configure: suspend () -> Configuration) :
         _uiState.update { it.copy(text = null) }
     }
 
-    fun onWhiteboardViewCreated(view: WhiteboardView) {
-        val whiteboard = whiteboard ?: return
-        whiteboard.view.value = view
-        whiteboard.load()
-    }
-
-    fun onWhiteboardViewDispose() {
-        val whiteboard = whiteboard ?: return
-        whiteboard.view.value = null
-        resetTextState()
-    }
-
     fun uploadMediaFile(uri: Uri) {
         whiteboard?.addMediaFile(uri)
+    }
+
+    private fun setUpWhiteboardView(context: Context) {
+        val whiteboardView = WhiteboardView(context)
+        whiteboard?.view?.value = whiteboardView
+        whiteboard?.load()
+        _uiState.update { it.copy(whiteboardView = whiteboardView) }
     }
 
     private fun resetTextState() {
@@ -85,11 +88,11 @@ internal class WhiteboardViewModel(configure: suspend () -> Configuration) :
     }
 
     companion object {
-        fun provideFactory(configure: suspend () -> Configuration) =
+        fun provideFactory(configure: suspend () -> Configuration, context: Context) =
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return WhiteboardViewModel(configure) as T
+                    return WhiteboardViewModel(configure, context) as T
                 }
             }
     }

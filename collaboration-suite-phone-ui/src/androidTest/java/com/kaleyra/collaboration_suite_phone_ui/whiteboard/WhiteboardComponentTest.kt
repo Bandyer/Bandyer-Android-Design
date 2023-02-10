@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.whiteboard
 
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
@@ -14,11 +15,6 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite.phonebox.WhiteboardView
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardComponent
@@ -32,6 +28,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 
 @OptIn(ExperimentalMaterialApi::class)
 @RunWith(AndroidJUnit4::class)
@@ -52,8 +52,6 @@ class WhiteboardComponentTest {
 
     private var isTextDismissed = false
 
-    private var whiteboardView: WhiteboardView? = null
-
     @Before
     fun setUp() {
         composeTestRule.setContent {
@@ -63,9 +61,7 @@ class WhiteboardComponentTest {
                 textEditorState = textEditorState,
                 onReloadClick = { isReloadClicked = true },
                 onTextConfirmed = { confirmedText = it },
-                onTextDismissed = { isTextDismissed = true },
-                onWhiteboardViewCreated = { whiteboardView = it },
-                onWhiteboardViewDispose = { },
+                onTextDismissed = { isTextDismissed = true }
             )
         }
     }
@@ -75,16 +71,27 @@ class WhiteboardComponentTest {
         uiState = WhiteboardUiState()
         sheetState = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
         textEditorState = TextEditorState(TextEditorValue.Empty)
-        whiteboardView = null
         confirmedText = null
         isTextDismissed = false
         isReloadClicked = false
     }
 
     @Test
+    fun whiteboardViewNull_whiteboardViewDoesNotExist() {
+        uiState = WhiteboardUiState(whiteboardView = null)
+        composeTestRule.onNodeWithTag(WhiteboardViewTag).assertDoesNotExist()
+    }
+
+    @Test
+    fun whiteboardViewNotNull_whiteboardViewIsDisplayed() {
+        uiState = WhiteboardUiState(whiteboardView = View(composeTestRule.activity))
+        composeTestRule.onNodeWithTag(WhiteboardViewTag).assertIsDisplayed()
+    }
+
+    @Test
     fun textNull_whiteboardIsDisplayed() {
         sheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded)
-        uiState = WhiteboardUiState(text = null)
+        uiState = WhiteboardUiState(whiteboardView = View(composeTestRule.activity), text = null)
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(WhiteboardViewTag).assertIsDisplayed()
     }
@@ -146,13 +153,6 @@ class WhiteboardComponentTest {
     }
 
     @Test
-    fun whiteboardViewComposableLaunched_onWhiteboardViewCreatedInvoked() {
-        uiState = WhiteboardUiState(isOffline = false)
-        composeTestRule.onNodeWithTag(WhiteboardViewTag).assertIsDisplayed()
-        assert(whiteboardView != null)
-    }
-
-    @Test
     fun userDismissEditorText_onTextDismissInvoked() {
         uiState = WhiteboardUiState(text = "text")
         composeTestRule.onNodeWithText("text").assertIsDisplayed()
@@ -192,7 +192,7 @@ class WhiteboardComponentTest {
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_error_subtitle)
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
-        uiState = WhiteboardUiState(upload = WhiteboardUploadUi.Error)
+        uiState = WhiteboardUiState(whiteboardView = View(composeTestRule.activity), upload = WhiteboardUploadUi.Error)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
     }
@@ -205,7 +205,7 @@ class WhiteboardComponentTest {
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
         composeTestRule.onNodeWithText(percentage).assertDoesNotExist()
-        uiState = WhiteboardUiState(upload = WhiteboardUploadUi.Uploading(.7f))
+        uiState = WhiteboardUiState(whiteboardView = View(composeTestRule.activity), upload = WhiteboardUploadUi.Uploading(.7f))
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
         composeTestRule.onNodeWithText(percentage).assertIsDisplayed()
@@ -213,11 +213,19 @@ class WhiteboardComponentTest {
 
     @Test
     fun isLoadingTrue_indeterminateProgressIndicatorDisplayed() {
-        uiState = WhiteboardUiState(isLoading = true, isOffline = false)
+        uiState = WhiteboardUiState(whiteboardView = View(composeTestRule.activity), isLoading = true, isOffline = false)
         composeTestRule
             .onNodeWithTag(LinearProgressIndicatorTag)
             .assertIsDisplayed()
             .assertRangeInfoEquals(ProgressBarRangeInfo.Indeterminate)
+    }
+
+    @Test
+    fun isLoadingFalse_indeterminateProgressIndicatorDoesNotExists() {
+        uiState = WhiteboardUiState(whiteboardView = View(composeTestRule.activity), isLoading = false, isOffline = false)
+        composeTestRule
+            .onNodeWithTag(LinearProgressIndicatorTag)
+            .assertDoesNotExist()
     }
 
     @Test

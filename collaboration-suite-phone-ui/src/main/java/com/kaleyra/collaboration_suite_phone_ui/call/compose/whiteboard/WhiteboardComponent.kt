@@ -10,10 +10,10 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import com.kaleyra.collaboration_suite.phonebox.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.*
 @Composable
 internal fun WhiteboardComponent(
     viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-        factory = WhiteboardViewModel.provideFactory(::requestConfiguration)
+        factory = WhiteboardViewModel.provideFactory(::requestConfiguration, LocalContext.current)
     ),
     modifier: Modifier = Modifier
 ) {
@@ -47,8 +47,6 @@ internal fun WhiteboardComponent(
         onReloadClick = viewModel::onReloadClick,
         onTextDismissed = viewModel::onTextDismissed,
         onTextConfirmed = viewModel::onTextConfirmed,
-        onWhiteboardViewCreated = viewModel::onWhiteboardViewCreated,
-        onWhiteboardViewDispose = viewModel::onWhiteboardViewDispose,
         modifier = modifier
     )
 }
@@ -62,8 +60,6 @@ internal fun WhiteboardComponent(
     onReloadClick: () -> Unit,
     onTextDismissed: () -> Unit,
     onTextConfirmed: (String) -> Unit,
-    onWhiteboardViewCreated: (WhiteboardView) -> Unit,
-    onWhiteboardViewDispose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val shouldShowTextEditor by rememberUpdatedState(newValue = uiState.text != null)
@@ -103,21 +99,24 @@ internal fun WhiteboardComponent(
                 val contentModifier = Modifier
                     .weight(1f)
                     .background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))
-                if (uiState.isOffline) {
-                    WhiteboardOfflineContent(
-                        loading = uiState.isLoading,
-                        onReloadClick = onReloadClick,
-                        modifier = contentModifier
-                    )
-                } else {
-                    WhiteboardContent(
-                        loading = uiState.isLoading,
-                        upload = uiState.upload,
-                        onWhiteboardViewCreated = onWhiteboardViewCreated,
-                        onWhiteboardViewDispose = onWhiteboardViewDispose,
-                        modifier = contentModifier
-                    )
+                when {
+                    uiState.isOffline -> {
+                        WhiteboardOfflineContent(
+                            loading = uiState.isLoading,
+                            onReloadClick = onReloadClick,
+                            modifier = contentModifier
+                        )
+                    }
+                    uiState.whiteboardView != null -> {
+                        WhiteboardContent(
+                            whiteboardView = uiState.whiteboardView,
+                            loading = uiState.isLoading,
+                            upload = uiState.upload,
+                            modifier = contentModifier
+                        )
+                    }
                 }
+
                 NavigationBarsSpacer()
             }
         },
@@ -154,9 +153,7 @@ private fun WhiteboardComponentPreview(uiState: WhiteboardUiState) {
                 textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty),
                 onReloadClick = {},
                 onTextDismissed = {},
-                onTextConfirmed = {},
-                onWhiteboardViewCreated = {},
-                onWhiteboardViewDispose = {}
+                onTextConfirmed = {}
             )
         }
     }

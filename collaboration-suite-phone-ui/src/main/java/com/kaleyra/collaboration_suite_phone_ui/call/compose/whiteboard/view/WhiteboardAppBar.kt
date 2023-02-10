@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,7 +20,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 @Composable
 internal fun WhiteboardAppBar(
     viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-        factory = WhiteboardViewModel.provideFactory(::requestConfiguration)
+        factory = WhiteboardViewModel.provideFactory(::requestConfiguration, LocalContext.current)
     ),
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier

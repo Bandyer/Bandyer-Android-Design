@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.whiteboard
 
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,7 +9,6 @@ import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite.phonebox.WhiteboardView
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.LinearProgressIndicatorTag
@@ -28,18 +28,15 @@ class WhiteboardContentTest {
 
     private var loading by mutableStateOf(false)
 
-    private var upload by mutableStateOf<WhiteboardUploadUi>(WhiteboardUploadUi.Uploading(.7f))
-
-    private var whiteboardView: WhiteboardView? = null
+    private var upload by mutableStateOf<WhiteboardUploadUi?>(null)
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             WhiteboardContent(
+                whiteboardView = View(composeTestRule.activity),
                 loading = loading,
-                upload = upload,
-                onWhiteboardViewCreated = { whiteboardView = it },
-                onWhiteboardViewDispose = { }
+                upload = upload
             )
         }
     }
@@ -47,8 +44,7 @@ class WhiteboardContentTest {
     @After
     fun tearDown() {
         loading = false
-        upload = WhiteboardUploadUi.Uploading(.7f)
-        whiteboardView = null
+        upload = null
     }
 
     @Test
@@ -57,13 +53,8 @@ class WhiteboardContentTest {
     }
 
     @Test
-    fun launchComposable_onWhiteboardViewCreatedInvoked() {
-        assert(whiteboardView != null)
-    }
-
-    @Test
     fun whiteboardUploadError_errorCardDisplayed() {
-        upload = WhiteboardUploadUi.Uploading(.7f)
+        upload = null
         val title = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_error_title)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_error_subtitle)
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
@@ -75,7 +66,7 @@ class WhiteboardContentTest {
 
     @Test
     fun whiteboardUploadUploading_uploadingCardDisplayed() {
-        upload = WhiteboardUploadUi.Error
+        upload = null
         val title = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_uploading_file)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_compressing)
         val percentage = composeTestRule.activity.getString(R.string.kaleyra_file_upload_percentage, 70)
@@ -95,5 +86,13 @@ class WhiteboardContentTest {
             .onNodeWithTag(LinearProgressIndicatorTag)
             .assertIsDisplayed()
             .assertRangeInfoEquals(ProgressBarRangeInfo.Indeterminate)
+    }
+
+    @Test
+    fun loadingFalse_indeterminateProgressIndicatorDoesNotExists() {
+        loading = false
+        composeTestRule
+            .onNodeWithTag(LinearProgressIndicatorTag)
+            .assertDoesNotExist()
     }
 }

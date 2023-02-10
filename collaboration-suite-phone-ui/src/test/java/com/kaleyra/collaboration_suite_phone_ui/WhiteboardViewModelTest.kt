@@ -1,27 +1,26 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
+import android.webkit.WebView
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard
-import com.kaleyra.collaboration_suite.phonebox.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel.WhiteboardViewModel
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.spyk
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+// TODO check if how I can test this
 @OptIn(ExperimentalCoroutinesApi::class)
 class WhiteboardViewModelTest {
 
@@ -38,9 +37,20 @@ class WhiteboardViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = spyk(WhiteboardViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk()) })
+        viewModel = spyk(WhiteboardViewModel(configure = { Configuration.Success(phoneBoxMock, mockk(), mockk()) }, context = mockk(relaxed = true)))
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.whiteboard } returns whiteboardMock
+//        mockkConstructor(WebView::class)
+//        every { anyConstructed<WebView>().settings } returns mockk(relaxed = true)
+    }
+
+    @Test
+    fun testWhiteboardViewSetUp() = runTest {
+        advanceUntilIdle()
+        val whiteboardView = viewModel.uiState.first()
+        verify { whiteboardMock.load() }
+        assertNotEquals(null, whiteboardView)
+        assertEquals(whiteboardView, whiteboardMock.view.value)
     }
 
     @Test
@@ -98,26 +108,6 @@ class WhiteboardViewModelTest {
         viewModel.onTextConfirmed("newText")
         assertEquals(null, viewModel.uiState.first().text)
         assertEquals(true, onCompletionInvoked)
-    }
-
-    @Test
-    fun testOnWhiteboardViewCreated() = runTest {
-        every { whiteboardMock.view } returns MutableStateFlow(null)
-        val viewMock = mockk<WhiteboardView>()
-        advanceUntilIdle()
-        viewModel.onWhiteboardViewCreated(viewMock)
-        assertEquals(viewMock, whiteboardMock.view.value)
-        verify { whiteboardMock.load() }
-    }
-
-    @Test
-    fun testOnWhiteboardViewDispose() = runTest {
-        every { whiteboardMock.events } returns MutableStateFlow(Whiteboard.Event.Text.Edit(oldText = "text", mockk()))
-        every { whiteboardMock.view } returns MutableStateFlow(mockk())
-        advanceUntilIdle()
-        viewModel.onWhiteboardViewDispose()
-        assertEquals(null, whiteboardMock.view.value)
-        assertEquals(null, viewModel.uiState.first().text)
     }
 
     @Test
