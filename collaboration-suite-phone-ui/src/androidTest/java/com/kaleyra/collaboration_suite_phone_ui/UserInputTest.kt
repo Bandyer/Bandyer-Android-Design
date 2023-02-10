@@ -6,6 +6,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.TextFieldTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.UserInput
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -33,6 +34,12 @@ class UserInputTest {
                 }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        onTextChanged = false
+        onSendMessage = false
     }
 
     @Test

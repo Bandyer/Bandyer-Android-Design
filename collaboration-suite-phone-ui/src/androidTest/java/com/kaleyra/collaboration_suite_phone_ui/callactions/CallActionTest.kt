@@ -10,6 +10,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.view.CallAction
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -33,6 +34,11 @@ class CallActionTest {
                 onToggle = { isToggled = it },
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        action = CallAction.Audio()
         isToggled = false
     }
 

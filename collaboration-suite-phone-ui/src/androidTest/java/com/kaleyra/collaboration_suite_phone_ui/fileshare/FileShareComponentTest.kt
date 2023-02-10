@@ -16,6 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.moc
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadTransfer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItemTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -43,6 +44,12 @@ class FileShareComponentTest {
                 onItemClick = { actualTransfer = it },
                 onItemActionClick = { actualTransfer = it })
         }
+    }
+
+    @After
+    fun tearDown() {
+        items = ImmutableList(emptyList())
+        isFabClicked = false
         actualTransfer = null
     }
 

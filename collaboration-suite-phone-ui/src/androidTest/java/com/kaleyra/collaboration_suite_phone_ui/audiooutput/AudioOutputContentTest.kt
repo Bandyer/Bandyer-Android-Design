@@ -14,6 +14,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.A
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.view.AudioOutputContent
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -39,6 +40,12 @@ class AudioOutputContentTest {
                 onItemClick = { audioDevice = it }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        items = ImmutableList(listOf())
+        audioDevice = null
     }
 
     @Test

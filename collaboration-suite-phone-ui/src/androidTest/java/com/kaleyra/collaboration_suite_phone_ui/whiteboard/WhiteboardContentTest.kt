@@ -14,6 +14,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.Wh
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.LinearProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardViewTag
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -41,6 +42,13 @@ class WhiteboardContentTest {
                 onWhiteboardViewDispose = { }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        loading = false
+        upload = WhiteboardUploadUi.Uploading(.7f)
+        whiteboardView = null
     }
 
     @Test

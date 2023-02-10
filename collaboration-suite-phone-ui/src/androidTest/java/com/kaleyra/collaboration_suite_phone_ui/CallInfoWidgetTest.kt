@@ -5,12 +5,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -43,6 +42,15 @@ class CallInfoWidgetTest {
                 onBackPressed = { isBackPressed = true }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        title = ""
+        subtitle = ""
+        watermarkInfo = WatermarkInfo()
+        isRecording = false
+        isBackPressed = false
     }
 
     @Test

@@ -9,6 +9,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStream
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -40,6 +41,15 @@ class FeaturedStreamTest: StreamParentComposableTest() {
                 onFullscreenClick = { isFullscreenClicked = true }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        isBackPressed = false
+        isFullscreenClicked = false
+        stream = mutableStateOf(streamUiMock)
+        onBackPressed = null
+        isFullscreen = false
     }
 
     @Test

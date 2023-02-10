@@ -13,6 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.CallAct
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -39,6 +40,12 @@ class CallActionsComponentTest {
                 }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        items = ImmutableList(listOf())
+        isActionClicked = null
     }
 
     @Test

@@ -9,6 +9,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.subfeaturelayout.SubFeatureLayout
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,6 +28,11 @@ class SubFeatureLayoutTest {
         composeTestRule.setContent {
             SubFeatureLayout(title = "title", onCloseClick = { isCloseClicked = true }, content = { })
         }
+    }
+
+    @After
+    fun tearDown() {
+        isCloseClicked = false
     }
 
     @Test

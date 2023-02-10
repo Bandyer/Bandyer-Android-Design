@@ -13,6 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,6 +38,12 @@ class StreamTest {
                 avatarVisible = isAvatarVisible
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        streamView = null
+        isAvatarVisible = false
     }
 
     @Test

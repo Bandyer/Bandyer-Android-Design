@@ -15,6 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.CircularProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardUploadCard
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -33,6 +34,11 @@ class WhiteboardUploadCardTest {
         composeTestRule.setContent {
             WhiteboardUploadCard(upload = upload)
         }
+    }
+
+    @After
+    fun tearDown() {
+        upload = WhiteboardUploadUi.Error
     }
 
     @Test

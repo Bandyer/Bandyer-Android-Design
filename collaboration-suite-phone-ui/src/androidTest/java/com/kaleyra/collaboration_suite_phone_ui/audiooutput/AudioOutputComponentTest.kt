@@ -12,6 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOu
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -39,7 +40,13 @@ class AudioOutputComponentTest {
                 onCloseClick = { isCloseClicked = true }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        items = ImmutableList(listOf())
         audioDevice = null
+        isCloseClicked = false
     }
 
     @Test

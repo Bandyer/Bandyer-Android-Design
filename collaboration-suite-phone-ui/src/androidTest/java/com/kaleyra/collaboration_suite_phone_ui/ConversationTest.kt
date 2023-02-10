@@ -27,6 +27,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.Messages
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.ProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -44,6 +45,13 @@ class ConversationTest {
     private var onResetScroll = false
 
     private var onApproachingTop = false
+
+    @After
+    fun tearDown() {
+        onMessageScrolled = false
+        onResetScroll = false
+        onApproachingTop = false
+    }
 
     @Test
     fun emptyMessages_noMessagesDisplayed() {

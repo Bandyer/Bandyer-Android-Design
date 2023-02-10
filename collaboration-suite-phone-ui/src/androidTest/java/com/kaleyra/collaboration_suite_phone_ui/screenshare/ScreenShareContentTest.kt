@@ -13,6 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.view.ScreenShareContent
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -37,6 +38,12 @@ class ScreenShareContentTest {
                 onItemClick = { screenShareTarget = it }
             )
         }
+        screenShareTarget = null
+    }
+
+    @After
+    fun tearDown() {
+        items = ImmutableList(listOf())
         screenShareTarget = null
     }
 

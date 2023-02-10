@@ -12,6 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.ringing.RingingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -44,6 +45,15 @@ class RingingComponentTest: PreCallComponentTest() {
                 onDeclineClick = { declineClicked = true }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        uiState.value = PreCallUiState(stream = streamUiMock)
+        timerMillis = 0L
+        backPressed = false
+        answerClicked = false
+        declineClicked = false
     }
 
     @Test

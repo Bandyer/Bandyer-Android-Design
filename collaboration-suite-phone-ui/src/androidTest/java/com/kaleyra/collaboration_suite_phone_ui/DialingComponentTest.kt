@@ -11,6 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.dialing.DialingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -34,6 +35,12 @@ class DialingComponentTest: PreCallComponentTest() {
                 onBackPressed = { backPressed = true },
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        uiState.value = PreCallUiState(stream = streamUiMock)
+        backPressed = false
     }
 
     @Test

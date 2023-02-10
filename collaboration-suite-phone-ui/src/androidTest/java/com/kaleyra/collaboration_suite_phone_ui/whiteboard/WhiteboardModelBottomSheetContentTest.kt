@@ -12,6 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.TextEditorState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.TextEditorValue
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardModalBottomSheetContent
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -39,6 +40,13 @@ class WhiteboardModelBottomSheetContentTest {
                 onTextConfirmed = { confirmedText = it }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        textEditorState = TextEditorState(TextEditorValue.Empty)
+        isTextDismissed = false
+        confirmedText = null
     }
 
     @Test

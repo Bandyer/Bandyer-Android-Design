@@ -15,6 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenS
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -42,7 +43,13 @@ class ScreenShareComponentTest {
                 onCloseClick = { isCloseClicked = true }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        items = ImmutableList(listOf())
         screenShareTarget = null
+        isCloseClicked = false
     }
 
     @Test

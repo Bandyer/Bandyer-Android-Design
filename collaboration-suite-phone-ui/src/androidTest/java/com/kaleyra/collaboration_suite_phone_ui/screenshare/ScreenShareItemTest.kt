@@ -11,6 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.view.ScreenShareItem
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,6 +30,11 @@ class ScreenShareItemTest {
         composeTestRule.setContent {
             ScreenShareItem(screenShareTarget = screenShareTarget)
         }
+    }
+
+    @After
+    fun tearDown() {
+        screenShareTarget = ScreenShareTargetUi.Device
     }
 
     @Test

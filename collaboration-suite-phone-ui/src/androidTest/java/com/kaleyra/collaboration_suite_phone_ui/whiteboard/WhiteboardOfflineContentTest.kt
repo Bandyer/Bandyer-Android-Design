@@ -9,6 +9,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardOfflineContent
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,6 +31,11 @@ class WhiteboardOfflineContentTest {
                 onReloadClick = { isReloadClicked = true }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        isReloadClicked = false
     }
 
     @Test

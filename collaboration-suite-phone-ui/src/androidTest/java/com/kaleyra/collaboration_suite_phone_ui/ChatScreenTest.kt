@@ -11,6 +11,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.input.TextFieldTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -59,6 +60,18 @@ class ChatScreenTest {
                 onTyping = { onTyping = true }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        uiState.value = ChatUiState(conversationState = ConversationUiState(conversationItems = ImmutableList(mockConversationItems.value.plus(mockConversationItems.value))), actions = mockActions)
+        onBackPressed = false
+        onMessageScrolled = false
+        onResetMessagesScroll = false
+        onFetchMessages = false
+        onShowCall = false
+        onSendMessage = false
+        onTyping = false
     }
 
     @Test

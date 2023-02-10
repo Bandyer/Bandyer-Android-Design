@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.width
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Watermark
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,6 +30,11 @@ class WatermarkInfoTest {
         composeTestRule.setContent {
             Watermark(watermarkInfo = watermarkInfo)
         }
+    }
+
+    @After
+    fun tearDown() {
+        watermarkInfo = WatermarkInfo(null, null)
     }
 
     @Test

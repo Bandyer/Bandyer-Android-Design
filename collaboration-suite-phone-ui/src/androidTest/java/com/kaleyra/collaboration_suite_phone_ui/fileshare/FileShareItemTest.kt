@@ -22,6 +22,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.Tra
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadTransfer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadTransfer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItem
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -45,6 +46,12 @@ class FileShareItemTest {
                 onActionClick = { isActionClicked = true }
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        transfer = mockUploadTransfer
+        isActionClicked = false
     }
 
     @Test

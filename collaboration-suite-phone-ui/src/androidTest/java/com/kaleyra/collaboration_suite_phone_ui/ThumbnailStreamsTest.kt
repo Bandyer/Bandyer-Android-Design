@@ -11,6 +11,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,9 +39,12 @@ class ThumbnailStreamsTest {
                 onStreamClick = { clickedStream = it }
             )
         }
-        clickedStream = null
     }
 
+    @After
+    fun tearDown() {
+        clickedStream = null
+    }
 
     @Test
     fun thumbnailStreamsAreDisplayed() {

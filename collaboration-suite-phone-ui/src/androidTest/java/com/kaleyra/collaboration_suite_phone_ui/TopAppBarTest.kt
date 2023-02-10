@@ -11,6 +11,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.*
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -46,6 +47,13 @@ class TopAppBarTest {
                 actions = chatActions,
                 onBackPressed = { isBackPressed = true })
         }
+    }
+
+    @After
+    fun tearDown() {
+        chatState.value = ChatState.None
+        isBackPressed = false
+        isActionClicked = false
     }
 
     @Test

@@ -13,6 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.view.AudioOutputItem
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -34,6 +35,11 @@ class AudioOutputItemTest {
                 selected = false
             )
         }
+    }
+
+    @After
+    fun tearDown() {
+        audioDevice = AudioDeviceUi.LoudSpeaker
     }
 
     @Test
