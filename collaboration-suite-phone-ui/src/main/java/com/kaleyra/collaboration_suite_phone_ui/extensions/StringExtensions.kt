@@ -16,6 +16,9 @@
 
 package com.kaleyra.collaboration_suite_phone_ui.extensions
 
+private val imageTypes = listOf("image/gif", "image/vnd.microsoft.icon", "image/jpeg", "image/png", "image/svg+xml", "image/tiff", "image/webp", "image/x-photoshop")
+private val archiveTypes = listOf("application/zip", "application/x-7z-compressed", "application/x-bzip", "application/x-bzip2", "application/gzip", "application/vnd.rar")
+
 /**
  * Give the type of file given a mime type
  *
@@ -23,11 +26,17 @@ package com.kaleyra.collaboration_suite_phone_ui.extensions
  * @return The type of file
  */
 fun String.getFileTypeFromMimeType(): String {
-    val imageTypes = listOf("image/gif", "image/vnd.microsoft.icon", "image/jpeg", "image/png", "image/svg+xml", "image/tiff", "image/webp", "image/x-photoshop")
-    val archiveType = listOf("application/zip", "application/x-7z-compressed", "application/x-bzip", "application/x-bzip2", "application/gzip", "application/vnd.rar")
     return when {
         imageTypes.contains(this) -> "image"
-        archiveType.contains(this) -> "archive"
+        archiveTypes.contains(this) -> "archive"
         else -> "file"
     }
+}
+
+fun String.isImageMimeType(): Boolean {
+    return imageTypes.contains(this)
+}
+
+fun String.isArchiveMimeType(): Boolean {
+    return archiveTypes.contains(this)
 }
