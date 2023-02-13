@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view
 
+import android.content.Context
 import android.content.res.Configuration
 import android.net.Uri
 import android.text.format.Formatter
@@ -29,13 +30,17 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.Ellipsize
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.EllipsizeText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.ProgressIndicatorTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloaSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.extensions.getMimeType
+import com.kaleyra.collaboration_suite_phone_ui.extensions.isArchiveMimeType
+import com.kaleyra.collaboration_suite_phone_ui.extensions.isImageMimeType
 import kotlin.math.roundToInt
 
+private const val FileMediaType = "MediaType"
+private const val FileArchiveType = "ArchiveType"
 private val LinearProgressIndicatorWidth = 3000.dp
 
 @Composable
@@ -51,7 +56,8 @@ internal fun FileShareItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         FileTypeAndSize(
-            file = sharedFile.file,
+            fileUri = sharedFile.uri,
+            fileSize = sharedFile.size,
             modifier = Modifier.padding(start = 6.dp)
         )
 
@@ -71,41 +77,46 @@ internal fun FileShareItem(
             }
 
             if (sharedFile.state is SharedFileUi.State.Error) {
-                ErrorMessage(sharedFile.type)
+                ErrorMessage(sharedFile.isMine)
             }
         }
     }
 }
 
 @Composable
-private fun FileTypeAndSize(file: FileUi, modifier: Modifier = Modifier) {
+private fun FileTypeAndSize(
+    fileUri: ImmutableUri,
+    fileSize: Long?,
+    modifier: Modifier = Modifier
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
+        val fileType = getFileType(LocalContext.current, fileUri.value)
         Icon(
             painter = painterResource(
-                id = when (file.type) {
-                    FileUi.Type.Media -> R.drawable.ic_kaleyra_image
-                    FileUi.Type.Archive -> R.drawable.ic_kaleyra_zip
-                    FileUi.Type.Miscellaneous -> R.drawable.ic_kaleyra_file
+                id = when (fileType) {
+                    FileMediaType -> R.drawable.ic_kaleyra_image
+                    FileArchiveType -> R.drawable.ic_kaleyra_zip
+                    else -> R.drawable.ic_kaleyra_file
                 }
             ),
             contentDescription = stringResource(
-                id = when (file.type) {
-                    FileUi.Type.Media -> R.string.kaleyra_fileshare_media
-                    FileUi.Type.Archive -> R.string.kaleyra_fileshare_archive
-                    FileUi.Type.Miscellaneous -> R.string.kaleyra_fileshare_miscellaneous
+                id = when (fileType) {
+                    FileMediaType -> R.string.kaleyra_fileshare_media
+                    FileArchiveType -> R.string.kaleyra_fileshare_archive
+                    else -> R.string.kaleyra_fileshare_miscellaneous
                 }
             ),
             modifier = Modifier.size(28.dp)
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = if (file.size != null) {
-                Formatter.formatShortFileSize(LocalContext.current, file.size)
+            text = if (fileSize != null) {
+                Formatter.formatShortFileSize(LocalContext.current, fileSize)
             } else {
-                // If it is Download && state != InProgress && state != Success
+                // The file size is NA when is Download && state != InProgress && state != Success
                 stringResource(id = R.string.kaleyra_fileshare_na)
             },
             color = LocalContentColor.current.copy(alpha = .5f),
@@ -122,7 +133,7 @@ private fun SharedFileInfoAndProgress(
     Column(modifier = modifier) {
 
         EllipsizeText(
-            text = sharedFile.file.name,
+            text = sharedFile.name,
             color = MaterialTheme.colors.onSurface,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
@@ -142,25 +153,15 @@ private fun SharedFileInfoAndProgress(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 painter = painterResource(
-                    id = when (sharedFile.type) {
-                        SharedFileUi.Type.Upload -> R.drawable.ic_kaleyra_upload
-                        SharedFileUi.Type.Download -> R.drawable.ic_kaleyra_download
-                    }
+                    id = if (sharedFile.isMine) R.drawable.ic_kaleyra_upload else R.drawable.ic_kaleyra_download
                 ),
-                contentDescription = stringResource(
-                    id = when (sharedFile.type) {
-                        SharedFileUi.Type.Upload -> R.string.kaleyra_fileshare_upload
-                        SharedFileUi.Type.Download -> R.string.kaleyra_fileshare_download
-                    }
-                ),
+                contentDescription = stringResource(id = if (sharedFile.isMine) R.string.kaleyra_fileshare_upload else R.string.kaleyra_fileshare_download),
                 tint = LocalContentColor.current.copy(alpha = .8f),
                 modifier = Modifier.size(12.dp)
             )
             Spacer(Modifier.width(8.dp))
             Text(
-                text = if (sharedFile.type == SharedFileUi.Type.Download) sharedFile.sender else stringResource(
-                    id = R.string.kaleyra_fileshare_you
-                ),
+                text = if (sharedFile.isMine) stringResource(id = R.string.kaleyra_fileshare_you) else sharedFile.sender,
                 maxLines = 1,
                 color = LocalContentColor.current.copy(alpha = .5f),
                 fontSize = 12.sp,
@@ -237,14 +238,20 @@ private fun ActionButton(
     }
 }
 
+private fun getFileType(context: Context, uri: Uri): String? {
+    val mimeType = uri.getMimeType(context) ?: ""
+    return when {
+        mimeType.isImageMimeType()-> FileMediaType
+        mimeType.isArchiveMimeType() -> FileArchiveType
+        else -> null
+    }
+}
+
 @Composable
-private fun ErrorMessage(sharedFileType: SharedFileUi.Type) {
+private fun ErrorMessage(isMyMessage: Boolean) {
     Text(
         text = stringResource(
-            id = when (sharedFileType) {
-                SharedFileUi.Type.Upload -> R.string.kaleyra_fileshare_upload_error
-                else -> R.string.kaleyra_fileshare_download_error
-            }
+            id = if (isMyMessage) R.string.kaleyra_fileshare_upload_error else R.string.kaleyra_fileshare_download_error
         ),
         color = MaterialTheme.colors.error,
         fontSize = 12.sp
@@ -290,7 +297,7 @@ internal fun FileShareItemPendingPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun FileShareItemSuccessPreview() {
-    FileShareItemPreview(sharedFile = mockDownloaSharedFile.copy(state = SharedFileUi.State.Success(ImmutableUri(Uri.EMPTY))))
+    FileShareItemPreview(sharedFile = mockDownloadSharedFile.copy(state = SharedFileUi.State.Success(ImmutableUri(Uri.EMPTY))))
 }
 
 @Composable

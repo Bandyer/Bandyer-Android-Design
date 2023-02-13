@@ -1,27 +1,26 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model
 
+import android.net.Uri
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
+
 val mockUploadSharedFile = SharedFileUi(
     id = "1",
-    file = FileUi(
-        name = "upload.txt",
-        type = FileUi.Type.Media,
-        size = 23333L
-    ),
+    name = "upload.txt",
+    uri = ImmutableUri(Uri.EMPTY),
+    size = 23333L,
     sender = "Mario",
     time = 324234L,
     state = SharedFileUi.State.InProgress(progress = .7f),
-    type = SharedFileUi.Type.Upload
+    isMine = true
 )
 
-val mockDownloaSharedFile = SharedFileUi(
+val mockDownloadSharedFile = SharedFileUi(
     id = "2",
-    file = FileUi(
-        name = "download.txt",
-        type = FileUi.Type.Miscellaneous,
-        size = 40000L
-    ),
+    name = "download.txt",
+    uri = ImmutableUri(Uri.EMPTY),
+    size = 40000L,
     sender = "Keanu",
     time = 3254234L,
     state = SharedFileUi.State.InProgress(progress = .4f),
-    type = SharedFileUi.Type.Download
+    isMine = false
 )

@@ -10,7 +10,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloaSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItemTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -50,13 +50,13 @@ class FileShareContentTest {
 
     @Test
     fun itemAvailableState_itemIsNotEnabled() {
-        items = ImmutableList(listOf(mockDownloaSharedFile.copy(state = SharedFileUi.State.Available)))
+        items = ImmutableList(listOf(mockDownloadSharedFile.copy(state = SharedFileUi.State.Available)))
         composeTestRule.onNodeWithTag(FileShareItemTag).assertIsNotEnabled()
     }
 
     @Test
     fun itemPendingState_itemIsNotEnabled() {
-        items = ImmutableList(listOf(mockDownloaSharedFile.copy(state = SharedFileUi.State.Pending)))
+        items = ImmutableList(listOf(mockDownloadSharedFile.copy(state = SharedFileUi.State.Pending)))
         composeTestRule.onNodeWithTag(FileShareItemTag).assertIsNotEnabled()
     }
 
@@ -64,7 +64,7 @@ class FileShareContentTest {
     fun itemInProgressState_itemIsNotEnabled() {
         items = ImmutableList(
             listOf(
-                mockDownloaSharedFile.copy(
+                mockDownloadSharedFile.copy(
                     state = SharedFileUi.State.InProgress(progress = .5f)
                 )
             )
@@ -75,25 +75,25 @@ class FileShareContentTest {
     @Test
     fun itemSuccessState_itemIsEnabled() {
         items =
-            ImmutableList(listOf(mockDownloaSharedFile.copy(state = SharedFileUi.State.Success(uri = ImmutableUri(Uri.EMPTY)))))
+            ImmutableList(listOf(mockDownloadSharedFile.copy(state = SharedFileUi.State.Success(uri = ImmutableUri(Uri.EMPTY)))))
         composeTestRule.onNodeWithTag(FileShareItemTag).assertIsEnabled()
     }
 
     @Test
     fun itemErrorState_itemIsNotEnabled() {
-        items = ImmutableList(listOf(mockDownloaSharedFile.copy(state = SharedFileUi.State.Error)))
+        items = ImmutableList(listOf(mockDownloadSharedFile.copy(state = SharedFileUi.State.Error)))
         composeTestRule.onNodeWithTag(FileShareItemTag).assertIsNotEnabled()
     }
 
     @Test
     fun itemCancelledState_itemIsNotEnabled() {
-        items = ImmutableList(listOf(mockDownloaSharedFile.copy(state = SharedFileUi.State.Cancelled)))
+        items = ImmutableList(listOf(mockDownloadSharedFile.copy(state = SharedFileUi.State.Cancelled)))
         composeTestRule.onNodeWithTag(FileShareItemTag).assertIsNotEnabled()
     }
 
     @Test
     fun userClicksSuccessStateItem_onItemClickInvoked() {
-        val sharedFile = mockDownloaSharedFile.copy(state = SharedFileUi.State.Success(uri = ImmutableUri(Uri.EMPTY)))
+        val sharedFile = mockDownloadSharedFile.copy(state = SharedFileUi.State.Success(uri = ImmutableUri(Uri.EMPTY)))
         items = ImmutableList(listOf(sharedFile))
         composeTestRule.onNodeWithTag(FileShareItemTag).performClick()
         assertEquals(sharedFile, actualSharedFile)
@@ -101,7 +101,7 @@ class FileShareContentTest {
 
     @Test
     fun userClicksItemAction_onItemActionClickInvoked() {
-        val sharedFile = mockDownloaSharedFile.copy(state = SharedFileUi.State.Pending)
+        val sharedFile = mockDownloadSharedFile.copy(state = SharedFileUi.State.Pending)
         items = ImmutableList(listOf(sharedFile))
         composeTestRule
             .onNodeWithTag(FileShareItemTag)

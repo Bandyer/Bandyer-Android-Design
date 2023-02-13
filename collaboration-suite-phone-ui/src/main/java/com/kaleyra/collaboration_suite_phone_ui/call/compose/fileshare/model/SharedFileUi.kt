@@ -1,24 +1,19 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model
 
-import android.net.Uri
 import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 
 @Immutable
 data class SharedFileUi(
     val id: String,
-    val file: FileUi,
+    val name: String,
+    val uri: ImmutableUri,
+    val size: Long?,
     val sender: String,
     val time: Long,
     val state: State,
-    val type: Type
+    val isMine: Boolean
 ) {
-
-    @Immutable
-    enum class Type {
-        Upload,
-        Download
-    }
 
     @Immutable
     sealed class State {

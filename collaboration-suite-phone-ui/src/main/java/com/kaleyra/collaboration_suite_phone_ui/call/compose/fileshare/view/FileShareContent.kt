@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloaSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
@@ -60,7 +60,7 @@ internal fun FileShareContentPreview() {
     KaleyraTheme {
         Surface {
             FileShareContent(
-                items = ImmutableList(listOf(mockDownloaSharedFile, mockUploadSharedFile)),
+                items = ImmutableList(listOf(mockDownloadSharedFile, mockUploadSharedFile)),
                 onItemClick = {},
                 onItemActionClick = {}
             )
