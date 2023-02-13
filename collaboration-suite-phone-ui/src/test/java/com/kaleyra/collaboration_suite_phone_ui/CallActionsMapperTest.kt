@@ -22,8 +22,10 @@ class CallActionsMapperTest {
 
     @Test
     fun emptyCallActions_toCallActions_emptyList() = runTest {
-        every { callMock.state } returns MutableStateFlow(mockk())
-        every { callMock.actions } returns MutableStateFlow(emptySet())
+        with(callMock) {
+            every { state } returns MutableStateFlow(mockk())
+            every { actions } returns MutableStateFlow(emptySet())
+        }
         val call = MutableStateFlow(callMock)
         val result = call.toCallActions()
         val actual = result.first()

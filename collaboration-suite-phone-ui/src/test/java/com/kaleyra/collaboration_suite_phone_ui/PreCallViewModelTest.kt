@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -39,60 +40,25 @@ class PreCallViewModelTest {
 
     private val viewMock = mockk<VideoStreamView>()
 
-    private val videoMock = mockk<Input.Video.Camera>(relaxed = true) {
-        every { id } returns "videoId"
-        every { this@mockk.view } returns MutableStateFlow(viewMock)
-        every { enabled } returns MutableStateFlow(true)
-    }
+    private val videoMock = mockk<Input.Video.Camera>(relaxed = true)
 
-    private val myVideoMock = mockk<Input.Video.Camera.Internal>(relaxed = true) {
-        every { id } returns "myVideoId"
-        every { this@mockk.view } returns MutableStateFlow(viewMock)
-        every { enabled } returns MutableStateFlow(true)
-    }
+    private val myVideoMock = mockk<Input.Video.Camera.Internal>(relaxed = true)
 
-    private val streamMock1 = mockk<Stream> {
-        every { id } returns "streamId1"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
+    private val streamMock1 = mockk<Stream>()
 
-    private val streamMock2 = mockk<Stream> {
-        every { id } returns "streamId2"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
+    private val streamMock2 = mockk<Stream>()
 
-    private val streamMock3 = mockk<Stream> {
-        every { id } returns "streamId3"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
+    private val streamMock3 = mockk<Stream>()
 
-    private val myStreamMock = mockk<Stream.Mutable> {
-        every { id } returns "myStreamId"
-        every { this@mockk.video } returns MutableStateFlow(myVideoMock)
-    }
+    private val myStreamMock = mockk<Stream.Mutable>()
 
     private val callParticipantsMock = mockk<CallParticipants>()
 
-    private val participantMeMock = mockk<CallParticipant.Me> {
-        every { userId } returns "userId1"
-        every { streams } returns MutableStateFlow(listOf(myStreamMock))
-        every { displayName } returns MutableStateFlow("myDisplayName")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
+    private val participantMeMock = mockk<CallParticipant.Me>()
 
-    private val participantMock1 = mockk<CallParticipant> {
-        every { userId } returns "userId1"
-        every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
-        every { displayName } returns MutableStateFlow("displayName1")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
+    private val participantMock1 = mockk<CallParticipant>()
 
-    private val participantMock2 = mockk<CallParticipant> {
-        every { userId } returns "userId2"
-        every { streams } returns MutableStateFlow(listOf(streamMock3))
-        every { displayName } returns MutableStateFlow("displayName2")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
+    private val participantMock2 = mockk<CallParticipant>()
 
     private val recordingMock = mockk<Call.Recording>()
 
@@ -100,11 +66,64 @@ class PreCallViewModelTest {
     fun setUp() {
         viewModel = spyk(PreCallViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
-        every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
-        every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
-        every { callParticipantsMock.me } returns participantMeMock
         every { recordingMock.type } returns Call.Recording.Type.OnConnect
-        every { callMock.extras.recording } returns recordingMock
+        with(callMock) {
+            every { participants } returns MutableStateFlow(callParticipantsMock)
+            every { extras.recording } returns recordingMock
+        }
+        with(callParticipantsMock) {
+            every { others } returns listOf(participantMock1, participantMock2)
+            every { me } returns participantMeMock
+        }
+        with(streamMock1) {
+            every { id } returns "streamId1"
+            every { video } returns MutableStateFlow(videoMock)
+        }
+        with(streamMock2) {
+            every { id } returns "streamId2"
+            every { video } returns MutableStateFlow(videoMock)
+        }
+        with(streamMock3) {
+            every { id } returns "streamId3"
+            every { video } returns MutableStateFlow(videoMock)
+        }
+        with(videoMock) {
+            every { id } returns "videoId"
+            every { view } returns MutableStateFlow(viewMock)
+            every { enabled } returns MutableStateFlow(true)
+        }
+        with(myVideoMock) {
+            every { id } returns "myVideoId"
+            every { view } returns MutableStateFlow(viewMock)
+            every { enabled } returns MutableStateFlow(true)
+        }
+        with(myStreamMock) {
+            every { id } returns "myStreamId"
+            every { video } returns MutableStateFlow(myVideoMock)
+        }
+        with(participantMeMock) {
+            every { userId } returns "userId1"
+            every { streams } returns MutableStateFlow(listOf(myStreamMock))
+            every { displayName } returns MutableStateFlow("myDisplayName")
+            every { displayImage } returns MutableStateFlow(uriMock)
+        }
+        with(participantMock1) {
+            every { userId } returns "userId1"
+            every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+            every { displayName } returns MutableStateFlow("displayName1")
+            every { displayImage } returns MutableStateFlow(uriMock)
+        }
+        with(participantMock2) {
+            every { userId } returns "userId2"
+            every { streams } returns MutableStateFlow(listOf(streamMock3))
+            every { displayName } returns MutableStateFlow("displayName2")
+            every { displayImage } returns MutableStateFlow(uriMock)
+        }
+    }
+
+    @After
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test

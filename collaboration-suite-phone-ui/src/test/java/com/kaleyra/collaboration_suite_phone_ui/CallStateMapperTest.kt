@@ -27,13 +27,12 @@ class CallStateMapperTest {
 
     private val participantMeMock = mockk<CallParticipant.Me>()
 
-    private val callParticipantsMock = mockk<CallParticipants> {
-        every { me } returns participantMeMock
-    }
+    private val callParticipantsMock = mockk<CallParticipants>()
 
     @Before
     fun setUp() {
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
+        every { callParticipantsMock.me } returns participantMeMock
     }
 
     @Test

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -22,10 +23,15 @@ class VideoMapperTest {
 
     private val viewMock = mockk<VideoStreamView>()
 
-    private val videoMock = mockk<Input.Video.Camera>(relaxed = true) {
-        every { id } returns "videoId"
-        every { this@mockk.view } returns MutableStateFlow(viewMock)
-        every { enabled } returns MutableStateFlow(true)
+    private val videoMock = mockk<Input.Video.Camera>(relaxed = true)
+
+    @Before
+    fun setUp() {
+        with(videoMock) {
+            every { id } returns "videoId"
+            every { view } returns MutableStateFlow(viewMock)
+            every { enabled } returns MutableStateFlow(true)
+        }
     }
 
     @Test

@@ -43,9 +43,7 @@ class CallActionsViewModelTest {
 
     private val meMock = mockk<CallParticipant.Me>()
 
-    private val otherParticipantMock = mockk<CallParticipant> {
-        every { userId } returns "otherUserId"
-    }
+    private val otherParticipantMock = mockk<CallParticipant>()
 
     private val inputsMock = mockk<Inputs>()
 
@@ -55,31 +53,36 @@ class CallActionsViewModelTest {
 
     private val videoMock = mockk<Input.Video.Camera.Internal>(relaxed = true)
 
-    private val rearLens = mockk<Input.Video.Camera.Internal.Lens> {
-        every { isRear } returns false
-    }
+    private val rearLens = mockk<Input.Video.Camera.Internal.Lens>()
 
-    private val frontLens = mockk<Input.Video.Camera.Internal.Lens> {
-        every { isRear } returns true
-    }
+    private val frontLens = mockk<Input.Video.Camera.Internal.Lens>()
 
     @Before
     fun setUp() {
         viewModel = spyk(CallActionsViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
-        every { callMock.inputs } returns inputsMock
-        every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.HangUp, CallUI.Action.Audio))
-        every { callMock.state } returns MutableStateFlow(mockk())
-        every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
-        every { callParticipantsMock.me } returns meMock
-        every { callParticipantsMock.others } returns listOf(otherParticipantMock)
+        with(callMock) {
+            every { inputs } returns inputsMock
+            every { actions } returns MutableStateFlow(setOf(CallUI.Action.HangUp, CallUI.Action.Audio))
+            every { state } returns MutableStateFlow(mockk())
+            every { participants } returns MutableStateFlow(callParticipantsMock)
+        }
+        with(callParticipantsMock) {
+            every { me } returns meMock
+            every { others } returns listOf(otherParticipantMock)
+        }
+        with(myStreamMock) {
+            every { video } returns MutableStateFlow(videoMock)
+            every { audio } returns MutableStateFlow(audioMock)
+        }
+        every { otherParticipantMock.userId }returns "otherUserId"
         every { inputsMock.availableInputs } returns MutableStateFlow(setOf(audioMock, videoMock))
         every { videoMock.lenses } returns listOf(frontLens, rearLens)
         every { meMock.streams } returns MutableStateFlow(listOf(myStreamMock))
-        every { myStreamMock.video } returns MutableStateFlow(videoMock)
-        every { myStreamMock.audio } returns MutableStateFlow(audioMock)
         every { videoMock.enabled } returns MutableStateFlow(false)
         every { audioMock.enabled } returns MutableStateFlow(false)
+        every { rearLens.isRear } returns false
+        every { frontLens.isRear } returns true
     }
 
     @After

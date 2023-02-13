@@ -29,67 +29,27 @@ class StreamMapperTest {
 
     private val uriMock = mockk<Uri>()
 
-    private val videoMock = mockk<Input.Video.Camera>(relaxed = true) {
-        every { id } returns "videoId"
-        every { this@mockk.view } returns MutableStateFlow(viewMock)
-        every { enabled } returns MutableStateFlow(true)
-    }
+    private val videoMock = mockk<Input.Video.Camera>(relaxed = true)
 
-    private val myVideoMock = mockk<Input.Video.Camera.Internal>(relaxed = true) {
-        every { id } returns "myVideoId"
-        every { this@mockk.view } returns MutableStateFlow(viewMock)
-        every { enabled } returns MutableStateFlow(true)
-    }
+    private val myVideoMock = mockk<Input.Video.Camera.Internal>(relaxed = true)
     
-    private val streamMock1 = mockk<Stream> {
-        every { id } returns "streamId1"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
+    private val streamMock1 = mockk<Stream>()
 
-    private val streamMock2 = mockk<Stream> {
-        every { id } returns "streamId2"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
+    private val streamMock2 = mockk<Stream>()
 
-    private val streamMock3 = mockk<Stream> {
-        every { id } returns "streamId3"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
+    private val streamMock3 = mockk<Stream>()
 
-    private val myStreamMock1 = mockk<Stream.Mutable> {
-        every { id } returns "myStreamId"
-        every { this@mockk.video } returns MutableStateFlow(myVideoMock)
-    }
+    private val myStreamMock1 = mockk<Stream.Mutable>()
 
-    private val myStreamMock2 = mockk<Stream.Mutable> {
-        every { id } returns "myStreamId2"
-        every { this@mockk.video } returns MutableStateFlow(myVideoMock)
-    }
+    private val myStreamMock2 = mockk<Stream.Mutable>()
     
-    private val participantMeMock = mockk<CallParticipant.Me> {
-        every { userId } returns "userId1"
-        every { streams } returns MutableStateFlow(listOf(myStreamMock1))
-        every { displayName } returns MutableStateFlow("myDisplayName")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
+    private val participantMeMock = mockk<CallParticipant.Me>()
 
-    private val participantMock1 = mockk<CallParticipant> {
-        every { userId } returns "userId1"
-        every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
-        every { displayName } returns MutableStateFlow("displayName1")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
+    private val participantMock1 = mockk<CallParticipant>()
 
-    private val participantMock2 = mockk<CallParticipant> {
-        every { userId } returns "userId2"
-        every { streams } returns MutableStateFlow(listOf(streamMock3))
-        every { displayName } returns MutableStateFlow("displayName2")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
+    private val participantMock2 = mockk<CallParticipant>()
 
-    private val callParticipantsMock = mockk<CallParticipants> {
-        every { list } returns listOf(participantMock1, participantMock2)
-    }
+    private val callParticipantsMock = mockk<CallParticipants>()
 
     private val displayNameFlow = MutableStateFlow("displayName")
 
@@ -133,18 +93,60 @@ class StreamMapperTest {
     @Before
     fun setUp() {
         // only needed for toCallStateUi function
-        every { callParticipantsMock.me } returns participantMeMock
-        every { callParticipantsMock.list } returns listOf(participantMock1, participantMock2)
-        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
-        every { participantMock2.streams } returns MutableStateFlow(listOf(streamMock3))
-        every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock1, myStreamMock2))
-        every { participantMock1.displayName } returns MutableStateFlow("displayName1")
-        every { participantMock2.displayName } returns MutableStateFlow("displayName2")
-        every { participantMeMock.displayName } returns MutableStateFlow("displayName3")
-        every { participantMock1.displayImage } returns MutableStateFlow(uriMock)
-        every { participantMock2.displayImage } returns MutableStateFlow(uriMock)
-        every { participantMeMock.displayImage } returns MutableStateFlow(uriMock)
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
+        with(callParticipantsMock) {
+            every { me } returns participantMeMock
+            every { list } returns listOf(participantMock1, participantMock2)
+        }
+        with(participantMock1) {
+            every { userId } returns "userId1"
+            every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+            every { displayName } returns MutableStateFlow("displayName1")
+            every { displayImage } returns MutableStateFlow(uriMock)
+        }
+        with(participantMock2) {
+            every { userId } returns "userId2"
+            every { streams } returns MutableStateFlow(listOf(streamMock3))
+            every { displayName } returns MutableStateFlow("displayName2")
+            every { displayImage } returns MutableStateFlow(uriMock)
+        }
+
+        with(participantMeMock) {
+            every { userId } returns "userId1"
+            every { streams } returns MutableStateFlow(listOf(myStreamMock1, myStreamMock2))
+            every { displayName } returns MutableStateFlow("myDisplayName")
+            every { displayImage } returns MutableStateFlow(uriMock)
+        }
+        with(streamMock1) {
+            every { id } returns "streamId1"
+            every { video } returns MutableStateFlow(videoMock)
+        }
+        with(streamMock2) {
+            every { id } returns "streamId2"
+            every { video } returns MutableStateFlow(videoMock)
+        }
+        with(streamMock3) {
+            every { id } returns "streamId3"
+            every { video } returns MutableStateFlow(videoMock)
+        }
+        with(myStreamMock1) {
+            every { id } returns "myStreamId"
+            every { video } returns MutableStateFlow(myVideoMock)
+        }
+        with(myStreamMock2) {
+            every { id } returns "myStreamId2"
+            every { video } returns MutableStateFlow(myVideoMock)
+        }
+        with(myVideoMock) {
+            every { id } returns "myVideoId"
+            every { view } returns MutableStateFlow(viewMock)
+            every { enabled } returns MutableStateFlow(true)
+        }
+        with(videoMock) {
+            every { id } returns "videoId"
+            every { view } returns MutableStateFlow(viewMock)
+            every { enabled } returns MutableStateFlow(true)
+        }
     }
 
     @After
@@ -315,8 +317,8 @@ class StreamMapperTest {
         val result = call.toMyStreamsUi()
         val actual = result.first()
         val expected = listOf(
-            myStreamUi1.copy(username = "displayName3"),
-            myStreamUi2.copy(username = "displayName3")
+            myStreamUi1.copy(username = "myDisplayName"),
+            myStreamUi2.copy(username = "myDisplayName")
         )
         Assert.assertEquals(expected, actual)
     }
@@ -354,8 +356,8 @@ class StreamMapperTest {
         val result = call.toMyStreamsUi()
         val actual = result.first()
         val expected = listOf(
-            myStreamUi1.copy(username = "displayName3"),
-            myStreamUi2.copy(username = "displayName3")
+            myStreamUi1.copy(username = "myDisplayName"),
+            myStreamUi2.copy(username = "myDisplayName")
         )
         Assert.assertEquals(expected, actual)
 
@@ -364,8 +366,8 @@ class StreamMapperTest {
         myDisplayImage.value = newUriMock
         val newActual = result.first()
         val newExpected = listOf(
-            myStreamUi1.copy(username = "displayName3", avatar = ImmutableUri(newUriMock)),
-            myStreamUi2.copy(username = "displayName3", avatar = ImmutableUri(newUriMock))
+            myStreamUi1.copy(username = "myDisplayName", avatar = ImmutableUri(newUriMock)),
+            myStreamUi2.copy(username = "myDisplayName", avatar = ImmutableUri(newUriMock))
         )
         Assert.assertEquals(newExpected, newActual)
     }

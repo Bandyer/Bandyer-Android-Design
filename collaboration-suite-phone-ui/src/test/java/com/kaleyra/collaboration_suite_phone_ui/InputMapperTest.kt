@@ -29,10 +29,7 @@ class InputMapperTest {
 
     private val audioMock = mockk<Input.Audio>()
 
-    private val streamMock = mockk<Stream.Mutable> {
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-        every { this@mockk.audio } returns MutableStateFlow(audioMock)
-    }
+    private val streamMock = mockk<Stream.Mutable>()
 
     private val participantMeMock = mockk<CallParticipant.Me>()
 
@@ -42,6 +39,10 @@ class InputMapperTest {
             every { me } returns participantMeMock
         })
         every { participantMeMock.streams } returns MutableStateFlow(listOf(streamMock))
+        with(streamMock) {
+            every { video } returns MutableStateFlow(videoMock)
+            every { audio } returns MutableStateFlow(audioMock)
+        }
     }
 
     @Test

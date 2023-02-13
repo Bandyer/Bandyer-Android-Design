@@ -23,19 +23,21 @@ class ParticipantMapperTest {
 
     private val callParticipantsMock = mockk<CallParticipants>()
 
-    private val participantMock1 = mockk<CallParticipant> {
-        every { userId } returns "userId1"
-        every { displayName } returns MutableStateFlow("displayName1")
-    }
+    private val participantMock1 = mockk<CallParticipant>()
 
-    private val participantMock2 = mockk<CallParticipant> {
-        every { userId } returns "userId2"
-        every { displayName } returns MutableStateFlow("displayName2")
-    }
+    private val participantMock2 = mockk<CallParticipant>()
 
     @Before
     fun setUp() {
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
+        with(participantMock1) {
+            every { userId } returns "userId1"
+            every { displayName } returns MutableStateFlow("displayName1")
+        }
+        with(participantMock2) {
+            every { userId } returns "userId2"
+            every { displayName } returns MutableStateFlow("displayName2")
+        }
     }
     
     @Test
