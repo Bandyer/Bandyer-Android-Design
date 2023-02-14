@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
-object WhiteboardMapper {
+internal object WhiteboardMapper {
 
     fun Flow<CallUI>.isWhiteboardLoading(): Flow<Boolean> {
         return this.map { it.whiteboard }

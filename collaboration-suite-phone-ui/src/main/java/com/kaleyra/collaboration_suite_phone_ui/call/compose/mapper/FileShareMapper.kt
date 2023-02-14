@@ -8,7 +8,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
 import kotlinx.coroutines.flow.*
 
-object FileShareMapper {
+internal object FileShareMapper {
 
     fun Flow<CallUI>.toSharedFilesUi(): Flow<Set<SharedFileUi>> {
         val sharedFiles = hashMapOf<String, SharedFileUi>()
