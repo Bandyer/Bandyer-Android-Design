@@ -22,6 +22,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.Sha
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItem
+import io.mockk.mockk
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -140,6 +141,15 @@ class FileShareItemTest {
             .onNodeWithTag(ProgressIndicatorTag)
             .assertIsDisplayed()
             .assertRangeInfoEquals(ProgressBarRangeInfo(current =.74f, range = 0f..1f))
+    }
+
+    @Test
+    fun successState_progressBarIsFull() {
+        sharedFile = mockDownloadSharedFile.copy(state = SharedFileUi.State.Success(mockk()))
+        composeTestRule
+            .onNodeWithTag(ProgressIndicatorTag)
+            .assertIsDisplayed()
+            .assertRangeInfoEquals(ProgressBarRangeInfo(current = 1f, range = 0f..1f))
     }
 
     @Test

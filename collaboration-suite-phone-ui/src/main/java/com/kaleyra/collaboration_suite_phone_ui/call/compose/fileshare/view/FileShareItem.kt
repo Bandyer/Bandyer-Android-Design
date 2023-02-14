@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.net.Uri
 import android.text.format.Formatter
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -131,6 +133,11 @@ private fun SharedFileInfoAndProgress(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
+        val progress by animateFloatAsState(targetValue = when (sharedFile.state) {
+            is SharedFileUi.State.InProgress -> sharedFile.state.progress
+            is SharedFileUi.State.Success -> 1f
+            else -> 0f
+        })
 
         EllipsizeText(
             text = sharedFile.name,
@@ -141,7 +148,7 @@ private fun SharedFileInfoAndProgress(
         )
 
         LinearProgressIndicator(
-            progress = if (sharedFile.state is SharedFileUi.State.InProgress) sharedFile.state.progress else 0f,
+            progress = progress,
             modifier = Modifier
                 .padding(vertical = 2.dp)
                 .size(LinearProgressIndicatorWidth, ProgressIndicatorDefaults.StrokeWidth)
