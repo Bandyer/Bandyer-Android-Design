@@ -1,17 +1,19 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
-import android.webkit.WebView
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.Whiteboard
+import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
+import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel.WhiteboardViewModel
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -20,7 +22,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-// TODO check if how I can test this
 @OptIn(ExperimentalCoroutinesApi::class)
 class WhiteboardViewModelTest {
 
@@ -33,24 +34,31 @@ class WhiteboardViewModelTest {
 
     private val callMock = mockk<CallUI>(relaxed = true)
 
+    private val uriMock = mockk<Uri>()
+
+    private val sharedFileMock = mockk<SharedFile>()
+
     private val whiteboardMock = mockk<Whiteboard>(relaxed = true)
 
     @Before
     fun setUp() {
-        viewModel = spyk(WhiteboardViewModel(configure = { Configuration.Success(phoneBoxMock, mockk(), mockk()) }, context = mockk(relaxed = true)))
+        viewModel = spyk(WhiteboardViewModel(configure = { Configuration.Success(phoneBoxMock, mockk(), mockk()) }, whiteboardView = mockk(relaxed = true)))
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.whiteboard } returns whiteboardMock
-//        mockkConstructor(WebView::class)
-//        every { anyConstructed<WebView>().settings } returns mockk(relaxed = true)
+        with(sharedFileMock) {
+            every { size } returns 1000L
+            every { state } returns MutableStateFlow(SharedFile.State.Available)
+        }
     }
 
     @Test
     fun testWhiteboardViewSetUp() = runTest {
+        every { whiteboardMock.view } returns MutableStateFlow(null)
         advanceUntilIdle()
-        val whiteboardView = viewModel.uiState.first()
+        val result = viewModel.uiState.first().whiteboardView
         verify { whiteboardMock.load() }
-        assertNotEquals(null, whiteboardView)
-        assertEquals(whiteboardView, whiteboardMock.view.value)
+        assertNotEquals(null, result)
+        assertEquals(result, whiteboardMock.view.value)
     }
 
     @Test
@@ -111,10 +119,69 @@ class WhiteboardViewModelTest {
     }
 
     @Test
-    fun textUploadMediaFile() = runTest {
-        val uriMock = mockk<Uri>()
+    fun testUploadMediaFile_addMediaFileInvoked() = runTest {
+        every { whiteboardMock.addMediaFile(uriMock) } returns Result.success(sharedFileMock)
         advanceUntilIdle()
         viewModel.uploadMediaFile(uriMock)
         verify { whiteboardMock.addMediaFile(uriMock) }
+    }
+
+    @Test
+    fun testUploadMediaFile_whiteboardUploadStateUpdated() = runTest {
+        with(sharedFileMock) {
+            every { size } returns 1000L
+            every { state } returns MutableStateFlow(SharedFile.State.InProgress(500L))
+        }
+        every { whiteboardMock.addMediaFile(uriMock) } returns Result.success(sharedFileMock)
+
+        advanceUntilIdle()
+        viewModel.uploadMediaFile(uriMock)
+
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().upload
+        val expected = WhiteboardUploadUi.Uploading(.5f)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun testUploadMediaFileError_whiteboardUploadStateResetAfter3000Ms() = runTest {
+        with(sharedFileMock) {
+            every { size } returns 1000L
+            every { state } returns MutableStateFlow(SharedFile.State.Error(Throwable()))
+        }
+        every { whiteboardMock.addMediaFile(uriMock) } returns Result.success(sharedFileMock)
+
+        advanceUntilIdle()
+        viewModel.uploadMediaFile(uriMock)
+
+        advanceTimeBy(1000L)
+        val actual = viewModel.uiState.first().upload
+        val expected = WhiteboardUploadUi.Error
+        assertEquals(expected, actual)
+
+        advanceTimeBy(3000L)
+        val newActual = viewModel.uiState.first().upload
+        assertEquals(null, newActual)
+    }
+
+    @Test
+    fun testUploadMediaFileSuccess_whiteboardUploadStateResetAfter300Ms() = runTest {
+        with(sharedFileMock) {
+            every { size } returns 1000L
+            every { state } returns MutableStateFlow(SharedFile.State.Success(id = "", uri = mockk()))
+        }
+        every { whiteboardMock.addMediaFile(uriMock) } returns Result.success(sharedFileMock)
+
+        advanceUntilIdle()
+        viewModel.uploadMediaFile(uriMock)
+
+        advanceTimeBy(100L)
+        val actual = viewModel.uiState.first().upload
+        val expected = WhiteboardUploadUi.Uploading(1f)
+        assertEquals(expected, actual)
+
+        advanceTimeBy(300L)
+        val newActual = viewModel.uiState.first().upload
+        assertEquals(null, newActual)
     }
 }

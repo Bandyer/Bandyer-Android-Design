@@ -1,7 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
-import com.kaleyra.collaboration_suite.phonebox.Whiteboard
+import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
+import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
@@ -19,5 +21,21 @@ internal object WhiteboardMapper {
         return this.map { it.whiteboard }
             .flatMapLatest { it.events }
             .filterIsInstance()
+    }
+
+    fun SharedFile.toWhiteboardUploadUi(): Flow<WhiteboardUploadUi?> {
+        return state.map { state ->
+            val progress = when (state) {
+                is SharedFile.State.InProgress -> (state.progress / this.size.toFloat()).coerceIn(0f, 1f)
+                is SharedFile.State.Success -> 1f
+                else -> 0f
+            }
+            val upload = when (state) {
+                is SharedFile.State.Cancelled -> null
+                is SharedFile.State.Error -> WhiteboardUploadUi.Error
+                else -> WhiteboardUploadUi.Uploading(progress)
+            }
+            upload
+        }
     }
 }

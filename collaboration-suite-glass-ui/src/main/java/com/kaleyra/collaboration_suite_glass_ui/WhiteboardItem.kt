@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_glass_ui
 
 import android.annotation.SuppressLint
 import android.view.View
-import com.kaleyra.collaboration_suite.phonebox.Whiteboard
+import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassWhiteboardItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem

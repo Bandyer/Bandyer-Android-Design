@@ -1,39 +1,51 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel
 
-import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.Whiteboard
-import com.kaleyra.collaboration_suite.phonebox.WhiteboardView
+import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
+import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
+import com.kaleyra.collaboration_suite.whiteboard.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMapper.getWhiteboardTextEvents
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMapper.isWhiteboardLoading
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMapper.toWhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import java.util.concurrent.atomic.AtomicBoolean
 
-internal class WhiteboardViewModel(configure: suspend () -> Configuration, context: Context) :
-    BaseViewModel<WhiteboardUiState>(configure) {
+internal class WhiteboardViewModel(configure: suspend () -> Configuration, whiteboardView: WhiteboardView) : BaseViewModel<WhiteboardUiState>(configure) {
+
     override fun initialState() = WhiteboardUiState()
 
     private val call = phoneBox
         .flatMapLatest { it.call }
         .shareInEagerly(viewModelScope)
 
-    private val whiteboard: Whiteboard?
-        get() = call.getValue()?.whiteboard
+    private val whiteboard = call
+        .map { it.whiteboard }
+        .shareInEagerly(viewModelScope)
 
     private val onTextConfirmed = MutableStateFlow<((String) -> Unit)?>(null)
 
+    private var resetWhiteboardUploadState = AtomicBoolean(false)
+
     init {
+        whiteboard
+            .take(1)
+            .onEach { setUpWhiteboard(it, whiteboardView) }
+            .launchIn(viewModelScope)
+
         call
             .flatMapLatest { it.state }
             .onEach {
                 if (it !is Call.State.Disconnected.Ended) return@onEach
-                whiteboard?.unload()
+                whiteboard.getValue()?.unload()
             }.launchIn(viewModelScope)
 
         call
@@ -51,16 +63,16 @@ internal class WhiteboardViewModel(configure: suspend () -> Configuration, conte
                 onTextConfirmed.value = onCompletion
                 _uiState.update { it.copy(text = text) }
             }.launchIn(viewModelScope)
-
-        setUpWhiteboardView(context)
     }
 
     override fun onCleared() {
         super.onCleared()
+        val whiteboard = whiteboard.getValue()
         whiteboard?.view?.value = null
     }
 
     fun onReloadClick() {
+        val whiteboard = whiteboard.getValue()
         whiteboard?.load()
     }
 
@@ -72,13 +84,14 @@ internal class WhiteboardViewModel(configure: suspend () -> Configuration, conte
     }
 
     fun uploadMediaFile(uri: Uri) {
-        whiteboard?.addMediaFile(uri)
+        val whiteboard = whiteboard.getValue()
+        val sharedFile = whiteboard?.addMediaFile(uri)?.getOrNull() ?: return
+        observeAndUpdateUploadState(sharedFile)
     }
 
-    private fun setUpWhiteboardView(context: Context) {
-        val whiteboardView = WhiteboardView(context)
-        whiteboard?.view?.value = whiteboardView
-        whiteboard?.load()
+    private fun setUpWhiteboard(whiteboard: Whiteboard, whiteboardView: WhiteboardView) {
+        whiteboard.view.value = whiteboardView
+        whiteboard.load()
         _uiState.update { it.copy(whiteboardView = whiteboardView) }
     }
 
@@ -87,12 +100,32 @@ internal class WhiteboardViewModel(configure: suspend () -> Configuration, conte
         _uiState.update { it.copy(text = null) }
     }
 
+    private fun observeAndUpdateUploadState(sharedFile: SharedFile) {
+        resetWhiteboardUploadState.set(false)
+        sharedFile
+            .toWhiteboardUploadUi()
+            .onEach { upload -> _uiState.update { it.copy(upload = upload) } }
+            .takeWhile { it is WhiteboardUploadUi.Uploading && it.progress != 1f }
+            .onCompletion {
+                resetWhiteboardUploadState.set(true)
+                val delayMs = if (sharedFile.state.value is SharedFile.State.Error) ErrorResetUploadDelay else DefaultResetUploadDelay
+                delay(delayMs)
+                if (resetWhiteboardUploadState.compareAndSet(true, false)) {
+                    _uiState.update { it.copy(upload = null) }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
     companion object {
-        fun provideFactory(configure: suspend () -> Configuration, context: Context) =
+        private const val ErrorResetUploadDelay = 3000L
+        private const val DefaultResetUploadDelay = 300L
+
+        fun provideFactory(configure: suspend () -> Configuration, whiteboardView: WhiteboardView) =
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return WhiteboardViewModel(configure, context) as T
+                    return WhiteboardViewModel(configure, whiteboardView) as T
                 }
             }
     }

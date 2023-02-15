@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.kaleyra.collaboration_suite.whiteboard.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
@@ -29,7 +30,7 @@ import kotlinx.coroutines.flow.*
 @Composable
 internal fun WhiteboardComponent(
     viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-        factory = WhiteboardViewModel.provideFactory(::requestConfiguration, LocalContext.current)
+        factory = WhiteboardViewModel.provideFactory(::requestConfiguration, WhiteboardView(LocalContext.current))
     ),
     modifier: Modifier = Modifier
 ) {

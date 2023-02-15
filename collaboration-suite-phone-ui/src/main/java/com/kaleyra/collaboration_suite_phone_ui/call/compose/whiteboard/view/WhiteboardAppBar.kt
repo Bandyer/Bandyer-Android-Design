@@ -10,6 +10,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite.whiteboard.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
@@ -20,7 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 @Composable
 internal fun WhiteboardAppBar(
     viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-        factory = WhiteboardViewModel.provideFactory(::requestConfiguration, LocalContext.current)
+        factory = WhiteboardViewModel.provideFactory(::requestConfiguration, WhiteboardView(LocalContext.current))
     ),
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
