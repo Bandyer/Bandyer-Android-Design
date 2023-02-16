@@ -18,6 +18,7 @@ internal fun CallScreenContent(
     callState: CallStateUi,
     maxWidth: Dp,
     onBackPressed: () -> Unit,
+    onFullscreen: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(

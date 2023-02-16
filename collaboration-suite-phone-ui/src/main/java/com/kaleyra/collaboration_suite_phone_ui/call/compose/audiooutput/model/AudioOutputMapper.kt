@@ -40,8 +40,8 @@ internal object AudioOutputMapper {
             AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.CONNECTING -> BluetoothDeviceState.Connecting
             AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.CONNECTED -> BluetoothDeviceState.Connected
             AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.ACTIVATING -> BluetoothDeviceState.Activating
-            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.ACTIVE -> BluetoothDeviceState.Active
-            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.CONNECTING_AUDIO -> BluetoothDeviceState.ConnectingAudio
-            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.PLAYING_AUDIO -> BluetoothDeviceState.PlayingAudio
+            else -> BluetoothDeviceState.Active
+//            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.CONNECTING_AUDIO -> BluetoothDeviceState.ConnectingAudio
+//            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.PLAYING_AUDIO -> BluetoothDeviceState.PlayingAudio
         }
 }

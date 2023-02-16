@@ -97,6 +97,7 @@ internal fun CallComponent(
     ),
     maxWidth: Dp,
     onBackPressed: () -> Unit,
+    onFullscreen: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -105,6 +106,14 @@ internal fun CallComponent(
         configuration = LocalConfiguration.current,
         maxWidth = maxWidth
     )
+
+    // TODO add test for this
+    LaunchedEffect(callComponentState) {
+        snapshotFlow { callComponentState.fullscreenStream }
+            .onEach { stream -> onFullscreen(stream != null) }
+            .launchIn(this)
+    }
+
     CallComponent(
         state = callComponentState,
         onBackPressed = onBackPressed,
@@ -141,7 +150,7 @@ internal fun CallComponent(
     AnimatedContent(
         targetState = state.fullscreenStream,
         transitionSpec = {
-            fadeIn(animationSpec = tween(220, delayMillis = 90)) with fadeOut(animationSpec = tween(90))
+            fadeIn(animationSpec = tween(1000, delayMillis = 90)) with fadeOut(animationSpec = tween(90))
         },
         modifier = modifier.testTag(CallContentTag)
     ) { target ->
