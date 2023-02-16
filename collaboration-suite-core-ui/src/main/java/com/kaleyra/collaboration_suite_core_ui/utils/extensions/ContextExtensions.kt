@@ -23,6 +23,7 @@ import android.content.Intent
 import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.media.AudioManager
+import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
@@ -193,5 +194,12 @@ object ContextExtensions {
         val mainIntent = Intent.makeRestartActivityTask(componentName)
         startActivity(mainIntent)
     }
+
+    fun Context.doesFileExists(uri: Uri): Boolean =
+        kotlin.runCatching {
+            this.contentResolver.query(uri, null, null, null, null)?.use {
+                it.moveToFirst()
+            }
+        }.getOrNull() ?: false
 }
 
