@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.fileshare
 
 import android.net.Uri
 import androidx.activity.ComponentActivity
+import androidx.compose.material.Divider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,6 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareContent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItemDividerTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItemTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
@@ -46,6 +48,12 @@ class FileShareContentTest {
     fun tearDown() {
         items = ImmutableList(emptyList())
         actualSharedFile = null
+    }
+
+    @Test
+    fun itemDividerCountIsNumberOfItemsMinusOne() {
+        items = ImmutableList(listOf(mockDownloadSharedFile.copy(id = "1"), mockDownloadSharedFile.copy(id = "2"), mockDownloadSharedFile.copy(id = "3")))
+        composeTestRule.onAllNodesWithTag(FileShareItemDividerTag).assertCountEquals(2)
     }
 
     @Test

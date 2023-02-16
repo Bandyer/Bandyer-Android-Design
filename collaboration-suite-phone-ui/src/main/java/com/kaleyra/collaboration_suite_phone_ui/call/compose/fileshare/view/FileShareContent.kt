@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.material.Divider
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,6 +25,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 const val FileShareItemTag = "FileShareItemTag"
+const val FileShareItemDividerTag = "FileShareItemDividerTag"
 private val ContentBottomPadding = 72.dp
 
 @Composable
@@ -36,19 +40,25 @@ internal fun FileShareContent(
         contentPadding = PaddingValues(bottom = ContentBottomPadding),
         modifier = modifier
     ) {
-        items(items = items.value, key = { it.id }) {
+        itemsIndexed(items = items.value, key = { _, item -> item.id }) { index, item ->
             FileShareItem(
-                sharedFile = it,
+                sharedFile = item,
                 modifier = Modifier
                     .clickable(
-                        enabled = it.state is SharedFileUi.State.Success,
+                        enabled = item.state is SharedFileUi.State.Success,
                         onClickLabel = stringResource(R.string.kaleyra_fileshare_open_file),
                         role = Role.Button,
-                        onClick = { onItemClick(it) }
+                        onClick = { onItemClick(item) }
                     )
                     .testTag(FileShareItemTag),
-                onActionClick = { onItemActionClick(it) }
+                onActionClick = { onItemActionClick(item) }
             )
+            if (index != 0) {
+                Divider(
+                    color = LocalContentColor.current.copy(.2f),
+                    modifier = Modifier.testTag(FileShareItemDividerTag)
+                )
+            }
         }
     }
 }
