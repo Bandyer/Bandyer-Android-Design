@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.fileshare
 
 import android.net.Uri
 import androidx.activity.ComponentActivity
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -43,7 +44,9 @@ class FileShareComponentTest {
                 uiState = FileShareUiState(sharedFiles = items),
                 onFabClick = { isFabClicked = true },
                 onItemClick = { actualSharedFile = it },
-                onItemActionClick = { actualSharedFile = it })
+                onItemActionClick = { actualSharedFile = it },
+                snackBarHostState = SnackbarHostState()
+            )
         }
     }
 
