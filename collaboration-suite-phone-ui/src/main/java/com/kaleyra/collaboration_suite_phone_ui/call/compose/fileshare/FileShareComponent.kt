@@ -1,8 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare
 
-import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.layout.*
@@ -17,8 +18,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.doesFileExists
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.tryToOpenFile
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.FilePickActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
@@ -28,9 +30,35 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.File
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.viewmodel.FileShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
-import com.kaleyra.collaboration_suite_phone_ui.extensions.getMimeType
 
 const val ProgressIndicatorTag = "ProgressIndicatorTag"
+
+@Composable
+fun FilePickBroadcastReceiver(
+    filePickerAction: String,
+    onFilePickEvent: (uri: Uri) -> Unit
+) {
+    val context = LocalContext.current
+    val currentOnFilePickEvent by rememberUpdatedState(onFilePickEvent)
+
+    DisposableEffect(context, filePickerAction) {
+        val intentFilter = IntentFilter(filePickerAction)
+        val broadcast = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                if (intent.action != FilePickActivity.ACTION_FILE_PICK_EVENT) return
+
+                val uri = intent.getParcelableExtra<Uri>("uri") ?: return
+                currentOnFilePickEvent(uri)
+            }
+        }
+
+        context.registerReceiver(broadcast, intentFilter)
+
+        onDispose {
+            context.unregisterReceiver(broadcast)
+        }
+    }
+}
 
 @Composable
 internal fun FileShareComponent(
@@ -43,6 +71,7 @@ internal fun FileShareComponent(
 
     val (showUnableToOpenFileSnackBar, setShowUnableToOpenSnackBar) = remember { mutableStateOf(false) }
     val (showCancelledFileSnackBar, setShowCancelledFileSnackBar) = remember { mutableStateOf(false) }
+    val (showFileSizeLimitAlertDialog, setShowFileSizeLimitAlertDialog) = remember { mutableStateOf(false) }
     val snackBarHostState = remember { SnackbarHostState() }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -64,6 +93,10 @@ internal fun FileShareComponent(
         }
     }
 
+    if (showFileSizeLimitAlertDialog) {
+
+    }
+
     val onItemClick = remember {
         { sharedFile: SharedFileUi ->
             onItemClick(
@@ -75,9 +108,22 @@ internal fun FileShareComponent(
         }
     }
 
+    val showFilePicker = remember { { FilePickActivity.show(context) } }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            FilePickActivity.close()
+        }
+    }
+
+    FilePickBroadcastReceiver(FilePickActivity.ACTION_FILE_PICK_EVENT) { uri ->
+        // todo show dialog if file is too big
+        viewModel.upload(uri)
+    }
+
     FileShareComponent(
         uiState = uiState,
-        onFabClick = {  },
+        onFabClick = showFilePicker,
         onItemClick = onItemClick,
         onItemActionClick = {
             if (it.state is SharedFileUi.State.Success) onItemClick(it)
@@ -96,24 +142,8 @@ private fun onItemClick(
 ) {
     if (sharedFile.state !is SharedFileUi.State.Success) return
     val uri = if (sharedFile.isMine) sharedFile.uri.value else sharedFile.state.uri.value
-    if (context.doesFileExists(uri)) {
-        tryToOpenFile(context = context, uri = uri, onFailure = onUnableToOpenFile)
-    } else {
-        onFileDoesNotExist.invoke()
-    }
-}
-
-private fun tryToOpenFile(context: Context, uri: Uri, onFailure: () -> Unit) {
-    runCatching {
-        val mimeType = uri.getMimeType(context)
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(uri, mimeType)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        }
-        context.startActivity(intent)
-    }.onFailure {
-        onFailure.invoke()
+    context.tryToOpenFile(uri) { doesFileExists ->
+        if (doesFileExists) onUnableToOpenFile() else onFileDoesNotExist()
     }
 }
 

@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.getMimeType
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Ellipsize
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.EllipsizeText
@@ -36,7 +37,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.Sha
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.extensions.getMimeType
 import com.kaleyra.collaboration_suite_phone_ui.extensions.isArchiveMimeType
 import com.kaleyra.collaboration_suite_phone_ui.extensions.isImageMimeType
 import kotlin.math.roundToInt

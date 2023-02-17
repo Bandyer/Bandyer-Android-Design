@@ -45,6 +45,7 @@ import com.kaleyra.collaboration_suite_phone_ui.utils.LastDividerItemDecoration
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.getMimeType
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
