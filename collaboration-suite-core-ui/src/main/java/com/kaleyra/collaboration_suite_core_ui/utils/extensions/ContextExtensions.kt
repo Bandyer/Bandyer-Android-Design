@@ -34,6 +34,7 @@ import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
 import androidx.fragment.app.FragmentActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getMimeType
 
 
 /**
@@ -195,11 +196,33 @@ object ContextExtensions {
         startActivity(mainIntent)
     }
 
-    fun Context.doesFileExists(uri: Uri): Boolean =
+    fun Context.doesFileExists(uri:   Uri): Boolean =
         kotlin.runCatching {
             this.contentResolver.query(uri, null, null, null, null)?.use {
                 it.moveToFirst()
             }
         }.getOrNull() ?: false
+
+    fun Context.tryToOpenFile(
+        uri: Uri,
+        onFailure: (doesFileExists: Boolean) -> Unit
+    ) {
+        if (doesFileExists(uri)) tryToOpenFile(context = this, uri = uri, onFailure = { onFailure(true) })
+        else onFailure(false)
+    }
+
+    private fun tryToOpenFile(context: Context, uri: Uri, onFailure: () -> Unit) {
+        runCatching {
+            val mimeType = uri.getMimeType(context)
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, mimeType)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            }
+            context.startActivity(intent)
+        }.onFailure {
+            onFailure.invoke()
+        }
+    }
 }
 

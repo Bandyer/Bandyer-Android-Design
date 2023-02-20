@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.getMimeType
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getMimeType
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Ellipsize
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.EllipsizeText

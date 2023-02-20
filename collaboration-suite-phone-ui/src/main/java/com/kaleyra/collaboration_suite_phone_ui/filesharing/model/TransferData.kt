@@ -18,8 +18,8 @@ package com.kaleyra.collaboration_suite_phone_ui.filesharing.model
 
 import android.content.Context
 import android.net.Uri
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.getFileName
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.getMimeType
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getFileName
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getMimeType
 import java.util.*
 
 /**

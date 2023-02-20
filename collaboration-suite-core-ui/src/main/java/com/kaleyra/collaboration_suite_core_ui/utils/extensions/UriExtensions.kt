@@ -25,49 +25,52 @@ import androidx.core.net.toFile
 import java.io.File
 import java.util.*
 
-/**
- * Get mime type
- *
- * @param context Context
- * @return mime type
- */
-fun Uri.getMimeType(context: Context): String? = runCatching {
-    when (scheme) {
-        ContentResolver.SCHEME_CONTENT -> context.applicationContext.contentResolver.getType(this)
-        else -> {
-            val fileExtension = MimeTypeMap.getFileExtensionFromUrl(this.toString())
-            MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.lowercase(Locale.ROOT))
+object UriExtensions {
+    /**
+     * Get mime type
+     *
+     * @param context Context
+     * @return mime type
+     */
+    fun Uri.getMimeType(context: Context): String? = runCatching {
+        when (scheme) {
+            ContentResolver.SCHEME_CONTENT -> context.applicationContext.contentResolver.getType(this)
+            else -> {
+                val fileExtension = MimeTypeMap.getFileExtensionFromUrl(this.toString())
+                MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.lowercase(Locale.ROOT))
+            }
         }
-    }
-}.getOrNull()
+    }.getOrNull()
 
-/**
- * Get file name
- *
- * @param context Context
- * @return name
- */
-fun Uri.getFileName(context: Context): String? = when (scheme) {
-    ContentResolver.SCHEME_CONTENT -> getContentFileName(context)
-    else -> path?.let { File(it) }?.name
+    /**
+     * Get file name
+     *
+     * @param context Context
+     * @return name
+     */
+    fun Uri.getFileName(context: Context): String? = when (scheme) {
+        ContentResolver.SCHEME_CONTENT -> getContentFileName(context)
+        else -> path?.let { File(it) }?.name
+    }
+
+    private fun Uri.getContentFileName(context: Context): String? = runCatching {
+        context.contentResolver.query(this, null, null, null, null)?.use { cursor ->
+            cursor.moveToFirst()
+            return@use cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME).let(cursor::getString)
+        }
+    }.getOrNull()
+
+    /**
+     * Get file size
+     *
+     * @param context Context
+     * @return size
+     */
+    fun Uri.getFileSize(context: Context): Long = kotlin.runCatching {
+        if (ContentResolver.SCHEME_CONTENT == this.scheme)
+            context.contentResolver.query(this, null, null, null, null)
+                .use { if (it?.moveToFirst() == true) it.getLong(it.getColumnIndexOrThrow(OpenableColumns.SIZE)) else -1L }
+        else this.toFile().run { if (exists()) length() else -1L }
+    }.getOrNull() ?: -1L
 }
 
-private fun Uri.getContentFileName(context: Context): String? = runCatching {
-    context.contentResolver.query(this, null, null, null, null)?.use { cursor ->
-        cursor.moveToFirst()
-        return@use cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME).let(cursor::getString)
-    }
-}.getOrNull()
-
-/**
- * Get file size
- *
- * @param context Context
- * @return size
- */
-fun Uri.getFileSize(context: Context): Long = kotlin.runCatching {
-    if (ContentResolver.SCHEME_CONTENT == this.scheme)
-        context.contentResolver.query(this, null, null, null, null)
-            .use { if (it?.moveToFirst() == true) it.getLong(it.getColumnIndexOrThrow(OpenableColumns.SIZE)) else -1L }
-    else this.toFile().run { if (exists()) length() else -1L }
-}.getOrNull() ?: -1L

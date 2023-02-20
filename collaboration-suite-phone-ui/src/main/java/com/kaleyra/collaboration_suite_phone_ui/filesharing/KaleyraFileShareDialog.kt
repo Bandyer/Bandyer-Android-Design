@@ -34,6 +34,10 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textview.MaterialTextView
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getMimeType
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.KaleyraBottomSheetDialog
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraFileShareDialogLayoutBinding
@@ -42,10 +46,6 @@ import com.kaleyra.collaboration_suite_phone_ui.extensions.*
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.adapter_items.KaleyraFileTransferItem
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.model.TransferData
 import com.kaleyra.collaboration_suite_phone_ui.utils.LastDividerItemDecoration
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textview.MaterialTextView
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.getMimeType
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
