@@ -20,7 +20,7 @@
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat" />
         <activity
-            android:name=".call.compose.FilePickActivity"
+            android:name=".call.compose.fileshare.filepick.FilePickActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
             android:launchMode="singleInstance"
             android:resizeableActivity="false"
