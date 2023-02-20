@@ -1,9 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.layout.*
@@ -19,46 +15,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.tryToOpenFile
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.getFileSize
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.FilePickActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.broadcastreceiver.FilePickBroadcastReceiver
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareContent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareEmptyContent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareFab
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.viewmodel.FileShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
+private const val MaxFileUploadBytes = 150 * 1000 * 1000
 const val ProgressIndicatorTag = "ProgressIndicatorTag"
-
-@Composable
-fun FilePickBroadcastReceiver(
-    filePickerAction: String,
-    onFilePickEvent: (uri: Uri) -> Unit
-) {
-    val context = LocalContext.current
-    val currentOnFilePickEvent by rememberUpdatedState(onFilePickEvent)
-
-    DisposableEffect(context, filePickerAction) {
-        val intentFilter = IntentFilter(filePickerAction)
-        val broadcast = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                if (intent.action != FilePickActivity.ACTION_FILE_PICK_EVENT) return
-
-                val uri = intent.getParcelableExtra<Uri>("uri") ?: return
-                currentOnFilePickEvent(uri)
-            }
-        }
-
-        context.registerReceiver(broadcast, intentFilter)
-
-        onDispose {
-            context.unregisterReceiver(broadcast)
-        }
-    }
-}
 
 @Composable
 internal fun FileShareComponent(
@@ -67,48 +37,78 @@ internal fun FileShareComponent(
     ),
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
     val (showUnableToOpenFileSnackBar, setShowUnableToOpenSnackBar) = remember { mutableStateOf(false) }
     val (showCancelledFileSnackBar, setShowCancelledFileSnackBar) = remember { mutableStateOf(false) }
     val (showFileSizeLimitAlertDialog, setShowFileSizeLimitAlertDialog) = remember { mutableStateOf(false) }
-    val snackBarHostState = remember { SnackbarHostState() }
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    FileShareComponent(
+        uiState = uiState,
+        showUnableToOpenFileSnackBar = showUnableToOpenFileSnackBar,
+        showCancelledFileSnackBar = showCancelledFileSnackBar,
+        showFileSizeLimitAlertDialog = showFileSizeLimitAlertDialog,
+        onFileOpenFailure = { doesFileExists ->
+            if (doesFileExists) setShowUnableToOpenSnackBar(true)
+            else setShowCancelledFileSnackBar(true)
+        },
+        onFileSizeLimitExceed = { setShowFileSizeLimitAlertDialog(true) },
+        onSnackBarShowed = {
+            setShowUnableToOpenSnackBar(false)
+            setShowCancelledFileSnackBar(false)
+        },
+        onAlertDialogDismiss = { setShowFileSizeLimitAlertDialog(false) },
+        onUpload = viewModel::upload,
+        onDownload = viewModel::download,
+        onShareCancel = viewModel::cancel,
+        modifier = modifier
+    )
+}
+
+@Composable
+internal fun FileShareComponent(
+    uiState: FileShareUiState,
+    showUnableToOpenFileSnackBar: Boolean = false,
+    showCancelledFileSnackBar: Boolean = false,
+    showFileSizeLimitAlertDialog: Boolean = false,
+    onFileOpenFailure: ((doesFileExists: Boolean) -> Unit)? = null,
+    onFileSizeLimitExceed: (() -> Unit)? = null,
+    onSnackBarShowed: (() -> Unit)? = null,
+    onAlertDialogDismiss: (() -> Unit)? = null,
+    onUpload: (Uri) -> Unit,
+    onDownload: (String) -> Unit,
+    onShareCancel: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() }
+) {
+    val context = LocalContext.current
+
+    val showFilePicker = remember { { FilePickActivity.show(context) } }
 
     val unableToOpenFileText = stringResource(id = R.string.kaleyra_fileshare_impossible_open_file)
     val fileCancelledText = stringResource(id = R.string.kaleyra_fileshare_file_cancelled)
 
+    val onItemClick = remember {
+        { file: SharedFileUi ->
+            if (file.state is SharedFileUi.State.Success) {
+                val uri = if (file.isMine) file.uri.value else file.state.uri.value
+                context.tryToOpenFile(uri) { onFileOpenFailure?.invoke(it) }
+            }
+        }
+    }
+
     if (showUnableToOpenFileSnackBar) {
         LaunchedEffect(unableToOpenFileText, snackBarHostState) {
             snackBarHostState.showSnackbar(message = unableToOpenFileText)
-            setShowUnableToOpenSnackBar(false)
+            onSnackBarShowed?.invoke()
         }
     }
 
     if (showCancelledFileSnackBar) {
         LaunchedEffect(fileCancelledText, snackBarHostState) {
             snackBarHostState.showSnackbar(message = fileCancelledText)
-            setShowCancelledFileSnackBar(false)
+            onSnackBarShowed?.invoke()
         }
     }
-
-    if (showFileSizeLimitAlertDialog) {
-
-    }
-
-    val onItemClick = remember {
-        { sharedFile: SharedFileUi ->
-            onItemClick(
-                context = context,
-                sharedFile = sharedFile,
-                onFileDoesNotExist = { setShowCancelledFileSnackBar(true) },
-                onUnableToOpenFile = { setShowUnableToOpenSnackBar(true) }
-            )
-        }
-    }
-
-    val showFilePicker = remember { { FilePickActivity.show(context) } }
 
     DisposableEffect(Unit) {
         onDispose {
@@ -116,46 +116,15 @@ internal fun FileShareComponent(
         }
     }
 
+    if (showFileSizeLimitAlertDialog) {
+        MaxFileSizeDialog(onDismiss = { onAlertDialogDismiss?.invoke() })
+    }
+
     FilePickBroadcastReceiver(FilePickActivity.ACTION_FILE_PICK_EVENT) { uri ->
-        // todo show dialog if file is too big
-        viewModel.upload(uri)
+        if (uri.getFileSize(context) > MaxFileUploadBytes) onFileSizeLimitExceed?.invoke()
+        else onUpload(uri)
     }
 
-    FileShareComponent(
-        uiState = uiState,
-        onFabClick = showFilePicker,
-        onItemClick = onItemClick,
-        onItemActionClick = {
-            if (it.state is SharedFileUi.State.Success) onItemClick(it)
-            else viewModel.onActionClick(it)
-        },
-        modifier = modifier,
-        snackBarHostState = snackBarHostState
-    )
-}
-
-private fun onItemClick(
-    context: Context,
-    sharedFile: SharedFileUi,
-    onFileDoesNotExist: () -> Unit,
-    onUnableToOpenFile: () -> Unit
-) {
-    if (sharedFile.state !is SharedFileUi.State.Success) return
-    val uri = if (sharedFile.isMine) sharedFile.uri.value else sharedFile.state.uri.value
-    context.tryToOpenFile(uri) { doesFileExists ->
-        if (doesFileExists) onUnableToOpenFile() else onFileDoesNotExist()
-    }
-}
-
-@Composable
-internal fun FileShareComponent(
-    uiState: FileShareUiState,
-    onFabClick: () -> Unit,
-    onItemClick: (SharedFileUi) -> Unit,
-    onItemActionClick: (SharedFileUi) -> Unit,
-    modifier: Modifier = Modifier,
-    snackBarHostState: SnackbarHostState
-) {
     Column(
         modifier = modifier
             .statusBarsPadding()
@@ -171,7 +140,15 @@ internal fun FileShareComponent(
                 FileShareContent(
                     items = uiState.sharedFiles,
                     onItemClick = onItemClick,
-                    onItemActionClick = onItemActionClick,
+                    onItemActionClick = {
+                        when(it.state) {
+                            SharedFileUi.State.Available -> onDownload(it.id)
+                            SharedFileUi.State.Pending, is SharedFileUi.State.InProgress -> onShareCancel(it.id)
+                            is SharedFileUi.State.Success -> onItemClick(it)
+                            SharedFileUi.State.Error -> if (it.isMine) onUpload(it.uri.value) else onDownload(it.id)
+                            else -> Unit
+                        }
+                    },
                     modifier = Modifier.matchParentSize()
                 )
             }
@@ -185,7 +162,7 @@ internal fun FileShareComponent(
 
             FileShareFab(
                 collapsed = uiState.sharedFiles.count() > 0,
-                onClick = onFabClick,
+                onClick = showFilePicker,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 16.dp)
@@ -203,10 +180,9 @@ internal fun FileShareComponentPreview() {
         Surface {
             FileShareComponent(
                 uiState = FileShareUiState(),
-                onFabClick = {},
-                onItemClick = {},
-                onItemActionClick = {},
-                snackBarHostState = SnackbarHostState()
+                onUpload = {},
+                onDownload = {},
+                onShareCancel = {}
             )
         }
     }
