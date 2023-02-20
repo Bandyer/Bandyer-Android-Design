@@ -121,20 +121,20 @@ class FileShareViewModelTest {
         assertEquals(expected, new)
     }
 
-//    @Test
-//    fun testUpload() = runTest {
-//        val uriMock = mockk<Uri>()
-//        advanceUntilIdle()
-//        viewModel.upload(uriMock)
-//        verify { sharedFolderMock.upload(uriMock) }
-//    }
-//
-//    @Test
-//    fun testDownload() = runTest {
-//        advanceUntilIdle()
-//        viewModel.download("id")
-//        verify { sharedFolderMock.download("id") }
-//    }
+    @Test
+    fun testUpload() = runTest {
+        val uriMock = mockk<Uri>()
+        advanceUntilIdle()
+        viewModel.upload(uriMock)
+        verify { sharedFolderMock.upload(uriMock) }
+    }
+
+    @Test
+    fun testDownload() = runTest {
+        advanceUntilIdle()
+        viewModel.download("id")
+        verify { sharedFolderMock.download("id") }
+    }
 
     @Test
     fun testCancel() = runTest {
