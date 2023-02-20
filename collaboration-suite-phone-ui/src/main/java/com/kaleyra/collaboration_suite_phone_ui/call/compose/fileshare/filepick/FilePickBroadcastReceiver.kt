@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.broadcastreceiver
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -10,7 +10,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.FilePickActivity
 
 @Composable
 internal fun FilePickBroadcastReceiver(

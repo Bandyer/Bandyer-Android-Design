@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.call.compose
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick
 
 import android.content.Context
 import android.content.Intent
@@ -13,7 +13,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.CallSuper
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
 
 internal class FilePickActivity : ComponentActivity() {
 
