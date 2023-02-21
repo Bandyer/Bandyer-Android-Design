@@ -33,7 +33,7 @@ class ChatViewModelTest {
     @Before
     fun setUp() {
         viewModel = ChatViewModel { Configuration.Success(phoneBox, chatBox, mockk()) }
-        every { chatBox.create(any()) } returns chat
+        every { chatBox.create(any()) } returns Result.success(chat)
         every { phoneBox.call } returns MutableStateFlow(call)
     }
 
