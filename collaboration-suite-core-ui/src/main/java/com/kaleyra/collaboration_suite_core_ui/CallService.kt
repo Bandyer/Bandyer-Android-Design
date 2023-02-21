@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Companion.CALL_NOTIFICATION_ID
-import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
+import com.kaleyra.collaboration_suite_core_ui.call.CallStreamsDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.filter
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.onEach
 /**
  * The CallService
  */
-class CallService : LifecycleService(), CallStreamDelegate, CallNotificationDelegate {
+class CallService : LifecycleService(), CallStreamsDelegate, CallNotificationDelegate {
 
     internal companion object {
         const val CALL_ACTIVITY_CLASS = "call_activity_class"
