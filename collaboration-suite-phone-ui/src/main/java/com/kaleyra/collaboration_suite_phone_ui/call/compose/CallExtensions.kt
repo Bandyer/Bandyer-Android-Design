@@ -5,7 +5,7 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Inputs
 import com.kaleyra.collaboration_suite.phonebox.Stream
-import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
+import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 
 internal object CallExtensions {
 
@@ -24,6 +24,6 @@ internal object CallExtensions {
     fun Call.myMainStream(): Stream.Mutable? {
         val me = participants.value.me
         val streams = me.streams.value
-        return streams.firstOrNull { it.id == CallStreamDelegate.MY_STREAM_ID }
+        return streams.firstOrNull { it.id == CAMERA_STREAM_ID }
     }
 }
