@@ -11,7 +11,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -23,83 +22,102 @@ class CameraStreamInputsDelegateTest {
 
     private val callMock = mockk<Call>()
 
+    private val participantsMock = mockk<CallParticipants>()
+
     private val meMock = mockk<CallParticipant.Me>()
+
+    private val myStream = mockk<Stream.Mutable>(relaxed = true)
+
 
     @Before
     fun setUp() {
-    }
-
-    @Test
-    fun streamUpdatedOnMyCameraVideoInput() = runTest(UnconfinedTestDispatcher()) {
-        val myStream = mockk<Stream.Mutable>(relaxed = true) {
+        with(callMock) {
+            every { participants } returns MutableStateFlow(participantsMock)
+            every { extras.preferredType.hasVideo() } returns true
+        }
+        with(participantsMock) {
+            every { me } returns meMock
+        }
+        every { meMock.streams } returns MutableStateFlow(listOf(myStream))
+        with(myStream) {
             every { id } returns CameraStreamPublisher.CAMERA_STREAM_ID
             every { audio } returns MutableStateFlow(null)
             every { video } returns MutableStateFlow(null)
         }
+    }
+
+    @Test
+    fun updateCameraStreamOnInputs_streamUpdatedOnMyCameraVideoInput() = runTest(UnconfinedTestDispatcher()) {
         val videoMock = mockk<Input.Video.Camera.Internal>(relaxed = true) {
             every { currentQuality } returns MutableStateFlow(mockk(relaxed = true))
         }
-        val participantsMock = mockk<CallParticipants>() {
-            every { me } returns meMock
-        }
-        every { meMock.streams } returns MutableStateFlow(listOf(myStream))
-        with(callMock) {
-            every { participants } returns MutableStateFlow(participantsMock)
-            every { extras.preferredType.hasVideo() } returns true
-            every { inputs.availableInputs } returns MutableStateFlow(setOf(videoMock))
-        }
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(videoMock))
         cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, this)
-        assertEquals(videoMock,  meMock.streams.value.first().video.value)
+        val actual = meMock.streams.value.first().video.value
+        assertEquals(videoMock, actual)
         stopCollecting()
     }
 
     @Test
-    fun setHDQualityOnCameraVideoStream() = runTest(UnconfinedTestDispatcher()) {
-        val myStream = mockk<Stream.Mutable>(relaxed = true) {
-            every { id } returns CameraStreamPublisher.CAMERA_STREAM_ID
-            every { audio } returns MutableStateFlow(null)
-            every { video } returns MutableStateFlow(null)
-        }
+    fun updateCameraStreamOnInputs_setHDQualityOnCameraVideoStream() = runTest(UnconfinedTestDispatcher()) {
         val videoMock = mockk<Input.Video.Camera.Internal>(relaxed = true) {
             every { currentQuality } returns MutableStateFlow(Input.Video.Quality(Input.Video.Quality.Definition.SD, 30))
         }
-        val participantsMock = mockk<CallParticipants>() {
-            every { me } returns meMock
-        }
-        every { meMock.streams } returns MutableStateFlow(listOf(myStream))
-        with(callMock) {
-            every { participants } returns MutableStateFlow(participantsMock)
-            every { extras.preferredType.hasVideo() } returns true
-            every { inputs.availableInputs } returns MutableStateFlow(setOf(videoMock))
-        }
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(videoMock))
         cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, this)
-        verify { videoMock.setQuality(Input.Video.Quality.Definition.HD) }
+        verify { videoMock.setQuality(Input.Video.Quality.Definition.HD, any()) }
         stopCollecting()
     }
 
     @Test
-    fun streamUpdatedOnAudioInput() {
-
+    fun updateCameraStreamOnInputs_streamUpdatedOnAudioInput() = runTest(UnconfinedTestDispatcher()) {
+        val audioMock = mockk<Input.Audio>(relaxed = true)
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(audioMock))
+        cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, this)
+        val actual =  meMock.streams.value.first().audio.value
+        assertEquals(audioMock,  actual)
+        stopCollecting()
     }
 
     @Test
-    fun streamNotUpdatedOnCameraVideoInputWhenCallIsAudioOnly() {
-
+    fun updateCameraStreamOnInputs_streamNotUpdatedOnCameraVideoInputWhenCallIsAudioOnly() {
+        every { callMock.extras.preferredType.hasVideo() } returns false
+        val videoMock = mockk<Input.Video.Camera.Internal>(relaxed = true) {
+            every { currentQuality } returns MutableStateFlow(mockk(relaxed = true))
+        }
+        checkStreamNotUpdatedOnVideoInput(videoMock)
     }
 
     @Test
-    fun streamNotUpdatedOnApplicationVideoInput() {
-
+    fun updateCameraStreamOnInputs_streamNotUpdatedOnApplicationVideoInput() {
+        val videoMock = mockk<Input.Video.Application>(relaxed = true) {
+            every { currentQuality } returns MutableStateFlow(mockk(relaxed = true))
+        }
+        checkStreamNotUpdatedOnVideoInput(videoMock)
     }
 
     @Test
-    fun streamNotUpdatedOnScreenVideoInput() {
-
+    fun updateCameraStreamOnInputs_streamNotUpdatedOnScreenVideoInput() {
+        val videoMock = mockk<Input.Video.Screen>(relaxed = true) {
+            every { currentQuality } returns MutableStateFlow(mockk(relaxed = true))
+        }
+        checkStreamNotUpdatedOnVideoInput(videoMock)
     }
 
     @Test
-    fun streamNotUpdatedOnCustomVideoInput() {
+    fun updateCameraStreamOnInputs_streamNotUpdatedOnCustomVideoInput()  {
+        val videoMock = mockk<Input.Video.Custom>(relaxed = true) {
+            every { currentQuality } returns MutableStateFlow(mockk(relaxed = true))
+        }
+        checkStreamNotUpdatedOnVideoInput(videoMock)
+    }
 
+    private fun checkStreamNotUpdatedOnVideoInput(videoMock: Input.Video) = runTest(UnconfinedTestDispatcher()) {
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(videoMock))
+        cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, this)
+        val actual = meMock.streams.value.first().video.value
+        assertEquals(null, actual)
+        stopCollecting()
     }
 
 }
