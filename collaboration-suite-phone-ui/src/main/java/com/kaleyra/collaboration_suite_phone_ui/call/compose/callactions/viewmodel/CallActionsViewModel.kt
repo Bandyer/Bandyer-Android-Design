@@ -12,12 +12,13 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.star
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startMicrophone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallActionsMapper.toCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.AudioMapper.toCurrentAudioDeviceUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallActionsMapper.toCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
     private val callActions = call
         .toCallActions()
         .shareInEagerly(viewModelScope)
-    
+
     private val isCallConnected = call
         .flatMapLatest { it.state }
         .map { it is Call.State.Connected }
@@ -119,10 +120,17 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         )
     }
 
-    fun stopScreenShare(): Boolean {
-        val screenShareInputs = availableInputs?.filter { it is Input.Video.Screen || it is Input.Video.Application }
-        val enabledInput = screenShareInputs?.firstOrNull { it.enabled.value }
-        return enabledInput?.tryDisable() ?: false
+    fun tryStopScreenShare(): Boolean {
+        val input = availableInputs?.filter { it is Input.Video.Screen || it is Input.Video.Application }?.firstOrNull { it.enabled.value }
+        val call = call.getValue()
+        return if (input == null || call == null) false
+        else {
+            val me = call.participants.value.me
+            val streams = me.streams.value
+            val stream = streams.firstOrNull { it.id == SCREEN_SHARE_STREAM_ID }
+            if (stream != null) me.removeStream(stream)
+            input.tryDisable() && stream != null
+        }
     }
 
     private fun List<CallAction>.updateActionIfExists(action: CallAction): List<CallAction> {

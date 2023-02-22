@@ -13,6 +13,7 @@ import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationA
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel.CallActionsViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +42,7 @@ class CallActionsViewModelTest {
 
     private val callParticipantsMock = mockk<CallParticipants>()
 
-    private val meMock = mockk<CallParticipant.Me>()
+    private val meMock = mockk<CallParticipant.Me>(relaxed = true)
 
     private val otherParticipantMock = mockk<CallParticipant>()
 
@@ -359,21 +360,24 @@ class CallActionsViewModelTest {
 
     @Test
     fun testStopDeviceScreenShare() = runTest {
-        testStopScreenShare(mockk<Input.Video.Screen>())
+        testTryStopScreenShare(mockk<Input.Video.Screen>())
     }
 
     @Test
     fun testStopAppScreenShare() {
-        testStopScreenShare(mockk<Input.Video.Application>())
+        testTryStopScreenShare(mockk<Input.Video.Application>())
     }
 
-    private fun testStopScreenShare(videoScreenMock: Input.Video) = runTest {
-        every { videoScreenMock.enabled } returns MutableStateFlow(true)
-        every { videoScreenMock.tryDisable() } returns true
-        every { inputsMock.availableInputs } returns MutableStateFlow(setOf(videoScreenMock))
+    private fun testTryStopScreenShare(screenShareVideoMock: Input.Video) = runTest {
+        every { screenShareVideoMock.enabled } returns MutableStateFlow(true)
+        every { screenShareVideoMock.tryDisable() } returns true
+        every { myStreamMock.id } returns SCREEN_SHARE_STREAM_ID
+        val availableInputs = setOf(screenShareVideoMock, mockk<Input.Video.Screen>(), mockk<Input.Video.Application>(), mockk<Input.Video.Camera>())
+        every { inputsMock.availableInputs } returns MutableStateFlow(availableInputs)
         advanceUntilIdle()
-        val isStopped = viewModel.stopScreenShare()
-        verify { videoScreenMock.tryDisable() }
+        val isStopped = viewModel.tryStopScreenShare()
+        verify { screenShareVideoMock.tryDisable() }
+        verify { meMock.removeStream(myStreamMock) }
         assertEquals(true , isStopped)
     }
 }
