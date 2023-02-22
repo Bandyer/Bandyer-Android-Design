@@ -293,7 +293,7 @@ class CallActionsViewModelTest {
         every { audioMock.enabled } returns MutableStateFlow(false)
         advanceUntilIdle()
         viewModel.toggleMic()
-        verify { audioMock.tryEnable() }
+        verify(exactly = 1) { audioMock.tryEnable() }
     }
 
     @Test
@@ -301,7 +301,7 @@ class CallActionsViewModelTest {
         every { audioMock.enabled } returns MutableStateFlow(true)
         advanceUntilIdle()
         viewModel.toggleMic()
-        verify { audioMock.tryDisable() }
+        verify(exactly = 1) { audioMock.tryDisable() }
     }
 
     @Test
@@ -309,7 +309,7 @@ class CallActionsViewModelTest {
         every { videoMock.enabled } returns MutableStateFlow(false)
         advanceUntilIdle()
         viewModel.toggleCamera()
-        verify { videoMock.tryEnable() }
+        verify(exactly = 1) { videoMock.tryEnable() }
     }
 
     @Test
@@ -317,14 +317,14 @@ class CallActionsViewModelTest {
         every { videoMock.enabled } returns MutableStateFlow(true)
         advanceUntilIdle()
         viewModel.toggleCamera()
-        verify { videoMock.tryDisable() }
+        verify(exactly = 1) { videoMock.tryDisable() }
     }
 
     @Test
     fun testHangUp() = runTest {
         advanceUntilIdle()
         viewModel.hangUp()
-        verify { callMock.end() }
+        verify(exactly = 1) { callMock.end() }
     }
 
     @Test
@@ -332,7 +332,7 @@ class CallActionsViewModelTest {
         advanceUntilIdle()
         every { videoMock.currentLens } returns MutableStateFlow(rearLens)
         viewModel.switchCamera()
-        verify { videoMock.setLens(frontLens) }
+        verify(exactly = 1) { videoMock.setLens(frontLens) }
     }
 
     @Test
@@ -340,7 +340,7 @@ class CallActionsViewModelTest {
         advanceUntilIdle()
         every { videoMock.currentLens } returns MutableStateFlow(frontLens)
         viewModel.switchCamera()
-        verify { videoMock.setLens(rearLens) }
+        verify(exactly = 1) { videoMock.setLens(rearLens) }
     }
 
     @Test
@@ -350,7 +350,7 @@ class CallActionsViewModelTest {
         advanceUntilIdle()
         viewModel.showChat(contextMock)
         val expectedUserIds = listOf(otherParticipantMock.userId)
-        verify {
+        verify(exactly = 1) {
             chatBoxMock.chat(
                 context = contextMock,
                 userIDs = withArg { assertEquals(it, expectedUserIds) }
@@ -376,8 +376,8 @@ class CallActionsViewModelTest {
         every { inputsMock.availableInputs } returns MutableStateFlow(availableInputs)
         advanceUntilIdle()
         val isStopped = viewModel.tryStopScreenShare()
-        verify { screenShareVideoMock.tryDisable() }
-        verify { meMock.removeStream(myStreamMock) }
+        verify(exactly = 1) { screenShareVideoMock.tryDisable() }
+        verify(exactly = 1) { meMock.removeStream(myStreamMock) }
         assertEquals(true , isStopped)
     }
 }

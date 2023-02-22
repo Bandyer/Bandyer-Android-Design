@@ -178,13 +178,13 @@ class PreCallViewModelTest {
     fun testCallAnswer() = runTest {
         advanceUntilIdle()
         viewModel.answer()
-        verify { callMock.connect() }
+        verify(exactly = 1) { callMock.connect() }
     }
 
     @Test
     fun testCallDecline() = runTest {
         advanceUntilIdle()
         viewModel.decline()
-        verify { callMock.end() }
+        verify(exactly = 1) { callMock.end() }
     }
 }

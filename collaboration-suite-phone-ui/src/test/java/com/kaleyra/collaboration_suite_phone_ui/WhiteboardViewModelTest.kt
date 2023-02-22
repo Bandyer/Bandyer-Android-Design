@@ -56,7 +56,7 @@ class WhiteboardViewModelTest {
         every { whiteboardMock.view } returns MutableStateFlow(null)
         advanceUntilIdle()
         val result = viewModel.uiState.first().whiteboardView
-        verify { whiteboardMock.load() }
+        verify(exactly = 1) { whiteboardMock.load() }
         assertNotEquals(null, result)
         assertEquals(result, whiteboardMock.view.value)
     }
@@ -65,7 +65,7 @@ class WhiteboardViewModelTest {
     fun testWhiteboardUnloadedOnCallEnded() = runTest {
         every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended)
         advanceUntilIdle()
-        verify { whiteboardMock.unload() }
+        verify(exactly = 1) { whiteboardMock.unload() }
     }
 
     @Test
@@ -93,8 +93,9 @@ class WhiteboardViewModelTest {
     @Test
     fun testOnReloadClick() = runTest {
         advanceUntilIdle()
+        verify(exactly = 1) { whiteboardMock.load() }
         viewModel.onReloadClick()
-        verify { whiteboardMock.load() }
+        verify(exactly = 2) { whiteboardMock.load() }
     }
 
     @Test
@@ -123,7 +124,7 @@ class WhiteboardViewModelTest {
         every { whiteboardMock.addMediaFile(uriMock) } returns Result.success(sharedFileMock)
         advanceUntilIdle()
         viewModel.uploadMediaFile(uriMock)
-        verify { whiteboardMock.addMediaFile(uriMock) }
+        verify(exactly = 1) { whiteboardMock.addMediaFile(uriMock) }
     }
 
     @Test
