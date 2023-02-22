@@ -9,12 +9,12 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 internal class AudioOutputViewModel(configure: suspend () -> Configuration) : BaseViewModel<AudioOutputUiState>(configure) {
 //    override fun initialState() = AudioOutputUiState()
     override fun initialState() = AudioOutputUiState(audioDeviceList = mockAudioDevices, playingDeviceId = "id")
-    companion object {
-        fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return AudioOutputViewModel(configure) as T
-            }
-        }
-    }
+//    companion object {
+//        fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.Factory {
+//            @Suppress("UNCHECKED_CAST")
+//            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//                return AudioOutputViewModel(configure) as T
+//            }
+//        }
+//    }
 }

@@ -6,6 +6,7 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Inputs
 import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
@@ -49,7 +50,7 @@ class CallController(private val call: SharedFlow<CallUI>, private val callAudio
                 _micPermission.value = Permission(false, false)
             }.launchIn(this)
 
-            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CallStreamDelegate.MY_STREAM_ID }?.audio?.value = input
+            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CAMERA_STREAM_ID }?.audio?.value = input
         }
     }
 
@@ -65,7 +66,7 @@ class CallController(private val call: SharedFlow<CallUI>, private val callAudio
 
             val input = inputRequest.getOrNull<Input.Video.Camera.Internal>() ?: return@launchWhenResumed
 
-            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CallStreamDelegate.MY_STREAM_ID }?.video?.value = input
+            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CAMERA_STREAM_ID }?.video?.value = input
 
             input.state.filter { it is Input.State.Closed }.onEach {
                 _camPermission.value = Permission(false, false)

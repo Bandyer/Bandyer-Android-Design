@@ -7,7 +7,7 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
-import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
+import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
 import io.mockk.*
@@ -140,7 +140,7 @@ class CallViewModelTest {
     fun testStartMicrophone() = runTest {
         val audioMock = mockk<Input.Audio>()
         val myStreamMock = mockk<Stream.Mutable> {
-            every { id } returns CallStreamDelegate.MY_STREAM_ID
+            every { id } returns CAMERA_STREAM_ID
             every { audio } returns MutableStateFlow(null)
         }
         every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
@@ -159,7 +159,7 @@ class CallViewModelTest {
     fun testStartCamera() = runTest {
         val cameraMock = mockk<Input.Video.Camera.Internal>()
         val myStreamMock = mockk<Stream.Mutable> {
-            every { id } returns CallStreamDelegate.MY_STREAM_ID
+            every { id } returns CAMERA_STREAM_ID
             every { video } returns MutableStateFlow(null)
         }
         every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))

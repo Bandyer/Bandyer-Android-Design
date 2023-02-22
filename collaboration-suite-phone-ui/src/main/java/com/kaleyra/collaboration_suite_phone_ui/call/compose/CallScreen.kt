@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
@@ -10,8 +11,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalAutofill
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -76,6 +79,7 @@ internal fun rememberCallScreenState(
     )
 }
 
+// TODO remove callUiState from CallScreenState to optimize recompositions
 internal class CallScreenState(
     val callUiState: CallUiState,
     val sheetState: BottomSheetState,
@@ -97,11 +101,13 @@ internal class CallScreenState(
 
     private val isSheetHalfExpanding by sheetState.isHalfExpanding()
 
+    private val isSheetHidden by sheetState.isHidden()
+
+    private var isStreamFullscreen by mutableStateOf(false)
+
     val isSheetNotDraggableDown by sheetState.isNotDraggableDown()
 
     val isSheetCollapsed by sheetState.isCollapsed()
-
-    val isSheetHidden by sheetState.isHidden()
 
     val isSheetCollapsing by sheetState.isCollapsing()
 
@@ -117,9 +123,25 @@ internal class CallScreenState(
         isSheetFullScreen && hasCurrentSheetComponentAppBar
     }
 
+    // TODO test this
+    val shouldShowThumbnails by derivedStateOf {
+        !isSheetHidden && isStreamFullscreen
+    }
+
+    // TODO test this
+    val shouldEnableSheetGesture by derivedStateOf {
+        sheetContentState.currentComponent != BottomSheetComponent.Whiteboard
+    }
+
     fun collapseSheet() {
         scope.launch {
             sheetState.collapse()
+        }
+    }
+
+    fun hideSheet() {
+        scope.launch {
+            sheetState.hide()
         }
     }
 
@@ -133,6 +155,11 @@ internal class CallScreenState(
         if (sheetState.isCollapsed) {
             halfExpandSheet()
         }
+    }
+
+    // TODO test for this
+    fun onStreamFullscreen(isFullscreen: Boolean) {
+        isStreamFullscreen = isFullscreen
     }
 
     fun navigateToCallActionsComponent() {
@@ -219,6 +246,7 @@ internal fun CallScreen(
     onBackPressed: () -> Unit
 ) {
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
+    val callState by rememberUpdatedState(callScreenState.callUiState.callState)
 
     LaunchedEffect(callScreenState) {
         combine(
@@ -244,12 +272,17 @@ internal fun CallScreen(
             .launchIn(this)
     }
 
-    LaunchedEffect(callScreenState) {
-        if (callScreenState.callUiState.callState == CallState.Connected)
-            callScreenState.halfExpandSheet()
+    // TODO test this
+    LaunchedEffect(callState) {
+        when (callState) {
+            CallStateUi.Dialing, CallStateUi.Connected -> callScreenState.halfExpandSheet()
+            else -> callScreenState.hideSheet()
+        }
     }
 
     when {
+        // TODO test this
+        callScreenState.sheetState.isHidden -> BackHandler(onBack = onBackPressed)
         callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackHandler(onBack = callScreenState::navigateToCallActionsComponent)
         !callScreenState.isSheetNotDraggableDown -> BackHandler(onBack = callScreenState::collapseSheet)
     }
@@ -259,13 +292,16 @@ internal fun CallScreen(
         val navBarsBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         BottomSheetScaffold(
             modifier = Modifier.fillMaxSize(),
+            // TODO test this
+            sheetGesturesEnabled = callScreenState.shouldEnableSheetGesture,
             sheetState = callScreenState.sheetState,
             sheetPeekHeight = PeekHeight + navBarsBottomPadding,
             sheetHalfExpandedHeight = HalfExpandedHeight + navBarsBottomPadding,
             sheetElevation = 0.dp,
             anchor = {
+                // TODO test visibility
                 AnimatedVisibility(
-                    visible = !callScreenState.isSheetHidden,
+                    visible = !callScreenState.shouldShowThumbnails,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
@@ -296,10 +332,16 @@ internal fun CallScreen(
                 CallScreenContent(
                     callState = callScreenState.callUiState.callState,
                     maxWidth = maxWidth,
-                    onBackPressed = onBackPressed
+                    onBackPressed = onBackPressed,
+                    onFullscreen = callScreenState::onStreamFullscreen
                 )
             }
         )
+
+        // telefono portrait -> featured max 1
+        // telefono landscape -> featured max 2
+        // tablet portrait -> featured max 2
+        // tablet landscape -> featured max 4
 
         CallScreenAppBar(
             currentSheetComponent = callScreenState.sheetContentState.currentComponent,

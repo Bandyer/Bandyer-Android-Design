@@ -75,8 +75,10 @@ dependencies {
     androidTestImplementation "io.mockk:mockk-android:1.13.3"
     testImplementation 'io.mockk:mockk:1.13.3'
 
-    testImplementation kaleyra.collaboration
 //    testImplementation kaleyra.collaboration
+    testImplementation project(":collaboration-suite")
+
+    androidTestImplementation "androidx.test.espresso:espresso-intents:3.4.0"
 
     androidTestImplementation "androidx.test.espresso:espresso-intents:3.4.0"
 

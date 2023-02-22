@@ -1,8 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import androidx.fragment.app.FragmentActivity
-import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite.phonebox.Inputs
+import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
@@ -11,8 +10,10 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmod
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,35 +32,72 @@ class ScreenShareViewModelTest {
 
     private val inputsMock = mockk<Inputs>()
 
-    private val videoDeviceMock = mockk<Input.Video.Screen>(relaxed = true)
+    private val meMock = mockk<CallParticipant.Me>(relaxed = true)
 
-    private val videoAppMock = mockk<Input.Video.Application>(relaxed = true)
+    private val screenShareStreamMock = mockk<Stream.Mutable>()
 
     private val context = mockk<FragmentActivity>()
-
 
     @Before
     fun setUp() {
         viewModel = spyk(ScreenShareViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
-        every { callMock.inputs } returns inputsMock
+        with(callMock) {
+            every { inputs } returns inputsMock
+            every { participants } returns MutableStateFlow(mockk {
+                every { me } returns meMock
+            })
+        }
+        every { meMock.streams } returns MutableStateFlow(listOf(screenShareStreamMock))
+        with(screenShareStreamMock) {
+            every { id } returns ScreenShareViewModel.SCREEN_SHARE_STREAM_ID
+            every { video } returns MutableStateFlow(null)
+        }
     }
 
     @Test
     fun testShareDeviceScreen() = runTest {
+        val videoDeviceMock = mockk<Input.Video.Screen.My>(relaxed = true)
         coEvery { inputsMock.request(context, Inputs.Type.Screen) } returns Inputs.RequestResult.Success(videoDeviceMock)
         advanceUntilIdle()
-        viewModel.shareScreen(context, ScreenShareTargetUi.Device)
+        viewModel.shareDeviceScreen(context)
         advanceUntilIdle()
-        verify { videoDeviceMock.tryEnable() }
+        verify(exactly = 1) { videoDeviceMock.tryEnable() }
+        verify(exactly = 1) { screenShareStreamMock.open() }
+        assertEquals(videoDeviceMock, screenShareStreamMock.video.first())
     }
 
     @Test
-    fun testShareAppScreen() = runTest {
+    fun testShareApplicationScreen() = runTest {
+        val videoAppMock = mockk<Input.Video.Application>(relaxed = true)
         coEvery { inputsMock.request(context, Inputs.Type.Application) } returns Inputs.RequestResult.Success(videoAppMock)
         advanceUntilIdle()
-        viewModel.shareScreen(context, ScreenShareTargetUi.Application)
+        viewModel.shareApplicationScreen(context)
         advanceUntilIdle()
-        verify { videoAppMock.tryEnable() }
+        verify(exactly = 1) { videoAppMock.tryEnable() }
+        verify(exactly = 1) { screenShareStreamMock.open() }
+        assertEquals(videoAppMock, screenShareStreamMock.video.first())
+    }
+
+    @Test
+    fun screenShareStreamDoesNotExists_shareApplicationScreen_streamIsAdded() = runTest {
+        every { meMock.streams } returns MutableStateFlow(listOf())
+        val videoDeviceMock = mockk<Input.Video.Application>(relaxed = true)
+        coEvery { inputsMock.request(context, Inputs.Type.Application) } returns Inputs.RequestResult.Success(videoDeviceMock)
+        advanceUntilIdle()
+        viewModel.shareApplicationScreen(context)
+        advanceUntilIdle()
+        verify(exactly = 1) { meMock.addStream(ScreenShareViewModel.SCREEN_SHARE_STREAM_ID) }
+    }
+
+    @Test
+    fun screenShareStreamDoesNotExists_shareDeviceScreen_streamIsAdded() = runTest {
+        every { meMock.streams } returns MutableStateFlow(listOf())
+        val videoDeviceMock = mockk<Input.Video.Screen.My>(relaxed = true)
+        coEvery { inputsMock.request(context, Inputs.Type.Screen) } returns Inputs.RequestResult.Success(videoDeviceMock)
+        advanceUntilIdle()
+        viewModel.shareDeviceScreen(context)
+        advanceUntilIdle()
+        verify(exactly = 1) { meMock.addStream(ScreenShareViewModel.SCREEN_SHARE_STREAM_ID) }
     }
 }
