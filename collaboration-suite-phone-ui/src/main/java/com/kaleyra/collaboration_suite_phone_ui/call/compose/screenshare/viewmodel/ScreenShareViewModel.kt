@@ -12,7 +12,6 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 internal class ScreenShareViewModel(configure: suspend () -> Configuration) : BaseViewModel<ScreenShareUiState>(configure) {
@@ -21,29 +20,30 @@ internal class ScreenShareViewModel(configure: suspend () -> Configuration) : Ba
     private val call: CallUI?
         get() = phoneBox.getValue()?.call?.getValue()
 
-    fun shareScreen(context: Context, target: ScreenShareTargetUi) {
-        if (context !is FragmentActivity) return
+    fun shareApplicationScreen(context: Context) = shareScreen(context, Inputs.Type.Application)
+
+    fun shareDeviceScreen(context: Context) = shareScreen(context, Inputs.Type.Screen)
+
+    private fun shareScreen(context: Context, inputType: Inputs.Type) {
         viewModelScope.launch {
-            when (target) {
-                ScreenShareTargetUi.Application -> shareApplicationScreen(context)
-                ScreenShareTargetUi.Device -> shareDeviceScreen(context)
-            }
+            val call = call
+            if (context !is FragmentActivity || call == null) return@launch
+            val input = call.inputs
+                .request(context, inputType)
+                .getOrNull<Input.Video.My>() ?: return@launch
+            input.tryEnable()
+
+            val me = call.participants.value.me
+            val stream = me.streams.value.firstOrNull { it.id == SCREEN_SHARE_STREAM_ID } ?: me.addStream(SCREEN_SHARE_STREAM_ID)
+            stream.video.value = input
+            stream.open()
         }
     }
 
-    private suspend fun shareApplicationScreen(context: FragmentActivity) {
-        val result = call?.inputs?.request(context, Inputs.Type.Application)
-        val input = result?.getOrNull<Input.Video.Application>()
-        input?.tryEnable()
-    }
-
-    private suspend fun shareDeviceScreen(context: FragmentActivity) {
-        val result = call?.inputs?.request(context, Inputs.Type.Screen)
-        val input = result?.getOrNull<Input.Video.Screen>()
-        input?.tryEnable()
-    }
-
     companion object {
+
+        const val SCREEN_SHARE_STREAM_ID = "screenshare"
+
         fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
