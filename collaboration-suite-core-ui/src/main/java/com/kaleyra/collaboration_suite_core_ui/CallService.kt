@@ -6,19 +6,17 @@ import android.os.Build
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
-import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
+import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite_core_ui.call.*
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Companion.CALL_NOTIFICATION_ID
-import com.kaleyra.collaboration_suite_core_ui.call.CallStreamsDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 /**
  * The CallService
  */
-class CallService : LifecycleService(), CallStreamsDelegate, CallNotificationDelegate {
+class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInputsDelegate, StreamsOpeningDelegate, StreamsVideoViewDelegate, CallNotificationDelegate {
 
     internal companion object {
         const val CALL_ACTIVITY_CLASS = "call_activity_class"
@@ -60,14 +58,24 @@ class CallService : LifecycleService(), CallStreamsDelegate, CallNotificationDel
      * @param callActivityClazz The call activity class
      */
     private fun setUpCall(callActivityClazz: Class<*>) {
-        CollaborationUI.onCallReady(lifecycleScope) {
-            setUpCallStreams(this@CallService, it, lifecycleScope)
+        CollaborationUI.onCallReady(lifecycleScope) { call ->
+            val callScope = MainScope() + CoroutineName("CallScope(callId = ${call.id})")
+
+            addCameraStream(call)
+            updateCameraStreamOnInputs(call, callScope)
+            openParticipantsStreams(call.participants, callScope)
+            setStreamsVideoView(this@CallService, call.participants, callScope)
             syncCallNotification(
-                it,
+                call,
                 CollaborationUI.usersDescription,
                 callActivityClazz,
-                lifecycleScope
+                callScope
             )
+
+            call.state
+                .takeWhile { it !is Call.State.Disconnected.Ended }
+                .onCompletion { callScope.cancel() }
+                .launchIn(lifecycleScope)
         }
     }
 
