@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
  */
 internal abstract class ParticipantsFragment : BaseFragment(), TiltListener {
 
+
     private var _binding: KaleyraGlassFragmentParticipantsBinding? = null
     override val binding: KaleyraGlassFragmentParticipantsBinding get() = _binding!!
 
@@ -40,6 +41,8 @@ internal abstract class ParticipantsFragment : BaseFragment(), TiltListener {
     protected var currentParticipantIndex = -1
 
     protected abstract val usersDescription: UsersDescription
+
+    private val usersDescriptionCache: HashMap<String, Pair<String, Uri>> = hashMapOf()
 
     /**
      * @suppress
@@ -88,16 +91,19 @@ internal abstract class ParticipantsFragment : BaseFragment(), TiltListener {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
-                    currentParticipantIndex = layoutManager!!.getPosition(foundView)
+                    val position = layoutManager!!.getPosition(foundView)
+                    if (currentParticipantIndex == position) return
+                    currentParticipantIndex = position
 
                     val userId =
                         itemAdapter!!.getAdapterItem(currentParticipantIndex).data.userId
                     with(binding.kaleyraUserInfo) {
                         lifecycleScope.launch {
-                            val name = usersDescription.name(listOf(userId))
+                            val (name, image) = usersDescriptionCache.getOrPut(userId) {
+                                Pair(usersDescription.name(listOf(userId)), usersDescription.image(listOf(userId)))
+                            }
                             setName(name)
 
-                            val image = usersDescription.image(listOf(userId))
                             if (image != Uri.EMPTY) setAvatar(image)
                             else {
                                 setAvatar(null)
