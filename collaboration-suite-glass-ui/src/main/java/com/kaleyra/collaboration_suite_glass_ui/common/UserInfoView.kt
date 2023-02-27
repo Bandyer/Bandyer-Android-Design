@@ -39,7 +39,8 @@ internal class UserInfoView @JvmOverloads constructor(
     fun setName(name: String) { binding.kaleyraName.text = name }
 
     fun setAvatarBackgroundAndLetter(name: String) = with(binding) {
-        kaleyraAvatar.setText(name.first().toString())
+        val firstLetterName = (name.firstOrNull() ?: "").toString()
+        kaleyraAvatar.setText(firstLetterName)
         kaleyraAvatar.setBackground(name.parseToColor())
     }
 

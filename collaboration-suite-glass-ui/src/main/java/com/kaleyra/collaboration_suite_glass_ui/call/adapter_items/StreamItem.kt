@@ -375,6 +375,7 @@ internal class OtherStreamItem(
             binding.root.isClickable = false
 
             val userDesc = item.streamParticipant.userDescription
+            val firstLetterUser = (userDesc.firstOrNull() ?: "").toString()
             kaleyraSubtitleLayout.kaleyraSubtitle.text = userDesc
 
             val image = item.streamParticipant.userImage
@@ -383,7 +384,7 @@ internal class OtherStreamItem(
                 return@with
             }
             kaleyraAvatar.setBackground(userDesc.parseToColor())
-            kaleyraAvatar.setText(userDesc.first().toString())
+            kaleyraAvatar.setText(firstLetterUser)
         }
 
         /**

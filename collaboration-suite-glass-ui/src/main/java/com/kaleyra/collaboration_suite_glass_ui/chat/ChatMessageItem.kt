@@ -71,9 +71,10 @@ internal class ChatMessageItem(val page: ChatMessagePage) :
             with(binding.kaleyraChatMessage) {
                 itemView.isClickable = false
                 val page = item.page
+                val firstLetterSender = (page.sender.firstOrNull() ?: "").toString()
                 if (page.avatar != Uri.EMPTY) kaleyraAvatar.setImage(page.avatar)
                 kaleyraAvatar.setBackground(page.sender.parseToColor())
-                kaleyraAvatar.setText(page.sender.first().toString())
+                kaleyraAvatar.setText(firstLetterSender)
                 kaleyraMessage.text = page.message
                 kaleyraTime.text = Iso8601.parseTimestamp(itemView.context, page.time)
                 if (!page.isFirstPage) kaleyraName.visibility = View.GONE
