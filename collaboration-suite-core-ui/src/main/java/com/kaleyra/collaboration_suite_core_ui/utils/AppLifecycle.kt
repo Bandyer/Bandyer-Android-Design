@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 internal object AppLifecycle {
 
-    private val _isAppInForeground by lazy { MutableStateFlow(ProcessLifecycleOwner.get().lifecycle.currentState == State.STARTED) }
+    private val _isAppInForeground by lazy { MutableStateFlow(ProcessLifecycleOwner.get().lifecycle.currentState.isAtLeast(State.STARTED)) }
 
     /**
      * A flow which notify if the application goes to foreground/background

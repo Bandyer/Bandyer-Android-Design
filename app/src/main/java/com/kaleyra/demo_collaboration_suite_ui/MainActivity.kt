@@ -33,6 +33,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.kaleyra.collaboration_suite_core_ui.vppa.VPPANotice
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.dialogs.KaleyraParicipantRemovedDialog
@@ -49,7 +50,6 @@ import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.utils.Motio
 import com.kaleyra.collaboration_suite_phone_ui.whiteboard.dialog.KaleyraWhiteboardTextEditorDialog
 import com.kaleyra.demo_collaboration_suite_ui.databinding.ActivityMainBinding
 import java.util.concurrent.ConcurrentHashMap
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -81,7 +81,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, CallNotificationActivity::class.java))
         }
 
-        btnChat.setOnClickListener { startActivity(Intent(this@MainActivity, ChatActivity::class.java)) }
+        btnChat.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    ChatActivity::class.java
+                )
+            )
+        }
 
         btnCall.setOnClickListener {
             startActivity(
@@ -112,6 +119,22 @@ class MainActivity : AppCompatActivity() {
                     mText = newText
                 }
             })
+        }
+
+        btnVppa.setOnClickListener {
+            val terms = VPPANotice(
+                id = "identifier",
+                title = "Terms and Conditions",
+                message = "By clicking “I Agree” you agree to the capture and transfer of data related to video calls in which you participate to third parties as may be necessary for the provision of such services; and, if applicable, you agree to the recording of such video calls, including any viewing records of such recordings.",
+                notificationTitle = "Incoming call",
+                notificationMessage = "You need to accept terms and condition to proceed",
+                acceptText = "I Agree",
+                declineText = "Decline"
+            )
+
+            terms.show()
+
+            terms.cancel()
         }
 
         btnLivePointer.setOnClickListener {
@@ -214,7 +237,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnMuteParticipant.setOnClickListener {
-            KaleyraCallParticipantMutedSnackbar.make(binding.root, "Unknown guy", LENGTH_LONG).show()
+            KaleyraCallParticipantMutedSnackbar.make(binding.root, "Unknown guy", LENGTH_LONG)
+                .show()
         }
 
     }

@@ -90,4 +90,15 @@
     <!-- blocked input color -->
     <color name="kaleyra_blocked_input_color">#FF0000</color>
 
+    <!-- Terms and conditions -->
+    <color name="kaleyra_terms_colorBackground">#FBFBFB</color>
+    <color name="kaleyra_terms_colorOnBackground">#1B1B1B</color>
+    <color name="kaleyra_terms_colorPrimary">#121314</color>
+    <color name="kaleyra_terms_colorOnPrimary">#FBFBFB</color>
+
+    <color name="kaleyra_terms_colorBackground_night">#1B1B1B</color>
+    <color name="kaleyra_terms_colorOnBackground_night">#FBFBFB</color>
+    <color name="kaleyra_terms_colorPrimary_night">#FBFBFB</color>
+    <color name="kaleyra_terms_colorOnPrimary_night">#121314</color>
+
 </resources>

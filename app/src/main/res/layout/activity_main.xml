@@ -80,7 +80,7 @@
                 app:layout_constraintTop_toBottomOf="@id/kaleyra_horizontalAutoScrollView"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_call_notification"
+                android:id="@+id/btn_vppa"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/kaleyra_dimen_space16"
@@ -92,6 +92,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_kaleyra_snackbar" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_call_notification"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
+                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
+                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
+                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
+                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
+                android:text="@string/call_notifications"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_vppa" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_chat"
