@@ -6,4 +6,5 @@
     <item name="ic_kaleyra_reply" type="drawable">@drawable/kaleyra_icon_reply</item>
     <item name="ic_kaleyra_chat" type="drawable">@drawable/kaleyra_z_chat</item>
     <item name="ic_kaleyra_mark_as_read" type="drawable">@drawable/kaleyra_icon_mark_as_read</item>
+    <item name="ic_kaleyra_terms_and_conditions" type="drawable">@drawable/kaleyra_terms_and_conditions</item>
 </resources>

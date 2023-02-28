@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="?attr/kaleyra_rootLayoutStyle"
+    tools:context=".vppa.VPPAActivity">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/kaleyra_title"
+        style="?attr/kaleyra_titleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/kaleyra_message"
+        app:layout_constraintEnd_toEndOf="@+id/kaleyra_message"
+        app:layout_constraintStart_toStartOf="@+id/kaleyra_message"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Title" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/kaleyra_message"
+        style="?attr/kaleyra_subtitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/kaleyra_decline_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/kaleyra_title"
+        tools:text="A very long message" />
+
+    <Button
+        android:id="@+id/kaleyra_decline_button"
+        style="?attr/kaleyra_negativeButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/kaleyra_accept_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/kaleyra_message" />
+
+    <Button
+        android:id="@+id/kaleyra_accept_button"
+        style="?attr/kaleyra_positiveButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/kaleyra_decline_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/kaleyra_decline_button"
+        app:layout_constraintTop_toTopOf="@+id/kaleyra_decline_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

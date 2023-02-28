@@ -12,7 +12,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.app.RemoteInput
-import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.google.android.material.color.MaterialColors
 import com.kaleyra.collaboration_suite_core_ui.R
@@ -65,7 +64,7 @@ internal class ChatNotification {
         var replyIntent: PendingIntent? = null,
         var markAsReadIntent: PendingIntent? = null,
 //        var deleteIntent: PendingIntent? = null,
-        var fullscreenIntent: PendingIntent? = null,
+        var fullscreenIntent: PendingIntent? = null
     ) {
         /**
          * Set the username
