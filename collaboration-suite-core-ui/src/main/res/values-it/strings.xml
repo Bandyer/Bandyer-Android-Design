@@ -24,7 +24,6 @@
     <string name="kaleyra_notification_stop_screen_share">Ferma Condivisione</string>
     <string name="kaleyra_notification_call_channel_high_priority_name">Chiamate Alta Priorità</string>
     <string name="kaleyra_notification_call_channel_low_priority_name">Chiamate Bassa Priorità</string>
-    <string name="kaleyra_notification_terms_condition_channel_name">Termini e condizioni</string>
     <string name="kaleyra_notification_chat_channel_name">Chat</string>
     <string name="kaleyra_notification_incoming_call">Chiamata in ingresso</string>
     <string name="kaleyra_notification_incoming_group_call">Chiamata di gruppo in ingresso</string>
