@@ -8,11 +8,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application>
-        <activity
-            android:name="com.kaleyra.collaboration_suite_core_ui.vppa.VPPAActivity"
-            android:theme="@style/KaleyraCollaborationSuiteUI.TermAndConditionsTheme.DayNight"
-            android:exported="false" />
-
         <service
             android:name=".CallService"
             android:foregroundServiceType="phoneCall|mediaProjection|camera|microphone" />

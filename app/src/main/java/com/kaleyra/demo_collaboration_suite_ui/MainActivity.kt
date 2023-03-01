@@ -33,7 +33,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
-import com.kaleyra.collaboration_suite_core_ui.vppa.VPPANotice
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.dialogs.KaleyraParicipantRemovedDialog
@@ -122,19 +121,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnVppa.setOnClickListener {
-            val terms = VPPANotice(
-                id = "identifier",
-                title = "Terms and Conditions",
-                message = "By clicking “I Agree” you agree to the capture and transfer of data related to video calls in which you participate to third parties as may be necessary for the provision of such services; and, if applicable, you agree to the recording of such video calls, including any viewing records of such recordings.",
-                notificationTitle = "Incoming call",
-                notificationMessage = "You need to accept terms and condition to proceed",
-                acceptText = "I Agree",
-                declineText = "Decline"
-            )
 
-            terms.show()
-
-            terms.cancel()
         }
 
         btnLivePointer.setOnClickListener {

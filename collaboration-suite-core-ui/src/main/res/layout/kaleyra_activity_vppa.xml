@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/KaleyraCollaborationSuiteUI.TermAndConditionsTheme.DayNight"
-    tools:context=".vppa.VPPAActivity">
+    android:theme="@style/KaleyraCollaborationSuiteUI.TermAndConditionsTheme.DayNight">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/kaleyra_title"
