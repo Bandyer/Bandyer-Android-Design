@@ -37,6 +37,8 @@
                 <action android:name="com.kaleyra.collaboration_suite_core_ui.CHAT_CLOSE" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name="com.kaleyra.collaboration_suite_core_ui.eula.AutoDismissNotification"/>
     </application>
 
 </manifest>

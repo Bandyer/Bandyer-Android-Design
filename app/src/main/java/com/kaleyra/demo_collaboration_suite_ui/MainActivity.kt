@@ -33,6 +33,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.kaleyra.collaboration_suite_core_ui.eula.EULA
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.dialogs.KaleyraParicipantRemovedDialog
@@ -120,8 +121,8 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        btnVppa.setOnClickListener {
-
+        btnEula.setOnClickListener {
+            EULA.show("New message", "You need to accept terms and condition to proceed.", Intent(), 3000L)
         }
 
         btnLivePointer.setOnClickListener {

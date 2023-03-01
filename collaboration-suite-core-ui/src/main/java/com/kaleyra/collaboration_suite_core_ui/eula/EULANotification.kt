@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_core_ui.vppa
+package com.kaleyra.collaboration_suite_core_ui.eula
 
 import android.app.*
 import android.content.Context
@@ -10,14 +10,16 @@ import androidx.core.graphics.drawable.toBitmap
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
-internal class VPPANotification {
+internal class EULANotification {
 
     data class Builder(
         val context: Context,
         val channelId: String,
         val channelName: String,
+        val notificationId: Int,
         var title: String? = null,
         var message: String? = null,
+        var timeout: Long? = null,
         var contentIntent: PendingIntent? = null,
         var fullscreenIntent: PendingIntent? = null,
         var deleteIntent: PendingIntent? = null
@@ -25,6 +27,8 @@ internal class VPPANotification {
         fun title(text: String) = apply { this.title = text }
 
         fun message(text: String) = apply { this.message = text }
+
+        fun timeout(millis: Long) = apply { this.timeout = millis }
 
         fun contentIntent(pendingIntent: PendingIntent) =
             apply { this.contentIntent = pendingIntent }
@@ -52,6 +56,11 @@ internal class VPPANotification {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) setSmallIcon(IconCompat.createWithAdaptiveBitmap(applicationIcon.toBitmap()))
                     else setSmallIcon(R.drawable.ic_kaleyra_terms_and_conditions)
                 }
+
+            timeout?.also {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) builder.setTimeoutAfter(it)
+                else AutoDismissNotification.setAlarm(context, notificationId, it)
+            }
 
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }

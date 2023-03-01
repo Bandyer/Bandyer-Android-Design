@@ -30,4 +30,9 @@ internal object PendingIntentExtensions {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) it or PendingIntent.FLAG_MUTABLE
         else it
     }
+
+    val oneShotFlags = PendingIntent.FLAG_ONE_SHOT.let {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) it or PendingIntent.FLAG_IMMUTABLE
+        else it
+    }
 }
