@@ -14,6 +14,7 @@
         <item name="fontFamily">@font/kaleyra_font</item>
         <item name="android:fontFamily">@font/kaleyra_font</item>
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.TermAndConditionsTheme.RootLayout</item>
+        <item name="android:scrollViewStyle">@style/KaleyraCollaborationSuiteUI.TermAndConditionsTheme.ScrollView</item>
         <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.TermsAndConditions</item>
         <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.TermsAndConditions</item>
         <item name="kaleyra_positiveButtonStyle">@style/KaleyraCollaborationSuiteUI.TermAndConditionsTheme.FilledButton</item>
@@ -42,6 +43,12 @@
         <item name="android:padding">@dimen/kaleyra_dimen_space40</item>
     </style>
 
+    <style name="KaleyraCollaborationSuiteUI.TermAndConditionsTheme.ScrollView" parent="">
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space48</item>
+    </style>
+
     <style name="KaleyraCollaborationSuiteUI.TextView.Title.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:textColor">?attr/colorOnBackground</item>
         <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space24</item>
@@ -49,7 +56,6 @@
 
     <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:textColor">?attr/colorOnBackground</item>
-        <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space64</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TermAndConditionsTheme.FilledButton" parent="Widget.MaterialComponents.Button">
