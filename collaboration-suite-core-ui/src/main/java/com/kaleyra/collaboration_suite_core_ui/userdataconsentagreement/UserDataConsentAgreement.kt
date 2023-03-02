@@ -14,14 +14,21 @@ object UserDataConsentAgreement {
     private const val CHANNEL_ID = "com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.userdataconsentagreement_notification_channel"
     private const val FULL_SCREEN_REQUEST_CODE = 1111
     private const val CONTENT_REQUEST_CODE = 2222
+    private const val DELETE_REQUEST_CODE = 3333
     private const val USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID = 80
 
     private val context by lazy { ContextRetainer.context }
 
     private val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
-    fun show(title: String, message: String, intent: Intent, timeoutMs: Long? = null) {
-        val notification = buildNotification(context, intent, title, message, timeoutMs)
+    fun showNotification(
+        title: String,
+        message: String,
+        activityIntent: Intent,
+        deleteIntent: Intent,
+        timeoutMs: Long? = null
+    ) {
+        val notification = buildNotification(context, activityIntent, deleteIntent, title, message, timeoutMs)
         notificationManager.notify(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID, notification)
     }
 
@@ -32,7 +39,8 @@ object UserDataConsentAgreement {
 
     private fun buildNotification(
         context: Context,
-        intent: Intent,
+        activityIntent: Intent,
+        deleteIntent: Intent,
         title: String,
         message: String,
         timeoutMs: Long?
@@ -45,8 +53,9 @@ object UserDataConsentAgreement {
         )
             .title(title)
             .message(message)
-            .contentIntent(createActivityPendingIntent(context, CONTENT_REQUEST_CODE, intent))
-            .fullscreenIntent(createActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE, intent))
+            .contentIntent(createActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityIntent))
+            .fullscreenIntent(createActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE, activityIntent))
+            .deleteIntent(createDeletePendingIntent(context, deleteIntent))
             .apply {
                 if (timeoutMs != null) timeout(timeoutMs)
             }
@@ -61,6 +70,15 @@ object UserDataConsentAgreement {
         return PendingIntent.getActivity(
             context.applicationContext,
             requestCode,
+            intent,
+            PendingIntentExtensions.updateFlags
+        )
+    }
+
+    private fun createDeletePendingIntent(context: Context, intent: Intent): PendingIntent {
+        return PendingIntent.getBroadcast(
+            context.applicationContext,
+            DELETE_REQUEST_CODE,
             intent,
             PendingIntentExtensions.updateFlags
         )

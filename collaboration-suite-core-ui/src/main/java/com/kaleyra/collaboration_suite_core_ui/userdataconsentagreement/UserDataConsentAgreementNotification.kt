@@ -36,6 +36,9 @@ internal class UserDataConsentAgreementNotification {
         fun fullscreenIntent(pendingIntent: PendingIntent) =
             apply { this.fullscreenIntent = pendingIntent }
 
+        fun deleteIntent(pendingIntent: PendingIntent) =
+            apply { this.deleteIntent = pendingIntent }
+
         fun build(): Notification {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 createNotificationChannel(context, channelId, channelName)
