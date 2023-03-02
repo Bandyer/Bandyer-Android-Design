@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_core_ui.eula
+package com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement
 
 import android.app.Notification
 import android.app.NotificationManager
