@@ -9,7 +9,7 @@ import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-object EULA {
+object UserDataConsentAgreement {
 
     private const val CHANNEL_ID = "com.kaleyra.collaboration_suite_core_ui.eula.eula_notification_channel"
     private const val FULL_SCREEN_REQUEST_CODE = 1111
@@ -37,7 +37,7 @@ object EULA {
         message: String,
         timeoutMs: Long
     ): Notification {
-        return EULANotification.Builder(
+        return UserDataConsentAgreementNotification.Builder(
             context = context,
             channelId = CHANNEL_ID,
             channelName = context.resources.getString(R.string.kaleyra_notification_terms_condition_channel_name),

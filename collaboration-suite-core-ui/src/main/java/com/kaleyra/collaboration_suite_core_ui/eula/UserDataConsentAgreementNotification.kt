@@ -10,7 +10,7 @@ import androidx.core.graphics.drawable.toBitmap
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
-internal class EULANotification {
+internal class UserDataConsentAgreementNotification {
 
     data class Builder(
         val context: Context,
@@ -35,9 +35,6 @@ internal class EULANotification {
 
         fun fullscreenIntent(pendingIntent: PendingIntent) =
             apply { this.fullscreenIntent = pendingIntent }
-
-        fun deleteIntent(pendingIntent: PendingIntent) =
-            apply { this.deleteIntent = pendingIntent }
 
         fun build(): Notification {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)

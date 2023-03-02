@@ -16,5 +16,5 @@
 
 <resources>
     <style name="KaleyraCollaborationSuiteUI.Theme.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Night" />
-    <style name="KaleyraCollaborationSuiteUI.TermAndConditionsTheme.DayNight" parent="KaleyraCollaborationSuiteUI.TermAndConditionsTheme.Night"/>
+    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.DayNight" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Night"/>
 </resources>
