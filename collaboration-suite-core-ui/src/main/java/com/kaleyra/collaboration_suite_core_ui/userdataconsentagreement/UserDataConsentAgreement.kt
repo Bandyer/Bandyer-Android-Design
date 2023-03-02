@@ -20,7 +20,7 @@ object UserDataConsentAgreement {
 
     private val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
-    fun show(title: String, message: String, intent: Intent, timeoutMs: Long) {
+    fun show(title: String, message: String, intent: Intent, timeoutMs: Long = -1) {
         val notification = buildNotification(context, intent, title, message, timeoutMs)
         notificationManager.notify(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID, notification)
     }

@@ -49,12 +49,10 @@ internal class UserDataConsentAgreementNotification {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
-                .apply {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) setSmallIcon(IconCompat.createWithAdaptiveBitmap(applicationIcon.toBitmap()))
-                    else setSmallIcon(R.drawable.ic_kaleyra_terms_and_conditions)
-                }
+                .setSmallIcon(R.drawable.ic_kaleyra_terms_and_conditions)
+                .setLargeIcon(applicationIcon.toBitmap())
 
-            timeout?.also {
+            timeout?.takeIf { it > 0L }?.also {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) builder.setTimeoutAfter(it)
                 else AutoDismissNotification.setAlarm(context, notificationId, it)
             }
