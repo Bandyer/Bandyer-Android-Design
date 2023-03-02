@@ -17,6 +17,7 @@
 
 <resources>
     <item name="id_glass_chat_message_item" type="id" />
+    <item name="id_glass_user_data_consent_agreement_item" type="id" />
 
     <item name="id_glass_menu_mic_item" type="id" />
     <item name="id_glass_menu_camera_item" type="id" />
