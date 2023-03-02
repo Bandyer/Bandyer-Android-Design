@@ -38,7 +38,7 @@ class UserDataConsentAgreementWidget @JvmOverloads constructor(
     }
 
     fun setDeclineButtonListener(block: () -> Unit) {
-        binding.kaleyraAcceptButton.setOnClickListener {
+        binding.kaleyraDeclineButton.setOnClickListener {
             block.invoke()
         }
     }
