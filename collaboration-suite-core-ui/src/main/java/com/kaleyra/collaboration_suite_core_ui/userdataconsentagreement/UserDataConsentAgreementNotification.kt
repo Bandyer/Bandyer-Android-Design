@@ -48,6 +48,7 @@ internal class UserDataConsentAgreementNotification {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentTitle(title)
                 .setContentText(message)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(message))
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_kaleyra_terms_and_conditions)
                 .setLargeIcon(applicationIcon.toBitmap())
