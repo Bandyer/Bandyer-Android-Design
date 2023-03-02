@@ -20,7 +20,7 @@ object UserDataConsentAgreement {
 
     private val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
-    fun show(title: String, message: String, intent: Intent, timeoutMs: Long = -1) {
+    fun show(title: String, message: String, intent: Intent, timeoutMs: Long? = null) {
         val notification = buildNotification(context, intent, title, message, timeoutMs)
         notificationManager.notify(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID, notification)
     }
@@ -35,7 +35,7 @@ object UserDataConsentAgreement {
         intent: Intent,
         title: String,
         message: String,
-        timeoutMs: Long
+        timeoutMs: Long?
     ): Notification {
         return UserDataConsentAgreementNotification.Builder(
             context = context,
@@ -47,7 +47,9 @@ object UserDataConsentAgreement {
             .message(message)
             .contentIntent(createActivityPendingIntent(context, CONTENT_REQUEST_CODE, intent))
             .fullscreenIntent(createActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE, intent))
-            .timeout(timeoutMs)
+            .apply {
+                if (timeoutMs != null) timeout(timeoutMs)
+            }
             .build()
     }
 
