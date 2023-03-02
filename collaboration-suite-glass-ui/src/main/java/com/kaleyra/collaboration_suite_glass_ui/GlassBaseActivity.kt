@@ -15,8 +15,8 @@ abstract class GlassBaseActivity : CollaborationActivity(), OnDestinationChanged
 
     private var glassTouchEventManager: GlassTouchEventManager? = null
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         glassTouchEventManager = GlassTouchEventManager(this, this)
     }
 
@@ -28,14 +28,14 @@ abstract class GlassBaseActivity : CollaborationActivity(), OnDestinationChanged
     /**
      * @suppress
      */
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean =
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean =
         if (glassTouchEventManager!!.toGlassTouchEvent(ev)) true
         else super.dispatchTouchEvent(ev)
 
     /**
      * @suppress
      */
-    override fun dispatchKeyEvent(event: KeyEvent?): Boolean =
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean =
         if (glassTouchEventManager!!.toGlassTouchEvent(event)) true
         else super.dispatchKeyEvent(event)
 
