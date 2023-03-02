@@ -20,7 +20,7 @@
         <attr name="recyclerViewStyle" tools:ignore="ResourceName" />
         <attr name="kaleyra_recyclerViewItemStyle" />
         <attr name="kaleyra_chatMessageLayoutStyle" format="reference" />
-        <attr name="kaleyra_titleStyle" format="reference" />
+        <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_counterStyle" format="reference" />
         <attr name="bottomNavigationStyle" tools:ignore="ResourceName" />
     </declare-styleable>
