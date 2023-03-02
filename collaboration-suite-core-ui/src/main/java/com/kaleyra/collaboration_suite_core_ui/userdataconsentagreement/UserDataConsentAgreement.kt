@@ -11,10 +11,10 @@ import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 object UserDataConsentAgreement {
 
-    private const val CHANNEL_ID = "com.kaleyra.collaboration_suite_core_ui.eula.eula_notification_channel"
+    private const val CHANNEL_ID = "com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.userdataconsentagreement_notification_channel"
     private const val FULL_SCREEN_REQUEST_CODE = 1111
     private const val CONTENT_REQUEST_CODE = 2222
-    private const val EULA_NOTIFICATION_ID = 80
+    private const val USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID = 80
 
     private val context by lazy { ContextRetainer.context }
 
@@ -22,12 +22,12 @@ object UserDataConsentAgreement {
 
     fun show(title: String, message: String, intent: Intent, timeoutMs: Long) {
         val notification = buildNotification(context, intent, title, message, timeoutMs)
-        notificationManager.notify(EULA_NOTIFICATION_ID, notification)
+        notificationManager.notify(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID, notification)
     }
 
     fun cancel() {
-        AutoDismissNotification.cancelAlarm(context, EULA_NOTIFICATION_ID)
-        notificationManager.cancel(EULA_NOTIFICATION_ID)
+        AutoDismissNotification.cancelAlarm(context, USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID)
+        notificationManager.cancel(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID)
     }
 
     private fun buildNotification(
@@ -40,8 +40,8 @@ object UserDataConsentAgreement {
         return UserDataConsentAgreementNotification.Builder(
             context = context,
             channelId = CHANNEL_ID,
-            channelName = context.resources.getString(R.string.kaleyra_notification_terms_condition_channel_name),
-            notificationId = EULA_NOTIFICATION_ID
+            channelName = context.resources.getString(R.string.kaleyra_notification_user_data_consent_agreement_channel_name),
+            notificationId = USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID
         )
             .title(title)
             .message(message)
