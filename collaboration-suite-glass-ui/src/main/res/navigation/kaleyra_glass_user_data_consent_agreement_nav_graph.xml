@@ -17,13 +17,13 @@
 
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/smartglass_nav_graph_eula"
-    app:startDestination="@id/eulaFragment">
+    android:id="@+id/smartglass_nav_graph_user_data_consent_agreement"
+    app:startDestination="@id/userDataConsentAgreementFragment">
 
     <fragment
-        android:id="@+id/eulaFragment"
+        android:id="@+id/userDataConsentAgreementFragment"
         android:name="com.kaleyra.collaboration_suite_glass_ui.userdataconsentagreement.UserDataConsentAgreementFragment"
-        android:label="EulaFragment">
+        android:label="UserDataConsentAgreementFragment">
         <argument
             android:name="title"
             app:argType="string"
@@ -34,8 +34,8 @@
             android:defaultValue="" />
         <argument
             android:name="enableTilt"
-            android:defaultValue="false"
-            app:argType="boolean" />
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
 
