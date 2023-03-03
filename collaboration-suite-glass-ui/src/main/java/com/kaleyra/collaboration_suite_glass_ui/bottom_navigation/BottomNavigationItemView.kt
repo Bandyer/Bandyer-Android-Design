@@ -53,4 +53,12 @@ internal class BottomNavigationItemView @JvmOverloads constructor(
         val capitalizedText = text.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
         binding.kaleyraActionText.text = capitalizedText
     }
+
+    fun setActionText(text: String) {
+        binding.kaleyraActionText.text = text
+    }
+
+    fun setRootContentDescription(text: String) {
+        binding.root.contentDescription = text
+    }
 }
