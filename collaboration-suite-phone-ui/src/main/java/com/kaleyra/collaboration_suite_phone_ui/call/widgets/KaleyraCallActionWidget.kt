@@ -26,7 +26,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
 
-import com.badoo.mobile.util.WeakHandler
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.KaleyraActionBottomSheet
@@ -45,6 +44,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.AudioRou
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getCallThemeAttribute
 import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Widget used during a call to perform actions such as mute video/audio, change audioRoute etc.
@@ -120,13 +122,6 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
      * Current onHiddenListener
      */
     private var onHiddenListener: OnHiddenListener? = null
-
-    /**
-     * Weak handler to safely call delayed tasks
-     */
-    private val uiHandler by lazy {
-        WeakHandler()
-    }
 
     /**
      * Widget states
@@ -395,7 +390,10 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
      * @param millis delay factor in milliseconds
      */
     fun showDelayed(millis: Long, onShowListener: OnShowListener? = null) {
-        uiHandler.postDelayed({ show(onShowListener) }, millis)
+        MainScope().launch {
+            delay(millis)
+            show(onShowListener)
+        }
     }
 
     /**
