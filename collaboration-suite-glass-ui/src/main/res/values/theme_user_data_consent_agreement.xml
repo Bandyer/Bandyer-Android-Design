@@ -6,21 +6,21 @@
     </declare-styleable>
 
     <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.DayNight.Glass" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.DayNight">
-        <item name="colorSecondary">@android:color/white</item>
+        <item name="colorSecondary">@color/kaleyra_color_answer_button</item>
         <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="kaleyra_userDataConsentAgreementStyle">@style/KaleyraCollaborationSuiteUI.Glass.UserDataConsentAgreement</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Day.Glass" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Day">
-        <item name="colorSecondary">@android:color/white</item>
+        <item name="colorSecondary">@color/kaleyra_color_answer_button</item>
         <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="kaleyra_userDataConsentAgreementStyle">@style/KaleyraCollaborationSuiteUI.Glass.UserDataConsentAgreement</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Night.Glass" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Night">
-        <item name="colorSecondary">@android:color/white</item>
+        <item name="colorSecondary">@color/kaleyra_color_answer_button</item>
         <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="kaleyra_userDataConsentAgreementStyle">@style/KaleyraCollaborationSuiteUI.Glass.UserDataConsentAgreement</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation</item>
