@@ -25,11 +25,20 @@ object UserDataConsentAgreement {
     fun showNotification(
         title: String,
         message: String,
-        activityIntent: Intent,
+        contentIntent: Intent,
         deleteIntent: Intent,
+        fullscreenIntent: Intent? = null,
         timeoutMs: Long? = null
     ) {
-        val notification = buildNotification(context, activityIntent, deleteIntent, title, message, timeoutMs)
+        val notification = buildNotification(
+            context = context,
+            title = title,
+            message = message,
+            contentIntent = contentIntent,
+            deleteIntent = deleteIntent,
+            fullscreenIntent = fullscreenIntent,
+            timeoutMs = timeoutMs
+        )
         notificationManager.notify(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID, notification)
     }
 
@@ -50,9 +59,9 @@ object UserDataConsentAgreement {
         context: Context,
         title: String,
         message: String,
-        deleteIntent: Intent,
         contentIntent: Intent,
-        fullscreenIntent: Intent? = null,
+        deleteIntent: Intent,
+        fullscreenIntent: Intent?,
         timeoutMs: Long?
     ): Notification {
         return UserDataConsentAgreementNotification.Builder(
