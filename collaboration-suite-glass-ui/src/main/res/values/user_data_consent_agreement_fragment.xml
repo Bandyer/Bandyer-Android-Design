@@ -30,6 +30,7 @@
         <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.UserDataConsentAgreement.RecyclerViewItem</item>
         <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassUserDataConsentAgreement</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.UserDataConsentAgreement</item>
+        <item name="kaleyra_bottomNavigationVoiceStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.UserDataConsentAgreement.VoiceCommand</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.RecyclerView.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.RecyclerView">
@@ -64,7 +65,17 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem">
-        <item name="android:visibility">gone</item>
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.UserDataConsentAgreement</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeUserDataConsentAgreement</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_browse</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeUserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_browse</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem">
@@ -82,4 +93,48 @@
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem">
         <item name="android:clickable">true</item>
     </style>
+
+    <!-- VOICE COMMAND -->
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.UserDataConsentAgreement.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.UserDataConsentAgreement">
+        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.UserDataConsentAgreement</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.UserDataConsentAgreement</item>
+        <item name="kaleyra_thirdItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.UserDataConsentAgreement</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand.UserDataConsentAgreement</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem.VoiceCommand.UserDataConsentAgreement</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeUserDataConsentAgreement.VoiceCommand</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_scroll_right</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem.VoiceCommand.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_scroll_left</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeUserDataConsentAgreement.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeUserDataConsentAgreement">
+        <item name="android:text">@string/kaleyra_glass_scroll_right_left</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand.UserDataConsentAgreement</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand.UserDataConsentAgreement</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+    </style>
+
 </resources>

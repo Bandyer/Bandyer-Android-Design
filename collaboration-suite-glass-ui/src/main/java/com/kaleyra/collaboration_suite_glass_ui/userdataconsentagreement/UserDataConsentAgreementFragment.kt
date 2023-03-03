@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraFragmentUserDataConsentAgreementBinding
@@ -137,6 +138,11 @@ internal class UserDataConsentAgreementFragment : BaseFragment(), TiltListener {
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) {
         binding.kaleyraMessageRecyclerView.scrollBy((deltaAzimuth * requireContext().tiltScrollFactor()).toInt(), 0)
+    }
+
+    override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        super.setListenersForRealWear(bottomNavView)
+        bottomNavView.setFirstItemListeners({ onSwipeForward(true) }, { onSwipeBackward(true) })
     }
 
 }
