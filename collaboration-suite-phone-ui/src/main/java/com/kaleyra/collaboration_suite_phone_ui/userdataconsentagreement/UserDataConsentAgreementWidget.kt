@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.userdataconsentagreement
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraUserDataConsentAgreementWidgetLayoutBinding
@@ -12,6 +13,8 @@ class UserDataConsentAgreementWidget @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.kaleyra_rootLayoutStyle
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
+
+    private var acceptButtonText: String = ""
 
     private val binding: KaleyraUserDataConsentAgreementWidgetLayoutBinding by lazy { KaleyraUserDataConsentAgreementWidgetLayoutBinding.inflate(LayoutInflater.from(context), this, true) }
 
@@ -23,7 +26,32 @@ class UserDataConsentAgreementWidget @JvmOverloads constructor(
         binding.kaleyraMessage.text = text
     }
 
+    fun showProgress() {
+        binding.kaleyraDeclineButton.isActivated = false
+        binding.kaleyraDeclineButton.isClickable = false
+        binding.kaleyraDeclineButton.visibility = View.GONE
+
+        binding.kaleyraAcceptButton.isActivated = false
+        binding.kaleyraAcceptButton.isClickable = false
+        binding.kaleyraAcceptButton.text = " ".repeat(acceptButtonText.length)
+
+        binding.kaleyraProgressBar.visibility = View.VISIBLE
+    }
+
+    fun hideProgress() {
+        binding.kaleyraDeclineButton.isActivated = true
+        binding.kaleyraDeclineButton.isClickable = true
+        binding.kaleyraDeclineButton.visibility = View.VISIBLE
+
+        binding.kaleyraAcceptButton.isActivated = true
+        binding.kaleyraAcceptButton.isClickable = true
+        binding.kaleyraAcceptButton.text = acceptButtonText
+
+        binding.kaleyraProgressBar.visibility = View.GONE
+    }
+
     fun setAcceptButtonText(text: String) {
+        acceptButtonText = text
         binding.kaleyraAcceptButton.text = text
     }
 
