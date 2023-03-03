@@ -22,6 +22,12 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <application>
         <activity
+            android:name="com.kaleyra.collaboration_suite_glass_ui.userdataconsentagreement.GlassUserDataConsentAgreementActivity"
+            android:launchMode="singleTop"
+            android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.eula.GlassEulaActivity"
+            android:theme="@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Glass"
+            android:exported="false" />
+        <activity
             android:name=".call.GlassCallActivity"
             android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassCall"
