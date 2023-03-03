@@ -74,7 +74,7 @@ internal class ReadProgressDecoration(context: Context) : ItemDecoration() {
         val itemCount = parent.adapter?.itemCount ?: return
         if (itemCount < 2) return
 
-        val y = parent.bottom - this@ReadProgressDecoration.height
+        val y = parent.height - height / 2
         val containerWidth = (parent.parent as View).width
 
         canvas.drawInactive(parent, y, containerWidth)
