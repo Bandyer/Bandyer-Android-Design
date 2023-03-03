@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
@@ -32,6 +33,14 @@ object UserDataConsentAgreement {
         notificationManager.notify(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID, notification)
     }
 
+    fun show() {
+//        if (AppLifecycle.isInForeground.value)
+//            else {
+//            val notification = buildNotification(context, activityIntent, deleteIntent, title, message, timeoutMs)
+//            notificationManager.notify(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID, notification)
+//        }
+    }
+
     fun cancel() {
         AutoDismissNotification.cancelAlarm(context, USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID)
         notificationManager.cancel(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID)
@@ -39,10 +48,11 @@ object UserDataConsentAgreement {
 
     private fun buildNotification(
         context: Context,
-        activityIntent: Intent,
-        deleteIntent: Intent,
         title: String,
         message: String,
+        deleteIntent: Intent,
+        contentIntent: Intent,
+        fullscreenIntent: Intent? = null,
         timeoutMs: Long?
     ): Notification {
         return UserDataConsentAgreementNotification.Builder(
@@ -53,10 +63,10 @@ object UserDataConsentAgreement {
         )
             .title(title)
             .message(message)
-            .contentIntent(createActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityIntent))
-            .fullscreenIntent(createActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE, activityIntent))
+            .contentIntent(createActivityPendingIntent(context, CONTENT_REQUEST_CODE, contentIntent))
             .deleteIntent(createDeletePendingIntent(context, deleteIntent))
             .apply {
+                if (fullscreenIntent != null) fullscreenIntent(createActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE, fullscreenIntent))
                 if (timeoutMs != null) timeout(timeoutMs)
             }
             .build()
