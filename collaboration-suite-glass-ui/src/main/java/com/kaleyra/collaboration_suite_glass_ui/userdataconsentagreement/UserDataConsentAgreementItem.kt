@@ -41,6 +41,7 @@ internal class UserDataConsentAgreementItem(val text: String) : AbstractItem<Use
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: UserDataConsentAgreementItem, payloads: List<Any>) {
+            itemView.isClickable = false
             binding.kaleyraText.text = item.text
         }
 
@@ -48,6 +49,7 @@ internal class UserDataConsentAgreementItem(val text: String) : AbstractItem<Use
          * View needs to release resources when its recycled
          */
         override fun unbindView(item: UserDataConsentAgreementItem) {
+            itemView.isClickable = true
             binding.kaleyraText.text = null
         }
     }
