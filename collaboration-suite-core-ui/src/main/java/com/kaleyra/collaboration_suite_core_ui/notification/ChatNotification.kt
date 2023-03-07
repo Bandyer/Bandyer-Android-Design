@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.kaleyra.collaboration_suite_core_ui.notification
 
 import android.app.Notification
@@ -12,7 +28,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
 import androidx.core.app.RemoteInput
-import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.google.android.material.color.MaterialColors
 import com.kaleyra.collaboration_suite_core_ui.R
@@ -65,7 +80,7 @@ internal class ChatNotification {
         var replyIntent: PendingIntent? = null,
         var markAsReadIntent: PendingIntent? = null,
 //        var deleteIntent: PendingIntent? = null,
-        var fullscreenIntent: PendingIntent? = null,
+        var fullscreenIntent: PendingIntent? = null
     ) {
         /**
          * Set the username
@@ -165,9 +180,8 @@ internal class ChatNotification {
             val applicationIcon =
                 context.applicationContext.packageManager.getApplicationIcon(HostAppInfo.name)
             val person = Person.Builder()
-                .setName(username)
+                .setName(username.takeIf { it.isNotEmpty() } ?: " ")
                 .setKey(userId)
-                .apply { if (avatar != Uri.EMPTY) setIcon(IconCompat.createWithContentUri(avatar)) }
                 .build()
 
             val messagingStyle: NotificationCompat.MessagingStyle =
@@ -187,9 +201,8 @@ internal class ChatNotification {
 
             messages.forEach {
                 val participant = Person.Builder()
-                    .setName(it.username)
+                    .setName(it.username.takeIf { it.isNotEmpty() } ?: " ")
                     .setKey(it.userId)
-                    .apply { if (it.avatar != Uri.EMPTY) setIcon(IconCompat.createWithContentUri(it.avatar)) }
                     .build()
                 val message = NotificationCompat.MessagingStyle.Message(
                     it.text,

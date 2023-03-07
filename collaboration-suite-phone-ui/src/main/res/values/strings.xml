@@ -1,11 +1,11 @@
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,17 +17,16 @@
 <resources>
 
     <!-- Audio route labels -->
-    <string name="kaleyra_audio_route_title">Select an audio output</string>
     <string name="kaleyra_call_action_audio_route_bluetooth">Bluetooth</string>
     <string name="kaleyra_call_action_audio_route_wired_headset">Wired headset</string>
     <string name="kaleyra_call_action_audio_route_loudspeaker">Loudspeaker</string>
     <string name="kaleyra_call_action_audio_route_earpiece">Earpiece</string>
     <string name="kaleyra_call_action_audio_route_muted">Muted</string>
     <string name="kaleyra_call_action_audio_route_bluetooth_connected">Connected</string>
-    <string name="kaleyra_call_action_audio_route_bluetooth_deactivating">Deactivating…</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_deactivating">Deactivating &#8230;</string>
     <string name="kaleyra_call_action_audio_route_bluetooth_disconnected">Disconnected</string>
     <string name="kaleyra_call_action_audio_route_bluetooth_failed">Unable to connect to device. Please try turning it off and on again.</string>
-    <string name="kaleyra_call_action_audio_route_bluetooth_activating">Activating…</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_activating">Activating &#8230;</string>
     <string name="kaleyra_call_action_audio_route_bluetooth_available">Available</string>
     <string name="kaleyra_call_action_audio_route_bluetooth_battery_level">Battery level:</string>
 
@@ -54,43 +53,32 @@
     <string name="kaleyra_edit_text_input_placeholder">Write here &#8230;</string>
     <string name="kaleyra_chat_channel_loading">Loading &#8230;</string>
     <string name="kaleyra_chat_user_status_online">online</string>
-    <string name="kaleyra_chat_user_status_last_login">last login: %1$s</string>
+    <string name="kaleyra_chat_user_status_last_login">last login:</string>
     <string name="kaleyra_chat_user_status_offline">seen recently</string>
     <string name="kaleyra_chat_user_status_typing">typing</string>
-    <string name="kaleyra_chat_state_waiting_for_network">waiting for network&#8230;</string>
-    <string name="kaleyra_chat_state_connecting">connecting&#8230;</string>
+    <string name="kaleyra_chat_state_waiting_for_network">waiting for network &#8230;</string>
+    <string name="kaleyra_chat_state_connecting">connecting &#8230;</string>
     <string name="kaleyra_chat_send">Send message</string>
     <string name="kaleyra_chat_scroll_to_last_message">Scroll to the last message</string>
     <string name="kaleyra_chat_msg_status_pending">Message pending</string>
     <string name="kaleyra_chat_msg_status_sent">Message sent</string>
     <string name="kaleyra_chat_msg_status_seen">Message seen</string>
-    <string name="kaleyra_chat_unread_messages">Unread messages</string>
-    <string name="kaleyra_chat_no_messages">No message yet&#8230;</string>
-    <string name="kaleyra_chat_avatar_desc">Chat image</string>
 
     <!-- Call -->
-    <string name="kaleyra_call_show_buttons">Show buttons</string>
-    <string name="kaleyra_call_status_dialing">Dialing &#8230;</string>
-    <string name="kaleyra_close">Close</string>
-
-    <plurals name="kaleyra_call_status_ringing">
-        <item quantity="one">Ringing &#8230;</item>
-        <item quantity="other">Ringing &#8230;</item>
+    <string name="kaleyra_call_status_connecting">Connecting &#8230;</string>
+    <string name="kaleyra_call_status_dialing">Calling &#8230;</string>
+    <plurals name="kaleyra_call_incoming_status_ringing">
+        <item quantity="one">Is calling you &#8230;</item>
+        <item quantity="other">Are calling you &#8230;</item>
     </plurals>
-
-    <string name="kaleyra_call_status_connecting">Connecting…</string>
-
+    <string name="kaleyra_call_status_ringing">Ringing &#8230;</string>
     <string name="kaleyra_call_status_ended">Call ended</string>
-
-    <string name="kaleyra_call_status_user_disconnected">Internet connection has been interrupted.</string>
-
     <plurals name="kaleyra_call_status_declined">
         <item quantity="one">The user has declined.</item>
         <item quantity="other">All users have declined.</item>
     </plurals>
-
+    <string name="kaleyra_call_status_user_disconnected">Internet connection has been interrupted.</string>
     <string name="kaleyra_call_status_answered_on_other_device">You have answered on another device.</string>
-
     <plurals name="kaleyra_call_status_no_answer">
         <item quantity="one">The user has not answered.</item>
         <item quantity="other">No user has answered.</item>
@@ -125,7 +113,6 @@
 
     <!-- WHITEBOARD -->
     <string name="kaleyra_collaborate_button">Collaborate</string>
-    <string name="kaleyra_whiteboard">Whiteboard</string>
 
     <string name="kaleyra_confirm_message">Yes</string>
     <string name="kaleyra_cancel_message">No</string>
@@ -139,12 +126,6 @@
     <string name="kaleyra_upload_file_error">Error occurred uploading file image</string>
     <string name="kaleyra_file_upload_percentage">%1$d %%</string>
     <string name="kaleyra_upload_file">Upload file</string>
-
-    <string name="kaleyra_whiteboard_uploading_file">Uploading file</string>
-    <string name="kaleyra_whiteboard_compressing">compressing…</string>
-    <string name="kaleyra_whiteboard_error_title">Error</string>
-    <string name="kaleyra_whiteboard_error_subtitle">Something went wrong</string>
-
 
     <!-- TEMPLATES -->
     <string name="kaleyra_bluetooth_info">%1$s%2$s%3$s</string>
@@ -162,7 +143,6 @@
     <string name="kaleyra_screenshare_full_device">Whole device screen</string>
 
     <!-- FILE SHARE -->
-    <string name="kaleyra_fileshare">File Share</string>
     <string name="kaleyra_fileshare_add">Upload</string>
     <string name="kaleyra_fileshare_add_description">Upload a new file</string>
     <string name="kaleyra_fileshare_upload_error">Upload failed - Retry</string>
@@ -172,14 +152,14 @@
     <string name="kaleyra_fileshare_progress">%1$d %%</string>
     <string name="kaleyra_fileshare_upload">Upload</string>
     <string name="kaleyra_fileshare_download">Download</string>
-    <string name="kaleyra_fileshare_miscellaneous">Generic file</string>
+    <string name="kaleyra_fileshare_file">Generic file</string>
     <string name="kaleyra_fileshare_media">Media file</string>
     <string name="kaleyra_fileshare_archive">Archive file</string>
     <string name="kaleyra_fileshare_cancel">Cancel</string>
     <string name="kaleyra_fileshare_download_descr">Start download</string>
     <string name="kaleyra_fileshare_success">File shared</string>
     <string name="kaleyra_fileshare_retry">Retry</string>
-    <string name="kaleyra_no_file_shared">Still no file shared…</string>
+    <string name="kaleyra_no_file_shared">Still no file shared &#8230;</string>
     <string name="kaleyra_click_to_share_file">Click on “+” button to start sharing documents and images</string>
     <string name="kaleyra_write_permission_dialog_descr">Memory permission needed to download files</string>
     <string name="kaleyra_write_permission_dialog_title">Memory permission denied</string>
@@ -189,7 +169,6 @@
     <string name="kaleyra_fileshare_file_cancelled">File cancelled</string>
     <string name="kaleyra_max_bytes_dialog_descr">It is allowed to share files up to 150 MB</string>
     <string name="kaleyra_max_bytes_dialog_title">File share limit</string>
-    <string name="kaleyra_fileshare_open_file">Open file</string>
 
     <!-- FEEDBACK -->
     <string name="kaleyra_feedback_vote">Vote</string>
@@ -200,7 +179,7 @@
     <string name="kaleyra_feedback_neutral">Neutral</string>
     <string name="kaleyra_feedback_good">Good</string>
     <string name="kaleyra_feedback_excellent">Excellent</string>
-    <string name="kaleyra_feedback_leave_a_comment">Leave a comment…</string>
+    <string name="kaleyra_feedback_leave_a_comment">Leave a comment &#8230;</string>
     <string name="kaleyra_feedback_rating_bar_descr">Rating</string>
     <string name="kaleyra_feedback_see_you_soon">We hope to see you again soon.</string>
     <string name="kaleyra_feedback_thank_you">Thank you for your feedback!</string>
@@ -220,10 +199,5 @@
     <string name="kaleyra_utterance_recording_started">Recording starting now</string>
     <string name="kaleyra_utterance_recording_stopped">Recording stopped</string>
     <string name="kaleyra_utterance_recording_failed">Recording failed. Hang up and retry</string>
-
-    <!-- TOP APP BAR -->
-    <string name="kaleyra_start_audio_call">Start call</string>
-    <string name="kaleyra_start_audio_upgradable_call">Start call</string>
-    <string name="kaleyra_start_video_call">Start video call</string>
 
 </resources>

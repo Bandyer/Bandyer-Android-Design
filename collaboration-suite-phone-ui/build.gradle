@@ -51,7 +51,7 @@ dependencies {
     implementation androidX.vectorDrawable
     implementation androidX.vectorDrawableAnimated
 
-    compileOnly 'com.github.imablanco:Zoomy:1ee82834df'
+    compileOnly 'io.github.imablanco:zoomy:1.0.0'
 
     /*** UI ***/
     api picasso.picasso
