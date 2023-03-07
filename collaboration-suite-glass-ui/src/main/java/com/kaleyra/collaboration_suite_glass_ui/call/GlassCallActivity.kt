@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -101,9 +101,7 @@ import java.util.concurrent.ConcurrentMap
  */
 internal class GlassCallActivity :
     GlassBaseActivity(),
-    OnDestinationChangedListener,
-    TouchEventListener,
-    GlassTouchEventManager.Listener {
+    TouchEventListener {
 
     private lateinit var binding: KaleyraCallActivityGlassBinding
 
@@ -120,7 +118,6 @@ internal class GlassCallActivity :
     // The value is a Pair<UserId, ItemIdentifier>
     private val livePointers: ConcurrentMap<LivePointerView, Pair<String, Long>> = ConcurrentHashMap()
     private var navController: NavController? = null
-    private var glassTouchEventManager: GlassTouchEventManager? = null
 
     val rvStreams: RecyclerView get() = binding.kaleyraStreams
 
@@ -153,7 +150,6 @@ internal class GlassCallActivity :
 
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
-        glassTouchEventManager = GlassTouchEventManager(this@GlassCallActivity, this@GlassCallActivity)
 
         handleIntentAction(intent)
     }
@@ -695,7 +691,6 @@ internal class GlassCallActivity :
         streamsItemAdapter = null
         whiteboardItemAdapter = null
         navController = null
-        glassTouchEventManager = null
     }
 
     /**
@@ -728,25 +723,6 @@ internal class GlassCallActivity :
 
     private fun getResourceColor(@ColorRes color: Int) =
         ResourcesCompat.getColor(resources, color, null)
-
-    /**
-     * @suppress
-     */
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean =
-        if (glassTouchEventManager!!.toGlassTouchEvent(ev)) true
-        else super.dispatchTouchEvent(ev)
-
-    /**
-     * @suppress
-     */
-    override fun dispatchKeyEvent(event: KeyEvent?): Boolean =
-        if (glassTouchEventManager!!.toGlassTouchEvent(event)) true
-        else super.dispatchKeyEvent(event)
-
-    override fun onGlassTouchEvent(glassEvent: TouchEvent): Boolean =
-        (supportFragmentManager.currentNavigationFragment as? TouchEventListener)?.let {
-            if (it.onTouch(glassEvent)) true else onTouch(glassEvent)
-        } ?: false
 
     override fun onTouch(event: TouchEvent): Boolean =
         when {

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +24,7 @@
     <string name="kaleyra_notification_stop_screen_share">Ferma Condivisione</string>
     <string name="kaleyra_notification_call_channel_high_priority_name">Chiamate Alta Priorità</string>
     <string name="kaleyra_notification_call_channel_low_priority_name">Chiamate Bassa Priorità</string>
+    <string name="kaleyra_notification_user_data_consent_agreement_channel_name">Accordo Consenso Dati Utente</string>
     <string name="kaleyra_notification_chat_channel_name">Chat</string>
     <string name="kaleyra_notification_incoming_call">Chiamata in ingresso</string>
     <string name="kaleyra_notification_incoming_group_call">Chiamata di gruppo in ingresso</string>
