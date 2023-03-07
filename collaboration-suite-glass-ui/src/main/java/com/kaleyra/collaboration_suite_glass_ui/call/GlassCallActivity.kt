@@ -36,8 +36,8 @@ import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
-import com.kaleyra.collaboration_suite.phonebox.Whiteboard
-import com.kaleyra.collaboration_suite.phonebox.Whiteboard.LoadOptions
+import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
+import com.kaleyra.collaboration_suite.whiteboard.Whiteboard.LoadOptions
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.call.CallController

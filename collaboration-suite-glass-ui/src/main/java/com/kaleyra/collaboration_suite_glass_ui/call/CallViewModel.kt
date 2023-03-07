@@ -28,7 +28,7 @@ import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.Stream
-import com.kaleyra.collaboration_suite.phonebox.Whiteboard
+import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
