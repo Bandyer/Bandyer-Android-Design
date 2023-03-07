@@ -165,9 +165,8 @@ internal class ChatNotification {
             val applicationIcon =
                 context.applicationContext.packageManager.getApplicationIcon(HostAppInfo.name)
             val person = Person.Builder()
-                .setName(username)
+                .setName(username.takeIf { it.isNotEmpty() } ?: " ")
                 .setKey(userId)
-                .apply { if (avatar != Uri.EMPTY) setIcon(IconCompat.createWithContentUri(avatar)) }
                 .build()
 
             val messagingStyle: NotificationCompat.MessagingStyle =
@@ -187,9 +186,8 @@ internal class ChatNotification {
 
             messages.forEach {
                 val participant = Person.Builder()
-                    .setName(it.username)
+                    .setName(it.username.takeIf { it.isNotEmpty() } ?: " ")
                     .setKey(it.userId)
-                    .apply { if (it.avatar != Uri.EMPTY) setIcon(IconCompat.createWithContentUri(it.avatar)) }
                     .build()
                 val message = NotificationCompat.MessagingStyle.Message(
                     it.text,
