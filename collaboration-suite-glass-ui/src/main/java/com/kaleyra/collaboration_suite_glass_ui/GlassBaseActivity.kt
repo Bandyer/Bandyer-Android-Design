@@ -11,7 +11,7 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
 /**
  * GlassBaseActivity
  */
-abstract class GlassBaseActivity : CollaborationActivity(), OnDestinationChangedListener, GlassTouchEventManager.Listener {
+internal abstract class GlassBaseActivity : CollaborationActivity(), OnDestinationChangedListener, GlassTouchEventManager.Listener {
 
     private var glassTouchEventManager: GlassTouchEventManager? = null
 

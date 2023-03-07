@@ -25,6 +25,10 @@
         android:name="com.kaleyra.collaboration_suite_glass_ui.userdataconsentagreement.UserDataConsentAgreementFragment"
         android:label="UserDataConsentAgreementFragment">
         <argument
+            android:name="enableTilt"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
             android:name="title"
             app:argType="string"
             android:defaultValue="" />
@@ -33,9 +37,23 @@
             app:argType="string"
             android:defaultValue="" />
         <argument
-            android:name="enableTilt"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:name="acceptText"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="declineText"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="acceptCallback"
+            app:argType="com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.ParcelableLambda"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="declineCallback"
+            app:argType="com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.ParcelableLambda"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
 

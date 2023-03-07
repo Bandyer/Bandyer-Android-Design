@@ -8,7 +8,7 @@ import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 
-class AutoDismissNotification : BroadcastReceiver() {
+internal class AutoDismissNotification : BroadcastReceiver() {
 
     companion object {
         private const val KEY_EXTRA_NOTIFICATION_ID = "notification_id"

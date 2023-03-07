@@ -45,4 +45,6 @@
     <string name="add_download">Add download</string>
     <string name="add_download_available">Add download available</string>
     <string name="file_share_dialog">File Share Dialog</string>
+    <string name="user_consent_agreement_notification">Terms agreement notification</string>
+
 </resources>

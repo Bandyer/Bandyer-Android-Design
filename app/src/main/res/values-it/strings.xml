@@ -44,4 +44,5 @@
     <string name="add_download_available">Aggiungi download disp.</string>
     <string name="file_share_dialog">File Share Dialog</string>
     <string name="notification">Notifica chiamata</string>
+    <string name="user_consent_agreement_notification">Notifica accettazione termini</string>
 </resources>

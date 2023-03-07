@@ -33,7 +33,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
-import com.kaleyra.collaboration_suite_core_ui.eula.EULA
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.dialogs.KaleyraParicipantRemovedDialog
@@ -47,6 +46,7 @@ import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassA
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.items.getSmartglassActions
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.utils.MotionEventInterceptor
+import com.kaleyra.collaboration_suite_phone_ui.userdataconsentagreement.PhoneUserDataConsentAgreement
 import com.kaleyra.collaboration_suite_phone_ui.whiteboard.dialog.KaleyraWhiteboardTextEditorDialog
 import com.kaleyra.demo_collaboration_suite_ui.databinding.ActivityMainBinding
 import java.util.concurrent.ConcurrentHashMap
@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
         initializeListeners()
     }
@@ -121,8 +120,14 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        btnEula.setOnClickListener {
-            EULA.show("New message", "You need to accept terms and condition to proceed.", Intent(), 3000L)
+        btnUserConsentAgreement.setOnClickListener {
+            PhoneUserDataConsentAgreement.showNotification(
+                title = "New message",
+                message = "You need to accept terms and condition to proceed.",
+                contentIntent = Intent(),
+                deleteIntent = Intent().apply { action = "CUSTOM_ACTION" },
+                timeoutMs = 3000L
+            )
         }
 
         btnLivePointer.setOnClickListener {

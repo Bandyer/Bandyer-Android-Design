@@ -97,12 +97,11 @@ internal class UserDataConsentAgreementFragment : BaseFragment(), TiltListener {
                 }
             }
 
-            // TODO set this properly
             with(kaleyraBottomNavigation) {
-                setSecondItemActionText("I agree")
-                setThirdItemActionText("Decline")
-                setSecondItemContentDescription("I agree")
-                setThirdItemContentDescription("Decline")
+                setSecondItemActionText(args.acceptText)
+                setThirdItemActionText(args.declineText)
+                setSecondItemContentDescription(args.acceptText)
+                setThirdItemContentDescription(args.declineText)
             }
         }
 
@@ -118,14 +117,16 @@ internal class UserDataConsentAgreementFragment : BaseFragment(), TiltListener {
         itemAdapter = null
     }
 
-    override fun onTap(): Boolean {
-        // TODO
-        return false
-    }
+    override fun onTap(): Boolean = onCallback(args.acceptCallback?.block)
 
-    override fun onSwipeDown(): Boolean {
-        // TODO
-        return false
+    override fun onSwipeDown(): Boolean = onCallback(args.declineCallback?.block)
+
+    private fun onCallback(callback: (() -> Unit)?): Boolean {
+        return if (callback != null) {
+            callback.invoke()
+            requireActivity().finishAndRemoveTask()
+            true
+        } else false
     }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also {
