@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,10 +46,10 @@ import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassA
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.items.getSmartglassActions
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.utils.MotionEventInterceptor
+import com.kaleyra.collaboration_suite_phone_ui.userdataconsentagreement.PhoneUserDataConsentAgreement
 import com.kaleyra.collaboration_suite_phone_ui.whiteboard.dialog.KaleyraWhiteboardTextEditorDialog
 import com.kaleyra.demo_collaboration_suite_ui.databinding.ActivityMainBinding
 import java.util.concurrent.ConcurrentHashMap
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
         initializeListeners()
     }
@@ -81,7 +80,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, CallNotificationActivity::class.java))
         }
 
-        btnChat.setOnClickListener { startActivity(Intent(this@MainActivity, ChatActivity::class.java)) }
+        btnChat.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    ChatActivity::class.java
+                )
+            )
+        }
 
         btnCall.setOnClickListener {
             startActivity(
@@ -112,6 +118,16 @@ class MainActivity : AppCompatActivity() {
                     mText = newText
                 }
             })
+        }
+
+        btnUserConsentAgreement.setOnClickListener {
+            PhoneUserDataConsentAgreement.showNotification(
+                title = "New message",
+                message = "You need to accept terms and condition to proceed.",
+                contentIntent = Intent(),
+                deleteIntent = Intent().apply { action = "CUSTOM_ACTION" },
+                timeoutMs = 3000L
+            )
         }
 
         btnLivePointer.setOnClickListener {
@@ -214,7 +230,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnMuteParticipant.setOnClickListener {
-            KaleyraCallParticipantMutedSnackbar.make(binding.root, "Unknown guy", LENGTH_LONG).show()
+            KaleyraCallParticipantMutedSnackbar.make(binding.root, "Unknown guy", LENGTH_LONG)
+                .show()
         }
 
     }

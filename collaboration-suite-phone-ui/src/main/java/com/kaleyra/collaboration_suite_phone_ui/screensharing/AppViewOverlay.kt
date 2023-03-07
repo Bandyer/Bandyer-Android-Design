@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,13 +22,13 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.os.Looper
 import android.view.View
-import com.badoo.mobile.util.WeakHandler
 import com.kaleyra.collaboration_suite_phone_ui.extensions.canDrawOverlays
 import com.kaleyra.collaboration_suite_phone_ui.extensions.startAppOpsWatch
 import com.kaleyra.collaboration_suite_phone_ui.extensions.stopAppOpsWatch
 import com.kaleyra.collaboration_suite_phone_ui.views.ViewOverlayAttacher
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 /**
  * Represents a view that can is attached to the views of an app or attached to the system's window
@@ -45,8 +45,6 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
     private var appOpsCallback: ((String, String) -> Unit)? = null
 
     private var initialized = false
-
-    private val mainThreadHandler = WeakHandler(Looper.getMainLooper())
 
     /**
      * Shows the overlay view. If the context is an Activity the overlay will be attached to its decor view otherwise
@@ -72,7 +70,6 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
         appOpsCallback = null
         initialized = false
         application = null
-        mainThreadHandler.removeCallbacksAndMessages(null)
     }
 
     private fun getOverlayType(context: Context): ViewOverlayAttacher.OverlayType {
@@ -106,7 +103,7 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
         val pckName = applicationContext.packageName
         appOpsCallback = callback@{ op, packageName ->
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW != op || packageName != pckName || !initialized) return@callback
-            mainThreadHandler.post {
+            MainScope().launch {
                 hide()
                 show(context)
             }
