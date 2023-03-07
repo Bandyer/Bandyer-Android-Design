@@ -36,8 +36,7 @@ import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
-import com.kaleyra.collaboration_suite.phonebox.Whiteboard
-import com.kaleyra.collaboration_suite.phonebox.Whiteboard.LoadOptions
+import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
@@ -534,12 +533,12 @@ internal class GlassCallActivity :
                         } else {
                             if (currentWhiteboard == wb) return@combine
                             val mode =
-                                if (actions.any { it is CallUI.Action.OpenWhiteboard.ViewOnly }) LoadOptions.Mode.ViewOnly else LoadOptions.Mode.Default
+                                if (actions.any { it is CallUI.Action.OpenWhiteboard.ViewOnly }) Whiteboard.LoadOptions.Mode.ViewOnly else Whiteboard.LoadOptions.Mode.Default
                             wbJob?.cancel()
                             wbJob?.join()
 //                            currentWhiteboard?.unload()
                             currentWhiteboard = wb
-                            wb.load(LoadOptions(mode))
+                            wb.load(Whiteboard.LoadOptions(mode))
 //                            whiteboardItemAdapter!!.clear()
                             whiteboardItemAdapter!!.add(WhiteboardItem(wb))
                             wbJob = viewModel.callState
