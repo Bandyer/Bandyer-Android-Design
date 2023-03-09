@@ -23,15 +23,15 @@ import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsActivityDelegate
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditionsConfig
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditionsUIConfig
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotification
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 
-open class TermsAndConditionsManager(
+open class TermsAndConditionsUI(
     private val activityClazz: Class<*>,
-    private val notificationConfig: TermsAndConditionsConfig.NotificationConfig,
-    private val activityConfig: TermsAndConditionsConfig.ActivityConfig
+    private val notificationConfig: TermsAndConditionsUIConfig.NotificationConfig,
+    private val activityConfig: TermsAndConditionsUIConfig.ActivityConfig
 ) : TermsAndConditionsNotificationDelegate(), TermsAndConditionsActivityDelegate {
 
     open fun show() {
