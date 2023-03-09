@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Phone">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Phone">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
@@ -25,71 +25,71 @@
         <attr name="kaleyra_progressStyle" />
     </declare-styleable>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.DayNight.Phone" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.DayNight">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.RootLayout</item>
-        <item name="android:scrollViewStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.ScrollView</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserDataConsentAgreement</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.UserDataConsentAgreement</item>
-        <item name="kaleyra_positiveButtonStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.FilledButton</item>
-        <item name="kaleyra_negativeButtonStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.TextButton</item>
-        <item name="kaleyra_progressStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.ProgressBar</item>
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.DayNight.Phone" parent="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.DayNight">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.RootLayout</item>
+        <item name="android:scrollViewStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.ScrollView</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.TermsAndConditions</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.TermsAndConditions</item>
+        <item name="kaleyra_positiveButtonStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.FilledButton</item>
+        <item name="kaleyra_negativeButtonStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.TextButton</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.ProgressBar</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Day.Phone" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Day">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.RootLayout</item>
-        <item name="android:scrollViewStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.ScrollView</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserDataConsentAgreement</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.UserDataConsentAgreement</item>
-        <item name="kaleyra_positiveButtonStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.FilledButton</item>
-        <item name="kaleyra_negativeButtonStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.TextButton</item>
-        <item name="kaleyra_progressStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.ProgressBar</item>
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Day.Phone" parent="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Day">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.RootLayout</item>
+        <item name="android:scrollViewStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.ScrollView</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.TermsAndConditions</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.TermsAndConditions</item>
+        <item name="kaleyra_positiveButtonStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.FilledButton</item>
+        <item name="kaleyra_negativeButtonStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.TextButton</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.ProgressBar</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Night.Phone" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Night">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.RootLayout</item>
-        <item name="android:scrollViewStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.ScrollView</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserDataConsentAgreement</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.UserDataConsentAgreement</item>
-        <item name="kaleyra_positiveButtonStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.FilledButton</item>
-        <item name="kaleyra_negativeButtonStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.TextButton</item>
-        <item name="kaleyra_progressStyle">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.ProgressBar</item>
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Night.Phone" parent="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Night">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.RootLayout</item>
+        <item name="android:scrollViewStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.ScrollView</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.TermsAndConditions</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.TermsAndConditions</item>
+        <item name="kaleyra_positiveButtonStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.FilledButton</item>
+        <item name="kaleyra_negativeButtonStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.TextButton</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.ProgressBar</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreement.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditions.RootLayout" parent="">
         <item name="android:padding">@dimen/kaleyra_dimen_space40</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreement.ScrollView" parent="">
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditions.ScrollView" parent="">
         <item name="android:fadeScrollbars">false</item>
         <item name="android:scrollbars">vertical</item>
         <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space48</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.Title.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:textColor">?attr/colorOnBackground</item>
         <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space24</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.UserDataConsentAgreement" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:textColor">?attr/colorOnBackground</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreement.FilledButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.ButtonTextAppearance</item>
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditions.FilledButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.ButtonTextAppearance</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreement.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditions.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:alpha">0.6</item>
-        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.UserDataConsentAgreement.ButtonTextAppearance</item>
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TermsAndConditions.ButtonTextAppearance</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreement.ButtonTextAppearance" parent="">
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditions.ButtonTextAppearance" parent="">
         <item name="android:textSize">@dimen/kaleyra_dimen_text_normal</item>
         <item name="android:textAllCaps">false</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreement.ProgressBar" parent="Widget.MaterialComponents.CircularProgressIndicator">
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditions.ProgressBar" parent="Widget.MaterialComponents.CircularProgressIndicator">
         <item name="indicatorSize">@dimen/kaleyra_dimen_text_h1</item>
         <item name="android:indeterminate">true</item>
         <item name="trackThickness">@dimen/kaleyra_dimen_space2</item>

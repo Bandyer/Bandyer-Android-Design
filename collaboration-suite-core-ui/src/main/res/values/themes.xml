@@ -81,14 +81,14 @@
 
     <style name="KaleyraCollaborationSuiteUI.Theme.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Day" />
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimaryVariant">@android:color/transparent</item>
         <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
         <item name="fontFamily">@font/kaleyra_font</item>
         <item name="android:fontFamily">@font/kaleyra_font</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Day" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Base">
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Day" parent="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Base">
         <item name="colorPrimary">@color/kaleyra_terms_colorPrimary</item>
         <item name="colorOnPrimary">@color/kaleyra_terms_colorOnPrimary</item>
         <item name="android:colorBackground">@color/kaleyra_terms_colorBackground</item>
@@ -96,7 +96,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Night" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Base">
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Night" parent="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Base">
         <item name="colorPrimary">@color/kaleyra_terms_colorPrimary_night</item>
         <item name="colorOnPrimary">@color/kaleyra_terms_colorOnPrimary_night</item>
         <item name="android:colorBackground">@color/kaleyra_terms_colorBackground_night</item>
@@ -104,6 +104,6 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.DayNight" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Day"/>
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.DayNight" parent="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Day"/>
 
 </resources>

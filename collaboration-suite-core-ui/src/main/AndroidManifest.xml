@@ -54,7 +54,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.AutoDismissNotification"/>
+        <receiver android:name="com.kaleyra.collaboration_suite_core_ui.termsandconditions.AutoDismissNotification"/>
     </application>
 
 </manifest>

@@ -22,7 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraUserDataConsentAgreementWidgetLayoutBinding
+import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraTermsAndConditionsWidgetLayoutBinding
 
 class UserDataConsentAgreementWidget @JvmOverloads constructor(
     context: Context,
@@ -32,7 +32,7 @@ class UserDataConsentAgreementWidget @JvmOverloads constructor(
 
     private var acceptButtonText: String = ""
 
-    private val binding: KaleyraUserDataConsentAgreementWidgetLayoutBinding by lazy { KaleyraUserDataConsentAgreementWidgetLayoutBinding.inflate(LayoutInflater.from(context), this, true) }
+    private val binding: KaleyraTermsAndConditionsWidgetLayoutBinding by lazy { KaleyraTermsAndConditionsWidgetLayoutBinding.inflate(LayoutInflater.from(context), this, true) }
 
     fun setTitle(text: String) {
         binding.kaleyraTitle.text = text

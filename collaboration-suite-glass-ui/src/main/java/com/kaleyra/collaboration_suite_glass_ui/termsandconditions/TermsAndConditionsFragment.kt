@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.userdataconsentagreement
+package com.kaleyra.collaboration_suite_glass_ui.termsandconditions
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -31,7 +31,7 @@ import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraFragmentUserDataConsentAgreementBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraFragmentTermsAndConditionsBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
@@ -39,16 +39,16 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoot
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
-internal class UserDataConsentAgreementFragment : BaseFragment(), TiltListener {
+internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
 
-    private var _binding: KaleyraFragmentUserDataConsentAgreementBinding? = null
-    override val binding: KaleyraFragmentUserDataConsentAgreementBinding get() = _binding!!
+    private var _binding: KaleyraFragmentTermsAndConditionsBinding? = null
+    override val binding: KaleyraFragmentTermsAndConditionsBinding get() = _binding!!
 
-    private var itemAdapter: ItemAdapter<UserDataConsentAgreementItem>? = null
+    private var itemAdapter: ItemAdapter<TermsAndConditionsItem>? = null
 
     private var currentMsgItemIndex = -1
 
-    private val args: UserDataConsentAgreementFragmentArgs by lazy { UserDataConsentAgreementFragmentArgs.fromBundle(requireActivity().intent?.extras ?: Bundle()) }
+    private val args: TermsAndConditionsFragmentArgs by lazy { TermsAndConditionsFragmentArgs.fromBundle(requireActivity().intent?.extras ?: Bundle()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,11 +63,11 @@ internal class UserDataConsentAgreementFragment : BaseFragment(), TiltListener {
         super.onCreateView(inflater, container, savedInstanceState)
 
         val themeResId = requireContext().getThemeAttribute(
-            R.style.KaleyraCollaborationSuiteUI_UserDataConsentAgreementTheme_Glass,
-            R.styleable.KaleyraCollaborationSuiteUI_UserDataConsentAgreementTheme_Glass,
-            R.styleable.KaleyraCollaborationSuiteUI_UserDataConsentAgreementTheme_Glass_kaleyra_userDataConsentAgreementStyle
+            R.style.KaleyraCollaborationSuiteUI_TermsAndConditionsTheme_Glass,
+            R.styleable.KaleyraCollaborationSuiteUI_TermsAndConditionsTheme_Glass,
+            R.styleable.KaleyraCollaborationSuiteUI_TermsAndConditionsTheme_Glass_kaleyra_termsAndConditionsStyle
         )
-        _binding = KaleyraFragmentUserDataConsentAgreementBinding.inflate(
+        _binding = KaleyraFragmentTermsAndConditionsBinding.inflate(
             inflater.cloneInContext(ContextThemeWrapper(requireActivity(), themeResId)),
             container,
             false
@@ -108,7 +108,7 @@ internal class UserDataConsentAgreementFragment : BaseFragment(), TiltListener {
             with(kaleyraMessage) {
                 post {
                     text = args.message
-                    val items = paginate().map { UserDataConsentAgreementItem(it.toString()) }
+                    val items = paginate().map { TermsAndConditionsItem(it.toString()) }
                     itemAdapter!!.set(items)
                 }
             }

@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement
+package com.kaleyra.collaboration_suite_core_ui.termsandconditions
 
 import android.app.*
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
-internal class UserDataConsentAgreementNotification {
+internal class TermsAndConditionsNotification {
 
     data class Builder(
         val context: Context,

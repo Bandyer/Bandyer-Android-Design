@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.userdataconsentagreement
+package com.kaleyra.collaboration_suite_glass_ui.termsandconditions
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -22,7 +22,7 @@ import androidx.activity.viewModels
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraActivityUserDataConsentAgreementGlassBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraActivityTermsAndConditionsGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -31,16 +31,16 @@ import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-internal class GlassUserDataConsentAgreementActivity : GlassBaseActivity() {
+internal class GlassTermsAndConditionsActivity : GlassBaseActivity() {
 
-    private lateinit var binding: KaleyraActivityUserDataConsentAgreementGlassBinding
+    private lateinit var binding: KaleyraActivityTermsAndConditionsGlassBinding
 
-    private val viewModel: UserDataConsentAgreementViewModel by viewModels()
+    private val viewModel: TermsAndConditionsViewModel by viewModels()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = KaleyraActivityUserDataConsentAgreementGlassBinding.inflate(layoutInflater)
+        binding = KaleyraActivityTermsAndConditionsGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()

@@ -17,13 +17,13 @@
 
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/smartglass_nav_graph_user_data_consent_agreement"
-    app:startDestination="@id/userDataConsentAgreementFragment">
+    android:id="@+id/smartglass_nav_graph_terms_and_conditions"
+    app:startDestination="@id/termsAndConditionsFragment">
 
     <fragment
-        android:id="@+id/userDataConsentAgreementFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.userdataconsentagreement.UserDataConsentAgreementFragment"
-        android:label="UserDataConsentAgreementFragment">
+        android:id="@+id/termsAndConditionsFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.termsandconditions.TermsAndConditionsFragment"
+        android:label="TermsAndConditionsFragment">
         <argument
             android:name="enableTilt"
             app:argType="boolean"
@@ -46,12 +46,12 @@
             android:defaultValue="" />
         <argument
             android:name="acceptCallback"
-            app:argType="com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.ParcelableLambda"
+            app:argType="com.kaleyra.collaboration_suite_core_ui.termsandconditions.ParcelableLambda"
             app:nullable="true"
             android:defaultValue="@null" />
         <argument
             android:name="declineCallback"
-            app:argType="com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.ParcelableLambda"
+            app:argType="com.kaleyra.collaboration_suite_core_ui.termsandconditions.ParcelableLambda"
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>

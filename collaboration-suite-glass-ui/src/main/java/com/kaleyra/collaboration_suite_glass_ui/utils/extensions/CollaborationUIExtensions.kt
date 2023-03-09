@@ -22,6 +22,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity
 import com.kaleyra.collaboration_suite_glass_ui.chat.notification.GlassChatNotificationActivity
+import com.kaleyra.collaboration_suite_glass_ui.termsandconditions.GlassTermsAndConditionsActivity
 
 /**
  * Configure with glass u i

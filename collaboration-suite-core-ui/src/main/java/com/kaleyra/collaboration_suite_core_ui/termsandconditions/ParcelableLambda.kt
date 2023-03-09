@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement
+package com.kaleyra.collaboration_suite_core_ui.termsandconditions
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

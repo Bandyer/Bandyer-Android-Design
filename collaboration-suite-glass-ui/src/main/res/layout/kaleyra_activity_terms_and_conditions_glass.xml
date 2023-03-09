@@ -21,7 +21,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".userdataconsentagreement.GlassUserDataConsentAgreementActivity">
+    tools:context=".termsandconditions.GlassTermsAndConditionsActivity">
 
     <com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
         android:id="@+id/kaleyra_status_bar"
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/kaleyra_glass_user_data_consent_agreement_nav_graph" />
+            app:navGraph="@navigation/kaleyra_glass_terms_and_conditions_nav_graph" />
 
     </FrameLayout>
 
