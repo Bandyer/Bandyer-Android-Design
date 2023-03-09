@@ -19,14 +19,14 @@ package com.kaleyra.collaboration_suite_phone_ui.userdataconsentagreement
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsConfig
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsManager
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditionsUIConfig
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsUI
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-object PhoneUserDataConsentAgreement : TermsAndConditionsManager(
+object PhoneUserDataConsentAgreement : TermsAndConditionsUI(
     activityClazz = this::class.java,
-    notificationConfig = TermsAndConditionsConfig.NotificationConfig("", "", {}),
-    activityConfig = TermsAndConditionsConfig.ActivityConfig("", "", "", "", {}, {})
+    notificationConfig = TermsAndConditionsUIConfig.NotificationConfig("", "", {}),
+    activityConfig = TermsAndConditionsUIConfig.ActivityConfig("", "", "", "", {}, {})
 ) {
 
     private val context by lazy { ContextRetainer.context }

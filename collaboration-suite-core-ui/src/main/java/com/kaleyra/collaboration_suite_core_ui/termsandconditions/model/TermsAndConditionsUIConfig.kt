@@ -1,6 +1,6 @@
-package com.kaleyra.collaboration_suite_core_ui.termsandconditions
+package com.kaleyra.collaboration_suite_core_ui.termsandconditions.model
 
-sealed interface TermsAndConditionsConfig {
+sealed interface TermsAndConditionsUIConfig {
 
     val title: String
 
@@ -12,7 +12,7 @@ sealed interface TermsAndConditionsConfig {
         val dismissCallback: () -> Unit,
         val enableFullscreen: Boolean = false,
         val timeout: Long? = null
-    ) : TermsAndConditionsConfig
+    ) : TermsAndConditionsUIConfig
 
     data class ActivityConfig(
         override val title: String,
@@ -21,5 +21,5 @@ sealed interface TermsAndConditionsConfig {
         val declineText: String,
         val acceptCallback: () -> Unit,
         val declineCallback: () -> Unit
-    ) : TermsAndConditionsConfig
+    ) : TermsAndConditionsUIConfig
 }

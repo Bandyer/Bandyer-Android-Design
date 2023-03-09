@@ -21,6 +21,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsActivityDelegate
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditionsConfig
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotification
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 

@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_core_ui.termsandconditions
+package com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification
 
 import android.app.Notification
 import android.app.NotificationManager
@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditionsUIConfig
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
@@ -29,7 +30,7 @@ abstract class TermsAndConditionsNotificationDelegate : BroadcastReceiver() {
     private var onDismissCallback: (() -> Unit)? = null
 
     fun showNotification(
-        notificationConfig: TermsAndConditionsConfig.NotificationConfig,
+        notificationConfig: TermsAndConditionsUIConfig.NotificationConfig,
         activityIntent: Intent
     ) {
         context.registerReceiver(this, IntentFilter(ACTION_CANCEL))
@@ -56,7 +57,7 @@ abstract class TermsAndConditionsNotificationDelegate : BroadcastReceiver() {
 
     private fun buildNotification(
         context: Context,
-        notificationConfig: TermsAndConditionsConfig.NotificationConfig,
+        notificationConfig: TermsAndConditionsUIConfig.NotificationConfig,
         activityIntent: Intent
     ): Notification {
         return TermsAndConditionsNotification.Builder(

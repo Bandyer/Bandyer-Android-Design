@@ -1,6 +1,8 @@
-package com.kaleyra.collaboration_suite_core_ui.termsandconditions
+package com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity
 
 import android.content.Intent
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.ParcelableLambda
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditionsUIConfig
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
@@ -15,7 +17,7 @@ interface TermsAndConditionsActivityDelegate {
         const val EXTRA_DECLINE_CALLBACK = "declineCallback"
     }
 
-    fun showActivity(activityConfig: TermsAndConditionsConfig.ActivityConfig, activityClazz: Class<*>) {
+    fun showActivity(activityConfig: TermsAndConditionsUIConfig.ActivityConfig, activityClazz: Class<*>) {
         ContextRetainer.context.startActivity(buildActivityIntent(activityConfig, activityClazz))
     }
 
@@ -23,7 +25,7 @@ interface TermsAndConditionsActivityDelegate {
 
     }
 
-    fun buildActivityIntent(activityConfig: TermsAndConditionsConfig.ActivityConfig, activityClazz: Class<*>) = Intent(
+    fun buildActivityIntent(activityConfig: TermsAndConditionsUIConfig.ActivityConfig, activityClazz: Class<*>) = Intent(
         ContextRetainer.context, activityClazz).apply {
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         putExtra("enableTilt", DeviceUtils.isSmartGlass)
