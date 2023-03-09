@@ -16,14 +16,22 @@
 
 package com.kaleyra.collaboration_suite_phone_ui.userdataconsentagreement
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.UserDataConsentAgreement
+import com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.UserDataConsentAgreementInfo
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 object PhoneUserDataConsentAgreement : UserDataConsentAgreement(
     activityClazz = this::class.java,
-    notificationInfo = NotificationInfo("", "", {}),
-    activityInfo = ActivityInfo("", "", "", "", {}, {})
+    notificationInfo = UserDataConsentAgreementInfo.Notification("", "", {}),
+    activityInfo = UserDataConsentAgreementInfo.Activity("", "", "", "", {}, {})
 ) {
+
+    private val context by lazy { ContextRetainer.context }
+
+    private val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
     override fun show() = Unit
 
@@ -36,7 +44,7 @@ object PhoneUserDataConsentAgreement : UserDataConsentAgreement(
         timeoutMs: Long? = null
     ) {
         val notification = buildNotification(
-            context = context,
+            context = ContextRetainer.context,
             title = title,
             message = message,
             contentIntent = contentIntent,

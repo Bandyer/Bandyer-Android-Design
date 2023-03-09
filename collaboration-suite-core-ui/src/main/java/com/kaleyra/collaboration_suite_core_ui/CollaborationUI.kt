@@ -25,9 +25,7 @@ import com.kaleyra.collaboration_suite_utils.setValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.*
 
 /**
  * Collaboration UI
@@ -45,9 +43,11 @@ object CollaborationUI {
 
     private lateinit var callActivityClazz: Class<*>
     private lateinit var chatActivityClazz: Class<*>
+    private lateinit var userDataConsentAgreementActivityClazz: Class<*>
     private var chatNotificationActivityClazz: Class<*>? = null
 
     private var collaborationUIConnector: CollaborationUIConnector? = null
+    private var userDataConsentAgreementHandler: UserDataConsentAgreementHandler? = null
 
     private var _phoneBox: PhoneBoxUI? by cached { PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz, collaboration!!.configuration.logger) }
     private var _chatBox: ChatBoxUI? by cached { ChatBoxUI(collaboration!!.chatBox, chatActivityClazz, chatNotificationActivityClazz) }
@@ -94,6 +94,7 @@ object CollaborationUI {
         configuration: Configuration,
         callActivityClazz: Class<*>,
         chatActivityClazz: Class<*>,
+        userDataConsentAgreementActivityClazz: Class<*>,
         chatNotificationActivityClazz: Class<*>? = null
     ): Boolean {
         if (collaboration != null) return false
@@ -102,9 +103,11 @@ object CollaborationUI {
         }
         this.chatActivityClazz = chatActivityClazz
         this.callActivityClazz = callActivityClazz
+        this.userDataConsentAgreementActivityClazz = userDataConsentAgreementActivityClazz
         this.chatNotificationActivityClazz = chatNotificationActivityClazz
         mainScope = MainScope()
         collaborationUIConnector = CollaborationUIConnector(collaboration!!, mainScope!!)
+        userDataConsentAgreementHandler = UserDataConsentAgreementHandler(userDataConsentAgreementActivityClazz, phoneBox, chatBox, ::connect, ::disconnect, mainScope!!)
         return true
     }
 
@@ -114,6 +117,7 @@ object CollaborationUI {
     fun connect(session: Collaboration.Session) {
         if (collaboration?.session != null && collaboration?.session?.userId != session.userId) disconnect(true)
         collaborationUIConnector?.connect(session)
+        userDataConsentAgreementHandler?.setUp(session)
     }
 
     /**
@@ -122,6 +126,7 @@ object CollaborationUI {
      */
     fun disconnect(clearSavedData: Boolean = false) {
         collaborationUIConnector?.disconnect(clearSavedData)
+        userDataConsentAgreementHandler?.dispose()
     }
 
     /**

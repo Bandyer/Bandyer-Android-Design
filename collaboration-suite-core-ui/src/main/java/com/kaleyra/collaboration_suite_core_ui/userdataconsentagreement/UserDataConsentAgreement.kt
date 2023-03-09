@@ -29,73 +29,62 @@ import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-abstract class UserDataConsentAgreement(
-    private val activityClazz: Class<*>,
-    private val notificationInfo: NotificationInfo,
-    private val activityInfo: ActivityInfo
-): BroadcastReceiver() {
+sealed interface UserDataConsentAgreementInfo {
 
-    protected companion object {
-        const val USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID = 80
+    val title: String
 
-        const val CHANNEL_ID = "com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.userdataconsentagreement_notification_channel"
+    val message: String
 
-        const val FULL_SCREEN_REQUEST_CODE = 1111
-        const val CONTENT_REQUEST_CODE = 2222
-        const val DELETE_REQUEST_CODE = 3333
-
-        const val EXTRA_TITLE = "title"
-        const val EXTRA_MESSAGE = "message"
-        const val EXTRA_ACCEPT_TEXT = "acceptText"
-        const val EXTRA_DECLINE_TEXT = "declineText"
-        const val EXTRA_ACCEPT_CALLBACK = "acceptCallBack"
-        const val EXTRA_DECLINE_CALLBACK = "declineCallback"
-
-        const val ACTION_CANCEL = "com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.ACTION_CANCEL"
-    }
-
-    data class NotificationInfo(
-        val title: String,
-        val message: String,
+    data class Notification(
+        override val title: String,
+        override val message: String,
         val dismissCallback: () -> Unit,
         val enableFullscreen: Boolean = false,
         val timeout: Long? = null
-    )
+    ) : UserDataConsentAgreementInfo
 
-    data class ActivityInfo(
-        val title: String,
-        val message: String,
+    data class Activity(
+        override val title: String,
+        override val message: String,
         val acceptText: String,
         val declineText: String,
         val acceptCallback: () -> Unit,
         val declineCallback: () -> Unit
-    )
+    ) : UserDataConsentAgreementInfo
+}
 
-    protected val context by lazy { ContextRetainer.context }
+abstract class UserDataConsentAgreementNotificationDelegate : BroadcastReceiver() {
 
-    protected val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
+    companion object {
+        const val CHANNEL_ID = "com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.userdataconsentagreement_notification_channel"
+        const val ACTION_CANCEL = "com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.ACTION_CANCEL"
+        const val USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID = 80
+        const val FULL_SCREEN_REQUEST_CODE = 1111
+        const val CONTENT_REQUEST_CODE = 2222
+        const val DELETE_REQUEST_CODE = 3333
+    }
 
-    open fun show() = if (AppLifecycle.isInForeground.value) showActivity() else showNotification()
+    private val context by lazy { ContextRetainer.context }
 
-    private fun showActivity() = context.startActivity(createActivityIntent())
+    private val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
-    private fun showNotification() {
+    private var onDismissCallback: (() -> Unit)? = null
+
+    fun showNotification(
+        notificationInfo: UserDataConsentAgreementInfo.Notification,
+        activityIntent: Intent
+    ) {
         context.registerReceiver(this, IntentFilter(ACTION_CANCEL))
-        val activityIntent = createActivityIntent()
-        val deleteIntent = createDeleteIntent()
+        onDismissCallback = notificationInfo.dismissCallback
         val notification = buildNotification(
             context = context,
-            title = notificationInfo.title,
-            message = notificationInfo.message,
-            contentIntent = activityIntent,
-            deleteIntent = deleteIntent,
-            fullscreenIntent = if (notificationInfo.enableFullscreen) activityIntent else null,
-            timeoutMs = notificationInfo.timeout
+            notificationInfo = notificationInfo,
+            activityIntent = activityIntent
         )
         notificationManager.notify(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID, notification)
     }
 
-    fun cancel() {
+    fun dismissNotification() {
         AutoDismissNotification.cancelAlarm(context, USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID)
         notificationManager.cancel(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID)
     }
@@ -103,8 +92,97 @@ abstract class UserDataConsentAgreement(
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != ACTION_CANCEL) return
         context.unregisterReceiver(this)
-        notificationInfo.dismissCallback.invoke()
+        onDismissCallback?.invoke()
+        onDismissCallback = null
     }
+
+    private fun buildNotification(
+        context: Context,
+        notificationInfo: UserDataConsentAgreementInfo.Notification,
+        activityIntent: Intent
+    ): Notification {
+        return UserDataConsentAgreementNotification.Builder(
+            context = context,
+            channelId = CHANNEL_ID,
+            channelName = context.resources.getString(R.string.kaleyra_notification_user_data_consent_agreement_channel_name),
+            notificationId = USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID
+        )
+            .title(notificationInfo.title)
+            .message(notificationInfo.message)
+            .contentIntent(activityPendingIntent(context, activityIntent, CONTENT_REQUEST_CODE))
+            .deleteIntent(
+                deletePendingIntent(context, Intent(ACTION_CANCEL).apply { `package` = context.applicationContext.packageName })
+            )
+            .apply {
+                if (notificationInfo.enableFullscreen) {
+                    fullscreenIntent(activityPendingIntent(context, activityIntent, FULL_SCREEN_REQUEST_CODE))
+                }
+                if (notificationInfo.timeout != null) {
+                    timeout(notificationInfo.timeout)
+                }
+            }
+            .build()
+    }
+
+    private fun activityPendingIntent(context: Context, intent: Intent, requestCode: Int) =
+        PendingIntent.getActivity(context.applicationContext, requestCode, intent, PendingIntentExtensions.updateFlags)
+
+    private fun deletePendingIntent(context: Context, intent: Intent) =
+        PendingIntent.getBroadcast(context.applicationContext, DELETE_REQUEST_CODE, intent, PendingIntentExtensions.updateFlags)
+
+}
+
+interface UserDataConsentAgreementActivityDelegate {
+
+    companion object {
+        const val EXTRA_TITLE = "title"
+        const val EXTRA_MESSAGE = "message"
+        const val EXTRA_ACCEPT_TEXT = "acceptText"
+        const val EXTRA_DECLINE_TEXT = "declineText"
+        const val EXTRA_ACCEPT_CALLBACK = "acceptCallBack"
+        const val EXTRA_DECLINE_CALLBACK = "declineCallback"
+    }
+
+    fun showActivity(activityInfo: UserDataConsentAgreementInfo.Activity, activityClazz: Class<*>) {
+        ContextRetainer.context.startActivity(buildActivityIntent(activityInfo, activityClazz))
+    }
+
+    fun dismissActivity() {
+
+    }
+
+    fun buildActivityIntent(activityInfo: UserDataConsentAgreementInfo.Activity, activityClazz: Class<*>) = Intent(ContextRetainer.context, activityClazz).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        putExtra("enableTilt", DeviceUtils.isSmartGlass)
+        putExtra(EXTRA_TITLE, activityInfo.title)
+        putExtra(EXTRA_MESSAGE, activityInfo.message)
+        putExtra(EXTRA_ACCEPT_TEXT, activityInfo.acceptText)
+        putExtra(EXTRA_DECLINE_TEXT, activityInfo.declineText)
+        putExtra(EXTRA_ACCEPT_CALLBACK, ParcelableLambda(activityInfo.acceptCallback))
+        putExtra(EXTRA_DECLINE_CALLBACK, ParcelableLambda(activityInfo.declineCallback))
+    }
+}
+
+open class UserDataConsentAgreement(
+    private val activityClazz: Class<*>,
+    private val notificationInfo: UserDataConsentAgreementInfo.Notification,
+    private val activityInfo: UserDataConsentAgreementInfo.Activity
+) : UserDataConsentAgreementNotificationDelegate(), UserDataConsentAgreementActivityDelegate {
+
+    open fun show() {
+        if (AppLifecycle.isInForeground.value) {
+            showActivity(activityInfo, activityClazz)
+        } else {
+            showNotification(notificationInfo, buildActivityIntent(activityInfo, activityClazz))
+        }
+    }
+
+    fun dismiss() {
+        dismissNotification()
+        dismissActivity()
+    }
+
+    // TODO remove the following functions when sdk will be deprecated in favor of collaboration
 
     protected fun buildNotification(
         context: Context,
@@ -130,22 +208,6 @@ abstract class UserDataConsentAgreement(
                 if (timeoutMs != null) timeout(timeoutMs)
             }
             .build()
-    }
-
-    private fun createActivityIntent() = Intent(context, activityClazz).apply {
-        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        putExtra("enableTilt", DeviceUtils.isSmartGlass)
-        putExtra(EXTRA_TITLE, activityInfo.title)
-        putExtra(EXTRA_MESSAGE, activityInfo.message)
-        putExtra(EXTRA_ACCEPT_TEXT, activityInfo.acceptText)
-        putExtra(EXTRA_DECLINE_TEXT, activityInfo.declineText)
-        putExtra(EXTRA_ACCEPT_CALLBACK, ParcelableLambda(activityInfo.acceptCallback))
-        putExtra(EXTRA_DECLINE_CALLBACK, ParcelableLambda(activityInfo.declineCallback))
-    }
-
-    private fun createDeleteIntent() = Intent().apply {
-        this.`package` =  context.applicationContext.packageName
-        this.action = ACTION_CANCEL
     }
 
     private fun createActivityPendingIntent(
