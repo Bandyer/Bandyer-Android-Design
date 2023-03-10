@@ -24,7 +24,7 @@
     <string name="kaleyra_notification_call_channel_high_priority_name">Calls High Priority</string>
     <string name="kaleyra_notification_call_channel_low_priority_name">Calls Low Priority</string>
     <string name="kaleyra_notification_chat_channel_name">Chat</string>
-    <string name="kaleyra_notification_user_data_consent_agreement_channel_name">User Data Consent Agreement</string>
+    <string name="kaleyra_notification_terms_and_conditions_channel_name">User Data Consent Agreement</string>
     <string name="kaleyra_notification_incoming_call">Incoming call</string>
     <string name="kaleyra_notification_incoming_group_call">Incoming group call</string>
     <string name="kaleyra_notification_outgoing_call">Outgoing call</string>
@@ -53,5 +53,10 @@
         <item quantity="other">The admin has muted you</item>
     </plurals>
     <string name="kaleyra_call_participant_utterance_muted_by_admin">Muted</string>
+
+    <string name="kaleyra_user_data_consent_agreement_notification_title">Terms and conditions</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_message">You have a new message</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_call">Incoming call</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_message">You need to accept terms and conditions to proceed</string>
 
 </resources>

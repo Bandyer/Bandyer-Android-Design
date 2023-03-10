@@ -43,11 +43,11 @@ object CollaborationUI {
 
     private lateinit var callActivityClazz: Class<*>
     private lateinit var chatActivityClazz: Class<*>
-    private lateinit var userDataConsentAgreementActivityClazz: Class<*>
+    private lateinit var termsAndConditionsActivityClazz: Class<*>
     private var chatNotificationActivityClazz: Class<*>? = null
 
     private var collaborationUIConnector: CollaborationUIConnector? = null
-    private var userDataConsentAgreementHandler: UserDataConsentAgreementHandler? = null
+    private var termsAndConditionsRequester: TermsAndConditionsRequester? = null
 
     private var _phoneBox: PhoneBoxUI? by cached { PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz, collaboration!!.configuration.logger) }
     private var _chatBox: ChatBoxUI? by cached { ChatBoxUI(collaboration!!.chatBox, chatActivityClazz, chatNotificationActivityClazz) }
@@ -87,6 +87,7 @@ object CollaborationUI {
      * @param configuration representing a set of info necessary to instantiate the communication
      * @param callActivityClazz class of the call activity
      * @param chatActivityClazz class of the chat activity
+     * @param termsAndConditionsActivityClazz class of the terms and conditions activity
      * @param chatNotificationActivityClazz class of the chat notification fullscreen activity
      * @return
      */
@@ -94,7 +95,7 @@ object CollaborationUI {
         configuration: Configuration,
         callActivityClazz: Class<*>,
         chatActivityClazz: Class<*>,
-        userDataConsentAgreementActivityClazz: Class<*>,
+        termsAndConditionsActivityClazz: Class<*>,
         chatNotificationActivityClazz: Class<*>? = null
     ): Boolean {
         if (collaboration != null) return false
@@ -103,11 +104,11 @@ object CollaborationUI {
         }
         this.chatActivityClazz = chatActivityClazz
         this.callActivityClazz = callActivityClazz
-        this.userDataConsentAgreementActivityClazz = userDataConsentAgreementActivityClazz
+        this.termsAndConditionsActivityClazz = termsAndConditionsActivityClazz
         this.chatNotificationActivityClazz = chatNotificationActivityClazz
         mainScope = MainScope()
         collaborationUIConnector = CollaborationUIConnector(collaboration!!, mainScope!!)
-        userDataConsentAgreementHandler = UserDataConsentAgreementHandler(userDataConsentAgreementActivityClazz, phoneBox, chatBox, ::connect, ::disconnect, mainScope!!)
+        termsAndConditionsRequester = TermsAndConditionsRequester(termsAndConditionsActivityClazz, { }, { disconnect() }, mainScope!!)
         return true
     }
 
@@ -117,7 +118,7 @@ object CollaborationUI {
     fun connect(session: Collaboration.Session) {
         if (collaboration?.session != null && collaboration?.session?.userId != session.userId) disconnect(true)
         collaborationUIConnector?.connect(session)
-        userDataConsentAgreementHandler?.setUp(session)
+        termsAndConditionsRequester?.setUp(session)
     }
 
     /**
@@ -126,7 +127,7 @@ object CollaborationUI {
      */
     fun disconnect(clearSavedData: Boolean = false) {
         collaborationUIConnector?.disconnect(clearSavedData)
-        userDataConsentAgreementHandler?.dispose()
+        termsAndConditionsRequester?.dispose()
     }
 
     /**

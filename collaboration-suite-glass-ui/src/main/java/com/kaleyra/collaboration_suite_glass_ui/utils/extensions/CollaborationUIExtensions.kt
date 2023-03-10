@@ -35,5 +35,6 @@ fun CollaborationUI.configureGlassUI(
     configuration,
     GlassCallActivity::class.java,
     GlassChatActivity::class.java,
+    GlassTermsAndConditionsActivity::class.java,
     GlassChatNotificationActivity::class.java.takeIf { DeviceUtils.isGoogleGlass }
 )
