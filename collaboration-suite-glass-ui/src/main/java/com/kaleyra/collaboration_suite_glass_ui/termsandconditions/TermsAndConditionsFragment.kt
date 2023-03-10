@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -48,7 +49,7 @@ internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
 
     private var currentMsgItemIndex = -1
 
-    private val args: TermsAndConditionsFragmentArgs by lazy { TermsAndConditionsFragmentArgs.fromBundle(requireActivity().intent?.extras ?: Bundle()) }
+    private val args: TermsAndConditionsFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,16 +134,18 @@ internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
         itemAdapter = null
     }
 
-    override fun onTap(): Boolean = onCallback(args.acceptCallback?.block)
+    override fun onTap(): Boolean {
+        val activity = requireActivity() as? GlassTermsAndConditionsActivity ?: return false
+        activity.onAcceptTerms(activity)
+        activity.finishAndRemoveTask()
+        return true
+    }
 
-    override fun onSwipeDown(): Boolean = onCallback(args.declineCallback?.block)
-
-    private fun onCallback(callback: (() -> Unit)?): Boolean {
-        return if (callback != null) {
-            callback.invoke()
-            requireActivity().finishAndRemoveTask()
-            true
-        } else false
+    override fun onSwipeDown(): Boolean {
+        val activity = requireActivity() as? GlassTermsAndConditionsActivity ?: return false
+        activity.onDeclineTerms(activity)
+        activity.finishAndRemoveTask()
+        return true
     }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also {

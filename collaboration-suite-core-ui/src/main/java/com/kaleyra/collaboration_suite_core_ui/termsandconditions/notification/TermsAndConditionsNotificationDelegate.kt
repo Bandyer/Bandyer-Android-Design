@@ -12,11 +12,13 @@ import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAnd
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-abstract class TermsAndConditionsNotificationDelegate : BroadcastReceiver() {
+class TermsAndConditionsNotificationDelegate(
+    private val notificationConfig: TermsAndConditionsUIConfig.NotificationConfig
+) : BroadcastReceiver() {
 
     companion object {
-        const val CHANNEL_ID = "com.kaleyra.collaboration_suite_core_ui.termsandconditions.terms_and_conditions_notification_channel"
-        const val ACTION_CANCEL = "com.kaleyra.collaboration_suite_core_ui.termsandconditions.ACTION_CANCEL"
+        const val CHANNEL_ID = "com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.terms_and_conditions_notification_channel"
+        const val ACTION_CANCEL = "com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.ACTION_CANCEL"
         const val TERMS_AND_CONDITIONS_NOTIFICATION_ID = 80
         const val FULL_SCREEN_REQUEST_CODE = 1111
         const val CONTENT_REQUEST_CODE = 2222
@@ -27,14 +29,8 @@ abstract class TermsAndConditionsNotificationDelegate : BroadcastReceiver() {
 
     private val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
-    private var onDismissCallback: (() -> Unit)? = null
-
-    fun showNotification(
-        notificationConfig: TermsAndConditionsUIConfig.NotificationConfig,
-        activityIntent: Intent
-    ) {
+    fun showNotification(activityIntent: Intent) {
         context.registerReceiver(this, IntentFilter(ACTION_CANCEL))
-        onDismissCallback = notificationConfig.dismissCallback
         val notification = buildNotification(
             context = context,
             notificationConfig = notificationConfig,
@@ -51,8 +47,7 @@ abstract class TermsAndConditionsNotificationDelegate : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != ACTION_CANCEL) return
         context.unregisterReceiver(this)
-        onDismissCallback?.invoke()
-        onDismissCallback = null
+        notificationConfig.dismissCallback.invoke()
     }
 
     private fun buildNotification(

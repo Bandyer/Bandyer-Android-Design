@@ -22,29 +22,34 @@ import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsActivityDelegate
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditionsUIConfig
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotification
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate.Companion.CHANNEL_ID
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate.Companion.CONTENT_REQUEST_CODE
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate.Companion.DELETE_REQUEST_CODE
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate.Companion.FULL_SCREEN_REQUEST_CODE
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate.Companion.TERMS_AND_CONDITIONS_NOTIFICATION_ID
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 
 open class TermsAndConditionsUI(
     private val activityClazz: Class<*>,
-    private val notificationConfig: TermsAndConditionsUIConfig.NotificationConfig,
+    notificationConfig: TermsAndConditionsUIConfig.NotificationConfig,
     private val activityConfig: TermsAndConditionsUIConfig.ActivityConfig
-) : TermsAndConditionsNotificationDelegate(), TermsAndConditionsActivityDelegate {
+) {
+
+    private val activityDelegate = TermsAndConditionsActivityDelegate(activityConfig, activityClazz)
+
+    private val notificationDelegate = TermsAndConditionsNotificationDelegate(notificationConfig)
 
     open fun show() {
-        if (AppLifecycle.isInForeground.value) {
-            showActivity(activityConfig, activityClazz)
-        } else {
-            showNotification(notificationConfig, buildActivityIntent(activityConfig, activityClazz))
-        }
+        if (AppLifecycle.isInForeground.value) activityDelegate.showActivity()
+        else notificationDelegate.showNotification(activityDelegate.buildActivityIntent(activityConfig, activityClazz))
     }
 
     fun dismiss() {
-        dismissNotification()
-        dismissActivity()
+        notificationDelegate.dismissNotification()
     }
 
     // TODO remove the following functions when sdk will be deprecated in favor of collaboration
@@ -66,10 +71,22 @@ open class TermsAndConditionsUI(
         )
             .title(title)
             .message(message)
-            .contentIntent(createActivityPendingIntent(context, CONTENT_REQUEST_CODE, contentIntent))
+            .contentIntent(
+                createActivityPendingIntent(
+                    context,
+                    CONTENT_REQUEST_CODE,
+                    contentIntent
+                )
+            )
             .deleteIntent(createDeletePendingIntent(context, deleteIntent))
             .apply {
-                if (fullscreenIntent != null) fullscreenIntent(createActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE, fullscreenIntent))
+                if (fullscreenIntent != null) fullscreenIntent(
+                    createActivityPendingIntent(
+                        context,
+                        FULL_SCREEN_REQUEST_CODE,
+                        fullscreenIntent
+                    )
+                )
                 if (timeoutMs != null) timeout(timeoutMs)
             }
             .build()

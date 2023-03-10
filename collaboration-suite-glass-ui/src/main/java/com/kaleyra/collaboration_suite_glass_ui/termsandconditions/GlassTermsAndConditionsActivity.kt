@@ -19,9 +19,12 @@ package com.kaleyra.collaboration_suite_glass_ui.termsandconditions
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.navigation.fragment.NavHostFragment
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsActivityDecorator
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
+import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraActivityTermsAndConditionsGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode
@@ -31,7 +34,7 @@ import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-internal class GlassTermsAndConditionsActivity : GlassBaseActivity() {
+internal class GlassTermsAndConditionsActivity : GlassBaseActivity(), TermsAndConditionsActivityDecorator {
 
     private lateinit var binding: KaleyraActivityTermsAndConditionsGlassBinding
 
@@ -42,6 +45,7 @@ internal class GlassTermsAndConditionsActivity : GlassBaseActivity() {
         super.onCreate(savedInstanceState)
         binding = KaleyraActivityTermsAndConditionsGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        getConfigFromIntent(intent)
 
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
@@ -71,6 +75,18 @@ internal class GlassTermsAndConditionsActivity : GlassBaseActivity() {
                 }
                 .launchIn(this)
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        onDeclineTerms(this)
+    }
+
+    override fun onConfig(title: String, message: String, acceptText: String, declineText: String) {
+        val enableTilt = intent.getBooleanExtra("enableTilt", false)
+        val termsAndConditionFragmentNavArgs = TermsAndConditionsFragmentArgs(enableTilt, title, message, acceptText, declineText)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.kaleyra_nav_host_fragment) as NavHostFragment
+        navHostFragment.navController.setGraph(R.navigation.kaleyra_glass_terms_and_conditions_nav_graph, termsAndConditionFragmentNavArgs.toBundle())
     }
 
     override fun onDestinationChanged(destinationId: Int) = Unit

@@ -44,16 +44,6 @@
             android:name="declineText"
             app:argType="string"
             android:defaultValue="" />
-        <argument
-            android:name="acceptCallback"
-            app:argType="com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.ParcelableLambda"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="declineCallback"
-            app:argType="com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.ParcelableLambda"
-            app:nullable="true"
-            android:defaultValue="@null" />
     </fragment>
 
 
