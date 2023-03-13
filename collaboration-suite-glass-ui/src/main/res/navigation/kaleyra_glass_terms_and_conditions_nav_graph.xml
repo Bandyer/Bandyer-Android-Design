@@ -29,21 +29,10 @@
             app:argType="boolean"
             android:defaultValue="false" />
         <argument
-            android:name="title"
-            app:argType="string"
-            android:defaultValue="" />
-        <argument
-            android:name="message"
-            app:argType="string"
-            android:defaultValue="" />
-        <argument
-            android:name="acceptText"
-            app:argType="string"
-            android:defaultValue="" />
-        <argument
-            android:name="declineText"
-            app:argType="string"
-            android:defaultValue="" />
+            android:name="termsAndConditions"
+            app:argType="com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
 

@@ -20,7 +20,9 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsActivityDecorator
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsUIActivityDelegate.Companion.EXTRA_CONFIGURATION
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.decline
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
@@ -34,18 +36,28 @@ import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-internal class GlassTermsAndConditionsActivity : GlassBaseActivity(), TermsAndConditionsActivityDecorator {
+internal class GlassTermsAndConditionsActivity : GlassBaseActivity() {
 
     private lateinit var binding: KaleyraActivityTermsAndConditionsGlassBinding
 
     private val viewModel: TermsAndConditionsViewModel by viewModels()
+
+    private var termsAndConditions: TermsAndConditions? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = KaleyraActivityTermsAndConditionsGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        getConfigFromIntent(intent)
+
+        val termsAndConditions = intent.extras?.getParcelable<TermsAndConditions>(EXTRA_CONFIGURATION)?.apply {
+            termsAndConditions = this
+        }
+        if (termsAndConditions != null) {
+            onConfig(termsAndConditions)
+        } else {
+            finishAndRemoveTask()
+        }
 
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
@@ -79,12 +91,12 @@ internal class GlassTermsAndConditionsActivity : GlassBaseActivity(), TermsAndCo
 
     override fun onBackPressed() {
         super.onBackPressed()
-        onDeclineTerms(this)
+        termsAndConditions?.decline()
     }
 
-    override fun onConfig(title: String, message: String, acceptText: String, declineText: String) {
+    private fun onConfig(configuration: TermsAndConditions) {
         val enableTilt = intent.getBooleanExtra("enableTilt", false)
-        val termsAndConditionFragmentNavArgs = TermsAndConditionsFragmentArgs(enableTilt, title, message, acceptText, declineText)
+        val termsAndConditionFragmentNavArgs = TermsAndConditionsFragmentArgs(enableTilt, configuration)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.kaleyra_nav_host_fragment) as NavHostFragment
         navHostFragment.navController.setGraph(R.navigation.kaleyra_glass_terms_and_conditions_nav_graph, termsAndConditionFragmentNavArgs.toBundle())
     }

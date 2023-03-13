@@ -4,22 +4,20 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsActivityDecorator.Companion.EXTRA_ACCEPT_TEXT
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsActivityDecorator.Companion.EXTRA_DECLINE_TEXT
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsActivityDecorator.Companion.EXTRA_MESSAGE
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsActivityDecorator.Companion.EXTRA_TITLE
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditionsUIConfig
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsUI
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-class TermsAndConditionsActivityDelegate(
-    private val activityConfig: TermsAndConditionsUIConfig.ActivityConfig,
+class TermsAndConditionsUIActivityDelegate(
+    private val activityConfig: TermsAndConditionsUI.Config.Activity,
     private val activityClazz: Class<*>
 ) : BroadcastReceiver() {
 
     companion object {
         const val ACTION_ACCEPT = "com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.ACTION_ACCEPT"
         const val ACTION_DECLINE = "com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.ACTION_DECLINE"
+        const val EXTRA_CONFIGURATION = "extraConfiguration"
     }
 
     private val context by lazy { ContextRetainer.context }
@@ -41,12 +39,9 @@ class TermsAndConditionsActivityDelegate(
         context.unregisterReceiver(this)
     }
 
-    fun buildActivityIntent(activityConfig: TermsAndConditionsUIConfig.ActivityConfig, activityClazz: Class<*>) = Intent(context, activityClazz).apply {
+    fun buildActivityIntent(activityConfig: TermsAndConditionsUI.Config.Activity, activityClazz: Class<*>) = Intent(context, activityClazz).apply {
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         putExtra("enableTilt", DeviceUtils.isSmartGlass)
-        putExtra(EXTRA_TITLE, activityConfig.title)
-        putExtra(EXTRA_MESSAGE, activityConfig.message)
-        putExtra(EXTRA_ACCEPT_TEXT, activityConfig.acceptText)
-        putExtra(EXTRA_DECLINE_TEXT, activityConfig.declineText)
+        putExtra(EXTRA_CONFIGURATION, TermsAndConditions(activityConfig.title, activityConfig.message, activityConfig.acceptText, activityConfig.declineText))
     }
 }

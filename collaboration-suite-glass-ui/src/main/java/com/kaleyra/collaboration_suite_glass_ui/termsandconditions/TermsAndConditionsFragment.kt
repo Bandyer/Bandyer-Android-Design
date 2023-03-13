@@ -26,6 +26,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.accept
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.decline
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -50,6 +53,8 @@ internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
     private var currentMsgItemIndex = -1
 
     private val args: TermsAndConditionsFragmentArgs by navArgs()
+
+    private var termsAndConditions: TermsAndConditions? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,20 +110,23 @@ internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
                 root.setOnTouchListener { _, event -> onTouchEvent(event) }
             }
 
-            kaleyraTitle.text = args.title
-            with(kaleyraMessage) {
-                post {
-                    text = args.message
-                    val items = paginate().map { TermsAndConditionsItem(it.toString()) }
-                    itemAdapter!!.set(items)
+            termsAndConditions = args.termsAndConditions
+            termsAndConditions?.apply {
+                kaleyraTitle.text = title
+                with(kaleyraMessage) {
+                    post {
+                        text = message
+                        val items = paginate().map { TermsAndConditionsItem(it.toString()) }
+                        itemAdapter!!.set(items)
+                    }
                 }
-            }
 
-            with(kaleyraBottomNavigation) {
-                setSecondItemActionText(args.acceptText)
-                setThirdItemActionText(args.declineText)
-                setSecondItemContentDescription(args.acceptText)
-                setThirdItemContentDescription(args.declineText)
+                with(kaleyraBottomNavigation) {
+                    setSecondItemActionText(acceptText)
+                    setThirdItemActionText(declineText)
+                    setSecondItemContentDescription(acceptText)
+                    setThirdItemContentDescription(declineText)
+                }
             }
         }
 
@@ -136,14 +144,14 @@ internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
 
     override fun onTap(): Boolean {
         val activity = requireActivity() as? GlassTermsAndConditionsActivity ?: return false
-        activity.onAcceptTerms(activity)
+        termsAndConditions?.accept()
         activity.finishAndRemoveTask()
         return true
     }
 
     override fun onSwipeDown(): Boolean {
         val activity = requireActivity() as? GlassTermsAndConditionsActivity ?: return false
-        activity.onDeclineTerms(activity)
+        termsAndConditions?.decline()
         activity.finishAndRemoveTask()
         return true
     }

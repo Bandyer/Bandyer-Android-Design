@@ -1,12 +1,13 @@
-package com.kaleyra.collaboration_suite_core_ui
+package com.kaleyra.collaboration_suite_core_ui.termsandconditions
 
 import com.kaleyra.collaboration_suite.Collaboration
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsUI
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditionsUIConfig
+import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_networking.Session
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 internal class TermsAndConditionsRequester(
     private val activityClazz: Class<*>,
@@ -37,12 +38,13 @@ internal class TermsAndConditionsRequester(
         session: Collaboration.Session
     ) {
         val context = ContextRetainer.context
-        val notificationConfig = TermsAndConditionsUIConfig.NotificationConfig(
+        val notificationConfig = TermsAndConditionsUI.Config.Notification(
             title = context.getString(R.string.kaleyra_user_data_consent_agreement_notification_title),
             message = context.getString(R.string.kaleyra_user_data_consent_agreement_notification_message),
-            dismissCallback = onTermsDeclined
+            dismissCallback = onTermsDeclined,
+            enableFullscreen = DeviceUtils.isSmartGlass
         )
-        val activityConfig = TermsAndConditionsUIConfig.ActivityConfig(
+        val activityConfig = TermsAndConditionsUI.Config.Activity(
             title = requiredTerms.titleFieldText,
             message = requiredTerms.bodyFieldText,
             acceptText = requiredTerms.agreeButtonText,

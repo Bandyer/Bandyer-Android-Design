@@ -21,27 +21,50 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsActivityDelegate
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditionsUIConfig
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsUIActivityDelegate
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotification
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate.Companion.CHANNEL_ID
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate.Companion.CONTENT_REQUEST_CODE
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate.Companion.DELETE_REQUEST_CODE
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate.Companion.FULL_SCREEN_REQUEST_CODE
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotificationDelegate.Companion.TERMS_AND_CONDITIONS_NOTIFICATION_ID
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate.Companion.CHANNEL_ID
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate.Companion.CONTENT_REQUEST_CODE
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate.Companion.DELETE_REQUEST_CODE
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate.Companion.FULL_SCREEN_REQUEST_CODE
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate.Companion.TERMS_AND_CONDITIONS_NOTIFICATION_ID
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 
 open class TermsAndConditionsUI(
     private val activityClazz: Class<*>,
-    notificationConfig: TermsAndConditionsUIConfig.NotificationConfig,
-    private val activityConfig: TermsAndConditionsUIConfig.ActivityConfig
+    notificationConfig: Config.Notification,
+    private val activityConfig: Config.Activity
 ) {
 
-    private val activityDelegate = TermsAndConditionsActivityDelegate(activityConfig, activityClazz)
+    sealed interface Config {
 
-    private val notificationDelegate = TermsAndConditionsNotificationDelegate(notificationConfig)
+        val title: String
+
+        val message: String
+
+        data class Notification(
+            override val title: String,
+            override val message: String,
+            val dismissCallback: () -> Unit,
+            val enableFullscreen: Boolean = false,
+            val timeout: Long? = null
+        ) : Config
+
+        data class Activity(
+            override val title: String,
+            override val message: String,
+            val acceptText: String,
+            val declineText: String,
+            val acceptCallback: () -> Unit,
+            val declineCallback: () -> Unit
+        ) : Config
+    }
+
+    private val activityDelegate = TermsAndConditionsUIActivityDelegate(activityConfig, activityClazz)
+
+    private val notificationDelegate = TermsAndConditionsUINotificationDelegate(notificationConfig)
 
     open fun show() {
         if (AppLifecycle.isInForeground.value) activityDelegate.showActivity()

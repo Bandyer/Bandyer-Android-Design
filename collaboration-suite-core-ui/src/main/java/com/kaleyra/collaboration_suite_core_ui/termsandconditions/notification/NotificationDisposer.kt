@@ -24,21 +24,21 @@ import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 
-internal class AutoDismissNotification : BroadcastReceiver() {
+internal class NotificationDisposer : BroadcastReceiver() {
 
     companion object {
         private const val KEY_EXTRA_NOTIFICATION_ID = "notification_id"
 
-        fun setAlarm(context: Context, notificationId: Int, time: Long) {
+        fun disposeAfter(context: Context, notificationId: Int, time: Long) {
             val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val alarmIntent = Intent(context, AutoDismissNotification::class.java)
+            val alarmIntent = Intent(context, NotificationDisposer::class.java)
             alarmIntent.putExtra(KEY_EXTRA_NOTIFICATION_ID, notificationId)
             val alarmPendingIntent = PendingIntent.getBroadcast(context, notificationId, alarmIntent, PendingIntentExtensions.oneShotFlags)
             alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + time, alarmPendingIntent)
         }
 
-        fun cancelAlarm(context: Context, notificationId: Int) {
-            val alarmIntent = Intent(context, AutoDismissNotification::class.java)
+        fun revokeDisposal(context: Context, notificationId: Int) {
+            val alarmIntent = Intent(context, NotificationDisposer::class.java)
             alarmIntent.putExtra(KEY_EXTRA_NOTIFICATION_ID, notificationId)
             val alarmPendingIntent = PendingIntent.getBroadcast(context, notificationId, alarmIntent, PendingIntentExtensions.oneShotFlags)
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager

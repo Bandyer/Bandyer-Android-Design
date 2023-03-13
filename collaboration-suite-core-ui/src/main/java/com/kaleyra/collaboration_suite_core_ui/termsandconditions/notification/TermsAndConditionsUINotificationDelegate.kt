@@ -8,12 +8,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditionsUIConfig
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsUI
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-class TermsAndConditionsNotificationDelegate(
-    private val notificationConfig: TermsAndConditionsUIConfig.NotificationConfig
+class TermsAndConditionsUINotificationDelegate(
+    private val notificationConfig: TermsAndConditionsUI.Config.Notification
 ) : BroadcastReceiver() {
 
     companion object {
@@ -40,7 +40,7 @@ class TermsAndConditionsNotificationDelegate(
     }
 
     fun dismissNotification() {
-        AutoDismissNotification.cancelAlarm(context, TERMS_AND_CONDITIONS_NOTIFICATION_ID)
+        NotificationDisposer.revokeDisposal(context, TERMS_AND_CONDITIONS_NOTIFICATION_ID)
         notificationManager.cancel(TERMS_AND_CONDITIONS_NOTIFICATION_ID)
     }
 
@@ -52,7 +52,7 @@ class TermsAndConditionsNotificationDelegate(
 
     private fun buildNotification(
         context: Context,
-        notificationConfig: TermsAndConditionsUIConfig.NotificationConfig,
+        notificationConfig: TermsAndConditionsUI.Config.Notification,
         activityIntent: Intent
     ): Notification {
         return TermsAndConditionsNotification.Builder(

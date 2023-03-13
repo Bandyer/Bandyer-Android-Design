@@ -19,6 +19,7 @@ package com.kaleyra.collaboration_suite_core_ui
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
 import com.kaleyra.collaboration_suite_utils.setValue
@@ -108,7 +109,7 @@ object CollaborationUI {
         this.chatNotificationActivityClazz = chatNotificationActivityClazz
         mainScope = MainScope()
         collaborationUIConnector = CollaborationUIConnector(collaboration!!, mainScope!!)
-        termsAndConditionsRequester = TermsAndConditionsRequester(termsAndConditionsActivityClazz, { }, { disconnect() }, mainScope!!)
+        termsAndConditionsRequester = TermsAndConditionsRequester(termsAndConditionsActivityClazz, ::connect, ::disconnect, mainScope!!)
         return true
     }
 

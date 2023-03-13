@@ -73,7 +73,7 @@ internal class TermsAndConditionsNotification {
 
             timeout?.takeIf { it > 0L }?.also {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) builder.setTimeoutAfter(it)
-                else AutoDismissNotification.setAlarm(context, notificationId, it)
+                else NotificationDisposer.disposeAfter(context, notificationId, it)
             }
 
             contentIntent?.also { builder.setContentIntent(it) }
