@@ -12,7 +12,7 @@ import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndCondit
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-class TermsAndConditionsUINotificationDelegate(
+internal class TermsAndConditionsUINotificationDelegate(
     private val notificationConfig: TermsAndConditionsUI.Config.Notification
 ) : BroadcastReceiver() {
 

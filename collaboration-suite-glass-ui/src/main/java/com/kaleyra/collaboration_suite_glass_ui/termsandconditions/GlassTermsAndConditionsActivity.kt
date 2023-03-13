@@ -21,7 +21,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsUIActivityDelegate.Companion.EXTRA_CONFIGURATION
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.constants.Constants.EXTRA_TERMS_AND_CONDITIONS_CONFIGURATION
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.decline
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
@@ -50,7 +50,7 @@ internal class GlassTermsAndConditionsActivity : GlassBaseActivity() {
         binding = KaleyraActivityTermsAndConditionsGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val termsAndConditions = intent.extras?.getParcelable<TermsAndConditions>(EXTRA_CONFIGURATION)?.apply {
+        val termsAndConditions = intent.extras?.getParcelable<TermsAndConditions>(EXTRA_TERMS_AND_CONDITIONS_CONFIGURATION)?.apply {
             termsAndConditions = this
         }
         if (termsAndConditions != null) {

@@ -20,7 +20,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsUI
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate.Companion.TERMS_AND_CONDITIONS_NOTIFICATION_ID
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 object PhoneUserDataConsentAgreement : TermsAndConditionsUI(
@@ -28,6 +27,7 @@ object PhoneUserDataConsentAgreement : TermsAndConditionsUI(
     notificationConfig = Config.Notification("", "", {}),
     activityConfig = Config.Activity("", "", "", "", {}, {})
 ) {
+    private const val TERMS_AND_CONDITIONS_NOTIFICATION_ID = 80
 
     private val context by lazy { ContextRetainer.context }
 
