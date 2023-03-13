@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.onEach
 
 internal class TermsAndConditionsRequester(
     private val activityClazz: Class<*>,
-    private val onTermsAccepted: (session: Collaboration.Session) -> Unit,
-    private val onTermsDeclined: () -> Unit,
+    private val onAccept: (session: Collaboration.Session) -> Unit,
+    private val onDecline: () -> Unit,
     private val parentScope: CoroutineScope
 ) {
 
@@ -20,20 +20,18 @@ internal class TermsAndConditionsRequester(
 
     fun setUp(session: Collaboration.Session) {
         dispose()
-        scope = CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.IO)
-        session.state
-            .onEach { sessionState ->
-                if (sessionState !is Session.State.Authenticating.TermsAgreementRequired) return@onEach
-                showTerms(sessionState.requiredTerms[0], session)
-            }
-            .launchIn(scope!!)
+        scope = newChildScope(parentScope)
+        session.state.onEach { sessionState ->
+            if (sessionState !is Session.State.Authenticating.TermsAgreementRequired) return@onEach
+            showTermsAndConditions(sessionState.requiredTerms[0], session)
+        }.launchIn(scope!!)
     }
 
     fun dispose() {
         scope?.cancel()
     }
 
-    private fun showTerms(
+    private fun showTermsAndConditions(
         requiredTerms: Session.State.Authenticating.TermsAgreementRequired.SessionTerms,
         session: Collaboration.Session
     ) {
@@ -41,7 +39,7 @@ internal class TermsAndConditionsRequester(
         val notificationConfig = TermsAndConditionsUI.Config.Notification(
             title = context.getString(R.string.kaleyra_user_data_consent_agreement_notification_title),
             message = context.getString(R.string.kaleyra_user_data_consent_agreement_notification_message),
-            dismissCallback = onTermsDeclined,
+            dismissCallback = onDecline,
             enableFullscreen = DeviceUtils.isSmartGlass
         )
         val activityConfig = TermsAndConditionsUI.Config.Activity(
@@ -51,11 +49,14 @@ internal class TermsAndConditionsRequester(
             declineText = requiredTerms.disagreeButtonText,
             acceptCallback = {
                 requiredTerms.agree()
-                onTermsAccepted(session)
+                onAccept(session)
             },
-            declineCallback = onTermsDeclined
+            declineCallback = onDecline
         )
         TermsAndConditionsUI(activityClazz, notificationConfig, activityConfig).show()
     }
+
+    private fun newChildScope(parentScope: CoroutineScope) =
+        CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.IO)
 
 }
