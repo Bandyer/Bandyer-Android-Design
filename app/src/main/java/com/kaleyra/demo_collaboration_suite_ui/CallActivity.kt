@@ -37,7 +37,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.bandyer.android_audiosession.model.AudioOutputDevice
-import com.bandyer.android_audiosession.model.AudioOutputDevice.EARPIECE
+import com.bandyer.android_audiosession.model.AudioOutputDevice.Earpiece
+import com.bandyer.android_audiosession.router.RoutingException
 import com.bandyer.android_audiosession.router.strategy.LastConnectedDeviceRoutingStrategy
 import com.bandyer.android_audiosession.session.AudioCallSession
 import com.bandyer.android_audiosession.session.AudioCallSessionListener
@@ -99,7 +100,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
                 bluetoothHeadsetDiscoveryOptions = {
                     discoverNearbyHeadsets = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                 }
-                routingStrategy = LastConnectedDeviceRoutingStrategy(applicationContext, EARPIECE())
+                routingStrategy = LastConnectedDeviceRoutingStrategy(Earpiece())
             }
         }, object : AudioCallSessionListener {
 
@@ -110,6 +111,15 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
                     callActionWidget?.selectAudioRoute(getAudioRoute(connectingAudioOutputDevice))
                 }
                 Log.e(TAG, "${Thread.currentThread()} onOutputDeviceConnecting: $connectingAudioOutputDevice ${connectingAudioOutputDevice.name} currentDevice: $currentAudioOutputDevice ${currentAudioOutputDevice?.name}")
+            }
+
+            override fun onOutputDeviceConnectionFailed(
+                currentAudioOutputDevice: AudioOutputDevice?,
+                connectionFailedAudioOutputDevice: AudioOutputDevice,
+                routingException: RoutingException,
+                availableOutputs: List<AudioOutputDevice>
+            ) {
+                Log.e(TAG, "${Thread.currentThread()} onOutputDeviceConnectionFailed: $connectionFailedAudioOutputDevice ${connectionFailedAudioOutputDevice.name} currentDevice: $currentAudioOutputDevice ${currentAudioOutputDevice?.name}")
             }
 
             override fun onOutputDeviceConnected(oldAudioOutputDevice: AudioOutputDevice?, connectedAudioOutputDevice: AudioOutputDevice?, availableOutputs: List<AudioOutputDevice>, userSelected: Boolean) {
@@ -202,17 +212,17 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
     private fun getAudioRoute(audioOutputDevice: AudioOutputDevice): AudioRoute {
         val isActive = AudioCallSession.getInstance().currentAudioOutputDevice == audioOutputDevice
         return when (audioOutputDevice) {
-            is AudioOutputDevice.BLUETOOTH     -> AudioRoute.BLUETOOTH(
+            is AudioOutputDevice.Bluetooth     -> AudioRoute.BLUETOOTH(
                 this,
                 identifier = audioOutputDevice.identifier,
                 name = audioOutputDevice.name ?: "",
                 batteryLevel = audioOutputDevice.batteryLevel,
                 bluetoothConnectionStatus = AudioRouteState.BLUETOOTH.valueOf(audioOutputDevice.bluetoothConnectionStatus.name)
             )
-            is AudioOutputDevice.NONE          -> AudioRoute.MUTED(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
-            is EARPIECE                        -> AudioRoute.EARPIECE(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
-            is AudioOutputDevice.LOUDSPEAKER   -> AudioRoute.LOUDSPEAKER(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
-            is AudioOutputDevice.WIRED_HEADSET -> AudioRoute.WIRED_HEADSET(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
+            is AudioOutputDevice.None          -> AudioRoute.MUTED(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
+            is Earpiece                        -> AudioRoute.EARPIECE(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
+            is AudioOutputDevice.Loudspeaker   -> AudioRoute.LOUDSPEAKER(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
+            is AudioOutputDevice.WiredHeadset -> AudioRoute.WIRED_HEADSET(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
         }
     }
 
@@ -221,7 +231,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
         for (device in AudioCallSession.getInstance().getAvailableAudioOutputDevices) {
             val isActive = AudioCallSession.getInstance().currentAudioOutputDevice == device
             when (device) {
-                is AudioOutputDevice.BLUETOOTH     -> routes.add(
+                is AudioOutputDevice.Bluetooth     -> routes.add(
                     AudioRoute.BLUETOOTH(
                         this,
                         device.identifier,
@@ -230,10 +240,10 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
                         AudioRouteState.BLUETOOTH.valueOf(device.bluetoothConnectionStatus.name)
                     )
                 )
-                is AudioOutputDevice.WIRED_HEADSET -> routes.add(AudioRoute.WIRED_HEADSET(this, device.identifier, device.name, isActive))
-                is AudioOutputDevice.LOUDSPEAKER   -> routes.add(AudioRoute.LOUDSPEAKER(this, device.identifier, device.name, isActive))
-                is EARPIECE                        -> routes.add(AudioRoute.EARPIECE(this, device.identifier, device.name, isActive))
-                is AudioOutputDevice.NONE          -> {
+                is AudioOutputDevice.WiredHeadset -> routes.add(AudioRoute.WIRED_HEADSET(this, device.identifier, device.name, isActive))
+                is AudioOutputDevice.Loudspeaker -> routes.add(AudioRoute.LOUDSPEAKER(this, device.identifier, device.name, isActive))
+                is Earpiece                        -> routes.add(AudioRoute.EARPIECE(this, device.identifier, device.name, isActive))
+                is AudioOutputDevice.None          -> {
                     // nothing to add
                 }
             }
@@ -249,10 +259,10 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
 
         val device = when (item) {
             is AudioRoute.BLUETOOTH     -> item.toAudioOutputDevice()
-            is AudioRoute.MUTED         -> AudioOutputDevice.NONE() // mute stream audio
-            is AudioRoute.EARPIECE      -> EARPIECE()
-            is AudioRoute.LOUDSPEAKER   -> AudioOutputDevice.LOUDSPEAKER()
-            is AudioRoute.WIRED_HEADSET -> AudioOutputDevice.WIRED_HEADSET()
+            is AudioRoute.MUTED         -> AudioOutputDevice.None() // mute stream audio
+            is AudioRoute.EARPIECE      -> Earpiece()
+            is AudioRoute.LOUDSPEAKER   -> AudioOutputDevice.Loudspeaker()
+            is AudioRoute.WIRED_HEADSET -> AudioOutputDevice.WiredHeadset()
         }.apply { this.name = item.name }
 
         if (item::class.java == (AudioCallSession.getInstance().currentAudioOutputDevice!!)::class.java) {
@@ -264,7 +274,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
         return true
     }
 
-    private fun getMutedAudioRoute() = AudioRoute.MUTED(this, UUID.randomUUID().toString(), resources.getString(R.string.kaleyra_call_action_audio_route_muted), AudioCallSession.getInstance().currentAudioOutputDevice is AudioOutputDevice.NONE)
+    private fun getMutedAudioRoute() = AudioRoute.MUTED(this, UUID.randomUUID().toString(), resources.getString(R.string.kaleyra_call_action_audio_route_muted), AudioCallSession.getInstance().currentAudioOutputDevice is AudioOutputDevice.None)
 
     override fun onCallActionClicked(item: CallAction, position: Int): Boolean {
         return when (item) {
@@ -344,8 +354,8 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
     }
 }
 
-private fun AudioRoute.BLUETOOTH.toAudioOutputDevice(): AudioOutputDevice.BLUETOOTH = AudioOutputDevice.BLUETOOTH(this.identifier).apply {
+private fun AudioRoute.BLUETOOTH.toAudioOutputDevice(): AudioOutputDevice.Bluetooth = AudioOutputDevice.Bluetooth(this.identifier).apply {
     this.address = this.identifier
     this.batteryLevel = this@toAudioOutputDevice.batteryLevel
-    this.bluetoothConnectionStatus = AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.valueOf(this.bluetoothConnectionStatus.name)
+    this.bluetoothConnectionStatus = AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.valueOf(this.bluetoothConnectionStatus.name)
 }

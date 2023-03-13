@@ -55,61 +55,61 @@ class BluetoothAudioRouteActivity : AppCompatActivity() {
                 "dummy1",
                 "Bluetooth Earphones",
                 50,
-                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.PLAYING_AUDIO.name)))
+                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.PLAYING_AUDIO.name)))
 
         routes.add(AudioRoute.BLUETOOTH(this,
                 "dummy2",
                 "Bluetooth Earphones",
                 50,
-                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.CONNECTED.name)))
+                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.CONNECTED.name)))
 
         routes.add(AudioRoute.BLUETOOTH(this,
                 "dummy3",
                 "Bluetooth Earphones",
                 null,
-                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.DISCONNECTED.name)))
+                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.DISCONNECTED.name)))
 
         routes.add(AudioRoute.BLUETOOTH(this,
                 "dummy4",
                 "Bluetooth Earphones",
                 50,
-                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.DEACTIVATING.name)))
+                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.DEACTIVATING.name)))
 
         routes.add(AudioRoute.BLUETOOTH(this,
                 "dummy5",
                 "Bluetooth Earphones",
                 null,
-                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.FAILED.name)))
+                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.FAILED.name)))
 
         routes.add(AudioRoute.BLUETOOTH(this,
                 "dummy6",
                 "Bluetooth Earphones",
                 null,
-                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.CONNECTING.name)))
+                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.CONNECTING.name)))
 
         routes.add(AudioRoute.BLUETOOTH(this,
                 "dummy7",
                 "Bluetooth Earphones",
                 null,
-                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.AVAILABLE.name)))
+                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.AVAILABLE.name)))
 
         routes.add(AudioRoute.BLUETOOTH(this,
                 "dummy8",
                 "Bluetooth Earphones",
                 null,
-                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.ACTIVATING.name)))
+                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.ACTIVATING.name)))
 
         routes.add(AudioRoute.BLUETOOTH(this,
                 "dummy9",
                 "Bluetooth Earphones",
                 50,
-                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.ACTIVE.name)))
+                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.ACTIVE.name)))
 
         routes.add(AudioRoute.BLUETOOTH(this,
                 "dummy10",
                 "Bluetooth Earphones",
                 50,
-                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.CONNECTING_AUDIO.name)))
+                AudioRouteState.BLUETOOTH.valueOf(AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.CONNECTING_AUDIO.name)))
 
         return routes
     }

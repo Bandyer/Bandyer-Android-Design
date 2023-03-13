@@ -25,7 +25,7 @@ buildscript {
     ext.kotlin_version = '1.6.21'
     ext.bandyer_core_av = "12.0.3"
     ext.bandyer_comm_center = "10.0.0"
-    ext.bandyer_chat = "0.3.0"
+    ext.bandyer_chat = "1.0.0-alpha2"
     ext.bandyer_utils = "3.0.0"
     ext.collaboration_suite_utils = bandyer_utils
     ext.bandyer_networking = "5.0.0"
