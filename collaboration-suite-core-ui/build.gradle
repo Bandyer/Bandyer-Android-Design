@@ -34,6 +34,8 @@ dependencies {
     coreLibraryDesugaring androidX.desugar
 
     testImplementation test.jUnit
+    testImplementation test.mockk
+    testImplementation test.robolectric
     androidTestImplementation test.espresso
 
     api jetbrains.stdlib
