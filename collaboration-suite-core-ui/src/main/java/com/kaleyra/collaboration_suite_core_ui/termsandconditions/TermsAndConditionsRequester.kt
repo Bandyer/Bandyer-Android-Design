@@ -8,6 +8,7 @@ import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
 
 internal class TermsAndConditionsRequester(
     private val activityClazz: Class<*>,
@@ -21,10 +22,13 @@ internal class TermsAndConditionsRequester(
     fun setUp(session: Collaboration.Session) {
         dispose()
         scope = newChildScope(parentScope)
-        session.state.onEach { sessionState ->
-            if (sessionState !is Session.State.Authenticating.TermsAgreementRequired) return@onEach
-            showTermsAndConditions(sessionState.requiredTerms[0], session)
-        }.launchIn(scope!!)
+        session.state
+            .onEach { sessionState ->
+                if (sessionState !is Session.State.Authenticating.TermsAgreementRequired) return@onEach
+                showTermsAndConditions(sessionState.requiredTerms[0], session)
+            }
+            .takeWhile { it !is Session.State.Authenticated }
+            .launchIn(scope!!)
     }
 
     fun dispose() {
