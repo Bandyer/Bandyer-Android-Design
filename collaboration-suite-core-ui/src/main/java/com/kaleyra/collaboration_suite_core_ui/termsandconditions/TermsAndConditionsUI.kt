@@ -21,6 +21,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.broadcastreceiver.TermsAndConditionBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsUIActivityDelegate
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotification
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate
@@ -34,10 +35,10 @@ import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 open class TermsAndConditionsUI(
-    private val activityClazz: Class<*>,
-    notificationConfig: Config.Notification,
+    activityClazz: Class<*>,
+    private val notificationConfig: Config.Notification,
     private val activityConfig: Config.Activity
-) {
+) : TermsAndConditionBroadcastReceiver() {
 
     sealed interface Config {
 
@@ -67,16 +68,21 @@ open class TermsAndConditionsUI(
 
     private val activityDelegate = TermsAndConditionsUIActivityDelegate(context, activityConfig, activityClazz)
 
-    private val notificationDelegate = TermsAndConditionsUINotificationDelegate(notificationConfig)
+    private val notificationDelegate = TermsAndConditionsUINotificationDelegate(context, notificationConfig)
 
     open fun show() {
+        registerForTermAndConditionAction(context)
         if (AppLifecycle.isInForeground.value) activityDelegate.showActivity()
         else notificationDelegate.showNotification(activityDelegate.getActivityIntent())
     }
 
-    fun dismiss() {
-        notificationDelegate.dismissNotification()
-    }
+    fun dismiss() = notificationDelegate.dismissNotification()
+
+    override fun onActionAccept() = activityConfig.acceptCallback()
+
+    override fun onActionDecline() = activityConfig.declineCallback()
+
+    override fun onActionCancel() = notificationConfig.dismissCallback()
 
     // TODO remove the following functions when sdk will be deprecated in favor of collaboration
 

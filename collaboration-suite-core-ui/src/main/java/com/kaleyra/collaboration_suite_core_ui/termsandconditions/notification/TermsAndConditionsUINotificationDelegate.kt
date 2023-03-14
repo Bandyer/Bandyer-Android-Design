@@ -3,34 +3,29 @@ package com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsUI
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.broadcastreceiver.TermsAndConditionBroadcastReceiver.Companion.ACTION_CANCEL
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 internal class TermsAndConditionsUINotificationDelegate(
+    private val context: Context,
     private val notificationConfig: TermsAndConditionsUI.Config.Notification
-) : BroadcastReceiver() {
+) {
 
     companion object {
         const val CHANNEL_ID = "com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.terms_and_conditions_notification_channel"
-        const val ACTION_CANCEL = "com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.ACTION_CANCEL"
         const val TERMS_AND_CONDITIONS_NOTIFICATION_ID = 80
         const val FULL_SCREEN_REQUEST_CODE = 1111
         const val CONTENT_REQUEST_CODE = 2222
         const val DELETE_REQUEST_CODE = 3333
     }
 
-    private val context by lazy { ContextRetainer.context }
-
     private val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
     fun showNotification(activityIntent: Intent) {
-        context.registerReceiver(this, IntentFilter(ACTION_CANCEL))
         val notification = buildNotification(
             context = context,
             notificationConfig = notificationConfig,
@@ -42,12 +37,6 @@ internal class TermsAndConditionsUINotificationDelegate(
     fun dismissNotification() {
         NotificationDisposer.revokeDisposal(context, TERMS_AND_CONDITIONS_NOTIFICATION_ID)
         notificationManager.cancel(TERMS_AND_CONDITIONS_NOTIFICATION_ID)
-    }
-
-    override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action != ACTION_CANCEL) return
-        context.unregisterReceiver(this)
-        notificationConfig.dismissCallback.invoke()
     }
 
     private fun buildNotification(
