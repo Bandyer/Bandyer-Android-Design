@@ -31,6 +31,7 @@ import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.T
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate.Companion.TERMS_AND_CONDITIONS_NOTIFICATION_ID
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 open class TermsAndConditionsUI(
     private val activityClazz: Class<*>,
@@ -62,13 +63,15 @@ open class TermsAndConditionsUI(
         ) : Config
     }
 
-    private val activityDelegate = TermsAndConditionsUIActivityDelegate(activityConfig, activityClazz)
+    private val context by lazy { ContextRetainer.context }
+
+    private val activityDelegate = TermsAndConditionsUIActivityDelegate(context, activityConfig, activityClazz)
 
     private val notificationDelegate = TermsAndConditionsUINotificationDelegate(notificationConfig)
 
     open fun show() {
         if (AppLifecycle.isInForeground.value) activityDelegate.showActivity()
-        else notificationDelegate.showNotification(activityDelegate.buildActivityIntent(activityConfig, activityClazz))
+        else notificationDelegate.showNotification(activityDelegate.getActivityIntent())
     }
 
     fun dismiss() {

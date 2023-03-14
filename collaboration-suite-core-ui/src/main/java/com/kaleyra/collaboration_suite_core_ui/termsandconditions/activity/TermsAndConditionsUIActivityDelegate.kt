@@ -11,6 +11,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 internal class TermsAndConditionsUIActivityDelegate(
+    private val context: Context,
     private val activityConfig: TermsAndConditionsUI.Config.Activity,
     private val activityClazz: Class<*>
 ) : BroadcastReceiver() {
@@ -20,14 +21,12 @@ internal class TermsAndConditionsUIActivityDelegate(
         const val ACTION_DECLINE = "com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.ACTION_DECLINE"
     }
 
-    private val context by lazy { ContextRetainer.context }
-
     fun showActivity() {
         context.registerReceiver(this, IntentFilter().apply {
             addAction(ACTION_ACCEPT)
             addAction(ACTION_DECLINE)
         })
-        context.startActivity(buildActivityIntent(activityConfig, activityClazz))
+        context.startActivity(buildActivityIntent(context, activityConfig, activityClazz))
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -39,9 +38,12 @@ internal class TermsAndConditionsUIActivityDelegate(
         context.unregisterReceiver(this)
     }
 
-    fun buildActivityIntent(activityConfig: TermsAndConditionsUI.Config.Activity, activityClazz: Class<*>) = Intent(context, activityClazz).apply {
+    fun getActivityIntent() = buildActivityIntent(context, activityConfig, activityClazz)
+
+    private fun buildActivityIntent(context: Context, activityConfig: TermsAndConditionsUI.Config.Activity, activityClazz: Class<*>) = Intent(context, activityClazz).apply {
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         putExtra("enableTilt", DeviceUtils.isSmartGlass)
         putExtra(EXTRA_TERMS_AND_CONDITIONS_CONFIGURATION, TermsAndConditions(activityConfig.title, activityConfig.message, activityConfig.acceptText, activityConfig.declineText))
     }
+
 }
