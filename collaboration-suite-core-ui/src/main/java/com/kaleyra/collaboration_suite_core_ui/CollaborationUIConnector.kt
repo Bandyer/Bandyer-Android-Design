@@ -26,7 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
@@ -77,7 +77,9 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
      */
     fun disconnect(clearSavedData: Boolean = false) {
         collaboration.disconnect(clearSavedData)
-        pause()
+        wasPhoneBoxConnected = false
+        wasChatBoxConnected = false
+        scope.coroutineContext.cancelChildren()
         if (clearSavedData) NotificationManager.cancelAll()
     }
 
@@ -86,12 +88,11 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
         wasChatBoxConnected = collaboration.chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
         collaboration.phoneBox.disconnect()
         collaboration.chatBox.disconnect()
-        scope.cancel()
+        scope.coroutineContext.cancelChildren()
     }
 
     private fun resume() {
-        scope.cancel()
-        scope = CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.IO)
+        scope.coroutineContext.cancelChildren()
         syncWithCallState(scope)
         syncWithChatMessages(scope)
         if (wasPhoneBoxConnected) collaboration.phoneBox.connect()
