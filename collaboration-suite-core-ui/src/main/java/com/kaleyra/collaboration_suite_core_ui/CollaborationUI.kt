@@ -25,8 +25,13 @@ import com.kaleyra.collaboration_suite_utils.getValue
 import com.kaleyra.collaboration_suite_utils.setValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
 
 /**
  * Collaboration UI
@@ -39,6 +44,8 @@ object CollaborationUI {
      * Collaboration
      */
     private var collaboration: Collaboration? = null
+
+    private val serialScope by lazy { CoroutineScope(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) }
 
     private var mainScope: CoroutineScope? = null
 
@@ -99,7 +106,7 @@ object CollaborationUI {
         termsAndConditionsActivityClazz: Class<*>,
         chatNotificationActivityClazz: Class<*>? = null
     ): Boolean {
-        if (collaboration != null) return false
+        if (isConfigured) return false
         Collaboration.create(configuration).apply {
             collaboration = this
         }
@@ -117,9 +124,11 @@ object CollaborationUI {
      * Connect
      */
     fun connect(session: Collaboration.Session) {
-        if (collaboration?.session != null && collaboration?.session?.userId != session.userId) disconnect(true)
-        collaborationUIConnector?.connect(session)
-        termsAndConditionsRequester?.setUp(session)
+        serialScope.launch {
+            if (collaboration?.session != null && collaboration?.session?.userId != session.userId) disconnect(true)
+            collaborationUIConnector?.connect(session)
+            termsAndConditionsRequester?.setUp(session)
+        }
     }
 
     /**
@@ -127,8 +136,10 @@ object CollaborationUI {
      * @param clearSavedData If true, the saved data on DB and SharedPrefs will be cleared.
      */
     fun disconnect(clearSavedData: Boolean = false) {
-        collaborationUIConnector?.disconnect(clearSavedData)
-        termsAndConditionsRequester?.dispose()
+        serialScope.launch {
+            collaborationUIConnector?.disconnect(clearSavedData)
+            termsAndConditionsRequester?.dispose()
+        }
     }
 
     /**
