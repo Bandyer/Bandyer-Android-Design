@@ -67,9 +67,10 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
          * @param withWhiteboard  True if by default the whiteboard should be shown, false otherwise
          * @param withFileShare  True if by default the file share should be shown, false otherwise
          * @param withScreenShare  True if by default the screen share should be shown, false otherwise
+         * @param withVirtualBackground  True if by default the virtual background button should be shown, false otherwise
          * @return List<CallAction>
          */
-        fun getActions(ctx: Context, micToggled: Boolean?, cameraToggled: Boolean?, withChat: Boolean, withWhiteboard: Boolean, withFileShare: Boolean, withScreenShare: Boolean): List<CallAction> =
+        fun getActions(ctx: Context, micToggled: Boolean?, cameraToggled: Boolean?, withChat: Boolean, withWhiteboard: Boolean, withFileShare: Boolean, withScreenShare: Boolean, withVirtualBackground: Boolean): List<CallAction> =
             mutableListOf<CallAction>().apply {
                 if (micToggled != null) add(MICROPHONE(micToggled, ctx))
                 if (cameraToggled != null) {
@@ -81,6 +82,7 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
                 add(AUDIOROUTE(ctx))
                 if (withFileShare) add(FILE_SHARE(ctx))
                 if (withScreenShare) add(SCREEN_SHARE(false, ctx))
+                if (withVirtualBackground) add(VIRTUAL_BACKGROUND(false, ctx))
                 if (size < 3) add(1, HANGUP(ctx))
                 else add(3, HANGUP(ctx))
             }
@@ -299,6 +301,14 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
      * @constructor
      */
     open class SCREEN_SHARE(mToggled: Boolean = false, ctx: Context) : TogglableCallAction(R.id.kaleyra_id_screenshare, mToggled, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_screenShareStyle))
+
+
+    /**
+     * Virtual background call action item
+     * @property toggled true or false to toggle
+     * @constructor
+     */
+    open class VIRTUAL_BACKGROUND(mToggled: Boolean = false, ctx: Context) : TogglableCallAction(R.id.kaleyra_id_virtual_background, mToggled, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_virtualBackgroundStyle))
 
     /**
      * Called when the layout has been inflated

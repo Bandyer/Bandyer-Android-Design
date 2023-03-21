@@ -62,6 +62,7 @@ import com.kaleyra.collaboration_suite_phone_ui.screensharing.AppViewOverlay
 import com.kaleyra.collaboration_suite_phone_ui.screensharing.StatusBarOverlayView
 import com.kaleyra.collaboration_suite_phone_ui.screensharing.dialog.KaleyraScreenSharePickerDialog
 import com.kaleyra.collaboration_suite_phone_ui.views.ViewOverlayAttacher
+import com.kaleyra.collaboration_suite_phone_ui.virtualbackground.KaleyraVirtualBackgroundPickerDialog
 import java.util.UUID
 
 class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, KaleyraCallActionWidget.OnClickListener {
@@ -119,8 +120,8 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
                 Log.e(TAG, "${Thread.currentThread()} onOutputDeviceConnected: $connectedAudioOutputDevice ${connectedAudioOutputDevice.name} oldDevice: $oldAudioOutputDevice ${oldAudioOutputDevice?.name}")
                 if (!userSelected) return
                 window.decorView.postDelayed({
-                                                 callActionWidget!!.collapse()
-                                             }, resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
+                    callActionWidget!!.collapse()
+                }, resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
             }
 
             override fun onOutputDeviceAttached(currentAudioOutputDevice: AudioOutputDevice?, attachedAudioOutputDevice: AudioOutputDevice, availableOutputs: List<AudioOutputDevice>) {
@@ -164,11 +165,12 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
     }
 
     private fun initializeBottomSheetLayout(savedInstanceState: Bundle?) {
-        callActionWidget = callActionWidget ?: KaleyraCallActionWidget<ActionItem, KaleyraBottomSheet>(this, findViewById(R.id.coordinator_layout), getActions(this, true, false, true, true, true, true)).apply {
-            onAudioRoutesRequest = this@CallActivity
-            onClickListener = this@CallActivity
-            savedInstanceState?.let { restoreInstanceState(it) }
-        }
+        callActionWidget = callActionWidget
+            ?: KaleyraCallActionWidget<ActionItem, KaleyraBottomSheet>(this, findViewById(R.id.coordinator_layout), getActions(this, true, false, true, true, true, true, true)).apply {
+                onAudioRoutesRequest = this@CallActivity
+                onClickListener = this@CallActivity
+                savedInstanceState?.let { restoreInstanceState(it) }
+            }
         callActionWidget!!.setAnchoredView(findViewById(R.id.fullscreen_info), Gravity.TOP or Gravity.CENTER_HORIZONTAL)
         callActionWidget!!.showCallControls(true, false, false, bottomSheetLayoutType = BottomSheetLayoutType.GRID(4, BottomSheetLayoutType.Orientation.VERTICAL))
         AudioCallSession.getInstance().currentAudioOutputDevice?.let {
@@ -184,8 +186,8 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
         setOnClickListener {
             when {
                 callActionWidget!!.isCollapsed() -> callActionWidget!!.anchor()
-                callActionWidget!!.isAnchored()  -> callActionWidget!!.expand()
-                callActionWidget!!.isExpanded()  -> callActionWidget!!.collapse()
+                callActionWidget!!.isAnchored() -> callActionWidget!!.expand()
+                callActionWidget!!.isExpanded() -> callActionWidget!!.collapse()
             }
         }
     }
@@ -202,16 +204,16 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
     private fun getAudioRoute(audioOutputDevice: AudioOutputDevice): AudioRoute {
         val isActive = AudioCallSession.getInstance().currentAudioOutputDevice == audioOutputDevice
         return when (audioOutputDevice) {
-            is AudioOutputDevice.BLUETOOTH     -> AudioRoute.BLUETOOTH(
+            is AudioOutputDevice.BLUETOOTH -> AudioRoute.BLUETOOTH(
                 this,
                 identifier = audioOutputDevice.identifier,
                 name = audioOutputDevice.name ?: "",
                 batteryLevel = audioOutputDevice.batteryLevel,
                 bluetoothConnectionStatus = AudioRouteState.BLUETOOTH.valueOf(audioOutputDevice.bluetoothConnectionStatus.name)
             )
-            is AudioOutputDevice.NONE          -> AudioRoute.MUTED(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
-            is EARPIECE                        -> AudioRoute.EARPIECE(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
-            is AudioOutputDevice.LOUDSPEAKER   -> AudioRoute.LOUDSPEAKER(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
+            is AudioOutputDevice.NONE -> AudioRoute.MUTED(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
+            is EARPIECE -> AudioRoute.EARPIECE(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
+            is AudioOutputDevice.LOUDSPEAKER -> AudioRoute.LOUDSPEAKER(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
             is AudioOutputDevice.WIRED_HEADSET -> AudioRoute.WIRED_HEADSET(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
         }
     }
@@ -221,7 +223,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
         for (device in AudioCallSession.getInstance().getAvailableAudioOutputDevices) {
             val isActive = AudioCallSession.getInstance().currentAudioOutputDevice == device
             when (device) {
-                is AudioOutputDevice.BLUETOOTH     -> routes.add(
+                is AudioOutputDevice.BLUETOOTH -> routes.add(
                     AudioRoute.BLUETOOTH(
                         this,
                         device.identifier,
@@ -231,9 +233,9 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
                     )
                 )
                 is AudioOutputDevice.WIRED_HEADSET -> routes.add(AudioRoute.WIRED_HEADSET(this, device.identifier, device.name, isActive))
-                is AudioOutputDevice.LOUDSPEAKER   -> routes.add(AudioRoute.LOUDSPEAKER(this, device.identifier, device.name, isActive))
-                is EARPIECE                        -> routes.add(AudioRoute.EARPIECE(this, device.identifier, device.name, isActive))
-                is AudioOutputDevice.NONE          -> {
+                is AudioOutputDevice.LOUDSPEAKER -> routes.add(AudioRoute.LOUDSPEAKER(this, device.identifier, device.name, isActive))
+                is EARPIECE -> routes.add(AudioRoute.EARPIECE(this, device.identifier, device.name, isActive))
+                is AudioOutputDevice.NONE -> {
                     // nothing to add
                 }
             }
@@ -248,10 +250,10 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
         }
 
         val device = when (item) {
-            is AudioRoute.BLUETOOTH     -> item.toAudioOutputDevice()
-            is AudioRoute.MUTED         -> AudioOutputDevice.NONE() // mute stream audio
-            is AudioRoute.EARPIECE      -> EARPIECE()
-            is AudioRoute.LOUDSPEAKER   -> AudioOutputDevice.LOUDSPEAKER()
+            is AudioRoute.BLUETOOTH -> item.toAudioOutputDevice()
+            is AudioRoute.MUTED -> AudioOutputDevice.NONE() // mute stream audio
+            is AudioRoute.EARPIECE -> EARPIECE()
+            is AudioRoute.LOUDSPEAKER -> AudioOutputDevice.LOUDSPEAKER()
             is AudioRoute.WIRED_HEADSET -> AudioOutputDevice.WIRED_HEADSET()
         }.apply { this.name = item.name }
 
@@ -264,11 +266,12 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
         return true
     }
 
-    private fun getMutedAudioRoute() = AudioRoute.MUTED(this, UUID.randomUUID().toString(), resources.getString(R.string.kaleyra_call_action_audio_route_muted), AudioCallSession.getInstance().currentAudioOutputDevice is AudioOutputDevice.NONE)
+    private fun getMutedAudioRoute() =
+        AudioRoute.MUTED(this, UUID.randomUUID().toString(), resources.getString(R.string.kaleyra_call_action_audio_route_muted), AudioCallSession.getInstance().currentAudioOutputDevice is AudioOutputDevice.NONE)
 
     override fun onCallActionClicked(item: CallAction, position: Int): Boolean {
         return when (item) {
-            is CallAction.SCREEN_SHARE  -> {
+            is CallAction.SCREEN_SHARE -> {
                 if (item.toggled) {
                     appViewOverlay?.hide()
                 } else {
@@ -277,7 +280,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
 
                         val desiredType: ViewOverlayAttacher.OverlayType = when (it) {
                             KaleyraScreenSharePickerDialog.SharingOption.WHOLE_DEVICE -> ViewOverlayAttacher.OverlayType.GLOBAL.also { getOverlayPermission() }
-                            else                                                      -> ViewOverlayAttacher.OverlayType.CURRENT_APPLICATION
+                            else -> ViewOverlayAttacher.OverlayType.CURRENT_APPLICATION
                         }
                         appViewOverlay = AppViewOverlay(StatusBarOverlayView(this@CallActivity), desiredType)
                         appViewOverlay!!.show(this@CallActivity)
@@ -286,7 +289,20 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
                 item.toggle()
                 true
             }
-            is CallAction.CAMERA        -> {
+            is CallAction.VIRTUAL_BACKGROUND -> {
+                val dialog = KaleyraVirtualBackgroundPickerDialog()
+                dialog.show(this@CallActivity) {
+                    Snackbar.make(callActionWidget!!.coordinatorLayout, it.name, Snackbar.LENGTH_SHORT).show()
+                    when (it) {
+                        KaleyraVirtualBackgroundPickerDialog.VirtualBackgroundOptions.NONE -> item.toggle(false)
+                        KaleyraVirtualBackgroundPickerDialog.VirtualBackgroundOptions.BLUR,
+                        KaleyraVirtualBackgroundPickerDialog.VirtualBackgroundOptions.IMAGE -> item.toggle(true)
+                    }
+                    dialog.dismiss()
+                }
+                true
+            }
+            is CallAction.CAMERA -> {
                 // if permissions toggle
                 item.toggle()
                 true
@@ -295,7 +311,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
                 (item.itemView as? KaleyraActionButton)?.isEnabled = false
                 false
             }
-            else                        -> false
+            else -> false
         }
     }
 
@@ -316,8 +332,8 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
     @SuppressLint("NewApi")
     private fun enterPip(): Boolean {
         val canGoInPiP: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                && packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
-                && hasPermission(AppOpsManager.OPSTR_PICTURE_IN_PICTURE)
+            && packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+            && hasPermission(AppOpsManager.OPSTR_PICTURE_IN_PICTURE)
         if (!canGoInPiP) return false
         return enterPictureInPictureMode(PictureInPictureParams.Builder().setAspectRatio(Rational(getScreenSize().x, getScreenSize().y)).build())
     }

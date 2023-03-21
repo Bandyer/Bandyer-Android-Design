@@ -34,7 +34,7 @@ class RingingActivity : AppCompatActivity() {
     }
 
     private fun initializeBottomSheetLayout() {
-        callActionWidget = KaleyraCallActionWidget(this, findViewById(R.id.coordinator_layout), CallAction.getActions(this, cameraToggled = false, micToggled = true, withChat = true, withWhiteboard = true, withFileShare = true, withScreenShare = true))
+        callActionWidget = KaleyraCallActionWidget(this, findViewById(R.id.coordinator_layout), CallAction.getActions(this, cameraToggled = false, micToggled = true, withChat = true, withWhiteboard = true, withFileShare = true, withScreenShare = true, withVirtualBackground = true))
         callActionWidget!!.showRingingControls()
     }
 }
