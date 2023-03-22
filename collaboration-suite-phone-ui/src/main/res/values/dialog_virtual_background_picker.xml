@@ -72,17 +72,17 @@
 
     <style name="KaleyraCollaborationSuiteUI.ImageButton.VirtualBackground.None" parent="KaleyraCollaborationSuiteUI.ImageButton.VirtualBackground">
         <item name="android:text">@string/kaleyra_virtual_background_none</item>
-        <item name="icon">@drawable/ic_kaleyra_screen_share_app</item>
+        <item name="icon">@drawable/ic_kaleyra_virtual_background_none</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.ImageButton.VirtualBackground.Blur" parent="KaleyraCollaborationSuiteUI.ImageButton.VirtualBackground">
         <item name="android:text">@string/kaleyra_virtual_background_blur</item>
-        <item name="icon">@drawable/ic_kaleyra_screen_share_app</item>
+        <item name="icon">@drawable/ic_kaleyra_virtual_background_blur</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.ImageButton.VirtualBackground.Image" parent="KaleyraCollaborationSuiteUI.ImageButton.VirtualBackground">
         <item name="android:text">@string/kaleyra_virtual_background_image</item>
-        <item name="icon">@drawable/ic_kaleyra_screen_share_app</item>
+        <item name="icon">@drawable/ic_kaleyra_virtual_background_image</item>
     </style>
 
 </resources>

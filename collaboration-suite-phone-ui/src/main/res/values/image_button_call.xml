@@ -107,7 +107,7 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.VirtualBackground" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
-        <item name="icon">@android:drawable/ic_menu_report_image</item>
+        <item name="icon">@drawable/ic_kaleyra_virtual_background</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_screen_share</item>
     </style>
 
