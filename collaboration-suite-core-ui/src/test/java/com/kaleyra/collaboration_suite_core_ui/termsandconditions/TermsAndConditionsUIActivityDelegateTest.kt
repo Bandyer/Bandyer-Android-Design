@@ -3,12 +3,12 @@ package com.kaleyra.collaboration_suite_core_ui.termsandconditions
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsUIActivityDelegate
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsUIActivityDelegate.Companion.ACTION_ACCEPT
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsUIActivityDelegate.Companion.ACTION_DECLINE
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.constants.Constants
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import io.mockk.verify
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -41,49 +41,24 @@ class TermsAndConditionsUIActivityDelegateTest {
 
     private val delegate = TermsAndConditionsUIActivityDelegate(contextMock, termsAndConditionsActivityConfig, this::class.java)
 
+    @After
+    fun tearDown() {
+        unmockkAll()
+    }
+
     @Test
     fun testShowActivity() {
         delegate.showActivity()
-        verify(exactly = 1) {
-            contextMock.registerReceiver(delegate, withArg {
-                assertTrue(it.hasAction(ACTION_ACCEPT))
-                assertTrue(it.hasAction(ACTION_DECLINE))
-            })
-        }
-        verify(exactly = 1) {
-            contextMock.startActivity(withArg { intent ->
-                checkActivityIntent(intent)
-            })
-        }
+        verify(exactly = 1) { contextMock.startActivity(withArg { assertActivityIntent(it) }) }
     }
-
-    @Test
-    fun testOnReceiveAcceptAction() {
-        delegate.onReceive(contextMock, Intent(ACTION_ACCEPT))
-        assertTrue(acceptCallbackInvoked)
-        verify(exactly = 1) { contextMock.unregisterReceiver(delegate) }
-    }
-
-    @Test
-    fun testOnReceiveDeclineAction() {
-        delegate.onReceive(contextMock, Intent(ACTION_DECLINE))
-        assertTrue(declineCallbackInvoked)
-        verify(exactly = 1) { contextMock.unregisterReceiver(delegate) }
-    }
-
-    @Test
-    fun testOnReceiveGenericAction() {
-        delegate.onReceive(contextMock, Intent("genericAction"))
-        verify(exactly = 0) { contextMock.unregisterReceiver(delegate) }
-    }
-
+    
     @Test
     fun testGetActivityIntent() {
         val activityIntent = delegate.getActivityIntent()
-        checkActivityIntent(activityIntent)
+        assertActivityIntent(activityIntent)
     }
 
-    private fun checkActivityIntent(intent: Intent) {
+    private fun assertActivityIntent(intent: Intent) {
         val actualTermsAndConditionConfiguration = intent.extras!!.get(Constants.EXTRA_TERMS_AND_CONDITIONS_CONFIGURATION)
         assertEquals(Intent.FLAG_ACTIVITY_NEW_TASK, intent.flags)
         assertNotEquals(null, intent.extras)
