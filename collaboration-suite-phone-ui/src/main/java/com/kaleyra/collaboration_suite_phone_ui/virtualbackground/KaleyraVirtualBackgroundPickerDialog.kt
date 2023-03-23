@@ -80,7 +80,7 @@ class KaleyraVirtualBackgroundPickerDialog(private val withBlurVirtualBackground
      */
     fun show(activity: androidx.fragment.app.FragmentActivity, onChoose: (virtualBackgroundOption: VirtualBackgroundOptions) -> Unit) = kotlin.runCatching {
         if (dialog?.isVisible == true || dialog?.isAdded == true) return@runCatching
-        if (dialog == null) dialog = PickerDialog(withBlurVirtualBackgroundOption, withBlurVirtualBackgroundOption).apply {
+        if (dialog == null) dialog = PickerDialog(withBlurVirtualBackgroundOption, withImageVirtualBackground).apply {
             this.onChoose = onChoose
         }
         show(activity)
