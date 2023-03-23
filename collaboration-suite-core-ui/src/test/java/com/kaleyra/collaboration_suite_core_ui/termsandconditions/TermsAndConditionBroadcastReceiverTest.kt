@@ -1,0 +1,4 @@
+package com.kaleyra.collaboration_suite_core_ui.termsandconditions
+
+class TermsAndConditionBroadcastReceiverTest {
+}
