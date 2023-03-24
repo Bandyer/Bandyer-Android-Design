@@ -23,18 +23,19 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
+import com.kaleyra.collaboration_suite_core_ui.utils.TimeHelper
 
 internal class NotificationDisposer : BroadcastReceiver() {
 
     companion object {
-        private const val KEY_EXTRA_NOTIFICATION_ID = "notification_id"
+        const val KEY_EXTRA_NOTIFICATION_ID = "notification_id"
 
         fun disposeAfter(context: Context, notificationId: Int, time: Long) {
             val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val alarmIntent = Intent(context, NotificationDisposer::class.java)
             alarmIntent.putExtra(KEY_EXTRA_NOTIFICATION_ID, notificationId)
             val alarmPendingIntent = PendingIntent.getBroadcast(context, notificationId, alarmIntent, PendingIntentExtensions.oneShotFlags)
-            alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + time, alarmPendingIntent)
+            alarmMgr.set(AlarmManager.RTC_WAKEUP, TimeHelper.getNow() + time, alarmPendingIntent)
         }
 
         fun revokeDisposal(context: Context, notificationId: Int) {
