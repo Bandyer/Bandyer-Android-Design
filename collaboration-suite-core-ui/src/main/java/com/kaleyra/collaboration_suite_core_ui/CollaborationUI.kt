@@ -146,13 +146,16 @@ object CollaborationUI {
      * Dispose the collaboration UI and optionally clear saved data.
      */
     fun reset() {
-        collaboration ?: return
-        mainScope?.cancel()
-        disconnect(true)
-        collaboration = null
-        _phoneBox = null
-        _chatBox = null
-        mainScope = null
+        serialScope.launch {
+            collaboration ?: return@launch
+            mainScope?.cancel()
+            collaborationUIConnector?.disconnect(true)
+            termsAndConditionsRequester?.dispose()
+            collaboration = null
+            _phoneBox = null
+            _chatBox = null
+            mainScope = null
+        }
     }
 }
 
