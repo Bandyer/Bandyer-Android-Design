@@ -36,6 +36,8 @@ dependencies {
     testImplementation test.jUnit
     testImplementation test.mockk
     testImplementation test.robolectric
+    testImplementation test.coroutines
+    testImplementation project(":collaboration-suite")
     androidTestImplementation test.espresso
 
     api jetbrains.stdlib
