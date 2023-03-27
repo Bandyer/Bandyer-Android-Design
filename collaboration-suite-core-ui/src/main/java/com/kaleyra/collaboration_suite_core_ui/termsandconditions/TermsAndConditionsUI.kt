@@ -21,8 +21,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.broadcastreceiver.TermsAndConditionBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsUIActivityDelegate
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.broadcastreceiver.TermsAndConditionBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsNotification
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate.Companion.CHANNEL_ID
@@ -32,9 +32,9 @@ import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.T
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate.Companion.TERMS_AND_CONDITIONS_NOTIFICATION_ID
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 open class TermsAndConditionsUI(
+    private val context: Context,
     activityClazz: Class<*>,
     private val notificationConfig: Config.Notification,
     private val activityConfig: Config.Activity
@@ -63,8 +63,6 @@ open class TermsAndConditionsUI(
             val declineCallback: () -> Unit
         ) : Config
     }
-
-    private val context by lazy { ContextRetainer.context }
 
     private val activityDelegate = TermsAndConditionsUIActivityDelegate(context, activityConfig, activityClazz)
 
