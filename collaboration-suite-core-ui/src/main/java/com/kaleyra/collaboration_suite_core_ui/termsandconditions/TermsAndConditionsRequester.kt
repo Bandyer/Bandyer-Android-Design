@@ -5,34 +5,35 @@ import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_networking.Session
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.plus
 
 internal class TermsAndConditionsRequester(
     private val activityClazz: Class<*>,
     private val onAccept: (session: Collaboration.Session) -> Unit,
     private val onDecline: () -> Unit,
-    private val parentScope: CoroutineScope
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO) + CoroutineName("TermsRequester")
 ) {
-
-    private var scope: CoroutineScope? = null
 
     fun setUp(session: Collaboration.Session) {
         dispose()
-        scope = newChildScope(parentScope)
         session.state
             .onEach { sessionState ->
                 if (sessionState !is Session.State.Authenticating.TermsAgreementRequired) return@onEach
                 showTermsAndConditions(sessionState.requiredTerms[0], session)
             }
             .takeWhile { it !is Session.State.Authenticated }
-            .launchIn(scope!!)
+            .launchIn(scope)
     }
 
     fun dispose() {
-        scope?.cancel()
+        scope.coroutineContext.cancelChildren()
     }
 
     private fun showTermsAndConditions(
@@ -46,7 +47,8 @@ internal class TermsAndConditionsRequester(
             dismissCallback = onDecline,
             enableFullscreen = DeviceUtils.isSmartGlass
         )
-        val activityConfig = TermsAndConditionsUI.Config.Activity(
+        val activityConfig =
+            TermsAndConditionsUI.Config.Activity(
             title = requiredTerms.titleFieldText,
             message = requiredTerms.bodyFieldText,
             acceptText = requiredTerms.agreeButtonText,
@@ -57,10 +59,8 @@ internal class TermsAndConditionsRequester(
             },
             declineCallback = onDecline
         )
-        TermsAndConditionsUI(activityClazz, notificationConfig, activityConfig).show()
-    }
 
-    private fun newChildScope(parentScope: CoroutineScope) =
-        CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.IO)
+        TermsAndConditionsUI(context, activityClazz, notificationConfig, activityConfig).show()
+    }
 
 }
