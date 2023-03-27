@@ -40,7 +40,9 @@ internal class GlassTermsAndConditionsActivity : GlassBaseActivity() {
 
     private lateinit var binding: KaleyraActivityTermsAndConditionsGlassBinding
 
-    private val viewModel: TermsAndConditionsViewModel by viewModels()
+    private val viewModel: TermsAndConditionsViewModel by viewModels {
+        TermsAndConditionsViewModel.provideFactory(::requestConfiguration)
+    }
 
     private var termsAndConditions: TermsAndConditions? = null
 
