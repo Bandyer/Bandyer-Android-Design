@@ -22,13 +22,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
+import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.accept
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.decline
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -42,6 +46,7 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoot
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import kotlinx.coroutines.flow.*
 
 internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
 
@@ -55,6 +60,8 @@ internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
     private val args: TermsAndConditionsFragmentArgs by navArgs()
 
     private var termsAndConditions: TermsAndConditions? = null
+
+    private val viewModel: TermsAndConditionsViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,10 +149,18 @@ internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
         itemAdapter = null
     }
 
+
     override fun onTap(): Boolean {
         val activity = requireActivity() as? GlassTermsAndConditionsActivity ?: return false
         termsAndConditions?.accept()
-        activity.finishAndRemoveTask()
+        combine(viewModel.phoneBox
+            .flatMapLatest { it.state }, viewModel.chatBox
+            .flatMapLatest { it.state }) { pbState, cbState ->
+            pbState == PhoneBox.State.Connected && cbState == ChatBox.State.Connected
+        }
+            .takeWhile { !it }
+            .onCompletion { activity.finishAndRemoveTask() }
+            .launchIn(lifecycleScope)
         return true
     }
 
