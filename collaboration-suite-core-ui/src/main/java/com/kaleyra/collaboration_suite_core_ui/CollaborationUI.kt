@@ -116,7 +116,7 @@ object CollaborationUI {
         this.chatNotificationActivityClazz = chatNotificationActivityClazz
         mainScope = MainScope()
         collaborationUIConnector = CollaborationUIConnector(collaboration!!, mainScope!!)
-        termsAndConditionsRequester = TermsAndConditionsRequester(termsAndConditionsActivityClazz, ::connect, ::disconnect, mainScope!!)
+        termsAndConditionsRequester = TermsAndConditionsRequester(termsAndConditionsActivityClazz, ::connect, ::disconnect)
         return true
     }
 
