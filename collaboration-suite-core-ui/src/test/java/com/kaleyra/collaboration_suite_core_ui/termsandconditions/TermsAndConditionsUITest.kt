@@ -48,20 +48,20 @@ class TermsAndConditionsUITest {
     @Test
     fun `show terms activity if app is in foreground`() {
         every { AppLifecycle.isInForeground } returns MutableStateFlow(true)
-        termsAndConditionsUI.show()
+        termsAndConditionsUI.show(contextMock)
         verify { anyConstructed<TermsAndConditionsUIActivityDelegate>().showActivity() }
     }
 
     @Test
     fun `show terms notification if app is in background`() {
         every { AppLifecycle.isInForeground } returns MutableStateFlow(false)
-        termsAndConditionsUI.show()
+        termsAndConditionsUI.show(contextMock)
         verify { anyConstructed<TermsAndConditionsUINotificationDelegate>().showNotification(any()) }
     }
 
     @Test
     fun `register for broadcast receiver actions`() {
-        termsAndConditionsUI.show()
+        termsAndConditionsUI.show(contextMock)
         verify(exactly = 1) { termsAndConditionsUI.registerForTermAndConditionAction(any()) }
     }
 

@@ -33,7 +33,7 @@ object PhoneUserDataConsentAgreement : TermsAndConditionsUI(
 
     private val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
-    override fun show() = Unit
+    override fun show(context: Context) = Unit
 
     fun showNotification(
         title: String,
@@ -44,7 +44,7 @@ object PhoneUserDataConsentAgreement : TermsAndConditionsUI(
         timeoutMs: Long? = null
     ) {
         val notification = buildNotification(
-            context = ContextRetainer.context,
+            context = context,
             title = title,
             message = message,
             contentIntent = contentIntent,

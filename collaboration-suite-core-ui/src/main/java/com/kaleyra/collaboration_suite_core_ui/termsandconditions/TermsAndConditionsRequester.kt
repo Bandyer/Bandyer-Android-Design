@@ -60,7 +60,7 @@ internal class TermsAndConditionsRequester(
             declineCallback = onDecline
         )
 
-        TermsAndConditionsUI(context, activityClazz, notificationConfig, activityConfig).show()
+        TermsAndConditionsUI(activityClazz = activityClazz, notificationConfig = notificationConfig, activityConfig = activityConfig).show()
     }
 
 }
