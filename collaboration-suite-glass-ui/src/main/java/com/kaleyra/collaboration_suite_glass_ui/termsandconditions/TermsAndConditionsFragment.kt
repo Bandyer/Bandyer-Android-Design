@@ -161,7 +161,7 @@ internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
         combine(viewModel.phoneBox
             .flatMapLatest { it.state }, viewModel.chatBox
             .flatMapLatest { it.state }) { pbState, cbState ->
-            pbState == PhoneBox.State.Connected && cbState == ChatBox.State.Connected
+            pbState != PhoneBox.State.Connecting && cbState != ChatBox.State.Connecting
         }
             .takeWhile { !it }
             .onCompletion { activity.finishAndRemoveTask() }
