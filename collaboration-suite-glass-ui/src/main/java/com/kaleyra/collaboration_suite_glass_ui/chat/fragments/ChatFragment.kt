@@ -34,6 +34,7 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessageItem
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessagePage
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatViewModel
@@ -232,6 +233,11 @@ internal class ChatFragment : BaseFragment(), TiltListener {
 
     override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also {
         if (it) binding.kaleyraMessages.horizontalSmoothScrollToPrevious(currentMsgItemIndex)
+    }
+
+    override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        super.setListenersForRealWear(bottomNavView)
+        bottomNavView.setFirstItemListeners({ onSwipeForward(true) }, { onSwipeBackward(true) })
     }
 
     private fun toChatMessagePages(
