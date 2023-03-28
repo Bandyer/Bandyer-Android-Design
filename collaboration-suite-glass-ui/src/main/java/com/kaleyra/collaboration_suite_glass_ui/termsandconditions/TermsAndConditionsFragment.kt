@@ -153,6 +153,11 @@ internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
     override fun onTap(): Boolean {
         val activity = requireActivity() as? GlassTermsAndConditionsActivity ?: return false
         termsAndConditions?.accept()
+        with(binding) {
+            kaleyraTitle.visibility = View.GONE
+            kaleyraMessageRecyclerView.visibility = View.GONE
+            kaleyraProgress.visibility = View.VISIBLE
+        }
         combine(viewModel.phoneBox
             .flatMapLatest { it.state }, viewModel.chatBox
             .flatMapLatest { it.state }) { pbState, cbState ->
