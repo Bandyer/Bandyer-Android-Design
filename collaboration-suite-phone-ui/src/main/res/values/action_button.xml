@@ -139,6 +139,11 @@
         <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.ScreenShare</item>
     </style>
 
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.VirtualBackground" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.VirtualBackground</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.VirtualBackground</item>
+    </style>
+
     <!-- SMARTGLASS CALL ACTION BUTTONS -->
 
     <style name="KaleyraCollaborationSuiteUI.ActionButton.SmartGlass.Microphone" parent="KaleyraCollaborationSuiteUI.ActionButton.SmartGlass">

@@ -36,6 +36,7 @@
     <item name="kaleyra_id_audioroute" type="id" />
     <item name="kaleyra_id_hangup" type="id" />
     <item name="kaleyra_id_screenshare" type="id" />
+    <item name="kaleyra_id_virtual_background" type="id" />
     <item name="kaleyra_id_fileshare" type="id" />
     <item name="kaleyra_id_whiteboard" type="id" />
     <item name="kaleyra_id_switchcamera" type="id" />

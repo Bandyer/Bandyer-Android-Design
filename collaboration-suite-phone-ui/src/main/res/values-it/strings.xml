@@ -41,6 +41,7 @@
     <string name="kaleyra_call_action_audio_route">Uscita audio</string>
     <string name="kaleyra_call_action_options">Opzioni</string>
     <string name="kaleyra_call_action_screen_share">Condividi schermo</string>
+    <string name="kaleyra_call_action_virtual_background">Sfondo Virtuale</string>
     <string name="kaleyra_call_action_video_disable">Disattiva</string>
     <string name="kaleyra_call_hangup">Chiudi</string>
 
@@ -141,6 +142,13 @@
     <string name="kaleyra_screenshare_picker_title">Cosa vuoi condividere?</string>
     <string name="kaleyra_screenshare_app_only">Schermo app</string>
     <string name="kaleyra_screenshare_full_device">Schermo intero</string>
+
+    <!-- VIRTUAL BACKGROUND PICKER -->
+    <string name="kaleyra_virtual_background_picker_title">Seleziona sfondo virtuale</string>
+    <string name="kaleyra_virtual_background_none">Nessuno</string>
+    <string name="kaleyra_virtual_background_blur">Sfuocato</string>
+    <string name="kaleyra_virtual_background_image">Immagine</string>
+
     <!-- FILE SHARE -->
     <string name="kaleyra_fileshare_add">Carica</string>
     <string name="kaleyra_fileshare_add_description">Carica nuovo file</string>

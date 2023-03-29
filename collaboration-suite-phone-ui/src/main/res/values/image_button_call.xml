@@ -106,6 +106,11 @@
         <item name="android:contentDescription">@string/kaleyra_call_action_screen_share</item>
     </style>
 
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.VirtualBackground" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
+        <item name="icon">@drawable/ic_kaleyra_virtual_background</item>
+        <item name="android:contentDescription">@string/kaleyra_call_action_screen_share</item>
+    </style>
+
     <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.HangUp" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="backgroundTint">@color/kaleyra_color_hang_up_button</item>
         <item name="iconTint">@android:color/white</item>
