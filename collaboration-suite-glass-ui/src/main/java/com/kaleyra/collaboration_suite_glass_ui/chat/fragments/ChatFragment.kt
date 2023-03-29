@@ -196,10 +196,10 @@ internal class ChatFragment : BaseFragment(), TiltListener {
 
         with(binding.kaleyraTitle) {
             postDelayed({
-                            if (!noMessages) return@postDelayed
-                            text = resources.getString(R.string.kaleyra_glass_no_messages)
-                            visibility = View.VISIBLE
-                        }, NO_MESSAGES_TIMEOUT)
+                if (!noMessages) return@postDelayed
+                text = resources.getString(R.string.kaleyra_glass_no_messages)
+                visibility = View.VISIBLE
+            }, NO_MESSAGES_TIMEOUT)
         }
     }
 
