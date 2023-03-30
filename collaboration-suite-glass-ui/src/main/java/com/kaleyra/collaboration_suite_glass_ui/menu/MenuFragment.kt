@@ -211,6 +211,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
      */
     override fun onDestroyView() {
         super.onDestroyView()
+        menuItems = listOf()
         _binding = null
         itemAdapter = null
     }
