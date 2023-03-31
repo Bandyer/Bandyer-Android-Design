@@ -136,7 +136,6 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
 
     private fun performAction(action: Action) {
         synchronized(this) {
-            if (action == lastAction) return
             when (action) {
                 Action.RESUME -> resume()
                 Action.PAUSE  -> pause()
