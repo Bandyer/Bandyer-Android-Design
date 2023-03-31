@@ -16,11 +16,16 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
+import android.os.Build
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isLastWeek
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isToday
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isYesterday
+import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
@@ -28,6 +33,8 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.*
 
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.LOLLIPOP, Build.VERSION_CODES.P])
 class Iso8601Test {
 
     @Test
@@ -39,16 +46,16 @@ class Iso8601Test {
         // set milliseconds to 0
         expected -= expected % 1000
         val result = Iso8601.getISO8601TstampInMillis(timestamp)
-        assert(result == expected)
+        assertEquals(expected, result)
     }
 
     @Test
     fun testNowISO8601() {
-        val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm")
+        val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         df.timeZone = TimeZone.getTimeZone("UTC")
         val expected = df.format(Calendar.getInstance().time)
         val result = Iso8601.nowISO8601()
-        assert(result.contains(expected))
+        assertEquals(expected, result)
     }
 
     @Test
@@ -58,7 +65,7 @@ class Iso8601Test {
 
         expected -= expected % 1000
         result -= result % 1000
-        assert(expected == result)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -92,9 +99,7 @@ class Iso8601Test {
         val yesterday = now
             .minus(1, ChronoUnit.DAYS)
         assert(now.isToday())
-        assert(
-            !yesterday.isToday()
-        )
+        assert(!yesterday.isToday())
     }
 
     @Test
@@ -105,6 +110,6 @@ class Iso8601Test {
             .toEpochMilli()
         val expected = Instant.ofEpochMilli(millis).toString()
         val result = Iso8601.parseMillisToIso8601(millis)
-        assert(expected == result)
+        assertEquals(expected, result)
     }
 }

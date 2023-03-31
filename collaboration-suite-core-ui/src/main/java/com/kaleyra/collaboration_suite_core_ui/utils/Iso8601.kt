@@ -17,13 +17,22 @@
 package com.kaleyra.collaboration_suite_core_ui.utils
 
 import android.content.Context
+import android.os.Build
 import com.kaleyra.collaboration_suite_core_ui.R
-import java.time.*
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
+import java.util.Locale
+import java.util.TimeZone
 
 /**
  * @suppress
@@ -40,14 +49,20 @@ object Iso8601 {
      *
      * @return String
      */
-    fun nowISO8601(): String = Instant.now().toString()
+    fun nowISO8601(): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Instant.now().truncatedTo(ChronoUnit.MILLIS).toString()
+        else GregorianCalendar.getInstance().parseToISO8601()
+    }
 
     /**
      * Get the current millis in UTC timezone
      *
      * @return Time in millis
      */
-    fun nowUTCMillis(): Long = Instant.now().toEpochMilli()
+    fun nowUTCMillis(): Long {
+        return if (Build.VERSION .SDK_INT >= Build.VERSION_CODES.O) Instant.now().toEpochMilli()
+        else GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC")).timeInMillis
+    }
 
     /**
      * Get a iso8601 formatted timestamp as millis
@@ -55,7 +70,16 @@ object Iso8601 {
      * @param tstamp The timestamp
      * @return Time in millis
      */
-    fun getISO8601TstampInMillis(tstamp: String): Long = Instant.parse(tstamp).toEpochMilli()
+    fun getISO8601TstampInMillis(tstamp: String): Long {
+        return if (Build.VERSION .SDK_INT >= Build.VERSION_CODES.O) Instant.parse(tstamp).toEpochMilli()
+        else {
+            kotlin.runCatching {
+                val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                df.timeZone = TimeZone.getTimeZone("UTC")
+                df.parse(tstamp)!!.time
+            }.getOrDefault(0L)
+        }
+    }
 
     /**
      * Parse a millis timestamp into ISO8601 string
@@ -63,7 +87,10 @@ object Iso8601 {
      * @param millis The timestamp
      * @return String The ISO8601 pattern string
      */
-    fun parseMillisToIso8601(millis: Long): String = Instant.ofEpochMilli(millis).toString()
+    fun parseMillisToIso8601(millis: Long): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) Instant.ofEpochMilli(millis).toString()
+        else GregorianCalendar.getInstance().parseToISO8601(Date(millis))
+    }
 
     /**
      * Parse a UTC millis timestamp into a human readable timestamp. This function takes into account the current zone offset.
@@ -72,7 +99,11 @@ object Iso8601 {
      * @param timestamp The timestamp in millis
      * @return String A human readable date time timestamp string
      */
-    fun parseTimestamp(context: Context, timestamp: Long): String {
+    fun parseTimestamp(context: Context, timestamp: Long): String =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) parseTimestampApi26(context, timestamp)
+        else parseTimestampApi21(context, timestamp)
+
+    private fun parseTimestampApi26(context: Context, timestamp: Long): String {
         val zonedDateTime = Instant
             .ofEpochMilli(timestamp)
             .atZone(ZoneId.systemDefault())
@@ -90,6 +121,27 @@ object Iso8601 {
             .format(Instant.ofEpochMilli(timestamp))
     }
 
+    private fun parseTimestampApi21(context: Context, timestamp: Long): String {
+        val calendar = GregorianCalendar.getInstance()
+        calendar.time = Date(timestamp)
+        calendar.timeZone = TimeZone.getDefault()
+
+        return if (calendar.isLastWeek()) {
+            when {
+                calendar.isToday() -> parseTime(timestamp)
+                calendar.isYesterday() -> context.resources.getString(R.string.kaleyra_yesterday) + ", " + parseTime(timestamp)
+                else -> {
+                    val formatter = SimpleDateFormat("EEEE", Locale.getDefault())
+                    formatter.format(calendar.time).replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() } + ", " + parseTime(timestamp)
+                }
+            }
+        } else {
+            val df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+            df.timeZone = calendar.timeZone
+            df.format(calendar.time)
+        }
+    }
+
     /**
      * Parse a UTC millis timestamp into a human readable day. This function takes into account the current zone offset.
      *
@@ -98,6 +150,11 @@ object Iso8601 {
      * @return String A human readable date day string
      */
     fun parseDay(context: Context, timestamp: Long): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) parseDayApi26(context, timestamp)
+        else parseDayApi21(context, timestamp)
+    }
+
+    private fun parseDayApi26(context: Context, timestamp: Long): String {
         val zonedDateTime = Instant
             .ofEpochMilli(timestamp)
             .atZone(ZoneId.systemDefault())
@@ -113,18 +170,43 @@ object Iso8601 {
         }
     }
 
+    private fun parseDayApi21(context: Context, timestamp: Long): String {
+        val calendar = GregorianCalendar.getInstance()
+        calendar.time = Date(timestamp)
+        calendar.timeZone = TimeZone.getDefault()
+
+        return when {
+            calendar.isToday() -> context.resources.getString(R.string.kaleyra_today)
+            calendar.isYesterday() -> context.resources.getString(R.string.kaleyra_yesterday)
+            else ->  {
+                val df = DateFormat.getDateInstance(DateFormat.LONG)
+                df.timeZone = calendar.timeZone
+                df.format(calendar.time)
+            }
+        }
+    }
+
     /**
      * Parse a UTC millis timestamp into a human readable time. This function takes into account the current zone offset.
      *
      * @param timestamp The timestamp in millis
      * @return String A human readable date day string
      */
-    fun parseTime(timestamp: Long): String =
-        DateTimeFormatter
-            .ofLocalizedTime(FormatStyle.SHORT)
-            .withLocale(Locale.getDefault())
-            .withZone(ZoneId.systemDefault())
-            .format(Instant.ofEpochMilli(timestamp))
+    fun parseTime(timestamp: Long): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            DateTimeFormatter
+                .ofLocalizedTime(FormatStyle.SHORT)
+                .withLocale(Locale.getDefault())
+                .withZone(ZoneId.systemDefault())
+                .format(Instant.ofEpochMilli(timestamp))
+        } else {
+            val calendar = GregorianCalendar.getInstance(TimeZone.getDefault(), Locale.getDefault())
+            calendar.time = Date(timestamp)
+            val df = DateFormat.getTimeInstance(DateFormat.SHORT)
+            df.timeZone = calendar.timeZone
+            df.format(calendar.time)
+        }
+    }
 
     /**
      * ZonedDateTime extension function. Check if the instant resides in the last week time period.
@@ -154,7 +236,6 @@ object Iso8601 {
                 .setMidnight()
         ) && !this.isToday()
 
-
     /**
      * ZonedDateTime extension function. Check if the instant resides in the current day time period.
      *
@@ -168,9 +249,52 @@ object Iso8601 {
                 .setMidnight()
         )
 
+    /**
+     * Calendar extension function. Check if the calendar resides in the last week time period.
+     *
+     * @receiver Instant
+     * @return Boolean True is the Calendar resides in the last week time period, false otherwise
+     */
+    fun Calendar.isLastWeek(): Boolean {
+        return time.after(Date(GregorianCalendar.getInstance(this.timeZone).setMidnight().timeInMillis - WEEK_MILLIS))
+    }
+
+    /**
+     * Calendar extension function. Check if the calendar resides in the yesterday time period.
+     *
+     * @receiver Instant
+     * @return Boolean True is the Calendar resides in the yesterday time period, false otherwise
+     */
+    fun Calendar.isYesterday(): Boolean {
+        return time.after(Date(GregorianCalendar.getInstance(this.timeZone).setMidnight().timeInMillis - DAY_MILLIS))
+    }
+
+    /**
+     * Calendar extension function. Check if the calendar resides in the current day time period.
+     *
+     * @receiver Instant
+     * @return Boolean True is the Calendar resides in the current day time period, false otherwise
+     */
+    fun Calendar.isToday(): Boolean {
+        return time.after(Date(GregorianCalendar.getInstance(this.timeZone).setMidnight().timeInMillis))
+    }
+
+    private fun Calendar.setMidnight() = this.apply {
+        this[Calendar.HOUR_OF_DAY] = 0
+        this[Calendar.MINUTE] = 0
+        this[Calendar.SECOND] = 0
+        this[Calendar.MILLISECOND] = 0
+    }
+
     private fun ZonedDateTime.setMidnight() =
         this.withHour(0)
             .withMinute(0)
             .withSecond(0)
             .withNano(0)
+
+    private fun Calendar.parseToISO8601(date: Date = time): String {
+        val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        df.timeZone = TimeZone.getTimeZone("UTC")
+        return df.format(date)
+    }
 }
