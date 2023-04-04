@@ -110,10 +110,11 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     }
 
     private fun syncWithCallState(scope: CoroutineScope) {
+        val phoneBoxState = collaboration.phoneBox.state
         val callState = collaboration.phoneBox.call.flatMapLatest { it.state }
         scope.launch {
-            combine(callState, AppLifecycle.isInForeground) { state, isInForeground ->
-                state is Call.State.Disconnected.Ended && !isInForeground
+            combine(phoneBoxState, callState, AppLifecycle.isInForeground) { phoneBoxState, callState, isInForeground ->
+                phoneBoxState is PhoneBox.State.Connected && callState is Call.State.Disconnected.Ended && !isInForeground
             }.collectLatest {
                 if (!it) return@collectLatest
                 delay(300)
@@ -128,8 +129,9 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
             .filter { it.list.isNotEmpty() }
             .mapLatest { delay(3000); it }
             .onEach {
-                val call = collaboration.phoneBox.call.replayCache.firstOrNull()
-                if (AppLifecycle.isInForeground.value || (call != null && call.state.value !is Call.State.Disconnected.Ended)) return@onEach
+                val phoneBox = collaboration.phoneBox
+                val call = phoneBox.call.replayCache.firstOrNull()
+                if (AppLifecycle.isInForeground.value || (call != null && call.state.value !is Call.State.Disconnected.Ended) || phoneBox.state.value !is PhoneBox.State.Connected) return@onEach
                 performAction(Action.PAUSE)
             }.launchIn(scope)
     }
