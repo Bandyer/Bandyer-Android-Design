@@ -174,7 +174,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
     }
 
     private fun initializeBottomSheetLayout(savedInstanceState: Bundle?) {
-        callActionWidget = callActionWidget ?: KaleyraCallActionWidget<ActionItem, KaleyraBottomSheet>(this, findViewById(R.id.coordinator_layout), getActions(this, true, false, true, true, true, true)).apply {
+        callActionWidget = callActionWidget ?: KaleyraCallActionWidget<ActionItem, KaleyraBottomSheet>(this, findViewById(R.id.coordinator_layout), getActions(this, true, false, true, true, true, true, withVirtualBackground = true)).apply {
             onAudioRoutesRequest = this@CallActivity
             onClickListener = this@CallActivity
             savedInstanceState?.let { restoreInstanceState(it) }

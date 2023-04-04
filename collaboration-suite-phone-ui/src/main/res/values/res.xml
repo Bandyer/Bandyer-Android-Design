@@ -100,6 +100,12 @@
     <item name="ic_kaleyra_glass_cam_on" type="drawable">@drawable/kaleyra_z_camera_on</item>
     <item name="ic_kaleyra_glass_participants" type="drawable">@drawable/kaleyra_z_users</item>
 
+    <!-- VIRTUAL BACKGROUND -->
+    <item name="ic_kaleyra_virtual_background" type="drawable">@drawable/kaleyra_z_virtual_bg</item>
+    <item name="ic_kaleyra_virtual_background_none" type="drawable">@drawable/kaleyra_z_square</item>
+    <item name="ic_kaleyra_virtual_background_blur" type="drawable">@drawable/kaleyra_z_blurred_bg</item>
+    <item name="ic_kaleyra_virtual_background_image" type="drawable">@drawable/kaleyra_z_virtual_bg</item>
+
     <!-- STILL IN PNG, NOT USED -->
     <item name="ic_kaleyra_options" type="drawable">@drawable/kaleyra_options_icon</item>
 </resources>

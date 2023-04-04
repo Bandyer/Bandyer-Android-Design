@@ -59,6 +59,10 @@
         <item name="android:text">@string/kaleyra_call_action_screen_share</item>
     </style>
 
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.VirtualBackground" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_virtual_background</item>
+    </style>
+
     <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Camera" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_video_disable</item>
     </style>

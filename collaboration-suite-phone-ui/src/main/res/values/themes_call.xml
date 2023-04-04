@@ -32,6 +32,9 @@
         <attr name="kaleyra_whiteboardDialogStyle" format="reference" />
 
         <attr name="kaleyra_screenShareDialogStyle" format="reference" />
+
+        <attr name="kaleyra_virtualBackgroundDialogStyle" format="reference" />
+
         <attr name="kaleyra_fileShareDialogStyle" format="reference" />
 
         <attr name="kaleyra_feedbackDialogStyle" format="reference" />
@@ -55,6 +58,7 @@
         <item name="kaleyra_userStatusStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus</item>
         <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard</item>
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
         <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
         <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
         <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
@@ -74,6 +78,7 @@
         <item name="kaleyra_userStatusStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus</item>
         <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard</item>
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
         <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
         <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
         <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
@@ -93,6 +98,7 @@
         <item name="kaleyra_userStatusStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus</item>
         <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard</item>
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
         <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
         <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
         <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
@@ -107,6 +113,7 @@
     <style name="KaleyraCollaborationSuiteUI.Theme.Call" parent="KaleyraCollaborationSuiteUI.Theme.Call.Night">
         <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard.Day</item>
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
         <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Day</item>
     </style>
 

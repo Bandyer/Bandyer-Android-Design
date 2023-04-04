@@ -5,5 +5,5 @@ if (project.rootProject.file("local.properties").exists()) {
 
 task downloadIcons(type: Exec) {
     workingDir '../scripts'
-    commandLine 'python', './download_zeplin_icons.py', properties.getProperty("zeplin.token") ?: "", properties.getProperty("zeplin.styleguide") ?: "", project.getName()
+    commandLine 'python3', './download_zeplin_icons.py', properties.getProperty("zeplin.token") ?: "", properties.getProperty("zeplin.styleguide") ?: "", project.getName()
 }
