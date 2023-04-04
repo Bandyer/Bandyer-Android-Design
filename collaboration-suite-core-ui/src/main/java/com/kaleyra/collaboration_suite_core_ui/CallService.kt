@@ -95,9 +95,8 @@ class CallService : LifecycleService(), CallStreamDelegate, CallNotificationDele
      */
     override fun showNotification(notification: Notification) {
         this.notification = notification
-        moveToForegroundWhenPossible()
-        if (!AppLifecycle.isInForeground.value && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         super.showNotification(notification)
+        moveToForegroundWhenPossible()
     }
 
     /**
