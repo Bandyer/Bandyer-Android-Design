@@ -63,6 +63,7 @@ import com.kaleyra.collaboration_suite_phone_ui.screensharing.AppViewOverlay
 import com.kaleyra.collaboration_suite_phone_ui.screensharing.StatusBarOverlayView
 import com.kaleyra.collaboration_suite_phone_ui.screensharing.dialog.KaleyraScreenSharePickerDialog
 import com.kaleyra.collaboration_suite_phone_ui.views.ViewOverlayAttacher
+import com.kaleyra.collaboration_suite_phone_ui.virtualbackground.KaleyraVirtualBackgroundPickerDialog
 import java.util.UUID
 
 class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, KaleyraCallActionWidget.OnClickListener {
@@ -294,6 +295,19 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
                     }
                 }
                 item.toggle()
+                true
+            }
+            is CallAction.VIRTUAL_BACKGROUND -> {
+                val dialog = KaleyraVirtualBackgroundPickerDialog()
+                dialog.show(this@CallActivity) {
+                    Snackbar.make(callActionWidget!!.coordinatorLayout, it.name, Snackbar.LENGTH_SHORT).show()
+                    when (it) {
+                        KaleyraVirtualBackgroundPickerDialog.VirtualBackgroundOptions.NONE -> item.toggle(false)
+                        KaleyraVirtualBackgroundPickerDialog.VirtualBackgroundOptions.BLUR,
+                        KaleyraVirtualBackgroundPickerDialog.VirtualBackgroundOptions.IMAGE -> item.toggle(true)
+                    }
+                    dialog.dismiss()
+                }
                 true
             }
             is CallAction.CAMERA        -> {
