@@ -21,7 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 @Composable
 internal fun AudioOutputComponent(
     viewModel: AudioOutputViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-//        factory = AudioOutputViewModel.provideFactory(::requestConfiguration)
+        factory = AudioOutputViewModel.provideFactory(::requestConfiguration)
     ),
     onItemClick: (AudioDeviceUi) -> Unit,
     onCloseClick: () -> Unit,
