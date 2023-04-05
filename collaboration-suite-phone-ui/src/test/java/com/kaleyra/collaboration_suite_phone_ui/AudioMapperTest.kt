@@ -29,7 +29,7 @@ class AudioMapperTest {
     @Test
     fun loudSpeakerAudioOutputDevice_toCurrentAudioDeviceUi_loudspeakerAudioDeviceUi() = runTest {
         mockkObject(CollaborationAudioExtensions)
-        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.LOUDSPEAKER())
+        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.Loudspeaker())
         val call = MutableStateFlow(callMock)
         val result = call.toCurrentAudioDeviceUi()
         val actual = result.first()
@@ -40,7 +40,7 @@ class AudioMapperTest {
     @Test
     fun earPieceAudioOutputDevice_toCurrentAudioDeviceUi_earPieceAudioDeviceUi() = runTest {
         mockkObject(CollaborationAudioExtensions)
-        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.EARPIECE())
+        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.Earpiece())
         val call = MutableStateFlow(callMock)
         val result = call.toCurrentAudioDeviceUi()
         val actual = result.first()
@@ -51,7 +51,7 @@ class AudioMapperTest {
     @Test
     fun wiredHeadsetAudioOutputDevice_toCurrentAudioDeviceUi_wiredHeadsetAudioDeviceUi() = runTest {
         mockkObject(CollaborationAudioExtensions)
-        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.WIRED_HEADSET())
+        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.WiredHeadset())
         val call = MutableStateFlow(callMock)
         val result = call.toCurrentAudioDeviceUi()
         val actual = result.first()
@@ -62,7 +62,7 @@ class AudioMapperTest {
     @Test
     fun mutedAudioOutputDevice_toCurrentAudioDeviceUi_mutedAudioDeviceUi() = runTest {
         mockkObject(CollaborationAudioExtensions)
-        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.NONE())
+        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.None())
         val call = MutableStateFlow(callMock)
         val result = call.toCurrentAudioDeviceUi()
         val actual = result.first()
@@ -73,7 +73,7 @@ class AudioMapperTest {
     @Test
     fun bluetoothAudioOutputDevice_toCurrentAudioDeviceUi_bluetoothAudioDeviceUi() = runTest {
         mockkObject(CollaborationAudioExtensions)
-        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.BLUETOOTH())
+        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.Bluetooth())
         val call = MutableStateFlow(callMock)
         val result = call.toCurrentAudioDeviceUi()
         val actual = result.first()?.javaClass

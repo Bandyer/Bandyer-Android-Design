@@ -140,7 +140,7 @@ class CallActionsViewModelTest {
     @Test
     fun testCallActionsUiState_audioActionKeepsStateAfterCallActionsUpdate() = runTest {
         mockkObject(CollaborationAudioExtensions)
-        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.LOUDSPEAKER())
+        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.Loudspeaker())
         val actions = MutableStateFlow(setOf(CallUI.Action.Audio, CallUI.Action.HangUp))
         every { callMock.actions } returns actions
         advanceUntilIdle()
@@ -196,7 +196,7 @@ class CallActionsViewModelTest {
 
         mockkObject(CollaborationAudioExtensions)
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.Audio))
-        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.LOUDSPEAKER())
+        every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.Loudspeaker())
 
         advanceUntilIdle()
         val actual = result.first().actionList.value
