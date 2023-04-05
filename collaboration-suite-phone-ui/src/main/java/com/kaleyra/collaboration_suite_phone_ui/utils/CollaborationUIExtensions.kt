@@ -32,5 +32,6 @@ fun CollaborationUI.configurePhoneUI(
     configuration,
     PhoneCallActivity::class.java,
     PhoneChatActivity::class.java,
+    termsAndConditionsActivityClazz = null,
     chatNotificationActivityClazz = null
 )
