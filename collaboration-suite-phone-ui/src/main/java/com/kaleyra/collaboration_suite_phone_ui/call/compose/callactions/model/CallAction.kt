@@ -22,6 +22,11 @@ sealed interface CallAction {
         override val isToggled: Boolean = false
     ) : Toggleable
 
+    data class ScreenShare(
+        override val isEnabled: Boolean = true,
+        override val isToggled: Boolean = false
+    ) : Toggleable
+
     data class SwitchCamera(override val isEnabled: Boolean = true) : CallAction
 
     data class HangUp(override val isEnabled: Boolean = true) : CallAction
@@ -34,5 +39,4 @@ sealed interface CallAction {
 
     data class Audio(override val isEnabled: Boolean = true, val device: AudioDeviceUi = AudioDeviceUi.Muted) : CallAction
 
-    data class ScreenShare(override val isEnabled: Boolean = true) : CallAction
 }

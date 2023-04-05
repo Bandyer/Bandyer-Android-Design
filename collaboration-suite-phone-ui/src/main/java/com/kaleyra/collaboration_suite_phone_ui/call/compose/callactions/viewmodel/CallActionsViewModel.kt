@@ -18,9 +18,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.AudioMapper.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallActionsMapper.toCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isSharingScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
+import com.kaleyra.collaboration_suite_core_ui.utils.FlowUtils.combine
 import kotlinx.coroutines.launch
 
 internal class CallActionsViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallActionsUiState>(configure) {
@@ -47,6 +49,10 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         .isMyMicEnabled()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
+    private val isSharingScreen = call
+        .isSharingScreen()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
     private val currentAudioOutput = call
         .toCurrentAudioDeviceUi()
         .filterNotNull()
@@ -63,14 +69,15 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
             isCallConnected,
             isMyCameraEnabled,
             isMyMicEnabled,
+            isSharingScreen,
             currentAudioOutput
-        ) { callActions, isCallConnected, isMyCameraEnabled, isMyMicEnabled, currentAudioOutput ->
+        ) { callActions, isCallConnected, isMyCameraEnabled, isMyMicEnabled, isSharingScreen, currentAudioOutput ->
             val newActions = callActions
                 .updateActionIfExists(CallAction.Microphone(isToggled = !isMyMicEnabled))
                 .updateActionIfExists(CallAction.Camera(isToggled = !isMyCameraEnabled))
                 .updateActionIfExists(CallAction.Audio(device = currentAudioOutput))
                 .updateActionIfExists(CallAction.FileShare(isEnabled = isCallConnected))
-                .updateActionIfExists(CallAction.ScreenShare(isEnabled = isCallConnected))
+                .updateActionIfExists(CallAction.ScreenShare(isToggled = isSharingScreen, isEnabled = isCallConnected))
                 .updateActionIfExists(CallAction.Whiteboard(isEnabled = isCallConnected))
             _uiState.update { it.copy(actionList = ImmutableList(newActions)) }
         }.launchIn(viewModelScope)

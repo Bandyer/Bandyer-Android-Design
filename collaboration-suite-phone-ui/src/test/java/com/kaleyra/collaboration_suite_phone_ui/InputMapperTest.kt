@@ -6,6 +6,8 @@ import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isSharingScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -77,6 +79,24 @@ class InputMapperTest {
         every { audioMock.enabled } returns MutableStateFlow(false)
         val call = MutableStateFlow(callMock)
         val result = call.isMyMicEnabled()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun sharingStreamInStreamList_isSharingScreen_true() = runTest {
+        every { streamMock.id } returns ScreenShareViewModel.SCREEN_SHARE_STREAM_ID
+        val call = MutableStateFlow(callMock)
+        val result = call.isSharingScreen()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun sharingStreamNotInStreamList_isSharingScreen_false() = runTest {
+        every { streamMock.id } returns "id"
+        val call = MutableStateFlow(callMock)
+        val result = call.isSharingScreen()
         val actual = result.first()
         Assert.assertEquals(false, actual)
     }
