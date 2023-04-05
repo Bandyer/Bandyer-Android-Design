@@ -30,7 +30,10 @@ internal fun AudioOutputComponent(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     AudioOutputComponent(
         uiState = uiState,
-        onItemClick = onItemClick,
+        onItemClick = {
+            viewModel.setDevice(it)
+            onItemClick(it)
+        },
         onCloseClick = onCloseClick,
         modifier = modifier
     )
