@@ -2,9 +2,10 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import com.bandyer.android_audiosession.model.AudioOutputDevice
 import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.audioOutputDevicesList
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.currentAudioOutputDevice
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputMapper.mapToBluetoothDeviceState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -12,6 +13,11 @@ import kotlinx.coroutines.flow.map
 internal object AudioMapper {
     fun Flow<CallUI>.toCurrentAudioDeviceUi(): Flow<AudioDeviceUi?> =
         flatMapLatest { it.currentAudioOutputDevice }.map { it?.mapToAudioDeviceUi() }
+
+    fun Flow<CallUI>.toAudioDevicesUi(): Flow<List<AudioDeviceUi>> {
+        return this.flatMapLatest { it.audioOutputDevicesList }
+            .map { list -> list.map { it.mapToAudioDeviceUi() } }
+    }
 
     fun AudioOutputDevice.mapToAudioDeviceUi(): AudioDeviceUi =
         when (this) {
@@ -25,5 +31,20 @@ internal object AudioMapper {
                 connectionState = bluetoothConnectionStatus.mapToBluetoothDeviceState(),
                 batteryLevel = batteryLevel
             )
+        }
+
+    fun AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.mapToBluetoothDeviceState(): BluetoothDeviceState =
+        when(this) {
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.ACTIVE -> BluetoothDeviceState.Active
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.DISCONNECTED -> BluetoothDeviceState.Disconnected
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.AVAILABLE -> BluetoothDeviceState.Available
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.DEACTIVATING -> BluetoothDeviceState.Deactivating
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.CONNECTING -> BluetoothDeviceState.Connecting
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.CONNECTED -> BluetoothDeviceState.Connected
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.ACTIVATING -> BluetoothDeviceState.Activating
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.CONNECTING_AUDIO -> BluetoothDeviceState.ConnectingAudio
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.PLAYING_AUDIO -> BluetoothDeviceState.PlayingAudio
+            else -> BluetoothDeviceState.Failed
+
         }
 }
