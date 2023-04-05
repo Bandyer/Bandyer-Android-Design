@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.TermsAndConditions">
+        <attr name="recyclerViewStyle" tools:ignore="ResourceName" />
+        <attr name="kaleyra_recyclerViewItemStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="bottomNavigationStyle" tools:ignore="ResourceName" />
+    </declare-styleable>
+
+    <!-- USER DATA CONSENT AGREEMENT FRAGMENT -->
+    <style name="KaleyraCollaborationSuiteUI.Glass.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass">
+        <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView.TermsAndConditions</item>
+        <item name="kaleyra_messageStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.GlassTermsAndConditions</item>
+        <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.TermsAndConditions.RecyclerViewItem</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassTermsAndConditions</item>
+        <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.TermsAndConditions</item>
+        <item name="kaleyra_bottomNavigationVoiceStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.TermsAndConditions.VoiceCommand</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.RecyclerView.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.RecyclerView">
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.TermsAndConditions.RecyclerViewItem" parent="">
+        <item name="kaleyra_messageStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.GlassTermsAndConditions</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.GlassTermsAndConditions" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_32sp</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space12</item>
+        <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space12</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space32</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space32</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassTermsAndConditions" parent="KaleyraCollaborationSuiteUI.TextView.Title">
+        <item name="android:textColor">?attr/colorOnBackground</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_40sp</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space32</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space32</item>
+    </style>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation">
+        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.TermsAndConditions</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.TermsAndConditions</item>
+        <item name="kaleyra_thirdItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.TermsAndConditions</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.TermsAndConditions</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeTermsAndConditions</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_browse</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeTermsAndConditions" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_browse</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.TermsAndConditions</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem">
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.TermsAndConditions</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem">
+        <item name="android:clickable">true</item>
+    </style>
+
+    <!-- VOICE COMMAND -->
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.TermsAndConditions.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.TermsAndConditions">
+        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.TermsAndConditions</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.TermsAndConditions</item>
+        <item name="kaleyra_thirdItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.TermsAndConditions</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand.TermsAndConditions</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem.VoiceCommand.TermsAndConditions</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeTermsAndConditions.VoiceCommand</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_scroll_right</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem.VoiceCommand.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_scroll_left</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeTermsAndConditions.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeTermsAndConditions">
+        <item name="android:text">@string/kaleyra_glass_scroll_right_left</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand.TermsAndConditions</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand.TermsAndConditions</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand.TermsAndConditions" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+    </style>
+
+</resources>

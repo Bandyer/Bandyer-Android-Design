@@ -21,11 +21,11 @@ root_path = AWS_PATH + "/" + aws_package_path + "/"
 
 package_split = PACKAGE_NAME.split('.')
 
-foldersToInvalidate = [ '/?list-type=2&delimiter=/&prefix='+ AWS_PATH +'/&max-keys=50',
-                        '/?list-type=2&delimiter=/&prefix='+ AWS_PATH + '/' + package_split[0] + '/&max-keys=50',
-                        '/?list-type=2&delimiter=/&prefix='+ AWS_PATH + '/' + package_split[0] + '/' + package_split[1] +'/&max-keys=50',
-                        '/?list-type=2&delimiter=/&prefix='+ root_path +'&max-keys=50', # invalidate necessary for website indexing
-                        '/?list-type=2&delimiter=/&prefix='+ root_path + PACKAGE_VERSION + '/&max-keys=50', # invalidate necessary for website indexing
+foldersToInvalidate = [ '/?list-type=2&delimiter=/&prefix='+ AWS_PATH +'/&max-keys=1000',
+                        '/?list-type=2&delimiter=/&prefix='+ AWS_PATH + '/' + package_split[0] + '/&max-keys=1000',
+                        '/?list-type=2&delimiter=/&prefix='+ AWS_PATH + '/' + package_split[0] + '/' + package_split[1] +'/&max-keys=1000',
+                        '/?list-type=2&delimiter=/&prefix='+ root_path +'&max-keys=1000', # invalidate necessary for website indexing
+                        '/?list-type=2&delimiter=/&prefix='+ root_path + PACKAGE_VERSION + '/&max-keys=1000', # invalidate necessary for website indexing
                         "/" +  root_path + "maven-metadata.*",
                         "/" +  root_path + PACKAGE_VERSION + '/*']
 

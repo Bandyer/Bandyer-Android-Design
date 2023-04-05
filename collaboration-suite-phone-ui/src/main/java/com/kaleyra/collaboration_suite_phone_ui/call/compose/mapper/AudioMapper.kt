@@ -15,11 +15,11 @@ internal object AudioMapper {
 
     fun AudioOutputDevice.mapToAudioDeviceUi(): AudioDeviceUi =
         when (this) {
-            is AudioOutputDevice.NONE -> AudioDeviceUi.Muted
-            is AudioOutputDevice.EARPIECE -> AudioDeviceUi.EarPiece
-            is AudioOutputDevice.LOUDSPEAKER -> AudioDeviceUi.LoudSpeaker
-            is AudioOutputDevice.WIRED_HEADSET -> AudioDeviceUi.WiredHeadset
-            is AudioOutputDevice.BLUETOOTH -> AudioDeviceUi.Bluetooth(
+            is AudioOutputDevice.None -> AudioDeviceUi.Muted
+            is AudioOutputDevice.Earpiece -> AudioDeviceUi.EarPiece
+            is AudioOutputDevice.Loudspeaker -> AudioDeviceUi.LoudSpeaker
+            is AudioOutputDevice.WiredHeadset -> AudioDeviceUi.WiredHeadset
+            is AudioOutputDevice.Bluetooth -> AudioDeviceUi.Bluetooth(
                 id = identifier,
                 name = name,
                 connectionState = bluetoothConnectionStatus.mapToBluetoothDeviceState(),

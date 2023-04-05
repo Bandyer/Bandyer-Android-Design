@@ -1,14 +1,14 @@
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ distributed under the License is distributed <s> an "AS IS" BASIS,
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
@@ -17,6 +17,7 @@
 <resources>
 
     <!-- Audio route labels -->
+    <string name="kaleyra_audio_route_title">Scegli un\'uscita audio</string>
     <string name="kaleyra_call_action_audio_route_bluetooth">Bluetooth</string>
     <string name="kaleyra_call_action_audio_route_wired_headset">Cuffie con cavo</string>
     <string name="kaleyra_call_action_audio_route_loudspeaker">Speaker</string>
@@ -41,6 +42,7 @@
     <string name="kaleyra_call_action_audio_route">Uscita audio</string>
     <string name="kaleyra_call_action_options">Opzioni</string>
     <string name="kaleyra_call_action_screen_share">Condividi schermo</string>
+    <string name="kaleyra_call_action_virtual_background">Sfondo Virtuale</string>
     <string name="kaleyra_call_action_video_disable">Disattiva</string>
     <string name="kaleyra_call_hangup">Chiudi</string>
 
@@ -54,7 +56,7 @@
     <string name="kaleyra_edit_text_input_placeholder">Scrivi qui &#8230;</string>
     <string name="kaleyra_chat_channel_loading">Caricamento &#8230;</string>
     <string name="kaleyra_chat_user_status_online">in linea</string>
-    <string name="kaleyra_chat_user_status_last_login">ultimo accesso:</string>
+    <string name="kaleyra_chat_user_status_last_login">ultimo accesso: %1$s</string>
     <string name="kaleyra_chat_user_status_offline">visto di recente</string>
     <string name="kaleyra_chat_user_status_typing">sta scrivendo</string>
     <string name="kaleyra_chat_state_waiting_for_network">attendo la rete &#8230;</string>
@@ -64,8 +66,13 @@
     <string name="kaleyra_chat_msg_status_pending">Message in sospeso</string>
     <string name="kaleyra_chat_msg_status_sent">Messaggio inviato</string>
     <string name="kaleyra_chat_msg_status_seen">Messaggio letto</string>
+    <string name="kaleyra_chat_unread_messages">Messaggi non letti</string>
+    <string name="kaleyra_chat_no_messages">Nessun messaggio&#8230;</string>
+    <string name="kaleyra_chat_avatar_desc">Immagine della chat</string>
 
     <!-- Call -->
+    <string name="kaleyra_call_show_buttons">Mostra tasti</string>
+    <string name="kaleyra_close">Chiudi</string>
     <string name="kaleyra_call_status_connecting">Connessione in corso &#8230;</string>
     <string name="kaleyra_call_status_dialing">Chiamata in corso &#8230;</string>
     <plurals name="kaleyra_call_incoming_status_ringing">
@@ -105,14 +112,21 @@
     <string name="kaleyra_download">Salva</string>
 
     <string name="kaleyra_fullscreen_info">Modalità primo piano</string>
-    <string name="kaleyra_fullscreen_button">Entra/esci modalità primo piano</string>
+    <string name="kaleyra_exit_fullscreen">Esci modalità primo piano</string>
+    <string name="kaleyra_enter_fullscreen">Entra modalità primo piano</string>
 
     <string name="kaleyra_ringing_answer">Rispondi</string>
     <string name="kaleyra_ringing_decline">Rifiuta</string>
 
     <string name="kaleyra_back">Indietro</string>
+    <string name="kaleyra_avatar">Avatar utente</string>
+    <string name="kaleyra_company_logo">Logo compagnia</string>
+
+    <string name="kaleyra_move_to_featured_streams">Muovi tra gli stream in primo piano</string>
+    <string name="kaleyra_tap_to_answer">tap to answer</string>
 
     <!-- WHITEBOARD -->
+    <string name="kaleyra_whiteboard">Lavagna</string>
     <string name="kaleyra_collaborate_button">Collabora</string>
 
     <string name="kaleyra_confirm_message">Sì</string>
@@ -128,6 +142,11 @@
     <string name="kaleyra_file_upload_percentage">%1$d %%</string>
     <string name="kaleyra_upload_file">Carica file</string>
 
+    <string name="kaleyra_whiteboard_uploading_file">Caricamento file</string>
+    <string name="kaleyra_whiteboard_compressing">compressione…</string>
+    <string name="kaleyra_whiteboard_error_title">Errore</string>
+    <string name="kaleyra_whiteboard_error_subtitle">Qualcosa è andato storto</string>
+
     <!-- TEMPLATES -->
     <string name="kaleyra_bluetooth_info">%1$s%2$s%3$s</string>
     <string name="kaleyra_bluetooth_battery_info">&#160;| %1$s %2$d %%</string>
@@ -141,7 +160,15 @@
     <string name="kaleyra_screenshare_picker_title">Cosa vuoi condividere?</string>
     <string name="kaleyra_screenshare_app_only">Schermo app</string>
     <string name="kaleyra_screenshare_full_device">Schermo intero</string>
+
+    <!-- VIRTUAL BACKGROUND PICKER -->
+    <string name="kaleyra_virtual_background_picker_title">Seleziona sfondo virtuale</string>
+    <string name="kaleyra_virtual_background_none">Nessuno</string>
+    <string name="kaleyra_virtual_background_blur">Sfuocato</string>
+    <string name="kaleyra_virtual_background_image">Immagine</string>
+
     <!-- FILE SHARE -->
+    <string name="kaleyra_fileshare">Condividi File</string>
     <string name="kaleyra_fileshare_add">Carica</string>
     <string name="kaleyra_fileshare_add_description">Carica nuovo file</string>
     <string name="kaleyra_fileshare_upload_error">Upload fallito - Riprova</string>
@@ -151,7 +178,7 @@
     <string name="kaleyra_fileshare_progress">%1$d%%</string>
     <string name="kaleyra_fileshare_upload">Upload</string>
     <string name="kaleyra_fileshare_download">Download</string>
-    <string name="kaleyra_fileshare_file">File generico</string>
+    <string name="kaleyra_fileshare_miscellaneous">File generico</string>
     <string name="kaleyra_fileshare_media">File multimediale</string>
     <string name="kaleyra_fileshare_archive">File compresso</string>
     <string name="kaleyra_fileshare_cancel">Annulla</string>
@@ -168,6 +195,7 @@
     <string name="kaleyra_fileshare_file_cancelled">File cancellato</string>
     <string name="kaleyra_max_bytes_dialog_descr">È consentito condividere file fino a 150 MB</string>
     <string name="kaleyra_max_bytes_dialog_title">Limite condivisione file</string>
+    <string name="kaleyra_fileshare_open_file">Apri file</string>
 
     <!-- FEEDBACK -->
     <string name="kaleyra_feedback_vote">Vota</string>
@@ -198,5 +226,10 @@
     <string name="kaleyra_utterance_recording_started">Registrazione avviata</string>
     <string name="kaleyra_utterance_recording_stopped">Registrazione interrotta</string>
     <string name="kaleyra_utterance_recording_failed">Registrazione fallita. Chiudi la chiamata e riprova</string>
+
+    <!-- TOP APP BAR -->
+    <string name="kaleyra_start_audio_call">Avvia chiamata</string>
+    <string name="kaleyra_start_audio_upgradable_call">Avvia chiamata</string>
+    <string name="kaleyra_start_video_call">Avvia videochiamata</string>
 
 </resources>

@@ -106,5 +106,5 @@ dependencies {
     implementation("androidx.profileinstaller:profileinstaller:1.2.0")
 
     implementation "com.kaleyra:collaboration-suite-utils:2.0.1"
-    implementation "com.bandyer:bandyer-android-audiosession:2.2.1"
+    implementation "com.bandyer:bandyer-android-audiosession:3.0.3"
 }

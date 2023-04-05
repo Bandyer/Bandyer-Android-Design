@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,15 +19,19 @@ package com.kaleyra.collaboration_suite_core_ui
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
 import com.kaleyra.collaboration_suite_utils.setValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
 
 /**
  * Collaboration UI
@@ -41,13 +45,17 @@ object CollaborationUI {
      */
     private var collaboration: Collaboration? = null
 
+    private val serialScope by lazy { CoroutineScope(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) }
+
     private var mainScope: CoroutineScope? = null
 
     private lateinit var callActivityClazz: Class<*>
     private lateinit var chatActivityClazz: Class<*>
+    private var termsAndConditionsActivityClazz: Class<*>? = null
     private var chatNotificationActivityClazz: Class<*>? = null
 
     private var collaborationUIConnector: CollaborationUIConnector? = null
+    private var termsAndConditionsRequester: TermsAndConditionsRequester? = null
 
     private var _phoneBox: PhoneBoxUI? by cached { PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz, collaboration!!.configuration.logger) }
     private var _chatBox: ChatBoxUI? by cached { ChatBoxUI(collaboration!!.chatBox, chatActivityClazz, chatNotificationActivityClazz) }
@@ -87,6 +95,7 @@ object CollaborationUI {
      * @param configuration representing a set of info necessary to instantiate the communication
      * @param callActivityClazz class of the call activity
      * @param chatActivityClazz class of the chat activity
+     * @param termsAndConditionsActivityClazz class of the terms and conditions activity
      * @param chatNotificationActivityClazz class of the chat notification fullscreen activity
      * @return
      */
@@ -94,17 +103,20 @@ object CollaborationUI {
         configuration: Configuration,
         callActivityClazz: Class<*>,
         chatActivityClazz: Class<*>,
+        termsAndConditionsActivityClazz: Class<*>? = null,
         chatNotificationActivityClazz: Class<*>? = null
     ): Boolean {
-        if (collaboration != null) return false
+        if (isConfigured) return false
         Collaboration.create(configuration).apply {
             collaboration = this
         }
         this.chatActivityClazz = chatActivityClazz
         this.callActivityClazz = callActivityClazz
+        this.termsAndConditionsActivityClazz = termsAndConditionsActivityClazz
         this.chatNotificationActivityClazz = chatNotificationActivityClazz
         mainScope = MainScope()
         collaborationUIConnector = CollaborationUIConnector(collaboration!!, mainScope!!)
+        termsAndConditionsActivityClazz?.also { termsAndConditionsRequester = TermsAndConditionsRequester(it, ::connect, ::disconnect) }
         return true
     }
 
@@ -112,8 +124,11 @@ object CollaborationUI {
      * Connect
      */
     fun connect(session: Collaboration.Session) {
-        if (collaboration?.session != null && collaboration?.session?.userId != session.userId) disconnect(true)
-        collaborationUIConnector?.connect(session)
+        serialScope.launch {
+            if (collaboration?.session != null && collaboration?.session?.userId != session.userId) disconnect(true)
+            collaborationUIConnector?.connect(session)
+            termsAndConditionsRequester?.setUp(session)
+        }
     }
 
     /**
@@ -121,20 +136,26 @@ object CollaborationUI {
      * @param clearSavedData If true, the saved data on DB and SharedPrefs will be cleared.
      */
     fun disconnect(clearSavedData: Boolean = false) {
-        collaborationUIConnector?.disconnect(clearSavedData)
+        serialScope.launch {
+            collaborationUIConnector?.disconnect(clearSavedData)
+            termsAndConditionsRequester?.dispose()
+        }
     }
 
     /**
      * Dispose the collaboration UI and optionally clear saved data.
      */
     fun reset() {
-        collaboration ?: return
-        mainScope?.cancel()
-        disconnect(true)
-        collaboration = null
-        _phoneBox = null
-        _chatBox = null
-        mainScope = null
+        serialScope.launch {
+            collaboration ?: return@launch
+            mainScope?.cancel()
+            collaborationUIConnector?.disconnect(true)
+            termsAndConditionsRequester?.dispose()
+            collaboration = null
+            _phoneBox = null
+            _chatBox = null
+            mainScope = null
+        }
     }
 }
 

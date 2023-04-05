@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.kaleyra.collaboration_suite_core_ui.notification
 
 import android.app.Notification
@@ -14,6 +30,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
@@ -68,6 +85,7 @@ class CallNotification {
         val channelName: String,
         val type: Type,
         var isHighImportance: Boolean = false,
+        var enableCallStyle: Boolean = false,
         var color: Int? = null,
         var smallIconResource: Int? = null,
         var user: String? = null,
@@ -94,6 +112,14 @@ class CallNotification {
          * @return Builder
          */
         fun importance(isHigh: Boolean) = apply { this.isHighImportance = isHigh }
+
+        /**
+         * Set the notification call style
+         *
+         * @param value True if to enable call style notification, false otherwise
+         * @return Builder
+         */
+        fun enableCallStyle(value: Boolean) = apply { this.enableCallStyle = value }
 
         /**
          * Set the color used as notification accent color
@@ -326,7 +352,34 @@ class CallNotification {
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setContentText(contentText)
                 .addPerson(person)
-                .setStyle(style)
+
+            if (enableCallStyle) {
+                builder.style = style
+            } else {
+                when(type) {
+                    Type.INCOMING -> {
+                        val answerAction = Notification.Action.Builder(
+                            Icon.createWithResource(context, R.drawable.ic_kaleyra_answer),
+                            context.getString(R.string.kaleyra_notification_answer),
+                            answerIntent
+                        ).build()
+                        val declineAction = Notification.Action.Builder(
+                            Icon.createWithResource(context, R.drawable.ic_kaleyra_decline),
+                            context.getString(R.string.kaleyra_notification_decline),
+                            declineIntent
+                        ).build()
+                        builder.setActions(answerAction, declineAction)
+                    }
+                    else -> {
+                        val declineAction = Notification.Action.Builder(
+                            Icon.createWithResource(context, R.drawable.ic_kaleyra_decline),
+                            context.getString(R.string.kaleyra_notification_decline),
+                            declineIntent
+                        ).build()
+                        builder.setActions(declineAction)
+                    }
+                }
+            }
 
             color?.let { builder.setColor(it) }
             smallIconResInt?.let { builder.setSmallIcon(it) }

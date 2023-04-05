@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,7 +31,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
-import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.*
+import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatAction
 import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatViewModel
 import com.kaleyra.collaboration_suite_glass_ui.chat.menu.ChatMenuItem
@@ -163,4 +164,9 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
     override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.kaleyraActions.horizontalSmoothScrollToNext(actionIndex) }
 
     override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.kaleyraActions.horizontalSmoothScrollToPrevious(actionIndex) }
+
+    override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        super.setListenersForRealWear(bottomNavView)
+        bottomNavView.setFirstItemListeners({ onSwipeForward(true) }, { onSwipeBackward(true) })
+    }
 }

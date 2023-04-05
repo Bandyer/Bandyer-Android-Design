@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,8 +15,8 @@
   ~ limitations under the License.
   -->
 
-<manifest package="com.kaleyra.collaboration_suite_core_ui"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kaleyra.collaboration_suite_core_ui">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
@@ -30,26 +30,33 @@
             android:name=".CallService"
             android:foregroundServiceType="phoneCall|mediaProjection|camera|microphone" />
 
-        <receiver android:name=".notification.CallNotificationActionReceiver"  android:exported="false">
+        <receiver
+            android:name=".notification.CallNotificationActionReceiver"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.kaleyra.collaboration_suite_core_ui.HANGUP"/>
-                <action android:name="com.kaleyra.collaboration_suite_core_ui.ANSWER"/>
-                <action android:name="com.kaleyra.collaboration_suite_core_ui.STOP_SCREEN_SHARE"/>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.HANGUP" />
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.ANSWER" />
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.STOP_SCREEN_SHARE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".notification.ChatNotificationActionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.REPLY" />
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.MARK_AS_READ" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".notification.DisplayedChatActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.CHAT_OPEN" />
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.CHAT_CLOSE" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".notification.ChatNotificationActionReceiver"  android:exported="false">
-            <intent-filter>
-                <action android:name="com.kaleyra.collaboration_suite_core_ui.REPLY"/>
-                <action android:name="com.kaleyra.collaboration_suite_core_ui.MARK_AS_READ"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name=".notification.DisplayedChatActivity"  android:exported="false">
-            <intent-filter>
-                <action android:name="com.kaleyra.collaboration_suite_core_ui.CHAT_OPEN"/>
-                <action android:name="com.kaleyra.collaboration_suite_core_ui.CHAT_CLOSE"/>
-            </intent-filter>
-        </receiver>
+        <receiver android:name="com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.NotificationDisposer"/>
     </application>
+
 </manifest>

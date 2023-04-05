@@ -34,6 +34,23 @@ buildscript {
 
     apply from: 'versions.gradle'
 
+    // TODO remove this
+    ext.kotlin_version = '1.6.21'
+    ext.bandyer_core_av = "12.1.0"
+    ext.bandyer_comm_center = "10.1.0"
+    ext.bandyer_chat = "1.0.0-alpha6"
+    ext.bandyer_utils = "3.0.1"
+    ext.extension_usb_camera = bandyer_core_av
+    ext.extension_virtual_background = bandyer_core_av
+    ext.collaboration_suite_utils = bandyer_utils
+    ext.bandyer_networking = "5.0.0"
+    ext.collaboration_suite_networking = bandyer_networking
+    ext.collaboration_suite_core_ui = "3.8.0"
+    ext.collaboration_suite_glass_ui = collaboration_suite_core_ui
+    ext.collaboration_suite_phone_ui = collaboration_suite_core_ui
+    ext.serialization_version = '0.5.1'
+    ext.nav_version = "2.3.5"
+
     repositories {
         gradlePluginPortal()
         mavenLocal()

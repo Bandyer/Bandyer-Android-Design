@@ -19,11 +19,11 @@ internal object AudioOutputMapper {
 
     fun AudioOutputDevice.mapToAudioDeviceUi(): AudioDeviceUi =
         when (this) {
-            is AudioOutputDevice.NONE -> AudioDeviceUi.Muted
-            is AudioOutputDevice.EARPIECE -> AudioDeviceUi.EarPiece
-            is AudioOutputDevice.LOUDSPEAKER -> AudioDeviceUi.LoudSpeaker
-            is AudioOutputDevice.WIRED_HEADSET -> AudioDeviceUi.WiredHeadset
-            is AudioOutputDevice.BLUETOOTH -> AudioDeviceUi.Bluetooth(
+            is AudioOutputDevice.None -> AudioDeviceUi.Muted
+            is AudioOutputDevice.Earpiece -> AudioDeviceUi.EarPiece
+            is AudioOutputDevice.Loudspeaker -> AudioDeviceUi.LoudSpeaker
+            is AudioOutputDevice.WiredHeadset -> AudioDeviceUi.WiredHeadset
+            is AudioOutputDevice.Bluetooth -> AudioDeviceUi.Bluetooth(
                 id = identifier,
                 name = name,
                 connectionState = bluetoothConnectionStatus.mapToBluetoothDeviceState(),
@@ -31,15 +31,15 @@ internal object AudioOutputMapper {
             )
         }
 
-    fun AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.mapToBluetoothDeviceState(): BluetoothDeviceState =
+    fun AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.mapToBluetoothDeviceState(): BluetoothDeviceState =
         when(this) {
-            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.FAILED -> BluetoothDeviceState.Failed
-            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.DISCONNECTED -> BluetoothDeviceState.Disconnected
-            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.AVAILABLE -> BluetoothDeviceState.Available
-            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.DEACTIVATING -> BluetoothDeviceState.Deactivating
-            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.CONNECTING -> BluetoothDeviceState.Connecting
-            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.CONNECTED -> BluetoothDeviceState.Connected
-            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.ACTIVATING -> BluetoothDeviceState.Activating
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.FAILED -> BluetoothDeviceState.Failed
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.DISCONNECTED -> BluetoothDeviceState.Disconnected
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.AVAILABLE -> BluetoothDeviceState.Available
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.DEACTIVATING -> BluetoothDeviceState.Deactivating
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.CONNECTING -> BluetoothDeviceState.Connecting
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.CONNECTED -> BluetoothDeviceState.Connected
+            AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.ACTIVATING -> BluetoothDeviceState.Activating
             else -> BluetoothDeviceState.Active
 //            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.CONNECTING_AUDIO -> BluetoothDeviceState.ConnectingAudio
 //            AudioOutputDevice.BLUETOOTH.BluetoothConnectionStatus.PLAYING_AUDIO -> BluetoothDeviceState.PlayingAudio

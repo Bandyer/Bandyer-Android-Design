@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,6 +36,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessageItem
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessagePage
 import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatViewModel
@@ -197,10 +198,10 @@ internal class ChatFragment : BaseFragment(), TiltListener {
 
         with(binding.kaleyraTitle) {
             postDelayed({
-                            if (!noMessages) return@postDelayed
-                            text = resources.getString(R.string.kaleyra_glass_no_messages)
-                            visibility = View.VISIBLE
-                        }, NO_MESSAGES_TIMEOUT)
+                if (!noMessages) return@postDelayed
+                text = resources.getString(R.string.kaleyra_glass_no_messages)
+                visibility = View.VISIBLE
+            }, NO_MESSAGES_TIMEOUT)
         }
     }
 
@@ -234,6 +235,11 @@ internal class ChatFragment : BaseFragment(), TiltListener {
 
     override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also {
         if (it) binding.kaleyraMessages.horizontalSmoothScrollToPrevious(currentMsgItemIndex)
+    }
+
+    override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        super.setListenersForRealWear(bottomNavView)
+        bottomNavView.setFirstItemListeners({ onSwipeForward(true) }, { onSwipeBackward(true) })
     }
 
     private fun toChatMessagePages(

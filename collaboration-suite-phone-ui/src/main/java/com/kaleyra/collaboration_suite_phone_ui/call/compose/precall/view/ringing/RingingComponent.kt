@@ -67,7 +67,7 @@ internal fun RingingComponent(
 
     PreCallComponent(
         uiState = uiState,
-        subtitle = pluralStringResource(id = R.plurals.kaleyra_call_status_ringing, count = uiState.participants.size),
+        subtitle = pluralStringResource(id = R.plurals.kaleyra_call_incoming_status_ringing, count = uiState.participants.size),
         onBackPressed = onBackPressed,
         modifier = modifier.testTag(RingingContentTag)
     ) {

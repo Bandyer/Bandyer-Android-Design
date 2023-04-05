@@ -30,9 +30,14 @@ apply from: '../moveIcons.gradle'
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     coreLibraryDesugaring androidX.desugar
 
     testImplementation test.jUnit
+    testImplementation test.mockk
+    testImplementation test.robolectric
+    testImplementation test.coroutines
+    testImplementation project(":collaboration-suite")
     androidTestImplementation test.espresso
 
     api jetbrains.stdlib

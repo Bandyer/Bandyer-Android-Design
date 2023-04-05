@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite.Collaboration
@@ -10,7 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
@@ -61,7 +77,9 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
      */
     fun disconnect(clearSavedData: Boolean = false) {
         collaboration.disconnect(clearSavedData)
-        pause()
+        wasPhoneBoxConnected = false
+        wasChatBoxConnected = false
+        scope.coroutineContext.cancelChildren()
         if (clearSavedData) NotificationManager.cancelAll()
     }
 
@@ -70,12 +88,11 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
         wasChatBoxConnected = collaboration.chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
         collaboration.phoneBox.disconnect()
         collaboration.chatBox.disconnect()
-        scope.cancel()
+        scope.coroutineContext.cancelChildren()
     }
 
     private fun resume() {
-        scope.cancel()
-        scope = CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.IO)
+        scope.coroutineContext.cancelChildren()
         syncWithCallState(scope)
         syncWithChatMessages(scope)
         if (wasPhoneBoxConnected) collaboration.phoneBox.connect()
@@ -93,10 +110,11 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     }
 
     private fun syncWithCallState(scope: CoroutineScope) {
+        val phoneBoxState = collaboration.phoneBox.state
         val callState = collaboration.phoneBox.call.flatMapLatest { it.state }
         scope.launch {
-            combine(callState, AppLifecycle.isInForeground) { state, isInForeground ->
-                state is Call.State.Disconnected.Ended && !isInForeground
+            combine(phoneBoxState, callState, AppLifecycle.isInForeground) { phoneBoxState, callState, isInForeground ->
+                phoneBoxState is PhoneBox.State.Connected && callState is Call.State.Disconnected.Ended && !isInForeground
             }.collectLatest {
                 if (!it) return@collectLatest
                 delay(300)
@@ -111,15 +129,15 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
             .filter { it.list.isNotEmpty() }
             .mapLatest { delay(3000); it }
             .onEach {
-                val call = collaboration.phoneBox.call.replayCache.firstOrNull()
-                if (AppLifecycle.isInForeground.value || (call != null && call.state.value !is Call.State.Disconnected.Ended)) return@onEach
+                val phoneBox = collaboration.phoneBox
+                val call = phoneBox.call.replayCache.firstOrNull()
+                if (AppLifecycle.isInForeground.value || (call != null && call.state.value !is Call.State.Disconnected.Ended) || phoneBox.state.value !is PhoneBox.State.Connected) return@onEach
                 performAction(Action.PAUSE)
             }.launchIn(scope)
     }
 
     private fun performAction(action: Action) {
         synchronized(this) {
-            if (action == lastAction) return
             when (action) {
                 Action.RESUME -> resume()
                 Action.PAUSE  -> pause()
