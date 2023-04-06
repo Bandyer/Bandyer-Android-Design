@@ -88,7 +88,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
         viewModelScope.launch {
             isFetching.emit(true)
             chat.first().fetch(FETCH_COUNT)
-            isFetching.tryEmit(false)
+            isFetching.emit(false)
         }
     }
 
