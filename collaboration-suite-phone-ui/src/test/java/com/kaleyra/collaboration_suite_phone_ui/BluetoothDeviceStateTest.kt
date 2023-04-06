@@ -40,8 +40,8 @@ class BluetoothDeviceStateExtTest {
     }
 
     @Test
-    fun activatingBluetoothState_isConnecting_false() {
-        assertEquals(false, BluetoothDeviceState.Activating.isConnecting())
+    fun activatingBluetoothState_isConnecting_true() {
+        assertEquals(true, BluetoothDeviceState.Activating.isConnecting())
     }
 
     @Test
@@ -70,13 +70,13 @@ class BluetoothDeviceStateExtTest {
     }
 
     @Test
-    fun connectingBluetoothState_isConnectedOrPlaying_false() {
-        assertEquals(false, BluetoothDeviceState.Connecting.isConnectedOrPlaying())
+    fun connectingBluetoothState_isConnectedOrPlaying_true() {
+        assertEquals(true, BluetoothDeviceState.Connecting.isConnectedOrPlaying())
     }
 
     @Test
-    fun connectingAudioBluetoothState_isConnectedOrPlaying_false() {
-        assertEquals(false, BluetoothDeviceState.ConnectingAudio.isConnectedOrPlaying())
+    fun connectingAudioBluetoothState_isConnectedOrPlaying_true() {
+        assertEquals(true, BluetoothDeviceState.ConnectingAudio.isConnectedOrPlaying())
     }
 
     @Test
@@ -90,8 +90,8 @@ class BluetoothDeviceStateExtTest {
     }
 
     @Test
-    fun activatingBluetoothState_isConnectedOrPlaying_false() {
-        assertEquals(false, BluetoothDeviceState.Activating.isConnectedOrPlaying())
+    fun activatingBluetoothState_isConnectedOrPlaying_true() {
+        assertEquals(true, BluetoothDeviceState.Activating.isConnectedOrPlaying())
     }
 
     @Test
