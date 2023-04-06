@@ -26,7 +26,7 @@ internal class AudioOutputViewModel(configure: suspend () -> Configuration) : Ba
         call
             .toAudioDevicesUi()
             .onEach { audioDevices ->
-                _uiState.update { it.copy(audioDeviceList = ImmutableList(audioDevices + AudioDeviceUi.Muted)) }
+                _uiState.update { it.copy(audioDeviceList = ImmutableList(audioDevices)) }
             }
             .launchIn(viewModelScope)
 
@@ -40,7 +40,7 @@ internal class AudioOutputViewModel(configure: suspend () -> Configuration) : Ba
         val call = call.getValue()
         val devices = call?.audioOutputDevicesList?.getValue() ?: return
         val outputDevice = when (device) {
-            is AudioDeviceUi.Bluetooth -> devices.first { it is AudioOutputDevice.Bluetooth }
+            is AudioDeviceUi.Bluetooth -> devices.first { it is AudioOutputDevice.Bluetooth && it.identifier == device.id }
             AudioDeviceUi.EarPiece -> AudioOutputDevice.Earpiece()
             AudioDeviceUi.LoudSpeaker -> AudioOutputDevice.Loudspeaker()
             AudioDeviceUi.Muted -> AudioOutputDevice.None()
