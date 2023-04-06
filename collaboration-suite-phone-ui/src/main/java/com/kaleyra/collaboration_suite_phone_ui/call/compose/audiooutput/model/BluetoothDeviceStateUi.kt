@@ -14,7 +14,7 @@ enum class BluetoothDeviceState {
 }
 
 internal fun BluetoothDeviceState.isConnecting() =
-    this == BluetoothDeviceState.Active || this == BluetoothDeviceState.Connecting || this == BluetoothDeviceState.Activating
+    this == BluetoothDeviceState.Connecting || this == BluetoothDeviceState.ConnectingAudio
 
-internal fun BluetoothDeviceState.isConnected() =
-    this == BluetoothDeviceState.Active || this == BluetoothDeviceState.Connected || this == BluetoothDeviceState.Activating
+internal fun BluetoothDeviceState.isConnectedOrPlaying() =
+    this == BluetoothDeviceState.Active || this == BluetoothDeviceState.Connected || this == BluetoothDeviceState.PlayingAudio

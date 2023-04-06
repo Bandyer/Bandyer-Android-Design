@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.isConnected
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.isConnectedOrPlaying
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.isConnecting
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
@@ -82,7 +82,7 @@ private fun subtitleFor(device: AudioDeviceUi): String? =
                 connectionState == BluetoothDeviceState.Disconnected -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_disconnected)
                 connectionState == BluetoothDeviceState.Failed -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_failed)
                 connectionState == BluetoothDeviceState.Available -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_available)
-                connectionState.isConnected() -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_connected)
+                connectionState.isConnectedOrPlaying() -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_connected)
                 connectionState == BluetoothDeviceState.Deactivating -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_deactivating)
                 else -> ""
             }
