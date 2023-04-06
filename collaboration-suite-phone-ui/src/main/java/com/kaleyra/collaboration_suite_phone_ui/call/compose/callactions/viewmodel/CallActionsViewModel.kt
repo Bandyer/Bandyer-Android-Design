@@ -56,6 +56,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
     private val currentAudioOutput = call
         .toCurrentAudioDeviceUi()
         .filterNotNull()
+        .debounce(300)
         .stateIn(viewModelScope, SharingStarted.Eagerly, AudioDeviceUi.Muted)
 
     private val availableInputs: Set<Input>?
