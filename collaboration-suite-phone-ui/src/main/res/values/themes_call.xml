@@ -110,7 +110,7 @@
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Call.Night" parent="KaleyraCollaborationSuiteUI.Theme.Call.Night.V16"/>
 
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call" parent="KaleyraCollaborationSuiteUI.Theme.Call.Night">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight">
         <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard.Day</item>
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
         <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
