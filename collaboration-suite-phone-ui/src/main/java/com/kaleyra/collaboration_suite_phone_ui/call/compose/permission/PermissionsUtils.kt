@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.PackageManager
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
@@ -124,3 +126,7 @@ internal fun Activity.shouldShowRationale(permission: String): Boolean {
 
 internal const val RecordAudioPermission = Manifest.permission.RECORD_AUDIO
 internal const val CameraPermission = Manifest.permission.CAMERA
+@RequiresApi(Build.VERSION_CODES.S)
+internal const val BluetoothScanPermission = Manifest.permission.BLUETOOTH_SCAN
+@RequiresApi(Build.VERSION_CODES.S)
+internal const val BluetoothConnectPermission = Manifest.permission.BLUETOOTH_CONNECT
