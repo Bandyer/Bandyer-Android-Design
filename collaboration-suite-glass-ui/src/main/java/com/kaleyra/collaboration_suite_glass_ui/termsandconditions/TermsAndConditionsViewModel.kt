@@ -27,13 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-internal class TermsAndConditionsViewModel(configure: suspend () -> Configuration) : ViewModel() {
-
-    private val _configuration = MutableSharedFlow<Configuration>(replay = 1, extraBufferCapacity = 1)
-
-    val phoneBox = _configuration.mapSuccess { it.phoneBox }.shareInEagerly(viewModelScope)
-
-    val chatBox = _configuration.mapSuccess { it.chatBoxUI }.shareInEagerly(viewModelScope)
+internal class TermsAndConditionsViewModel(configure: suspend () -> Configuration) : CollaborationViewModel(configure) {
 
     private val deviceStatusObserver = DeviceStatusObserver().apply { start() }
 
@@ -41,22 +35,10 @@ internal class TermsAndConditionsViewModel(configure: suspend () -> Configuratio
 
     val wifi: SharedFlow<WiFiInfo> = deviceStatusObserver.wifi
 
-    init {
-        viewModelScope.launch {
-            _configuration.emit(configure())
-        }
-    }
-
     override fun onCleared() {
         super.onCleared()
         deviceStatusObserver.stop()
     }
-
-    private inline fun <T> Flow<Configuration>.mapSuccess(crossinline block: (Configuration.Success) -> T): Flow<T> =
-        filterIsInstance<Configuration.Success>().map { block(it) }
-
-    private fun <T> Flow<T>.shareInEagerly(scope: CoroutineScope): SharedFlow<T> =
-        this@shareInEagerly.shareIn(scope, SharingStarted.Eagerly, 1)
 
     companion object {
         fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.NewInstanceFactory() {
@@ -66,15 +48,4 @@ internal class TermsAndConditionsViewModel(configure: suspend () -> Configuratio
             }
         }
     }
-}
-
-sealed class Configuration {
-    data class Success(val phoneBox: PhoneBoxUI, val chatBoxUI: ChatBoxUI, val usersDescription: UsersDescription) : Configuration()
-    object Failure : Configuration()
-}
-
-suspend fun requestConfiguration(): Configuration {
-    if (!CollaborationUI.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
-    return if (CollaborationUI.isConfigured) Configuration.Success(CollaborationUI.phoneBox, CollaborationUI.chatBox, CollaborationUI.usersDescription)
-    else Configuration.Failure
 }

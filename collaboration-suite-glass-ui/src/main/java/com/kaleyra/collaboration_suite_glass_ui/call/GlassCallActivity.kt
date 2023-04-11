@@ -24,6 +24,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.ColorRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
@@ -39,16 +40,13 @@ import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard.LoadOptions
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.call.CallController
-import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
-import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
@@ -77,11 +75,11 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
@@ -99,12 +97,18 @@ import java.util.concurrent.ConcurrentMap
  * GlassCallActivity
  */
 internal class GlassCallActivity :
-    GlassBaseActivity(),
+    AppCompatActivity(),
+    OnDestinationChangedListener,
+    GlassTouchEventManager.Listener,
     TouchEventListener {
 
     private lateinit var binding: KaleyraCallActivityGlassBinding
 
-    private val viewModel: CallViewModel by viewModels()
+    private val viewModel: CallViewModel by viewModels {
+        CallViewModel.provideFactory(::requestConfiguration, CallAudioManager(this))
+    }
+
+    private var glassTouchEventManager: GlassTouchEventManager? = null
 
     private var isActivityInForeground = false
     private var fastAdapter: FastAdapter<AbstractItem<*>>? = null
@@ -125,7 +129,7 @@ internal class GlassCallActivity :
         binding = KaleyraCallActivityGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        configureCollaboration()
+        configOrCloseActivity()
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.kaleyra_nav_host_fragment) as NavHostFragment
@@ -150,6 +154,7 @@ internal class GlassCallActivity :
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
 
+        glassTouchEventManager = GlassTouchEventManager(this, this)
         handleIntentAction(intent)
     }
 
@@ -258,13 +263,13 @@ internal class GlassCallActivity :
         if (!viewModel.micPermission.value.isAllowed)
             viewModel.micPermission
                 .takeWhile { !it.isAllowed }
-                .onCompletion { viewModel.onEnableMic(this@GlassCallActivity, true) }
+                .onCompletion { viewModel.onEnableMic(true) }
                 .launchIn(lifecycleScope)
 
         if (!viewModel.camPermission.value.isAllowed)
             viewModel.camPermission
                 .takeWhile { !it.isAllowed }
-                .onCompletion { viewModel.onEnableCamera(this@GlassCallActivity, true) }
+                .onCompletion { viewModel.onEnableCamera(true) }
                 .launchIn(lifecycleScope)
 
         repeatOnStarted {
@@ -314,8 +319,9 @@ internal class GlassCallActivity :
                             is Call.State.Disconnected.Ended.Declined                -> resources.getString(R.string.kaleyra_glass_call_declined)
                             is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> resources.getString(R.string.kaleyra_glass_answered_on_another_device)
                             is Call.State.Disconnected.Ended.Kicked                  -> {
-                                val userDescription = viewModel.usersDescription.name(listOf(state.userId))
-                                val hasDescription = userDescription.isNotEmpty() && userDescription != state.userId
+                                val userDescription = viewModel.usersDescription.first()
+                                val name = userDescription.name(listOf(state.userId))
+                                val hasDescription = name.isNotEmpty() && name != state.userId
                                 resources.getQuantityString(
                                     R.plurals.kaleyra_glass_removed_from_call,
                                     if (hasDescription) 1 else 0,
@@ -349,8 +355,9 @@ internal class GlassCallActivity :
 
             viewModel.requestMuteEvents.onEach {
                 with(binding.kaleyraToastContainer) {
-                    val userDescription = viewModel.usersDescription.name(listOf(it.producer.userId))
-                    val hasDescription = userDescription.isNotEmpty() && userDescription != it.producer.userId
+                    val userDescription = viewModel.usersDescription.first()
+                    val name = userDescription.name(listOf(it.producer.userId))
+                    val hasDescription = name.isNotEmpty() && name != it.producer.userId
                     show(
                         ADMIN_MUTED_TOAST_ID,
                         resources.getQuantityString(
@@ -425,18 +432,20 @@ internal class GlassCallActivity :
 
             viewModel.onParticipantJoin
                 .onEach { part ->
+                    val userDescription = viewModel.usersDescription.first()
                     val text = resources.getString(
                         R.string.kaleyra_glass_user_joined_pattern,
-                        viewModel.usersDescription.name(listOf(part.userId))
+                        userDescription.name(listOf(part.userId))
                     )
                     binding.kaleyraToastContainer.show(text = text)
                 }.launchIn(this)
 
             viewModel.onParticipantLeave
                 .onEach { part ->
+                    val userDescription = viewModel.usersDescription.first()
                     val text = resources.getString(
                         R.string.kaleyra_glass_user_left_pattern,
-                        viewModel.usersDescription.name(listOf(part.userId))
+                        userDescription.name(listOf(part.userId))
                     )
                     binding.kaleyraToastContainer.show(text = text)
 
@@ -511,11 +520,12 @@ internal class GlassCallActivity :
                     val streamId = pair.first
                     val event = pair.second
                     val userId = event.producer.userId
+                    val userDescription = viewModel.usersDescription.first()
 
                     onPointerEvent(
                         streamId,
                         event,
-                        viewModel.usersDescription.name(listOf(userId))
+                        userDescription.name(listOf(userId))
                     )
                 }.launchIn(this)
 
@@ -570,23 +580,19 @@ internal class GlassCallActivity :
         }
         lifecycleScope.launch {
             if (wasPausedForBackground) {
-                viewModel.onEnableCamera(this@GlassCallActivity, wasPausedForBackground)
+                viewModel.onEnableCamera(wasPausedForBackground)
                 wasPausedForBackground = false
             }
         }
     }
 
-    private fun configureCollaboration() = MainScope().launch {
-        requestConfigure().let { isConfigured ->
-            if (!isConfigured) {
-                finishAndRemoveTask()
-                return@let ContextRetainer.context.goToLaunchingActivity()
-            }
-            viewModel.callDelegate = CallDelegate(CollaborationUI.phoneBox.call, CollaborationUI.usersDescription)
-            viewModel.callController = CallController(CollaborationUI.phoneBox.call, CallAudioManager(ContextRetainer.context))
-            viewModel.phoneBox = CollaborationUI.phoneBox
+    private fun configOrCloseActivity() = lifecycleScope.launch {
+        val isCollaborationConfigured = viewModel.isCollaborationConfigured.first()
+        if (isCollaborationConfigured) {
             bindUI()
-
+        } else {
+            finishAndRemoveTask()
+            ContextRetainer.context.goToLaunchingActivity()
         }
     }
 
@@ -678,7 +684,7 @@ internal class GlassCallActivity :
         lifecycleScope.launch {
             if (!isTopResumedActivity) wasPausedForBackground = viewModel.cameraEnabled.value
             else if (wasPausedForBackground) {
-                viewModel.onEnableCamera(this@GlassCallActivity, true)
+                viewModel.onEnableCamera(true)
                 wasPausedForBackground = false
             }
         }
@@ -692,6 +698,26 @@ internal class GlassCallActivity :
         streamsItemAdapter = null
         whiteboardItemAdapter = null
         navController = null
+        glassTouchEventManager = null
+    }
+
+    /**
+     * @suppress
+     */
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean =
+        if (glassTouchEventManager!!.toGlassTouchEvent(ev)) true
+        else super.dispatchTouchEvent(ev)
+
+    /**
+     * @suppress
+     */
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean =
+        if (glassTouchEventManager!!.toGlassTouchEvent(event)) true
+        else super.dispatchKeyEvent(event)
+
+    override fun onGlassTouchEvent(glassEvent: TouchEvent): Boolean {
+        val currentDest = supportFragmentManager.currentNavigationFragment as? TouchEventListener ?: return false
+        return currentDest.onTouch(glassEvent)
     }
 
     /**

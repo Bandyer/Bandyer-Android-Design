@@ -240,13 +240,13 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             if (!viewModel.micPermission.value.isAllowed) viewModel.onRequestMicPermission(
                 requireActivity()
             )
-            lifecycleScope.launch { viewModel.onEnableMic(requireActivity(), !viewModel.micEnabled.value) }
+            lifecycleScope.launch { viewModel.onEnableMic(!viewModel.micEnabled.value) }
         }
         is CallAction.CAMERA -> true.also {
             if (!viewModel.camPermission.value.isAllowed) viewModel.onRequestCameraPermission(
                 requireActivity()
             )
-            lifecycleScope.launch { viewModel.onEnableCamera(requireActivity(), !viewModel.cameraEnabled.value) }
+            lifecycleScope.launch { viewModel.onEnableCamera(!viewModel.cameraEnabled.value) }
         }
 
         is CallAction.SWITCHCAMERA -> true.also { viewModel.onSwitchCamera() }

@@ -19,6 +19,8 @@ package com.kaleyra.collaboration_suite_glass_ui.call
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite.chatbox.Message
@@ -26,28 +28,27 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.phonebox.Inputs
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel
+import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
-import com.kaleyra.collaboration_suite_core_ui.call.CallController
-import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
+import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_glass_ui.call.model.StreamParticipant
+import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,6 +60,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
@@ -73,11 +75,8 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class CallViewModel : ViewModel() {
+internal class CallViewModel(configure: suspend () -> Configuration, private var callAudioManager: CallAudioManager) : CollaborationViewModel(configure) {
 
-    //////////////////////////
-    // DeviceStatusObserver //
-    //////////////////////////
     private val deviceStatusObserver = DeviceStatusObserver().apply { start() }
 
     val battery: SharedFlow<BatteryInfo> = deviceStatusObserver.battery
@@ -89,73 +88,7 @@ internal class CallViewModel : ViewModel() {
         deviceStatusObserver.stop()
     }
 
-    //////////////////
-    // CallDelegate //
-    //////////////////
-    private var callDelegateScope: CoroutineScope? = null
-    var callDelegate: CallDelegate? = null
-        set(value) {
-            callDelegateScope?.cancel()
-            callDelegateScope = CoroutineScope(SupervisorJob(viewModelScope.coroutineContext[Job]))
-            value?.call?.onEach { _call.emit(it) }?.launchIn(callDelegateScope!!)
-            field = value
-        }
-
-    private val _call: MutableSharedFlow<CallUI> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
-    val call: SharedFlow<CallUI> = _call.asSharedFlow()
-
-    val usersDescription: UsersDescription get() = callDelegate?.usersDescription ?: UsersDescription()
-
-    ////////////////////
-    // CallController //
-    ////////////////////
-    private var callControllerScope: CoroutineScope? = null
-    var callController: CallController? = null
-        set(value) {
-            callControllerScope?.cancel()
-            callControllerScope = CoroutineScope(SupervisorJob(viewModelScope.coroutineContext[Job]))
-            value?.micPermission?.onEach { _micPermission.emit(it) }?.launchIn(callControllerScope!!)
-            value?.camPermission?.onEach { _camPermission.emit(it) }?.launchIn(callControllerScope!!)
-            field = value
-        }
-
-    val volume: Volume get() = callController?.volume ?: Volume(0, 0, 0)
-
-    private val _micPermission: MutableStateFlow<Permission> = MutableStateFlow(Permission(false, false))
-    val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
-
-    private val _camPermission: MutableStateFlow<Permission> = MutableStateFlow(Permission(false, false))
-    val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
-
-    fun onRequestMicPermission(context: FragmentActivity) = callController?.onRequestMicPermission(context)
-
-    fun onRequestCameraPermission(context: FragmentActivity) = callController?.onRequestCameraPermission(context)
-
-    fun onAnswer() = callController?.onAnswer()
-
-    fun onHangup() = callController?.onHangup()
-
-    suspend fun onEnableCamera(context: FragmentActivity, enable: Boolean) = callController?.onEnableCamera(context, enable)
-
-    suspend fun onEnableMic(context: FragmentActivity, enable: Boolean) = callController?.onEnableMic(context, enable)
-
-    fun onSwitchCamera() = callController?.onSwitchCamera()
-
-    fun onSetVolume(value: Int) = callController?.onSetVolume(value)
-
-    fun onSetZoom(value: Float) = callController?.onSetZoom(value)
-
-    ///////////////
-    // ViewModel //
-    ///////////////
-    private var phoneBoxScope: CoroutineScope? = null
-    var phoneBox: PhoneBoxUI? = null
-        set(value) {
-            phoneBoxScope?.cancel()
-            phoneBoxScope = CoroutineScope(SupervisorJob(viewModelScope.coroutineContext[Job]))
-            value?.state?.onEach { _phoneBoxState.value = it }?.launchIn(phoneBoxScope!!)
-            field = value
-        }
+    val call: SharedFlow<CallUI> = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
     private val _phoneBoxState: MutableStateFlow<PhoneBox.State> = MutableStateFlow(PhoneBox.State.Disconnected)
     val phoneBoxState: StateFlow<PhoneBox.State> = _phoneBoxState.asStateFlow()
@@ -209,6 +142,7 @@ internal class CallViewModel : ViewModel() {
             val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
             participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
                 if (itsMe || (state == CallParticipant.State.InCall && streams.isNotEmpty())) {
+                    val usersDescription = usersDescription.first()
                     val newStreams = streams.map {
                         StreamParticipant(
                             participant,
@@ -378,6 +312,91 @@ internal class CallViewModel : ViewModel() {
         .map { it is Message.State.Received }
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
+    private val _micPermission: MutableStateFlow<Permission> = MutableStateFlow(Permission(false, false))
+    val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
+
+    private val _camPermission: MutableStateFlow<Permission> = MutableStateFlow(Permission(false, false))
+    val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
+
+    private val currentCall: Call get() = call.replayCache.first()
+
+    val volume: Volume get() = callAudioManager?.let { Volume(it.currentVolume, it.minVolume, it.maxVolume) } ?: Volume(0,0,0)
+
+    fun onRequestMicPermission(context: FragmentActivity) {
+        context.lifecycleScope.launchWhenResumed {
+            val inputRequest = currentCall.inputs.request(context, Inputs.Type.Microphone)
+
+            _micPermission.value = Permission(
+                inputRequest is Inputs.RequestResult.Success,
+                inputRequest is Inputs.RequestResult.Error.PermissionDenied.Forever
+            )
+
+            val input = inputRequest.getOrNull<Input.Audio>() ?: return@launchWhenResumed
+
+            input.state.filter { it is Input.State.Closed }.onEach {
+                _micPermission.value = Permission(false, false)
+            }.launchIn(this)
+
+            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID }?.audio?.value = input
+        }
+    }
+
+    fun onRequestCameraPermission(context: FragmentActivity) {
+        context.lifecycleScope.launchWhenResumed {
+            val inputRequest = currentCall.inputs.request(context, Inputs.Type.Camera.Internal)
+
+            _camPermission.value = Permission(
+                inputRequest is Inputs.RequestResult.Success,
+                inputRequest is Inputs.RequestResult.Error.PermissionDenied.Forever
+            )
+
+            val input = inputRequest.getOrNull<Input.Video.Camera.Internal>() ?: return@launchWhenResumed
+
+            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID }?.video?.value = input
+
+            input.state.filter { it is Input.State.Closed }.onEach {
+                _camPermission.value = Permission(false, false)
+            }.launchIn(this)
+        }
+    }
+
+    fun onAnswer() {
+        currentCall.connect()
+    }
+
+    fun onHangup() {
+        currentCall.end()
+    }
+
+    fun onEnableCamera(enable: Boolean) {
+        val input = currentCall.inputs.availableInputs.value.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() ?: return
+        if (enable) input.tryEnable() else input.tryDisable()
+    }
+
+    fun onEnableMic(enable: Boolean) {
+        val input = currentCall.inputs.availableInputs.value.filterIsInstance<Input.Audio>().firstOrNull() ?: return
+        if (enable) input.tryEnable() else input.tryDisable()
+    }
+
+    fun onSwitchCamera() {
+        val camera =
+            currentCall.inputs.availableInputs.value.filterIsInstance<Input.Video.Camera.Internal>()
+                .firstOrNull()
+        val currentLens = camera?.currentLens?.value
+        val newLens = camera?.lenses?.firstOrNull { it.isRear != currentLens?.isRear } ?: return
+        camera.setLens(newLens)
+    }
+
+    fun onSetVolume(value: Int) = callAudioManager?.setVolume(value)
+
+    fun onSetZoom(value: Float) {
+        val camera =
+            currentCall.inputs.availableInputs.value.filterIsInstance<Input.Video.Camera.Internal>()
+                .firstOrNull()
+        val currentLens = camera?.currentLens?.value ?: return
+        currentLens.zoom.value?.tryZoom(value)
+    }
+
     fun showChat(context: Context) = chat.value?.let { CollaborationUI.chatBox.show(context, it) }
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
@@ -395,6 +414,15 @@ internal class CallViewModel : ViewModel() {
                 pJobs += participant.streams.combine(participant.state) { streams, state ->
                     action(participant, participant == participants.me, streams, state)
                 }.launchIn(scope)
+            }
+        }
+    }
+
+    companion object {
+        fun provideFactory(configure: suspend () -> Configuration, callAudioManager: CallAudioManager) = object : ViewModelProvider.NewInstanceFactory() {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return CallViewModel(configure, callAudioManager) as T
             }
         }
     }

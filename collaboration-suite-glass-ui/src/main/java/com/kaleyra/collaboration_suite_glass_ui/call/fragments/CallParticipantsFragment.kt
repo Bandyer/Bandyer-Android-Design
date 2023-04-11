@@ -25,8 +25,8 @@ import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantIt
 import com.kaleyra.collaboration_suite_glass_ui.common.ParticipantsFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.takeWhile
 
 /**
@@ -48,7 +48,7 @@ internal class CallParticipantsFragment : ParticipantsFragment() {
     }
 
     override val usersDescription: UsersDescription
-        get() = viewModel.usersDescription
+        get() = viewModel.usersDescription.replayCache.firstOrNull() ?: UsersDescription()
 
     override fun bindUI() {
         super.bindUI()
@@ -64,10 +64,11 @@ internal class CallParticipantsFragment : ParticipantsFragment() {
                     val sortedList =
                         pair.first.sortedBy { pair.second.me.userId != it.userId }
                     val items = sortedList.map { part ->
+                        val usersDescription = viewModel.usersDescription.first()
                         val data = part.userId.let {
                             ParticipantItemData(
                                 it,
-                                viewModel.usersDescription.name(listOf(it))
+                                usersDescription.name(listOf(it))
                             )
                         }
                         ParticipantItem(data)
