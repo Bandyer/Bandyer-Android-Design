@@ -189,6 +189,13 @@ internal class CallScreenState(
         sheetContentState.navigateToComponent(BottomSheetComponent.CallActions)
     }
 
+    fun navigateToFileShareComponent() {
+        sheetContentState.navigateToComponent(BottomSheetComponent.FileShare)
+        scope.launch {
+            sheetState.expand()
+        }
+    }
+
     fun onCallActionClick(action: CallAction) {
         when (action) {
             is CallAction.Audio, is CallAction.ScreenShare, is CallAction.FileShare, is CallAction.Whiteboard -> {
@@ -214,6 +221,7 @@ internal fun CallScreen(
     viewModel: CallViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
         factory = CallViewModel.provideFactory(::requestConfiguration)
     ),
+    shouldShowFileShare: Boolean,
     onBackPressed: () -> Unit
 ) {
     val activity = LocalContext.current.findActivity() as FragmentActivity
@@ -235,6 +243,12 @@ internal fun CallScreen(
                 permission == RecordAudioPermission && isGranted -> viewModel.startMicrophone(activity)
                 permission == CameraPermission && isGranted -> viewModel.startCamera(activity)
             }
+        }
+    }
+
+    if (shouldShowFileShare) {
+        LaunchedEffect(Unit) {
+            callScreenState.navigateToFileShareComponent()
         }
     }
 

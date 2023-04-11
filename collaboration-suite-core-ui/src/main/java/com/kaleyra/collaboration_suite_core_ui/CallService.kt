@@ -18,21 +18,33 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import android.app.Notification
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_core_ui.call.*
+import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Companion.CALL_NOTIFICATION_ID
+import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamInputsDelegate
+import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
+import com.kaleyra.collaboration_suite_core_ui.call.StreamsOpeningDelegate
+import com.kaleyra.collaboration_suite_core_ui.call.StreamsVideoViewDelegate
+import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.plus
 
 /**
  * The CallService
  */
-class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInputsDelegate, StreamsOpeningDelegate, StreamsVideoViewDelegate, CallNotificationDelegate {
+class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInputsDelegate, StreamsOpeningDelegate, StreamsVideoViewDelegate, CallNotificationDelegate, FileShareNotificationDelegate {
 
     internal companion object {
         const val CALL_ACTIVITY_CLASS = "call_activity_class"
@@ -87,6 +99,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                 callActivityClazz,
                 callScope
             )
+            syncFileShareNotification(call, callActivityClazz, callScope)
 
             call.state
                 .takeWhile { it !is Call.State.Disconnected.Ended }

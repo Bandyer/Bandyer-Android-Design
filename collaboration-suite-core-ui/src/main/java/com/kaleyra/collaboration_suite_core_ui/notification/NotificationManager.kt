@@ -19,13 +19,14 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
+import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationManager
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
 
 /**
  * NotificationManager
  */
-internal object NotificationManager : CallNotificationManager, ChatNotificationManager {
+internal object NotificationManager : CallNotificationManager, ChatNotificationManager, FileShareNotificationManager {
 
     private val notificationManager by lazy { ContextRetainer.context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 

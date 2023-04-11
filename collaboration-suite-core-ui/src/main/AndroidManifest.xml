@@ -59,6 +59,13 @@
                 <action android:name="com.kaleyra.collaboration_suite_core_ui.CHAT_CLOSE" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".notification.fileshare.FileShareNotificationActionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.DOWNLOAD" />
+            </intent-filter>
+        </receiver>
 
         <receiver android:name="com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.NotificationDisposer"/>
     </application>
