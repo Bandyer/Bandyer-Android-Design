@@ -30,7 +30,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
@@ -87,7 +86,6 @@ class CallNotification {
         var isHighImportance: Boolean = false,
         var enableCallStyle: Boolean = false,
         var color: Int? = null,
-        var smallIconResource: Int? = null,
         var user: String? = null,
         var enableTimer: Boolean = false,
         var contentText: String? = null,
@@ -128,14 +126,6 @@ class CallNotification {
          * @return Builder
          */
         fun color(color: Int) = apply { this.color = color }
-
-        /**
-         * Set the resource to use as small icon of the notification
-         *
-         * @param smallIconResource small icon resource
-         * @return Builder
-         */
-        fun smallIconResource(smallIconResource: Int) = apply { this.smallIconResource = smallIconResource }
 
         /**
          * Enable the notification timer
@@ -212,7 +202,6 @@ class CallNotification {
                 channelId = channelId,
                 isHighPriority = isHighImportance,
                 color = color,
-                smallIconResInt = smallIconResource,
                 enableTimer = enableTimer,
                 user = user,
                 contentText = contentText,
@@ -227,7 +216,6 @@ class CallNotification {
                 channelId = channelId,
                 enableTimer = enableTimer,
                 color = color,
-                smallIconResInt = smallIconResource,
                 user = user,
                 contentText = contentText,
                 screenShareIntent = screenShareIntent,
@@ -244,7 +232,6 @@ class CallNotification {
             channelId: String,
             isHighPriority: Boolean,
             color: Int?,
-            smallIconResInt: Int?,
             enableTimer: Boolean,
             user: String? = null,
             contentText: String? = null,
@@ -271,7 +258,6 @@ class CallNotification {
                 .setLargeIcon(applicationIcon.toBitmap())
 
             color?.let { builder.setColor(it) }
-            smallIconResInt?.let { builder.setSmallIcon(it) }
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
 
@@ -311,7 +297,6 @@ class CallNotification {
             channelId: String,
             enableTimer: Boolean,
             color: Int?,
-            smallIconResInt: Int?,
             user: String? = null,
             contentText: String? = null,
             contentIntent: PendingIntent? = null,
@@ -382,7 +367,6 @@ class CallNotification {
             }
 
             color?.let { builder.setColor(it) }
-            smallIconResInt?.let { builder.setSmallIcon(it) }
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
             screenShareIntent?.also {
