@@ -34,6 +34,11 @@ interface FileShareNotificationDelegate {
                 val notification = buildNotification(call, it, activityClazz)
                 NotificationManager.notify(it.id.hashCode(), notification)
             }
+            .onCompletion {
+                call.sharedFolder.files.value.forEach {
+                    NotificationManager.cancel(it.id.hashCode())
+                }
+            }
             .launchIn(scope)
     }
 
