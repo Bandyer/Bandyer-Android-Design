@@ -78,6 +78,7 @@ internal fun rememberCallScreenState(
         initialSheetComponent = BottomSheetComponent.CallActions,
         initialLineState = LineState.Expanded
     ),
+    shouldShowFileShareComponent: Boolean = false,
     systemUiController: SystemUiController = rememberSystemUiController(),
     isDarkMode: Boolean = isSystemInDarkTheme(),
     scope: CoroutineScope = rememberCoroutineScope(),
@@ -86,6 +87,7 @@ internal fun rememberCallScreenState(
     callUiState,
     sheetState,
     sheetContentState,
+    shouldShowFileShareComponent,
     systemUiController,
     isDarkMode,
     scope,
@@ -95,6 +97,7 @@ internal fun rememberCallScreenState(
         callUiState = callUiState,
         sheetState = sheetState,
         sheetContentState = sheetContentState,
+        shouldShowFileShareComponent = shouldShowFileShareComponent,
         systemUiController = systemUiController,
         isDarkMode = isDarkMode,
         scope = scope,
@@ -107,6 +110,7 @@ internal class CallScreenState(
     val callUiState: CallUiState,
     val sheetState: BottomSheetState,
     val sheetContentState: BottomSheetContentState,
+    val shouldShowFileShareComponent: Boolean,
     private val systemUiController: SystemUiController,
     private val isDarkMode: Boolean,
     private val scope: CoroutineScope,
@@ -190,8 +194,8 @@ internal class CallScreenState(
     }
 
     fun navigateToFileShareComponent() {
-        sheetContentState.navigateToComponent(BottomSheetComponent.FileShare)
         scope.launch {
+            sheetContentState.navigateToComponent(BottomSheetComponent.FileShare)
             sheetState.expand()
         }
     }
@@ -221,8 +225,9 @@ internal fun CallScreen(
     viewModel: CallViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
         factory = CallViewModel.provideFactory(::requestConfiguration)
     ),
-    shouldShowFileShare: Boolean,
-    onBackPressed: () -> Unit
+    shouldShowFileShareComponent: Boolean,
+    onBackPressed: () -> Unit,
+    onFileShareDisplayed: () -> Unit
 ) {
     val activity = LocalContext.current.findActivity() as FragmentActivity
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -234,7 +239,8 @@ internal fun CallScreen(
     )
     val callScreenState = rememberCallScreenState(
         callUiState = callUiState,
-        sheetState = sheetState
+        sheetState = sheetState,
+        shouldShowFileShareComponent = shouldShowFileShareComponent
     )
     val permissions by remember(callScreenState) { getPermissions(callScreenState) }
     val permissionsState = rememberMultiplePermissionsState(permissions = permissions) { permissionsResult ->
@@ -246,12 +252,6 @@ internal fun CallScreen(
         }
     }
 
-    if (shouldShowFileShare) {
-        LaunchedEffect(Unit) {
-            callScreenState.navigateToFileShareComponent()
-        }
-    }
-
     LaunchedEffect(permissionsState) {
         permissionsState.launchMultiplePermissionRequest()
     }
@@ -260,7 +260,8 @@ internal fun CallScreen(
         callScreenState = callScreenState,
         permissionsState = permissionsState,
         onThumbnailStreamClick = viewModel::swapThumbnail,
-        onBackPressed = onBackPressed
+        onBackPressed = onBackPressed,
+        onFileShareDisplayed = onFileShareDisplayed
     )
 }
 
@@ -280,7 +281,8 @@ internal fun CallScreen(
     callScreenState: CallScreenState,
     permissionsState: MultiplePermissionsState,
     onThumbnailStreamClick: (StreamUi) -> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    onFileShareDisplayed: () -> Unit
 ) {
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
     val callState by rememberUpdatedState(callScreenState.callUiState.callState)
@@ -307,6 +309,14 @@ internal fun CallScreen(
             .filter { it }
             .onEach { callScreenState.navigateToCallActionsComponent() }
             .launchIn(this)
+    }
+
+    // TODO test this
+    if (callScreenState.shouldShowFileShareComponent && !callScreenState.sheetState.isHidden) {
+        LaunchedEffect(Unit) {
+            callScreenState.navigateToFileShareComponent()
+            onFileShareDisplayed()
+        }
     }
 
     // TODO test this

@@ -26,7 +26,11 @@ class PhoneCallActivity : FragmentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             MdcTheme(setDefaultFontFamily = true) {
-                CallScreen(onBackPressed = this::finishAndRemoveTask, shouldShowFileShare = shouldShowFileShare.collectAsStateWithLifecycle().value)
+                CallScreen(
+                    shouldShowFileShareComponent = shouldShowFileShare.collectAsStateWithLifecycle().value,
+                    onFileShareDisplayed = { shouldShowFileShare.value = false },
+                    onBackPressed = this::finishAndRemoveTask
+                )
             }
         }
     }
@@ -49,11 +53,7 @@ class PhoneCallActivity : FragmentActivity() {
                     this.action = action
                     this.putExtras(intent)
                 })
-                lifecycleScope.launch {
-                    shouldShowFileShare.value = true
-                    delay(1000)
-                    shouldShowFileShare.value = false
-                }
+                shouldShowFileShare.value = true
             }
         }
 
