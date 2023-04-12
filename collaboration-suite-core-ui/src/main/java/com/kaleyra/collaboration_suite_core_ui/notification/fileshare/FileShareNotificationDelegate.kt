@@ -32,7 +32,7 @@ interface FileShareNotificationDelegate {
             }
             .onEach {
                 val notification = buildNotification(call, it, activityClazz)
-                NotificationManager.notify(it.id.hashCode(), notification)
+                if (!FileShareVisibilityObserver.isDisplayed.value) NotificationManager.notify(it.id.hashCode(), notification)
             }
             .onCompletion {
                 call.sharedFolder.files.value.forEach {

@@ -66,6 +66,14 @@
                 <action android:name="com.kaleyra.collaboration_suite_core_ui.DOWNLOAD" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".notification.fileshare.FileShareVisibilityObserver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.FILE_SHARE_DISPLAYED" />
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.FILE_SHARE_NOT_DISPLAYED" />
+            </intent-filter>
+        </receiver>
 
         <receiver android:name="com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.NotificationDisposer"/>
     </application>

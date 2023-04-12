@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareVisibilityObserver
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.tryToOpenFile
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getFileSize
@@ -40,10 +42,22 @@ internal fun FileShareComponent(
     ),
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     val (showUnableToOpenFileSnackBar, setShowUnableToOpenSnackBar) = remember { mutableStateOf(false) }
     val (showCancelledFileSnackBar, setShowCancelledFileSnackBar) = remember { mutableStateOf(false) }
     val (showFileSizeLimitAlertDialog, setShowFileSizeLimitAlertDialog) = remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    DisposableEffect(context) {
+        context.sendBroadcast(Intent(context, FileShareVisibilityObserver::class.java).apply {
+            action = FileShareVisibilityObserver.ACTION_FILE_SHARE_DISPLAYED
+        })
+        onDispose {
+            context.sendBroadcast(Intent(context, FileShareVisibilityObserver::class.java).apply {
+                action = FileShareVisibilityObserver.ACTION_FILE_SHARE_NOT_DISPLAYED
+            })
+        }
+    }
 
     FileShareComponent(
         uiState = uiState,
