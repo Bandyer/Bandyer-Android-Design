@@ -89,6 +89,7 @@ internal class FileShareNotification {
                     .setOngoing(false)
                     .setVibrate(arrayOf(0L).toLongArray())
                     .setWhen(System.currentTimeMillis())
+                    .setGroupSummary(false)
                     .setSmallIcon(R.drawable.ic_kaleyra_file_share)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
