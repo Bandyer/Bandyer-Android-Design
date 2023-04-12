@@ -30,6 +30,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.StreamsOpeningDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsVideoViewDelegate
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -99,7 +100,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                 callActivityClazz,
                 callScope
             )
-            syncFileShareNotification(call, callActivityClazz, callScope)
+            if (!DeviceUtils.isSmartGlass) syncFileShareNotification(call, callActivityClazz, callScope)
 
             call.state
                 .takeWhile { it !is Call.State.Disconnected.Ended }
