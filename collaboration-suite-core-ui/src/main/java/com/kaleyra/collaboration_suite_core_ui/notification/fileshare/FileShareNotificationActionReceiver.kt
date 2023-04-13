@@ -9,11 +9,12 @@ import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareN
 import com.kaleyra.collaboration_suite_core_ui.onCallReady
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FileShareNotificationActionReceiver : CollaborationBroadcastReceiver() {
+class FileShareNotificationActionReceiver internal constructor(val dispatcher: CoroutineDispatcher = Dispatchers.IO): CollaborationBroadcastReceiver() {
 
     /**
      * @suppress
@@ -30,9 +31,9 @@ class FileShareNotificationActionReceiver : CollaborationBroadcastReceiver() {
      */
     override fun onReceive(context: Context, intent: Intent) {
         val pendingResult = goAsync()
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(dispatcher).launch {
             requestConfigure().let {
-                if (!it) return@let ContextRetainer.context.goToLaunchingActivity()
+                if (!it) return@let context.goToLaunchingActivity()
                 CollaborationUI.onCallReady(this) { call ->
                     when (intent.action) {
                         ACTION_DOWNLOAD -> {

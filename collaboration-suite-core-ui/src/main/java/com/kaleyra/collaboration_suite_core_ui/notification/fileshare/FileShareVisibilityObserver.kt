@@ -24,8 +24,8 @@ class FileShareVisibilityObserver internal constructor(): BroadcastReceiver() {
      */
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
-            ACTION_FILE_SHARE_DISPLAYED ->_isDisplayed.value = true
-            ACTION_FILE_SHARE_NOT_DISPLAYED ->_isDisplayed.value = false
+            ACTION_FILE_SHARE_DISPLAYED -> _isDisplayed.value = true
+            ACTION_FILE_SHARE_NOT_DISPLAYED -> _isDisplayed.value = false
             else -> Unit
         }
     }

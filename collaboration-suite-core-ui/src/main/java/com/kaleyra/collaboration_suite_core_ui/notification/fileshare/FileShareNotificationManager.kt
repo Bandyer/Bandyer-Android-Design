@@ -9,7 +9,7 @@ import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareN
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-interface FileShareNotificationManager {
+internal interface FileShareNotificationManager {
 
     companion object {
         private const val DEFAULT_CHANNEL_ID = "com.kaleyra.collaboration_suite_core_ui.fileshare_notification_channel_default"
@@ -19,11 +19,11 @@ interface FileShareNotificationManager {
     }
 
     fun buildIncomingFileNotification(
+        context: Context,
         username: String,
         downloadId: String,
         activityClazz: Class<*>
     ): Notification {
-        val context = ContextRetainer.context
         val resources = context.resources
 
         val builder = FileShareNotification

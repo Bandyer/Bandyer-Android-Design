@@ -100,7 +100,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                 callActivityClazz,
                 callScope
             )
-            if (!DeviceUtils.isSmartGlass) syncFileShareNotification(call, callActivityClazz, callScope)
+            if (!DeviceUtils.isSmartGlass) syncFileShareNotification(this, call, callActivityClazz, callScope)
 
             call.state
                 .takeWhile { it !is Call.State.Disconnected.Ended }
