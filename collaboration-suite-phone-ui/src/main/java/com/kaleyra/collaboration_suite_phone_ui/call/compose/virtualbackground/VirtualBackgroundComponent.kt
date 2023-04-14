@@ -70,7 +70,7 @@ internal fun VirtualBackgroundComponentPreview() {
     KaleyraTheme {
         Surface {
             VirtualBackgroundComponent(
-                uiState = VirtualBackgroundUiState(backgrounds = ImmutableList(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur, VirtualBackgroundUi.Image))),
+                uiState = VirtualBackgroundUiState(backgrounds = ImmutableList(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur("id"), VirtualBackgroundUi.Image("id2")))),
                 onItemClick = { },
                 onCloseClick = { }
             )

@@ -18,12 +18,10 @@ import io.mockk.unmockkAll
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -65,8 +63,8 @@ class VirtualBackgroundViewModelTest {
         }
         every { callMock.effects } returns effectsMock
         with(effectsMock) {
-            every { preselected } returns MutableStateFlow(Effect.Video.Background.Image(image = mockk()))
-            every { available } returns MutableStateFlow(setOf(Effect.Video.None, Effect.Video.Background.Blur(factor = 1f)))
+            every { preselected } returns MutableStateFlow(Effect.Video.Background.Image(id = "imageId", image = mockk()))
+            every { available } returns MutableStateFlow(setOf(Effect.Video.Background.Blur(id = "blurId", factor = 1f)))
         }
     }
 
@@ -77,10 +75,10 @@ class VirtualBackgroundViewModelTest {
 
     @Test
     fun testVirtualBackgroundUiState_currentBackgroundUpdated() = runTest {
-        every { myVideoMock.currentEffect } returns MutableStateFlow(Effect.Video.Background.Blur(factor = 1f))
+        every { myVideoMock.currentEffect } returns MutableStateFlow(Effect.Video.Background.Blur(id = "blurId", factor = 1f))
         advanceUntilIdle()
         val actual = viewModel.uiState.first().currentBackground
-        val expected = VirtualBackgroundUi.Blur
+        val expected = VirtualBackgroundUi.Blur("blurId")
         assertEquals(expected, actual)
     }
 
@@ -88,7 +86,7 @@ class VirtualBackgroundViewModelTest {
     fun testVirtualBackgroundUiState_backgroundsUpdated() = runTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().backgrounds.value
-        assertEquals(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur), actual)
+        assertEquals(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur("blurId")), actual)
     }
 
     @Test
@@ -101,7 +99,7 @@ class VirtualBackgroundViewModelTest {
     @Test
     fun testSetBlurEffect() = runTest {
         advanceUntilIdle()
-        viewModel.setEffect(VirtualBackgroundUi.Blur)
+        viewModel.setEffect(VirtualBackgroundUi.Blur("blurId"))
         verify(exactly = 1) {
             myVideoMock.tryApplyEffect(withArg {
                 assert(it is Effect.Video.Background.Blur)
@@ -112,7 +110,7 @@ class VirtualBackgroundViewModelTest {
     @Test
     fun testSetImageEffect() = runTest {
         advanceUntilIdle()
-        viewModel.setEffect(VirtualBackgroundUi.Image)
+        viewModel.setEffect(VirtualBackgroundUi.Image("imageId"))
         verify(exactly = 1) {
             myVideoMock.tryApplyEffect(withArg {
                 assert(it is Effect.Video.Background.Image)

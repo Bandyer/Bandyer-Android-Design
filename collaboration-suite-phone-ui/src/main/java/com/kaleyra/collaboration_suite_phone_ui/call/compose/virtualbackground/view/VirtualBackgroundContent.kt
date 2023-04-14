@@ -23,7 +23,7 @@ internal fun VirtualBackgroundContent(
     onItemClick: (VirtualBackgroundUi) -> Unit
 ) {
     LazyColumn {
-        items(items = items.value, key = { it.name }) {
+        items(items = items.value.distinctBy { it.id }, key = { it.id }) {
             VirtualBackgroundItem(
                 background = it,
                 selected = it == currentBackground,
@@ -47,8 +47,8 @@ internal fun ScreenShareContentPreview() {
     KaleyraTheme {
         Surface {
             VirtualBackgroundContent(
-                items = ImmutableList(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur, VirtualBackgroundUi.Image)),
-                currentBackground = VirtualBackgroundUi.Blur,
+                items = ImmutableList(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur(id = "id"), VirtualBackgroundUi.Image(id = "id2"))),
+                currentBackground = VirtualBackgroundUi.Blur(id = "id"),
                 onItemClick = { }
             )
         }

@@ -1,7 +1,10 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model
 
-enum class VirtualBackgroundUi {
-    Blur,
-    Image,
-    None
+sealed class VirtualBackgroundUi(open val id: String) {
+
+    data class Blur(override val id: String): VirtualBackgroundUi(id)
+
+    data class Image(override val id: String): VirtualBackgroundUi(id)
+
+    object None: VirtualBackgroundUi("None")
 }

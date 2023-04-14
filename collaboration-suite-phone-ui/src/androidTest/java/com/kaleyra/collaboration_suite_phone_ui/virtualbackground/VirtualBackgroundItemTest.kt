@@ -23,7 +23,7 @@ class VirtualBackgroundItemTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var background by mutableStateOf(VirtualBackgroundUi.None)
+    private var background by mutableStateOf<VirtualBackgroundUi>(VirtualBackgroundUi.None)
 
     @Before
     fun setUp() {
@@ -46,14 +46,14 @@ class VirtualBackgroundItemTest {
 
     @Test
     fun blurVirtualBackground_blurVirtualBackgroundTextDisplayed() {
-        background = VirtualBackgroundUi.Blur
+        background = VirtualBackgroundUi.Blur("id")
         val blur = composeTestRule.activity.getString(R.string.kaleyra_virtual_background_blur)
         composeTestRule.onNodeWithText(blur).assertIsDisplayed()
     }
 
     @Test
     fun imageVirtualBackground_imageVirtualBackgroundTextDisplayed() {
-        background = VirtualBackgroundUi.Image
+        background = VirtualBackgroundUi.Image("id")
         val image = composeTestRule.activity.getString(R.string.kaleyra_virtual_background_image)
         composeTestRule.onNodeWithText(image).assertIsDisplayed()
     }

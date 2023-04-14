@@ -67,9 +67,9 @@ class VirtualBackgroundComponentTest {
 
     @Test
     fun userClicksOnItem_onItemClickInvoked() {
-        items = ImmutableList(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur))
+        items = ImmutableList(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur("id")))
         val blur = composeTestRule.activity.getString(R.string.kaleyra_virtual_background_blur)
         composeTestRule.onNodeWithText(blur).performClick()
-        Assert.assertEquals(VirtualBackgroundUi.Blur, backgroundClicked)
+        Assert.assertEquals(VirtualBackgroundUi.Blur("id"), backgroundClicked)
     }
 }

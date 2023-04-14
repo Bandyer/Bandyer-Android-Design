@@ -46,8 +46,8 @@ internal class VirtualBackgroundViewModel(configure: suspend () -> Configuration
         val blur = call.effects.available.value.firstOrNull { it is Effect.Video.Background.Blur } as? Effect.Video
         video.tryApplyEffect(
             when {
-                background == VirtualBackgroundUi.Blur && blur != null -> blur
-                background == VirtualBackgroundUi.Image && image != null -> image
+                background is VirtualBackgroundUi.Blur && blur != null -> blur
+                background is VirtualBackgroundUi.Image && image != null -> image
                 else -> Effect.Video.None
             }
         )

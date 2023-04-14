@@ -34,14 +34,14 @@ internal object VirtualBackgroundMapper {
             .map { it.effects }
             .flatMapLatest { it.available }
             .map { effects ->
-                effects.mapNotNull { it.mapToVirtualBackgroundUi() }
+                listOf(VirtualBackgroundUi.None) + effects.mapNotNull { it.mapToVirtualBackgroundUi() }
             }
     }
 
     private fun Effect.mapToVirtualBackgroundUi(): VirtualBackgroundUi? {
         return when (this) {
-            is Effect.Video.Background.Blur -> VirtualBackgroundUi.Blur
-            is Effect.Video.Background.Image -> VirtualBackgroundUi.Image
+            is Effect.Video.Background.Blur -> VirtualBackgroundUi.Blur(id = id)
+            is Effect.Video.Background.Image -> VirtualBackgroundUi.Image(id = id)
             is Effect.Video.None -> VirtualBackgroundUi.None
             else -> null
         }

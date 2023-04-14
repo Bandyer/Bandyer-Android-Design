@@ -53,24 +53,24 @@ class VirtualBackgroundContentTest {
 
     @Test
     fun blurVirtualBackground_blurVirtualBackgroundItemDisplayed() {
-        items = ImmutableList(listOf(VirtualBackgroundUi.Blur))
+        items = ImmutableList(listOf(VirtualBackgroundUi.Blur("id")))
         val blur = composeTestRule.activity.getString(R.string.kaleyra_virtual_background_blur)
         composeTestRule.onNodeWithText(blur).assertIsDisplayed()
     }
 
     @Test
     fun imageVirtualBackground_imageVirtualBackgroundItemDisplayed() {
-        items = ImmutableList(listOf(VirtualBackgroundUi.Image))
+        items = ImmutableList(listOf(VirtualBackgroundUi.Image("id")))
         val image = composeTestRule.activity.getString(R.string.kaleyra_virtual_background_image)
         composeTestRule.onNodeWithText(image).assertIsDisplayed()
     }
 
     @Test
     fun userClicksOnItem_onItemClickInvoked() {
-        items = ImmutableList(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur))
+        items = ImmutableList(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur("id")))
         val blur = composeTestRule.activity.getString(R.string.kaleyra_virtual_background_blur)
         composeTestRule.onNodeWithText(blur).performClick()
-        Assert.assertEquals(VirtualBackgroundUi.Blur, backgroundClicked)
+        Assert.assertEquals(VirtualBackgroundUi.Blur("id"), backgroundClicked)
     }
 }
 

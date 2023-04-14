@@ -37,8 +37,8 @@ internal fun VirtualBackgroundItem(
             painter = painterResource(
                 id = when (background) {
                     VirtualBackgroundUi.None -> R.drawable.ic_kaleyra_virtual_background_none
-                    VirtualBackgroundUi.Blur -> R.drawable.ic_kaleyra_virtual_background_blur
-                    VirtualBackgroundUi.Image -> R.drawable.ic_kaleyra_virtual_background_image
+                    is VirtualBackgroundUi.Blur -> R.drawable.ic_kaleyra_virtual_background_blur
+                    is VirtualBackgroundUi.Image -> R.drawable.ic_kaleyra_virtual_background_image
                 }
             ),
             contentDescription = null,
@@ -63,8 +63,8 @@ private fun textFor(background: VirtualBackgroundUi) =
     stringResource(
         id = when (background) {
             VirtualBackgroundUi.None -> R.string.kaleyra_virtual_background_none
-            VirtualBackgroundUi.Blur -> R.string.kaleyra_virtual_background_blur
-            VirtualBackgroundUi.Image -> R.string.kaleyra_virtual_background_image
+            is VirtualBackgroundUi.Blur -> R.string.kaleyra_virtual_background_blur
+            is VirtualBackgroundUi.Image -> R.string.kaleyra_virtual_background_image
         }
     )
 
@@ -79,14 +79,14 @@ internal fun NoneBackgroundItemPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun BlurBackgroundItemPreview() {
-    BackgroundItemPreview(background = VirtualBackgroundUi.Blur)
+    BackgroundItemPreview(background = VirtualBackgroundUi.Blur("id"))
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun ImageBackgroundItemPreview() {
-    BackgroundItemPreview(background = VirtualBackgroundUi.Image)
+    BackgroundItemPreview(background = VirtualBackgroundUi.Image("id"))
 }
 
 @Composable
@@ -104,7 +104,7 @@ private fun BackgroundItemPreview(background: VirtualBackgroundUi) {
 internal fun SelectedBackgroundItemPreview() {
     KaleyraTheme {
         Surface {
-            VirtualBackgroundItem(background = VirtualBackgroundUi.Blur, true)
+            VirtualBackgroundItem(background = VirtualBackgroundUi.Blur("id"), true)
         }
     }
 }
