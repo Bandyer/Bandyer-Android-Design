@@ -8,7 +8,7 @@ import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.toCurrentVirtualBackground
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.toCurrentVirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.toVirtualBackgroundsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
 import io.mockk.every
@@ -56,7 +56,7 @@ class VirtualBackgroundMapperTest {
     fun backgroundBlurEffect_toCurrentVirtualBackground_blurBackgroundUi() = runTest {
         every { myVideoMock.currentEffect } returns MutableStateFlow(Effect.Video.Background.Blur(factor = 1f))
         val flow = MutableStateFlow(callMock)
-        val actual = flow.toCurrentVirtualBackground().first()
+        val actual = flow.toCurrentVirtualBackgroundUi().first()
         Assert.assertEquals(VirtualBackgroundUi.Blur, actual)
     }
 
@@ -64,7 +64,7 @@ class VirtualBackgroundMapperTest {
     fun backgroundImageEffect_toCurrentVirtualBackground_imageBackgroundUi() = runTest {
         every { myVideoMock.currentEffect } returns MutableStateFlow(Effect.Video.Background.Image(image = mockk()))
         val flow = MutableStateFlow(callMock)
-        val actual = flow.toCurrentVirtualBackground().first()
+        val actual = flow.toCurrentVirtualBackgroundUi().first()
         Assert.assertEquals(VirtualBackgroundUi.Image, actual)
     }
 
@@ -72,7 +72,7 @@ class VirtualBackgroundMapperTest {
     fun backgroundNoneEffect_toCurrentVirtualBackground_noneBackgroundUi() = runTest {
         every { myVideoMock.currentEffect } returns MutableStateFlow(Effect.Video.None)
         val flow = MutableStateFlow(callMock)
-        val actual = flow.toCurrentVirtualBackground().first()
+        val actual = flow.toCurrentVirtualBackgroundUi().first()
         Assert.assertEquals(VirtualBackgroundUi.None, actual)
     }
 

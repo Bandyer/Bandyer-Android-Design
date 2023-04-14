@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 
 internal object VirtualBackgroundMapper {
 
-    fun Flow<CallUI>.toCurrentVirtualBackground(): Flow<VirtualBackgroundUi> {
+    fun Flow<CallUI>.toCurrentVirtualBackgroundUi(): Flow<VirtualBackgroundUi> {
          return this
             .flatMapLatest { it.participants }
             .map { it.me }
