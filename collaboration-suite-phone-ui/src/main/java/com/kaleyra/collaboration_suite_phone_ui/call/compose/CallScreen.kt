@@ -371,6 +371,7 @@ internal fun CallScreen(
                     onCallActionClick = callScreenState::onCallActionClick,
                     onAudioDeviceClick = callScreenState::halfExpandSheet,
                     onScreenShareTargetClick = callScreenState::halfExpandSheet,
+                    onVirtualBackgroundClick = callScreenState::halfExpandSheet,
                     contentVisible = !callScreenState.isSheetCollapsed,
                     modifier = Modifier.horizontalCutoutPadding()
                 )

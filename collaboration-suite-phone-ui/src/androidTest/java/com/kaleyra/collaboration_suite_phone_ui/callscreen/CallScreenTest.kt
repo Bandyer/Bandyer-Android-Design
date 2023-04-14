@@ -18,6 +18,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.S
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.viewmodel.VirtualBackgroundViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.findBackButton
 import io.mockk.every
@@ -405,6 +408,23 @@ class CallScreenTest {
         sheetContentState = BottomSheetContentState(BottomSheetComponent.ScreenShare, LineState.Collapsed())
         val appOnly = composeTestRule.activity.getString(R.string.kaleyra_screenshare_app_only)
         composeTestRule.onNodeWithText(appOnly).performClick()
+        composeTestRule.waitForIdle()
+        runBlocking {
+            val sheetStateValue = snapshotFlow { sheetState.currentValue }.first()
+            assertEquals(BottomSheetValue.HalfExpanded, sheetStateValue)
+        }
+    }
+
+    @Test
+    fun virtualBackgroundComponent_userClicksVirtualBackground_sheetHalfExpand() {
+        mockkConstructor(VirtualBackgroundViewModel::class)
+        every { anyConstructed<VirtualBackgroundViewModel>().uiState } returns MutableStateFlow(
+            VirtualBackgroundUiState(backgrounds = ImmutableList(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur("id1"), VirtualBackgroundUi.Image("id2"))))
+        )
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.VirtualBackground, LineState.Collapsed())
+        val none = composeTestRule.activity.getString(R.string.kaleyra_virtual_background_none)
+        composeTestRule.onNodeWithText(none).performClick()
         composeTestRule.waitForIdle()
         runBlocking {
             val sheetStateValue = snapshotFlow { sheetState.currentValue }.first()
