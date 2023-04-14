@@ -58,6 +58,8 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     private var wasPhoneBoxConnected = false
     private var wasChatBoxConnected = false
 
+    private var endedCallIds = mutableSetOf<String>()
+
     private var scope = CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.IO)
 
     init {
@@ -117,6 +119,11 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
                 phoneBoxState is PhoneBox.State.Connected && callState is Call.State.Disconnected.Ended && !isInForeground
             }.collectLatest {
                 if (!it) return@collectLatest
+
+                val endedCallId = collaboration.phoneBox.call.replayCache.firstOrNull()?.id
+                if (endedCallId in endedCallIds) return@collectLatest
+                endedCallId?.let { endedCallIds.add(it) }
+
                 delay(300)
                 performAction(Action.PAUSE)
             }
