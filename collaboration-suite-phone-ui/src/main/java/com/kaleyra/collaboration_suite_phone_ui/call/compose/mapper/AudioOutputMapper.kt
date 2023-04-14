@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
-internal object AudioMapper {
+internal object AudioOutputMapper {
     fun Flow<CallUI>.toCurrentAudioDeviceUi(): Flow<AudioDeviceUi?> =
         flatMapLatest { it.currentAudioOutputDevice }.map { it?.mapToAudioDeviceUi() }
 

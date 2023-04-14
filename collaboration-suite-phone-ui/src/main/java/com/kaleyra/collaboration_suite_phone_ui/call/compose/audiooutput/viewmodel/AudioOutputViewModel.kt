@@ -10,8 +10,8 @@ import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationA
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.AudioMapper.toAudioDevicesUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.AudioMapper.toCurrentAudioDeviceUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.AudioOutputMapper.toAudioDevicesUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.AudioOutputMapper.toCurrentAudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
