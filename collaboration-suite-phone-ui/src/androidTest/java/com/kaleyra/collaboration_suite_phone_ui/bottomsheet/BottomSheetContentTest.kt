@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.bottomsheet
 
 import androidx.activity.ComponentActivity
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,8 +8,8 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.MockCallViewModelsStatesRule
+import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import org.junit.After
@@ -44,6 +43,8 @@ class BottomSheetContentTest {
 
     private var isScreenShareTargetClicked = false
 
+    private var isVirtualBackgroundClicked = false
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
@@ -65,6 +66,7 @@ class BottomSheetContentTest {
         isCallActionClicked = false
         isAudioDeviceClicked = false
         isScreenShareTargetClicked = false
+        isVirtualBackgroundClicked = false
     }
 
     @Test
@@ -128,6 +130,14 @@ class BottomSheetContentTest {
     }
 
     @Test
+    fun userClicksVirtualBackground_onVirtualBackgroundClickInvoked() {
+        contentState = BottomSheetContentState(initialComponent = BottomSheetComponent.VirtualBackground, LineState.Expanded)
+        val none = composeTestRule.activity.getString(R.string.kaleyra_virtual_background_none)
+        composeTestRule.onNodeWithText(none).performClick()
+        assert(isVirtualBackgroundClicked)
+    }
+
+    @Test
     fun bottomSheetContentStateInitialComponentIsSet() {
         composeTestRule.assertComponentIsDisplayed(
             tag = CallActionsComponentTag,
@@ -185,6 +195,15 @@ class BottomSheetContentTest {
     }
 
     @Test
+    fun navigateToVirtualBackground_virtualBackgroundIsDisplayed() {
+        contentState.navigateToComponent(BottomSheetComponent.VirtualBackground)
+        composeTestRule.assertComponentIsDisplayed(
+            tag = VirtualBackgroundComponentTag,
+            component = BottomSheetComponent.VirtualBackground
+        )
+    }
+
+    @Test
     fun userClicksOnAudioOutputButton_audioOutputIsDisplayed() {
         val audioOutput =
             composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route)
@@ -210,6 +229,10 @@ class BottomSheetContentTest {
     fun userClicksOnWhiteboardButton_whiteboardIsDisplayed() {
         val whiteboard = composeTestRule.activity.getString(R.string.kaleyra_call_action_whiteboard)
         composeTestRule.onNodeWithContentDescription(whiteboard).performClick()
+        composeTestRule.assertComponentIsDisplayed(
+            tag = WhiteboardComponentTag,
+            component = BottomSheetComponent.Whiteboard
+        )
     }
 
     @Test
@@ -223,6 +246,16 @@ class BottomSheetContentTest {
     }
 
     @Test
+    fun userClicksOnVirtualBackgroundButton_virtualBackgroundIsDisplayed() {
+        val virtualBackground = composeTestRule.activity.getString(R.string.kaleyra_call_action_virtual_background)
+        composeTestRule.onNodeWithContentDescription(virtualBackground).performClick()
+        composeTestRule.assertComponentIsDisplayed(
+            tag = VirtualBackgroundComponentTag,
+            component = BottomSheetComponent.VirtualBackground
+        )
+    }
+
+    @Test
     fun audioOutputComponent_userClicksClose_callActionsDisplayed() {
         userClicksClose_callActionsDisplayed(initialComponent = BottomSheetComponent.AudioOutput)
     }
@@ -230,6 +263,11 @@ class BottomSheetContentTest {
     @Test
     fun screenShareComponent_userClicksClose_callActionsDisplayed() {
         userClicksClose_callActionsDisplayed(initialComponent = BottomSheetComponent.ScreenShare)
+    }
+
+    @Test
+    fun virtualBackgroundComponent_userClicksClose_virtualBackgroundDisplayed() {
+        userClicksClose_callActionsDisplayed(initialComponent = BottomSheetComponent.VirtualBackground)
     }
 
     private fun userClicksClose_callActionsDisplayed(initialComponent: BottomSheetComponent) {

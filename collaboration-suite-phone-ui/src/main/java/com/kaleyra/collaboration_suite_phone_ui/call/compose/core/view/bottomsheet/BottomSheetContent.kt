@@ -22,6 +22,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.C
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.MultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.VirtualBackgroundComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardComponent
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
@@ -30,9 +31,10 @@ const val AudioOutputComponentTag = "AudioOutputComponentTag"
 const val ScreenShareComponentTag = "ScreenShareComponentTag"
 const val FileShareComponentTag = "FileShareComponentTag"
 const val WhiteboardComponentTag = "WhiteboardComponentTag"
+const val VirtualBackgroundComponentTag = "VirtualBackgroundComponentTag"
 
 internal enum class BottomSheetComponent {
-    CallActions, AudioOutput, ScreenShare, FileShare, Whiteboard
+    CallActions, AudioOutput, ScreenShare, FileShare, Whiteboard, VirtualBackground
 }
 
 internal class BottomSheetContentState(
@@ -84,6 +86,7 @@ internal fun BottomSheetContent(
     onCallActionClick: (CallAction) -> Unit = { },
     onAudioDeviceClick: () -> Unit = { },
     onScreenShareTargetClick: () -> Unit = { },
+    onVirtualBackgroundClick: () -> Unit = {},
     contentVisible: Boolean = true
 ) {
     Column(modifier) {
@@ -115,6 +118,7 @@ internal fun BottomSheetContent(
                                         is CallAction.ScreenShare -> BottomSheetComponent.ScreenShare
                                         is CallAction.FileShare -> BottomSheetComponent.FileShare
                                         is CallAction.Whiteboard -> BottomSheetComponent.Whiteboard
+                                        is CallAction.VirtualBackground -> BottomSheetComponent.VirtualBackground
                                         else -> BottomSheetComponent.CallActions
                                     }
                                 )
@@ -127,7 +131,8 @@ internal fun BottomSheetContent(
                         AudioOutputComponent(
                             onItemClick = { onAudioDeviceClick() },
                             onCloseClick = { contentState.navigateToComponent(BottomSheetComponent.CallActions) },
-                            modifier = Modifier.testTag(AudioOutputComponentTag)
+                            modifier = Modifier.testTag(AudioOutputComponentTag),
+                            isTesting = permissionsState == null
                         )
                     }
                     BottomSheetComponent.ScreenShare -> {
@@ -151,11 +156,19 @@ internal fun BottomSheetContent(
                                 .testTag(WhiteboardComponentTag)
                         )
                     }
+                    BottomSheetComponent.VirtualBackground -> {
+                        VirtualBackgroundComponent(
+                            onItemClick = { onVirtualBackgroundClick() },
+                            onCloseClick = { contentState.navigateToComponent(BottomSheetComponent.CallActions) },
+                            modifier = Modifier
+                                .padding(top = 20.dp)
+                                .testTag(VirtualBackgroundComponentTag)
+                        )
+                    }
                 }
             }
         }
     }
-//    }
 }
 
 @Preview(name = "Light Mode")
