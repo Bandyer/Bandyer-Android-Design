@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.map
 
 internal object CallActionsMapper {
 
+    // TODO change this when I know when to add the virtual background action
     fun Flow<CallUI>.toCallActions(): Flow<List<CallAction>> {
         return flatMapLatest { it.actions }
             .map { actions ->
@@ -24,7 +25,7 @@ internal object CallActionsMapper {
                         is CallUI.Action.OpenWhiteboard.Full -> CallAction.Whiteboard()
                         else -> null
                     }
-                }
+                } + CallAction.VirtualBackground()
             }
     }
 }

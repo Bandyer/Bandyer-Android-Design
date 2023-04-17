@@ -73,6 +73,7 @@ class CallActionsViewModelTest {
             every { others } returns listOf(otherParticipantMock)
         }
         with(myStreamMock) {
+            every { id } returns "myStreamId"
             every { video } returns MutableStateFlow(videoMock)
             every { audio } returns MutableStateFlow(audioMock)
         }
@@ -157,6 +158,12 @@ class CallActionsViewModelTest {
         assertEquals(newExpected, newActual)
     }
 
+    // TODO add this test
+    @Test
+    fun testCallActionsUiState_virtualBackgroundKeepsStateAfterCallActionsUpdate() = runTest {
+
+    }
+
     @Test
     fun testCallActionsUiState_cameraActionUpdated() = runTest {
         val result = viewModel.uiState
@@ -202,6 +209,12 @@ class CallActionsViewModelTest {
         val actual = result.first().actionList.value
         val expected = listOf(CallAction.Audio(device = AudioDeviceUi.LoudSpeaker))
         assertEquals(expected, actual)
+    }
+
+    // TODO add this test
+    @Test
+    fun testCallActionsUiState_virtualBackgroundUpdated() = runTest {
+
     }
 
     @Test

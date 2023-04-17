@@ -14,7 +14,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.A
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.AudioMapper.toCurrentAudioDeviceUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.AudioOutputMapper.toCurrentAudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallActionsMapper.toCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
@@ -23,6 +23,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmod
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import com.kaleyra.collaboration_suite_core_ui.utils.FlowUtils.combine
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.mockCallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.toCurrentVirtualBackgroundUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
 import kotlinx.coroutines.launch
 
 internal class CallActionsViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallActionsUiState>(configure) {
@@ -59,6 +62,11 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         .debounce(300)
         .stateIn(viewModelScope, SharingStarted.Eagerly, AudioDeviceUi.Muted)
 
+    private val isVirtualBackgroundEnabled = call
+        .toCurrentVirtualBackgroundUi()
+        .map { it != VirtualBackgroundUi.None }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
     private val availableInputs: Set<Input>?
         get() = call.getValue()?.inputs?.availableInputs?.value
 
@@ -71,14 +79,16 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
             isMyCameraEnabled,
             isMyMicEnabled,
             isSharingScreen,
-            currentAudioOutput
-        ) { callActions, isCallConnected, isMyCameraEnabled, isMyMicEnabled, isSharingScreen, currentAudioOutput ->
+            currentAudioOutput,
+            isVirtualBackgroundEnabled
+        ) { callActions, isCallConnected, isMyCameraEnabled, isMyMicEnabled, isSharingScreen, currentAudioOutput, isVirtualBackgroundEnabled ->
             val newActions = callActions
                 .updateActionIfExists(CallAction.Microphone(isToggled = !isMyMicEnabled))
                 .updateActionIfExists(CallAction.Camera(isToggled = !isMyCameraEnabled))
                 .updateActionIfExists(CallAction.Audio(device = currentAudioOutput))
                 .updateActionIfExists(CallAction.FileShare(isEnabled = isCallConnected))
                 .updateActionIfExists(CallAction.ScreenShare(isToggled = isSharingScreen, isEnabled = isCallConnected))
+                .updateActionIfExists(CallAction.VirtualBackground(isToggled = isVirtualBackgroundEnabled))
                 .updateActionIfExists(CallAction.Whiteboard(isEnabled = isCallConnected))
             _uiState.update { it.copy(actionList = ImmutableList(newActions)) }
         }.launchIn(viewModelScope)
