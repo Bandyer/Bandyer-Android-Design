@@ -13,9 +13,9 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.subfeaturelayout.SubFeatureLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.mockVirtualBackgrounds
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.view.VirtualBackgroundContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.viewmodel.VirtualBackgroundViewModel
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
@@ -56,7 +56,7 @@ internal fun VirtualBackgroundComponent(
         modifier = modifier
     ) {
         VirtualBackgroundContent(
-            items = uiState.backgrounds,
+            items = uiState.backgroundList,
             currentBackground = uiState.currentBackground,
             onItemClick = onItemClick
         )
@@ -70,7 +70,7 @@ internal fun VirtualBackgroundComponentPreview() {
     KaleyraTheme {
         Surface {
             VirtualBackgroundComponent(
-                uiState = VirtualBackgroundUiState(backgrounds = ImmutableList(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur("id"), VirtualBackgroundUi.Image("id2")))),
+                uiState = VirtualBackgroundUiState(backgroundList = mockVirtualBackgrounds),
                 onItemClick = { },
                 onCloseClick = { }
             )

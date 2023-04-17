@@ -85,7 +85,7 @@ class VirtualBackgroundViewModelTest {
     @Test
     fun testVirtualBackgroundUiState_backgroundsUpdated() = runTest {
         advanceUntilIdle()
-        val actual = viewModel.uiState.first().backgrounds.value
+        val actual = viewModel.uiState.first().backgroundList.value
         assertEquals(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur("blurId")), actual)
     }
 

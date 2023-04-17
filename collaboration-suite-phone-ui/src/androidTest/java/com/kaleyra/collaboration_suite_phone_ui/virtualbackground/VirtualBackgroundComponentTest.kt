@@ -38,7 +38,7 @@ class VirtualBackgroundComponentTest {
     fun setUp() {
         composeTestRule.setContent {
             VirtualBackgroundComponent(
-                uiState = VirtualBackgroundUiState(backgrounds = items),
+                uiState = VirtualBackgroundUiState(backgroundList = items),
                 onItemClick = { backgroundClicked = it },
                 onCloseClick = { isCloseClicked = true }
             )

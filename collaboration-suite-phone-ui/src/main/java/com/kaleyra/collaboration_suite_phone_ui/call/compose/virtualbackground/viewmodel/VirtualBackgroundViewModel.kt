@@ -32,7 +32,7 @@ internal class VirtualBackgroundViewModel(configure: suspend () -> Configuration
         call
             .toVirtualBackgroundsUi()
             .onEach { backgrounds ->
-                _uiState.update { it.copy(backgrounds = ImmutableList(backgrounds)) }
+                _uiState.update { it.copy(backgroundList = ImmutableList(backgrounds)) }
             }
             .launchIn(viewModelScope)
     }

@@ -7,6 +7,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 @Immutable
 data class VirtualBackgroundUiState(
     val currentBackground: VirtualBackgroundUi = VirtualBackgroundUi.None,
-    val backgrounds: ImmutableList<VirtualBackgroundUi> = ImmutableList(emptyList()),
+    val backgroundList: ImmutableList<VirtualBackgroundUi> = ImmutableList(emptyList()),
     override val userMessage: String? = null
 ) : UiState
