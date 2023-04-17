@@ -196,6 +196,7 @@ private fun textFor(action: CallAction): String = stringResource(
         is CallAction.FileShare -> R.string.kaleyra_call_action_file_share
         is CallAction.Audio -> R.string.kaleyra_call_action_audio_route
         is CallAction.ScreenShare -> R.string.kaleyra_call_action_screen_share
+        is CallAction.VirtualBackground -> R.string.kaleyra_call_action_virtual_background
     }
 )
 
@@ -211,6 +212,7 @@ private fun descriptionFor(action: CallAction) = stringResource(
         is CallAction.FileShare -> R.string.kaleyra_call_action_file_share
         is CallAction.Audio -> R.string.kaleyra_call_action_audio_route
         is CallAction.ScreenShare -> R.string.kaleyra_call_action_screen_share
+        is CallAction.VirtualBackground -> R.string.kaleyra_call_action_virtual_background
     }
 )
 
@@ -234,6 +236,7 @@ private fun painterFor(action: CallAction): Painter = painterResource(
             }
         }
         is CallAction.ScreenShare -> R.drawable.ic_kaleyra_screen_share
+        is CallAction.VirtualBackground -> R.drawable.ic_kaleyra_virtual_background
     }
 )
 

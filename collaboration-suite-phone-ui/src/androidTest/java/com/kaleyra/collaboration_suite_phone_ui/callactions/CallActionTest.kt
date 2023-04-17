@@ -123,6 +123,14 @@ class CallActionTest {
     }
 
     @Test
+    fun virtualBackgroundAction_virtualBackgroundActionTextAndIconDisplayed() {
+        action = CallAction.VirtualBackground()
+        val virtualBackground = composeTestRule.activity.getString(R.string.kaleyra_call_action_virtual_background)
+        composeTestRule.onNodeWithText(virtualBackground).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(virtualBackground).assertIsDisplayed()
+    }
+
+    @Test
     fun userPerformsClick_onToggledInvoked() {
         composeTestRule.onRoot().performClick()
         assert(isToggled)

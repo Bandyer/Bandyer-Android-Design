@@ -27,6 +27,11 @@ sealed interface CallAction {
         override val isToggled: Boolean = false
     ) : Toggleable
 
+    data class VirtualBackground(
+        override val isEnabled: Boolean = true,
+        override val isToggled: Boolean = false
+    ) : Toggleable
+
     data class SwitchCamera(override val isEnabled: Boolean = true) : CallAction
 
     data class HangUp(override val isEnabled: Boolean = true) : CallAction
