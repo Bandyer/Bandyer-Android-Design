@@ -3,8 +3,10 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 import com.kaleyra.collaboration_suite.phonebox.Effect
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.mapToVirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -30,12 +32,14 @@ internal object VirtualBackgroundMapper {
     }
 
     fun Flow<CallUI>.toVirtualBackgroundsUi(): Flow<List<VirtualBackgroundUi>> {
-        return this
-            .map { it.effects }
-            .flatMapLatest { it.available }
-            .map { effects ->
-                listOf(VirtualBackgroundUi.None) + effects.mapNotNull { it.mapToVirtualBackgroundUi() }
-            }
+        val effectsFlow = this.map { it.effects }
+        val availableFlow = effectsFlow.flatMapLatest { it.available }
+        val preselectedFlow = effectsFlow.flatMapLatest { it.preselected }
+        return combine(availableFlow, preselectedFlow) { available, preselected ->
+            val blur = available.firstOrNull { it is Effect.Video.Background.Blur }?.mapToVirtualBackgroundUi()
+            val image = preselected.takeIf { it is Effect.Video.Background.Image }?.mapToVirtualBackgroundUi()
+            listOfNotNull(VirtualBackgroundUi.None, blur, image)
+        }
     }
 
     private fun Effect.mapToVirtualBackgroundUi(): VirtualBackgroundUi? {

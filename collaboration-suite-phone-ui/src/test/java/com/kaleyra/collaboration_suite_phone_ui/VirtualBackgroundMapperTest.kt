@@ -79,6 +79,7 @@ class VirtualBackgroundMapperTest {
     @Test
     fun emptyAvailableVideoEffect_toVirtualBackgroundsUi_listHasOnlyNoneBackground() = runTest {
         every { effectsMock.available } returns MutableStateFlow(setOf())
+        every { effectsMock.preselected } returns MutableStateFlow(Effect.Video.None)
         val flow = MutableStateFlow(callMock)
         val actual = flow.toVirtualBackgroundsUi().first()
         Assert.assertEquals(listOf<VirtualBackgroundUi>(VirtualBackgroundUi.None), actual)
@@ -86,7 +87,8 @@ class VirtualBackgroundMapperTest {
 
     @Test
     fun availableVideoEffectList_toVirtualBackgroundsUi_mappedVirtualBackgroundUiList() = runTest {
-        every { effectsMock.available } returns MutableStateFlow(setOf(Effect.Video.Background.Blur(id = "blurId", factor = 1f), Effect.Video.Background.Image(id = "imageId", image = mockk())))
+        every { effectsMock.available } returns MutableStateFlow(setOf(Effect.Video.Background.Blur(id = "blurId", factor = 1f), Effect.Video.Background.Image(id = "imageId", image = mockk()), Effect.Video.Background.Image(id = "imageId2", image = mockk())))
+        every { effectsMock.preselected } returns MutableStateFlow(Effect.Video.Background.Image(id = "imageId", image = mockk()))
         val flow = MutableStateFlow(callMock)
         val actual = flow.toVirtualBackgroundsUi().first()
         Assert.assertEquals(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur(id = "blurId"), VirtualBackgroundUi.Image(id = "imageId")), actual)
