@@ -223,7 +223,6 @@ class AudioOutputItemTest {
             R.string.kaleyra_bluetooth_connecting_status_info,
             activating
         )
-        composeTestRule.onNode(hasText(text = activating, substring = true)).assertIsDisplayed()
-        composeTestRule.onNode(hasText(text = statusInfo, substring = true)).assertDoesNotExist()
+        composeTestRule.onNode(hasText(text = statusInfo, substring = true)).assertIsDisplayed()
     }
 }

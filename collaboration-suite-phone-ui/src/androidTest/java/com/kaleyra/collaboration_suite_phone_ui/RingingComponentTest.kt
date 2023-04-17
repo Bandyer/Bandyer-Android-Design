@@ -125,11 +125,11 @@ class RingingComponentTest: PreCallComponentTest() {
         @Test
     fun callStateRinging_ringingSubtitleIsDisplayed() {
         val resources = composeTestRule.activity.resources
-        val ringingQuantityOne = resources.getQuantityString(R.plurals.kaleyra_call_status_ringing, 1)
-        val ringingQuantityOther = resources.getQuantityString(R.plurals.kaleyra_call_status_ringing, 2)
-        uiState.value = PreCallUiState(isGroupCall = false)
+        val ringingQuantityOne = resources.getQuantityString(R.plurals.kaleyra_call_incoming_status_ringing, 1)
+        val ringingQuantityOther = resources.getQuantityString(R.plurals.kaleyra_call_incoming_status_ringing, 2)
+        uiState.value = PreCallUiState(participants = listOf("user1"))
         composeTestRule.onNodeWithText(ringingQuantityOne).assertIsDisplayed()
-        uiState.value = PreCallUiState(isGroupCall = true)
+        uiState.value = PreCallUiState(participants = listOf("user1", "user2"))
         composeTestRule.onNodeWithText(ringingQuantityOther).assertIsDisplayed()
     }
 

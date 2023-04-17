@@ -14,6 +14,7 @@ val mockCallActions = ImmutableList(
         CallAction.Whiteboard(true),
         CallAction.Audio(true, AudioDeviceUi.Bluetooth(id = "id", name = null, connectionState = BluetoothDeviceState.Connected, batteryLevel = null)),
         CallAction.FileShare(true),
-        CallAction.ScreenShare(true)
+        CallAction.ScreenShare(true),
+        CallAction.VirtualBackground(true)
     )
 )

@@ -47,16 +47,14 @@ class BottomSheetContentTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            val onBackPressedDispatcher = composeTestRule.activity.onBackPressedDispatcher
-            CompositionLocalProvider(LocalBackPressedDispatcher provides onBackPressedDispatcher) {
-                BottomSheetContent(
-                    contentState = contentState,
-                    onLineClick = { isLineClicked = true },
-                    onCallActionClick = { isCallActionClicked = true },
-                    onAudioDeviceClick = { isAudioDeviceClicked = true },
-                    onScreenShareTargetClick = { isScreenShareTargetClicked = true }
-                )
-            }
+            BottomSheetContent(
+                contentState = contentState,
+                onLineClick = { isLineClicked = true },
+                onCallActionClick = { isCallActionClicked = true },
+                onAudioDeviceClick = { isAudioDeviceClicked = true },
+                onScreenShareTargetClick = { isScreenShareTargetClicked = true },
+                onVirtualBackgroundClick = { isVirtualBackgroundClicked = true }
+            )
         }
     }
 
