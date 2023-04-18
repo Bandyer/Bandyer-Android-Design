@@ -8,6 +8,7 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.ChatBoxUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.currentAudioOutputDevice
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
@@ -58,6 +59,8 @@ class CallActionsViewModelTest {
 
     private val frontLens = mockk<Input.Video.Camera.Internal.Lens>()
 
+    private val effectsMock = mockk<Effects>()
+
     @Before
     fun setUp() {
         viewModel = spyk(CallActionsViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk()) })
@@ -67,6 +70,7 @@ class CallActionsViewModelTest {
             every { actions } returns MutableStateFlow(setOf(CallUI.Action.HangUp, CallUI.Action.Audio))
             every { state } returns MutableStateFlow(mockk())
             every { participants } returns MutableStateFlow(callParticipantsMock)
+            every { effects }returns effectsMock
         }
         with(callParticipantsMock) {
             every { me } returns meMock
@@ -76,6 +80,10 @@ class CallActionsViewModelTest {
             every { id } returns "myStreamId"
             every { video } returns MutableStateFlow(videoMock)
             every { audio } returns MutableStateFlow(audioMock)
+        }
+        with(effectsMock) {
+            every { available } returns MutableStateFlow(setOf())
+            every { preselected } returns MutableStateFlow(Effect.Video.None)
         }
         every { otherParticipantMock.userId }returns "otherUserId"
         every { inputsMock.availableInputs } returns MutableStateFlow(setOf(audioMock, videoMock))
@@ -158,10 +166,28 @@ class CallActionsViewModelTest {
         assertEquals(newExpected, newActual)
     }
 
-    // TODO add this test
     @Test
     fun testCallActionsUiState_virtualBackgroundKeepsStateAfterCallActionsUpdate() = runTest {
+        with(effectsMock) {
+            every { available } returns MutableStateFlow(setOf(Effect.Video.Background.Blur(factor = 1f)))
+            every { preselected } returns MutableStateFlow(Effect.Video.Background.Image(image = mockk()))
+        }
+        every { myStreamMock.id } returns CAMERA_STREAM_ID
+        every { videoMock.currentEffect } returns MutableStateFlow(Effect.Video.Background.Image(image = mockk()))
+        val actions = MutableStateFlow(setOf<CallUI.Action>(CallUI.Action.HangUp))
+        every { callMock.actions } returns actions
+        advanceUntilIdle()
+        val result = viewModel.uiState
+        val actual = result.first().actionList.value
+        val expected = listOf(CallAction.HangUp(), CallAction.VirtualBackground(isToggled = true))
+        assertEquals(expected, actual)
 
+        // Update call actions
+        actions.value = setOf()
+        advanceUntilIdle()
+        val newActual = result.first().actionList.value
+        val newExpected = listOf(CallAction.VirtualBackground(isToggled = true))
+        assertEquals(newExpected, newActual)
     }
 
     @Test
@@ -186,7 +212,7 @@ class CallActionsViewModelTest {
         assertEquals(listOf<CallAction>(), current)
 
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.ToggleMicrophone))
-        every { videoMock.enabled } returns MutableStateFlow(false)
+        every { audioMock.enabled } returns MutableStateFlow(false)
 
         advanceUntilIdle()
         val actual = result.first().actionList.value
@@ -211,10 +237,24 @@ class CallActionsViewModelTest {
         assertEquals(expected, actual)
     }
 
-    // TODO add this test
     @Test
     fun testCallActionsUiState_virtualBackgroundUpdated() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
 
+        every { callMock.actions } returns MutableStateFlow(setOf())
+        with(effectsMock) {
+            every { available } returns MutableStateFlow(setOf(Effect.Video.Background.Blur(factor = 1f)))
+            every { preselected } returns MutableStateFlow(Effect.Video.Background.Image(image = mockk()))
+        }
+        every { myStreamMock.id } returns CAMERA_STREAM_ID
+        every { videoMock.currentEffect } returns MutableStateFlow(Effect.Video.Background.Image(image = mockk()))
+
+        advanceUntilIdle()
+        val actual = result.first().actionList.value
+        val expected = listOf(CallAction.VirtualBackground(isToggled = true))
+        assertEquals(expected, actual)
     }
 
     @Test
