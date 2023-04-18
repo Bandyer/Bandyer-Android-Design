@@ -37,7 +37,7 @@ dependencies {
     testImplementation test.mockk
     testImplementation test.robolectric
     testImplementation test.coroutines
-    testImplementation project(":collaboration-suite")
+    testImplementation kaleyra.collaboration
     androidTestImplementation test.espresso
 
     api jetbrains.stdlib
@@ -47,9 +47,6 @@ dependencies {
     api picasso.picasso
 
     /** Kaleyra **/
-//    compileOnly kaleyra.collaboration
-//    compileOnly kaleyra.collaboration_extension_audio
-
-    compileOnly project(":collaboration-suite")
-    compileOnly project(":collaboration-suite-extension-audio")
+    compileOnly kaleyra.collaboration
+    compileOnly kaleyra.collaboration_extension_audio
 }
