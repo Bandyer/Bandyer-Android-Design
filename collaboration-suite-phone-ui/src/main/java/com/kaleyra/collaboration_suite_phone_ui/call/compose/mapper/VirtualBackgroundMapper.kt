@@ -42,6 +42,14 @@ internal object VirtualBackgroundMapper {
         }
     }
 
+    fun Flow<CallUI>.hasVirtualBackground(): Flow<Boolean> {
+        val preselectedFlow= this.flatMapLatest { it.effects.preselected }
+        val availableFlow = this.flatMapLatest { it.effects.available }
+        return combine(preselectedFlow, availableFlow) { preselectedEffect, availableEffect ->
+            preselectedEffect != Effect.Video.None && availableEffect.isNotEmpty()
+        }
+    }
+
     private fun Effect.mapToVirtualBackgroundUi(): VirtualBackgroundUi? {
         return when (this) {
             is Effect.Video.Background.Blur -> VirtualBackgroundUi.Blur(id = id)
