@@ -22,20 +22,19 @@ import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity
 import com.kaleyra.collaboration_suite_glass_ui.chat.notification.GlassChatNotificationActivity
+import com.kaleyra.collaboration_suite_glass_ui.termsandconditions.GlassTermsAndConditionsActivity
 
 /**
  * Configure with glass u i
  *
- * @param credentials to use when Collaboration tools need to be connected
  * @param configuration representing a set of info necessary to instantiate the communication
  */
 fun CollaborationUI.configureGlassUI(
-    credentials: Collaboration.Credentials,
     configuration: Collaboration.Configuration
 ) = configure(
-    credentials,
     configuration,
     GlassCallActivity::class.java,
     GlassChatActivity::class.java,
+    GlassTermsAndConditionsActivity::class.java,
     GlassChatNotificationActivity::class.java.takeIf { DeviceUtils.isGoogleGlass }
 )

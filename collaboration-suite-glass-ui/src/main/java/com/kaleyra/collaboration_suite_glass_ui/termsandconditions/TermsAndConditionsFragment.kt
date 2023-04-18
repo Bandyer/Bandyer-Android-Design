@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.userdataconsentagreement
+package com.kaleyra.collaboration_suite_glass_ui.termsandconditions
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -22,33 +22,46 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.phonebox.PhoneBox
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.accept
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.decline
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraFragmentUserDataConsentAgreementBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraFragmentTermsAndConditionsBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import kotlinx.coroutines.flow.*
 
-internal class UserDataConsentAgreementFragment : BaseFragment(), TiltListener {
+internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
 
-    private var _binding: KaleyraFragmentUserDataConsentAgreementBinding? = null
-    override val binding: KaleyraFragmentUserDataConsentAgreementBinding get() = _binding!!
+    private var _binding: KaleyraFragmentTermsAndConditionsBinding? = null
+    override val binding: KaleyraFragmentTermsAndConditionsBinding get() = _binding!!
 
-    private var itemAdapter: ItemAdapter<UserDataConsentAgreementItem>? = null
+    private var itemAdapter: ItemAdapter<TermsAndConditionsItem>? = null
 
     private var currentMsgItemIndex = -1
 
-    private val args: UserDataConsentAgreementFragmentArgs by lazy { UserDataConsentAgreementFragmentArgs.fromBundle(requireActivity().intent?.extras ?: Bundle()) }
+    private val args: TermsAndConditionsFragmentArgs by navArgs()
+
+    private var termsAndConditions: TermsAndConditions? = null
+
+    private val viewModel: TermsAndConditionsViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,11 +76,11 @@ internal class UserDataConsentAgreementFragment : BaseFragment(), TiltListener {
         super.onCreateView(inflater, container, savedInstanceState)
 
         val themeResId = requireContext().getThemeAttribute(
-            R.style.KaleyraCollaborationSuiteUI_UserDataConsentAgreementTheme_Glass,
-            R.styleable.KaleyraCollaborationSuiteUI_UserDataConsentAgreementTheme_Glass,
-            R.styleable.KaleyraCollaborationSuiteUI_UserDataConsentAgreementTheme_Glass_kaleyra_userDataConsentAgreementStyle
+            R.style.KaleyraCollaborationSuiteUI_TermsAndConditionsTheme_Glass,
+            R.styleable.KaleyraCollaborationSuiteUI_TermsAndConditionsTheme_Glass,
+            R.styleable.KaleyraCollaborationSuiteUI_TermsAndConditionsTheme_Glass_kaleyra_termsAndConditionsStyle
         )
-        _binding = KaleyraFragmentUserDataConsentAgreementBinding.inflate(
+        _binding = KaleyraFragmentTermsAndConditionsBinding.inflate(
             inflater.cloneInContext(ContextThemeWrapper(requireActivity(), themeResId)),
             container,
             false
@@ -104,20 +117,23 @@ internal class UserDataConsentAgreementFragment : BaseFragment(), TiltListener {
                 root.setOnTouchListener { _, event -> onTouchEvent(event) }
             }
 
-            kaleyraTitle.text = args.title
-            with(kaleyraMessage) {
-                post {
-                    text = args.message
-                    val items = paginate().map { UserDataConsentAgreementItem(it.toString()) }
-                    itemAdapter!!.set(items)
+            termsAndConditions = args.termsAndConditions
+            termsAndConditions?.apply {
+                kaleyraTitle.text = title
+                with(kaleyraMessage) {
+                    post {
+                        text = message
+                        val items = paginate().map { TermsAndConditionsItem(it.toString()) }
+                        itemAdapter!!.set(items)
+                    }
                 }
-            }
 
-            with(kaleyraBottomNavigation) {
-                setSecondItemActionText(args.acceptText)
-                setThirdItemActionText(args.declineText)
-                setSecondItemContentDescription(args.acceptText)
-                setThirdItemContentDescription(args.declineText)
+                with(kaleyraBottomNavigation) {
+                    setSecondItemActionText(acceptText)
+                    setThirdItemActionText(declineText)
+                    setSecondItemContentDescription(acceptText)
+                    setThirdItemContentDescription(declineText)
+                }
             }
         }
 
@@ -133,16 +149,31 @@ internal class UserDataConsentAgreementFragment : BaseFragment(), TiltListener {
         itemAdapter = null
     }
 
-    override fun onTap(): Boolean = onCallback(args.acceptCallback?.block)
 
-    override fun onSwipeDown(): Boolean = onCallback(args.declineCallback?.block)
+    override fun onTap(): Boolean {
+        val activity = requireActivity() as? GlassTermsAndConditionsActivity ?: return false
+        termsAndConditions?.accept()
+        with(binding) {
+            kaleyraTitle.visibility = View.GONE
+            kaleyraMessageRecyclerView.visibility = View.GONE
+            kaleyraProgress.visibility = View.VISIBLE
+        }
+        combine(viewModel.phoneBox
+            .flatMapLatest { it.state }, viewModel.chatBox
+            .flatMapLatest { it.state }) { pbState, cbState ->
+            pbState != PhoneBox.State.Connecting && cbState != ChatBox.State.Connecting
+        }
+            .takeWhile { !it }
+            .onCompletion { activity.finishAndRemoveTask() }
+            .launchIn(lifecycleScope)
+        return true
+    }
 
-    private fun onCallback(callback: (() -> Unit)?): Boolean {
-        return if (callback != null) {
-            callback.invoke()
-            requireActivity().finishAndRemoveTask()
-            true
-        } else false
+    override fun onSwipeDown(): Boolean {
+        val activity = requireActivity() as? GlassTermsAndConditionsActivity ?: return false
+        termsAndConditions?.decline()
+        activity.finishAndRemoveTask()
+        return true
     }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also {

@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.userdataconsentagreement
+package com.kaleyra.collaboration_suite_glass_ui.termsandconditions
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.navigation.fragment.NavHostFragment
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.constants.Constants.EXTRA_TERMS_AND_CONDITIONS_CONFIGURATION
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.decline
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraActivityUserDataConsentAgreementGlassBinding
+import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraActivityTermsAndConditionsGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -31,17 +36,30 @@ import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-internal class GlassUserDataConsentAgreementActivity : GlassBaseActivity() {
+internal class GlassTermsAndConditionsActivity : GlassBaseActivity() {
 
-    private lateinit var binding: KaleyraActivityUserDataConsentAgreementGlassBinding
+    private lateinit var binding: KaleyraActivityTermsAndConditionsGlassBinding
 
-    private val viewModel: UserDataConsentAgreementViewModel by viewModels()
+    private val viewModel: TermsAndConditionsViewModel by viewModels {
+        TermsAndConditionsViewModel.provideFactory(::requestConfiguration)
+    }
+
+    private var termsAndConditions: TermsAndConditions? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = KaleyraActivityUserDataConsentAgreementGlassBinding.inflate(layoutInflater)
+        binding = KaleyraActivityTermsAndConditionsGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val termsAndConditions = intent.extras?.getParcelable<TermsAndConditions>(EXTRA_TERMS_AND_CONDITIONS_CONFIGURATION)?.apply {
+            termsAndConditions = this
+        }
+        if (termsAndConditions != null) {
+            onConfig(termsAndConditions)
+        } else {
+            finishAndRemoveTask()
+        }
 
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
@@ -71,6 +89,18 @@ internal class GlassUserDataConsentAgreementActivity : GlassBaseActivity() {
                 }
                 .launchIn(this)
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        termsAndConditions?.decline()
+    }
+
+    private fun onConfig(configuration: TermsAndConditions) {
+        val enableTilt = intent.getBooleanExtra("enableTilt", false)
+        val termsAndConditionFragmentNavArgs = TermsAndConditionsFragmentArgs(enableTilt, configuration)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.kaleyra_nav_host_fragment) as NavHostFragment
+        navHostFragment.navController.setGraph(R.navigation.kaleyra_glass_terms_and_conditions_nav_graph, termsAndConditionFragmentNavArgs.toBundle())
     }
 
     override fun onDestinationChanged(destinationId: Int) = Unit

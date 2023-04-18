@@ -16,6 +16,7 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
+import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
@@ -25,9 +26,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 /**
@@ -37,11 +43,11 @@ import kotlinx.coroutines.launch
  * @property scope The coroutine scope
  * @constructor
  */
-internal class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: CoroutineScope) {
+internal class CollaborationUIConnector(val collaboration: Collaboration, private val parentScope: CoroutineScope) {
 
     private enum class Action {
         RESUME,
-        DISCONNECT
+        PAUSE
     }
 
     private var lastAction: Action? = null
@@ -49,43 +55,45 @@ internal class CollaborationUIConnector(val collaboration: CollaborationUI, pare
     private var wasPhoneBoxConnected = false
     private var wasChatBoxConnected = false
 
+    private var endedCallIds = mutableSetOf<String>()
+
     private var scope = CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.IO)
 
     init {
-        syncWithAppLifecycle(scope)
-        syncWithCallState(scope)
-        syncWithChatMessages(scope)
+        syncWithAppLifecycle(parentScope)
     }
 
     /**
      * Connect the collaboration
      */
-    fun connect() {
-        collaboration.phoneBox.connect()
-        collaboration.chatBox.connect()
+    fun connect(session: Collaboration.Session) {
+        collaboration.connect(session)
+        resume()
     }
 
     /**
      * Disconnect the collaboration
      */
-    fun disconnect() {
+    fun disconnect(clearSavedData: Boolean = false) {
+        collaboration.disconnect(clearSavedData)
+        wasPhoneBoxConnected = false
+        wasChatBoxConnected = false
+        scope.coroutineContext.cancelChildren()
+        if (clearSavedData) NotificationManager.cancelAll()
+    }
+
+    private fun pause() {
         wasPhoneBoxConnected = collaboration.phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
         wasChatBoxConnected = collaboration.chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
         collaboration.phoneBox.disconnect()
         collaboration.chatBox.disconnect()
-    }
-
-    /**
-     * Dispose the collaboration
-     */
-    fun dispose(clearSavedData: Boolean = true) {
-        collaboration.phoneBox.dispose()
-        collaboration.chatBox.dispose(clearSavedData)
-        NotificationManager.cancelAll()
-        scope.cancel()
+        scope.coroutineContext.cancelChildren()
     }
 
     private fun resume() {
+        scope.coroutineContext.cancelChildren()
+        syncWithCallState(scope)
+        syncWithChatMessages(scope)
         if (wasPhoneBoxConnected) collaboration.phoneBox.connect()
         if (wasChatBoxConnected) collaboration.chatBox.connect()
     }
@@ -95,42 +103,48 @@ internal class CollaborationUIConnector(val collaboration: CollaborationUI, pare
             .dropWhile { !it }
             .onEach { isInForeground ->
                 if (isInForeground) performAction(Action.RESUME)
-                else if (collaboration.phoneBox.call.replayCache.isEmpty()) performAction(Action.DISCONNECT)
+                else if (collaboration.phoneBox.call.replayCache.isEmpty()) performAction(Action.PAUSE)
             }
             .launchIn(scope)
     }
 
     private fun syncWithCallState(scope: CoroutineScope) {
+        val phoneBoxState = collaboration.phoneBox.state
         val callState = collaboration.phoneBox.call.flatMapLatest { it.state }
         scope.launch {
-            combine(callState, AppLifecycle.isInForeground) { state, isInForeground ->
-                state is Call.State.Disconnected.Ended && !isInForeground
+            combine(phoneBoxState, callState, AppLifecycle.isInForeground) { phoneBoxState, callState, isInForeground ->
+                phoneBoxState is PhoneBox.State.Connected && callState is Call.State.Disconnected.Ended && !isInForeground
             }.collectLatest {
                 if (!it) return@collectLatest
+
+                val endedCallId = collaboration.phoneBox.call.replayCache.firstOrNull()?.id
+                if (endedCallId in endedCallIds) return@collectLatest
+                endedCallId?.let { endedCallIds.add(it) }
+
                 delay(300)
-                performAction(Action.DISCONNECT)
+                performAction(Action.PAUSE)
             }
         }
     }
 
     private fun syncWithChatMessages(scope: CoroutineScope) {
-        collaboration.chatBox.chats
-            .flatMapLatest { chats -> chats.map { it.messages }.merge() }
-            .filter { it.list.isNotEmpty() }
-            .mapLatest { delay(3000); it }
+        collaboration.chatBox.state
+            .dropWhile { it !is ChatBox.State.Connected.Synchronized }
             .onEach {
-                val call = collaboration.phoneBox.call.replayCache.firstOrNull()
-                if (AppLifecycle.isInForeground.value || (call != null && call.state.value !is Call.State.Disconnected.Ended)) return@onEach
-                performAction(Action.DISCONNECT)
+                val phoneBox = collaboration.phoneBox
+                val call = phoneBox.call.replayCache.firstOrNull()
+                if (AppLifecycle.isInForeground.value ||
+                    (call != null && call.state.value !is Call.State.Disconnected.Ended) ||
+                    phoneBox.state.value !is PhoneBox.State.Connected) return@onEach
+                performAction(Action.PAUSE)
             }.launchIn(scope)
     }
 
     private fun performAction(action: Action) {
         synchronized(this) {
-            if (action == lastAction) return
             when (action) {
                 Action.RESUME -> resume()
-                Action.DISCONNECT -> disconnect()
+                Action.PAUSE  -> pause()
             }
             lastAction = action
         }

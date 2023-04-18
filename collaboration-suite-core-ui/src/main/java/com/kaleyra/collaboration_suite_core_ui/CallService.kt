@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import android.app.Notification
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
@@ -115,7 +116,9 @@ class CallService : LifecycleService(), CallStreamDelegate, CallNotificationDele
         foregroundJob = AppLifecycle.isInForeground
             .filter { it }
             .onEach {
-                kotlin.runCatching { startForeground(CALL_NOTIFICATION_ID, notification!!) }
+                kotlin.runCatching {
+                    startForeground(CALL_NOTIFICATION_ID, notification!!)
+                }
             }
             .launchIn(lifecycleScope)
     }

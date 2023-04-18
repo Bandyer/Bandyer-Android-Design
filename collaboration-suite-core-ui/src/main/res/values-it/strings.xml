@@ -24,7 +24,7 @@
     <string name="kaleyra_notification_stop_screen_share">Ferma Condivisione</string>
     <string name="kaleyra_notification_call_channel_high_priority_name">Chiamate Alta Priorità</string>
     <string name="kaleyra_notification_call_channel_low_priority_name">Chiamate Bassa Priorità</string>
-    <string name="kaleyra_notification_user_data_consent_agreement_channel_name">Accordo Consenso Dati Utente</string>
+    <string name="kaleyra_notification_terms_and_conditions_channel_name">Accordo Consenso Dati Utente</string>
     <string name="kaleyra_notification_chat_channel_name">Chat</string>
     <string name="kaleyra_notification_incoming_call">Chiamata in ingresso</string>
     <string name="kaleyra_notification_incoming_group_call">Chiamata di gruppo in ingresso</string>
@@ -54,5 +54,10 @@
         <item quantity="other">L\'amministratore ha disabilitato il tuo microfono</item>
     </plurals>
     <string name="kaleyra_call_participant_utterance_muted_by_admin">Microfono disabilitato</string>
+
+    <string name="kaleyra_user_data_consent_agreement_notification_title">Termini e condizioni</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_message">Hai un nuovo messaggio</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_call">Chiamata in entrata</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_message">Accetta i termini e le condizioni per procedere</string>
 
 </resources>

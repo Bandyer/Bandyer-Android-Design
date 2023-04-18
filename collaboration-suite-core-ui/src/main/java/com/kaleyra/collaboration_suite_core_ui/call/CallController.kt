@@ -29,6 +29,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 /**
  * CallController. It implements the CallUIController methods.
@@ -49,36 +52,40 @@ class CallController(private val call: SharedFlow<CallUI>, private val callAudio
 
     override fun onRequestMicPermission(context: FragmentActivity) {
         context.lifecycleScope.launchWhenResumed {
-            val permission = if (currentCall.inputs.allowList.value.firstOrNull { it is Input.Audio } != null) Permission(
-                isAllowed = true,
-                neverAskAgain = false
+            val inputRequest = currentCall.inputs.request(context, Inputs.Type.Microphone)
+
+            _micPermission.value = Permission(
+                inputRequest is Inputs.RequestResult.Success,
+                inputRequest is Inputs.RequestResult.Error.PermissionDenied.Forever
             )
-            else currentCall.inputs.request(context, Inputs.Type.Microphone)
-                .let {
-                    Permission(
-                        it is Inputs.RequestResult.Allow,
-                        it is Inputs.RequestResult.Never
-                    )
-                }
-            _micPermission.value = permission
+
+            val input = inputRequest.getOrNull<Input.Audio>() ?: return@launchWhenResumed
+
+            input.state.filter { it is Input.State.Closed }.onEach {
+                _micPermission.value = Permission(false, false)
+            }.launchIn(this)
+
+            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CallStreamDelegate.MY_STREAM_ID }?.audio?.value = input
         }
     }
 
 
     override fun onRequestCameraPermission(context: FragmentActivity) {
         context.lifecycleScope.launchWhenResumed {
-            val permission = if (currentCall.inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } != null) Permission(
-                isAllowed = true,
-                neverAskAgain = false
+            val inputRequest = currentCall.inputs.request(context, Inputs.Type.Camera.Internal)
+
+            _camPermission.value = Permission(
+                inputRequest is Inputs.RequestResult.Success,
+                inputRequest is Inputs.RequestResult.Error.PermissionDenied.Forever
             )
-            else currentCall.inputs.request(context, Inputs.Type.Camera.Internal)
-                .let {
-                    Permission(
-                        it is Inputs.RequestResult.Allow,
-                        it is Inputs.RequestResult.Never
-                    )
-                }
-            _camPermission.value = permission
+
+            val input = inputRequest.getOrNull<Input.Video.Camera.Internal>() ?: return@launchWhenResumed
+
+            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CallStreamDelegate.MY_STREAM_ID }?.video?.value = input
+
+            input.state.filter { it is Input.State.Closed }.onEach {
+                _camPermission.value = Permission(false, false)
+            }.launchIn(this)
         }
     }
 
@@ -90,21 +97,19 @@ class CallController(private val call: SharedFlow<CallUI>, private val callAudio
         currentCall.end()
     }
 
-    override fun onEnableCamera(enable: Boolean) {
-        val video =
-            currentCall.inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal }
-                ?: return
-        if (enable) video.tryEnable() else video.tryDisable()
+    override suspend fun onEnableCamera(context: FragmentActivity, enable: Boolean) {
+        val input = currentCall.inputs.availableInputs.value.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() ?: return
+        if (enable) input.tryEnable() else input.tryDisable()
     }
 
-    override fun onEnableMic(enable: Boolean) {
-        val audio = currentCall.inputs.allowList.value.firstOrNull { it is Input.Audio } ?: return
-        if (enable) audio.tryEnable() else audio.tryDisable()
+    override suspend fun onEnableMic(context: FragmentActivity, enable: Boolean) {
+        val input = currentCall.inputs.availableInputs.value.filterIsInstance<Input.Audio>().firstOrNull() ?: return
+        if (enable) input.tryEnable() else input.tryDisable()
     }
 
     override fun onSwitchCamera() {
         val camera =
-            currentCall.inputs.allowList.value.filterIsInstance<Input.Video.Camera.Internal>()
+            currentCall.inputs.availableInputs.value.filterIsInstance<Input.Video.Camera.Internal>()
                 .firstOrNull()
         val currentLens = camera?.currentLens?.value
         val newLens = camera?.lenses?.firstOrNull { it.isRear != currentLens?.isRear } ?: return
@@ -115,7 +120,7 @@ class CallController(private val call: SharedFlow<CallUI>, private val callAudio
 
     override fun onSetZoom(value: Float) {
         val camera =
-            currentCall.inputs.allowList.value.filterIsInstance<Input.Video.Camera.Internal>()
+            currentCall.inputs.availableInputs.value.filterIsInstance<Input.Video.Camera.Internal>()
                 .firstOrNull()
         val currentLens = camera?.currentLens?.value ?: return
         currentLens.zoom.value?.tryZoom(value)

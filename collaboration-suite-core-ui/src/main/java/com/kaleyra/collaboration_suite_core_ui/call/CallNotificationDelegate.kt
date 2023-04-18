@@ -18,10 +18,10 @@ package com.kaleyra.collaboration_suite_core_ui.call
 
 import android.app.Notification
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_core_ui.CallService
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
@@ -90,6 +90,7 @@ interface CallNotificationDelegate {
         val context = ContextRetainer.context
         val participants = call.participants.value
         val isGroupCall = participants.others.count() > 1
+        val enableCallStyle = !DeviceUtils.isSmartGlass
         val callerDescription = usersDescription.name(listOf(participants.creator()?.userId ?: ""))
         val calleeDescription = usersDescription.name(participants.others.map { it.userId })
 
@@ -99,14 +100,16 @@ interface CallNotificationDelegate {
                     callerDescription,
                     isGroupCall,
                     activityClazz,
-                    !AppLifecycle.isInForeground.value || context.isSilent()
+                    !AppLifecycle.isInForeground.value || context.isSilent(),
+                    enableCallStyle = enableCallStyle
                 )
             }
             call.isOutgoing() -> {
                 NotificationManager.buildOutgoingCallNotification(
                     calleeDescription,
                     isGroupCall,
-                    activityClazz
+                    activityClazz,
+                    enableCallStyle = enableCallStyle
                 )
             }
             call.isOngoing() -> {
@@ -117,7 +120,8 @@ interface CallNotificationDelegate {
                     call.extras.recording is Call.Recording.OnConnect,
                     isSharingScreen = false,
                     call.state.value is Call.State.Connecting,
-                    activityClazz
+                    activityClazz,
+                    enableCallStyle = enableCallStyle
                 )
             }
             else -> null

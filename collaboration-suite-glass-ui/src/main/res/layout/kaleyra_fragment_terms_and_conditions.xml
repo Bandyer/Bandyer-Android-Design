@@ -53,6 +53,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/kaleyra_title" />
 
+    <ProgressBar
+        android:id="@+id/kaleyra_progress"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/kaleyra_bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
         android:id="@+id/kaleyra_bottom_navigation"
         android:layout_width="match_parent"

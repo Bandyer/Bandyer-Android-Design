@@ -16,32 +16,32 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Glass">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Glass">
         <attr name="kaleyra_statusBarStyle" />
-        <attr name="kaleyra_userDataConsentAgreementStyle" format="reference" />
+        <attr name="kaleyra_termsAndConditionsStyle" format="reference" />
     </declare-styleable>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.DayNight.Glass" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.DayNight">
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.DayNight.Glass" parent="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.DayNight">
         <item name="colorSecondary">@color/kaleyra_color_answer_button</item>
         <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
-        <item name="kaleyra_userDataConsentAgreementStyle">@style/KaleyraCollaborationSuiteUI.Glass.UserDataConsentAgreement</item>
+        <item name="kaleyra_termsAndConditionsStyle">@style/KaleyraCollaborationSuiteUI.Glass.TermsAndConditions</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Day.Glass" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Day">
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Day.Glass" parent="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Day">
         <item name="colorSecondary">@color/kaleyra_color_answer_button</item>
         <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
-        <item name="kaleyra_userDataConsentAgreementStyle">@style/KaleyraCollaborationSuiteUI.Glass.UserDataConsentAgreement</item>
+        <item name="kaleyra_termsAndConditionsStyle">@style/KaleyraCollaborationSuiteUI.Glass.TermsAndConditions</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Night.Glass" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Night">
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Night.Glass" parent="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Night">
         <item name="colorSecondary">@color/kaleyra_color_answer_button</item>
         <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
-        <item name="kaleyra_userDataConsentAgreementStyle">@style/KaleyraCollaborationSuiteUI.Glass.UserDataConsentAgreement</item>
+        <item name="kaleyra_termsAndConditionsStyle">@style/KaleyraCollaborationSuiteUI.Glass.TermsAndConditions</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Glass" parent="KaleyraCollaborationSuiteUI.UserDataConsentAgreementTheme.Night.Glass" />
+    <style name="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Glass" parent="KaleyraCollaborationSuiteUI.TermsAndConditionsTheme.Night.Glass" />
 
 </resources>

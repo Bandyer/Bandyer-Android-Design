@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement
+package com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification
 
 import android.app.*
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
-internal class UserDataConsentAgreementNotification {
+internal class TermsAndConditionsNotification {
 
     data class Builder(
         val context: Context,
@@ -74,7 +73,7 @@ internal class UserDataConsentAgreementNotification {
 
             timeout?.takeIf { it > 0L }?.also {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) builder.setTimeoutAfter(it)
-                else AutoDismissNotification.setAlarm(context, notificationId, it)
+                else NotificationDisposer.disposeAfter(context, notificationId, it)
             }
 
             contentIntent?.also { builder.setContentIntent(it) }

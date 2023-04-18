@@ -18,7 +18,6 @@ package com.kaleyra.collaboration_suite_glass_ui.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -82,8 +81,8 @@ internal class ChatViewModel : ViewModel() {
         chat.flatMapLatest { it.participants }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
     fun setChat(userId: String): ChatUI? {
-        chatBox ?: return null
-        val chat = chatBox!!.create(object : User { override val userId = userId })
+        val chatBox = chatBox ?: return null
+        val chat = chatBox.activeChats.replayCache.firstOrNull()?.firstOrNull { it.participants.value.others.all { it.userId == userId } } ?: chatBox.create(listOf(userId)).getOrNull() ?: return null
         viewModelScope.launch { _chat.emit(chat) }
         return chat
     }

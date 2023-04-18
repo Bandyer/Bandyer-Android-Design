@@ -16,16 +16,24 @@
 
 package com.kaleyra.collaboration_suite_phone_ui.userdataconsentagreement
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
-import com.kaleyra.collaboration_suite_core_ui.userdataconsentagreement.UserDataConsentAgreement
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsUI
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-object PhoneUserDataConsentAgreement : UserDataConsentAgreement(
-    activityClazz = this::class.java,
-    notificationInfo = NotificationInfo("", "", {}),
-    activityInfo = ActivityInfo("", "", "", "", {}, {})
+object PhoneUserDataConsentAgreement : TermsAndConditionsUI(
+    activityClazz = PhoneUserDataConsentAgreement::class.java,
+    notificationConfig = Config.Notification("", "", {}),
+    activityConfig = Config.Activity("", "", "", "", {}, {})
 ) {
+    private const val TERMS_AND_CONDITIONS_NOTIFICATION_ID = 80
 
-    override fun show() = Unit
+    private val context by lazy { ContextRetainer.context }
+
+    private val notificationManager by lazy { context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
+
+    override fun show(context: Context) = Unit
 
     fun showNotification(
         title: String,
@@ -44,6 +52,6 @@ object PhoneUserDataConsentAgreement : UserDataConsentAgreement(
             fullscreenIntent = fullscreenIntent,
             timeoutMs = timeoutMs
         )
-        notificationManager.notify(USER_DATA_CONSENT_AGREEMENT_NOTIFICATION_ID, notification)
+        notificationManager.notify(TERMS_AND_CONDITIONS_NOTIFICATION_ID, notification)
     }
 }

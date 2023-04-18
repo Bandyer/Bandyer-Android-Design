@@ -17,35 +17,33 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.Context
-import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.Message
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.mapToStateFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
 
 /**
  * The chat box UI
  *
  * @property chatBox The ChatBox delegate
- * @property userId The logged user id
  * @property chatActivityClazz The chat activity Class<*>
  * @property chatCustomNotificationActivityClazz The custom chat notification activity Class<*>
  * @constructor
  */
 class ChatBoxUI(
     private val chatBox: ChatBox,
-    private val userId: String,
     private val chatActivityClazz: Class<*>,
     private val chatCustomNotificationActivityClazz: Class<*>? = null
-//    private val logger: PriorityLogger? = null
 ) : ChatBox by chatBox {
 
     private var chatScope = CoroutineScope(Dispatchers.IO)
@@ -57,7 +55,13 @@ class ChatBoxUI(
     /**
      * @suppress
      */
-    override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(chatScope) { chats -> chats.map { getOrCreateChatUI(it) } }
+    override val chats: SharedFlow<List<ChatUI>> = chatBox.chats.map {
+        it.map { chat -> getOrCreateChatUI(chat) }
+    }.shareIn(chatScope, SharingStarted.Eagerly, 1)
+
+    override val activeChats: SharedFlow<List<ChatUI>> = chatBox.activeChats.map {
+        it.map { chat -> getOrCreateChatUI(chat) }
+    }.shareIn(chatScope, SharingStarted.Eagerly, 1)
 
     /**
      * WithUI flag, set to true to show the chat notifications, false otherwise
@@ -82,6 +86,7 @@ class ChatBoxUI(
         disconnect(clearSavedData)
         chatScope.cancel()
     }
+
     /**
      * Show the chat ui
      * @param context context to bind the chat ui
@@ -93,14 +98,14 @@ class ChatBoxUI(
     /**
      * @suppress
      */
-    override fun create(user: User): ChatUI = getOrCreateChatUI(user)
+    override fun create(userIDs: List<String>): Result<ChatUI> = chatBox.create(userIDs).map { getOrCreateChatUI(it) }
 
     /**
      * Given a user, open a chat ui.
      * @param context launching context of the chat ui
-     * @param user The user with whom you want to chat.
+     * @param userIDs The users with whom you want to chat.
      */
-    fun chat(context: Context, user: User): ChatUI = create(user).apply { show(context, this) }
+    fun chat(context: Context, userIDs: List<String>): Result<ChatUI> = create(userIDs).onSuccess { show(context, it) }
 
     private fun listenToMessages() {
         var msgsScope: CoroutineScope? = null
@@ -113,13 +118,11 @@ class ChatBoxUI(
                     val lastMessage = it.other.firstOrNull { it.state.value is Message.State.Received }
                     if (lastMessage == null || lastMessagePerChat[chat.id] == lastMessage.id) return@messagesUI
                     lastMessagePerChat[chat.id] = lastMessage.id
-                    it.showUnreadMsgs(chat.id, userId)
+                    it.showUnreadMsgs(chat.id, chat.participants.value.me.userId)
                 }.launchIn(msgsScope!!)
             }
         }.launchIn(chatScope)
     }
-
-    private fun getOrCreateChatUI(user: User): ChatUI = synchronized(this) { mappedChats.firstOrNull { chat -> chat.participants.value.others.all { it.userId == user.userId }} ?: createChatUI(chatBox.create(user)) }
 
     private fun getOrCreateChatUI(chat: Chat): ChatUI = synchronized(this) { mappedChats.firstOrNull { it.id == chat.id } ?: createChatUI(chat) }
 

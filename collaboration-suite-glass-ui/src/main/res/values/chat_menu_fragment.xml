@@ -24,6 +24,7 @@
         <attr name="kaleyra_recyclerViewVideoCallItemStyle" format="reference" />
         <attr name="kaleyra_recyclerViewCallItemStyle" format="reference" />
         <attr name="bottomNavigationStyle" />
+        <attr name="kaleyra_bottomNavigationVoiceStyle" />
     </declare-styleable>
 
     <!-- CONTACT DETAILS FRAGMENT -->
@@ -34,6 +35,7 @@
         <item name="kaleyra_recyclerViewVideoCallItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.VideoCall</item>
         <item name="kaleyra_recyclerViewCallItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Call</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.ChatMenu</item>
+        <item name="kaleyra_bottomNavigationVoiceStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.ChatMenu.VoiceCommand</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.VideoCall" parent="KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem">
@@ -98,6 +100,61 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemChatMenu" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_select</item>
+    </style>
+
+    <!-- VOICE COMMAND -->
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.ChatMenu.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.ChatMenu">
+        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.ChatMenu</item>
+        <item name="kaleyra_thirdItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.ChatMenu</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.ChatMenu</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.ChatMenu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand.ChatMenu</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem.VoiceCommand.ChatMenu</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeChatMenu.VoiceCommand</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand.ChatMenu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_scroll_right</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem.VoiceCommand.ChatMenu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_scroll_left</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeChatMenu.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeChatMenu">
+        <item name="android:text">@string/kaleyra_glass_scroll_right_left</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.ChatMenu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand.ChatMenu</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemChatMenu.VoiceCommand</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand.ChatMenu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_close</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemChatMenu.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemChatMenu">
+        <item name="android:text">@string/kaleyra_glass_close</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.ChatMenu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand.ChatMenu</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemChatMenu.VoiceCommand</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand.ChatMenu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_select</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemChatMenu.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemChat">
         <item name="android:text">@string/kaleyra_glass_select</item>
     </style>
 </resources>

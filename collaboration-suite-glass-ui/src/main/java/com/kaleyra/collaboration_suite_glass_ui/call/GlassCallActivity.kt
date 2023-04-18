@@ -16,7 +16,6 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.call
 
-import android.app.ProgressDialog.show
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -37,8 +36,8 @@ import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
-import com.kaleyra.collaboration_suite.phonebox.Whiteboard
-import com.kaleyra.collaboration_suite.phonebox.Whiteboard.LoadOptions
+import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
+import com.kaleyra.collaboration_suite.whiteboard.Whiteboard.LoadOptions
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
@@ -259,13 +258,13 @@ internal class GlassCallActivity :
         if (!viewModel.micPermission.value.isAllowed)
             viewModel.micPermission
                 .takeWhile { !it.isAllowed }
-                .onCompletion { viewModel.onEnableMic(true) }
+                .onCompletion { viewModel.onEnableMic(this@GlassCallActivity, true) }
                 .launchIn(lifecycleScope)
 
         if (!viewModel.camPermission.value.isAllowed)
             viewModel.camPermission
                 .takeWhile { !it.isAllowed }
-                .onCompletion { viewModel.onEnableCamera(true) }
+                .onCompletion { viewModel.onEnableCamera(this@GlassCallActivity, true) }
                 .launchIn(lifecycleScope)
 
         repeatOnStarted {
@@ -334,9 +333,6 @@ internal class GlassCallActivity :
                         navController!!.navigate(R.id.callEndedFragment, navArgs)
                     }
                 }.launchIn(this)
-
-
-
 
             viewModel.amIAlone
                 .takeWhile { it }
@@ -569,10 +565,11 @@ internal class GlassCallActivity :
 //                }
 //            })
         }
-
-        if (wasPausedForBackground) {
-            viewModel.onEnableCamera(wasPausedForBackground)
-            wasPausedForBackground = false
+        lifecycleScope.launch {
+            if (wasPausedForBackground) {
+                viewModel.onEnableCamera(this@GlassCallActivity, wasPausedForBackground)
+                wasPausedForBackground = false
+            }
         }
     }
 
@@ -675,11 +672,12 @@ internal class GlassCallActivity :
 
     override fun onTopResumedActivityChanged(isTopResumedActivity: Boolean) {
         super.onTopResumedActivityChanged(isTopResumedActivity)
-
-        if (!isTopResumedActivity) wasPausedForBackground = viewModel.cameraEnabled.value
-        else if (wasPausedForBackground) {
-            viewModel.onEnableCamera(true)
-            wasPausedForBackground = false
+        lifecycleScope.launch {
+            if (!isTopResumedActivity) wasPausedForBackground = viewModel.cameraEnabled.value
+            else if (wasPausedForBackground) {
+                viewModel.onEnableCamera(this@GlassCallActivity, true)
+                wasPausedForBackground = false
+            }
         }
     }
 

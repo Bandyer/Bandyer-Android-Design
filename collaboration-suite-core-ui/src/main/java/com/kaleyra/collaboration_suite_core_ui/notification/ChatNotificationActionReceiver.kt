@@ -28,6 +28,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtension
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 /**
@@ -48,8 +49,8 @@ class ChatNotificationActionReceiver : CollaborationBroadcastReceiver() {
      */
     override fun onReceive(context: Context, intent: Intent) {
         val pendingResult = goAsync()
-        val chat = getChat(intent) ?: return
         CoroutineScope(Dispatchers.IO).launch {
+            val chat = getChat(intent) ?: return@launch
             requestConfigure().let {
                 if (!it) {
                     NotificationManager.cancel(chat.id.hashCode())
@@ -58,9 +59,8 @@ class ChatNotificationActionReceiver : CollaborationBroadcastReceiver() {
                 when (intent.action) {
                     ACTION_REPLY        -> {
                         val reply = getReply(intent)
-                        val message = chat.create(Text(reply.toString()))
                         chat.messages.replayCache[0].other.filter { it.state.value is Received }.forEach { it.markAsRead() }
-                        chat.add(message)
+                        val message = chat.add(Text(reply.toString())).getOrNull()
                         NotificationManager.cancel(chat.id.hashCode())
                     }
                     ACTION_MARK_AS_READ -> {
@@ -74,9 +74,9 @@ class ChatNotificationActionReceiver : CollaborationBroadcastReceiver() {
         }
     }
 
-    private fun getChat(intent: Intent): Chat? =
+    private suspend fun getChat(intent: Intent): Chat? =
         intent.extras?.getString("chatId")?.let { chatId ->
-            CollaborationUI.chatBox.chats.value.firstOrNull { it.id == chatId }
+            CollaborationUI.chatBox.chats.first().firstOrNull { it.id == chatId }
         }
 
     private fun getReply(intent: Intent): CharSequence? =

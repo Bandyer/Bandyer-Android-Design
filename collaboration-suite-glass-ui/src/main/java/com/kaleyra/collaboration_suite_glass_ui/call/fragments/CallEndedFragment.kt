@@ -27,7 +27,6 @@ import androidx.navigation.fragment.navArgs
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenLogoDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
