@@ -24,6 +24,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import com.kaleyra.collaboration_suite_core_ui.utils.FlowUtils.combine
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.mockCallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.isVirtualBackgroundEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.toCurrentVirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
 import kotlinx.coroutines.launch
@@ -63,8 +64,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         .stateIn(viewModelScope, SharingStarted.Eagerly, AudioDeviceUi.Muted)
 
     private val isVirtualBackgroundEnabled = call
-        .toCurrentVirtualBackgroundUi()
-        .map { it != VirtualBackgroundUi.None }
+        .isVirtualBackgroundEnabled()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     private val availableInputs: Set<Input>?

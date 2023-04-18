@@ -9,6 +9,7 @@ import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.hasVirtualBackground
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.isVirtualBackgroundEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.toCurrentVirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.toVirtualBackgroundsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
@@ -110,6 +111,22 @@ class VirtualBackgroundMapperTest {
         every { effectsMock.preselected } returns MutableStateFlow(Effect.Video.Background.Image(image = mockk()))
         val flow = MutableStateFlow(callMock)
         val actual = flow.hasVirtualBackground().first()
+        Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun cameraEffectIsNone_isVirtualBackgroundEnabled_false() = runTest {
+        every { myVideoMock.currentEffect } returns MutableStateFlow(Effect.Video.None)
+        val flow = MutableStateFlow(callMock)
+        val actual = flow.isVirtualBackgroundEnabled().first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun cameraHasABackgroundEffect_isVirtualBackgroundEnabled_true() = runTest {
+        every { myVideoMock.currentEffect } returns MutableStateFlow(Effect.Video.Background.Blur(factor = 1f))
+        val flow = MutableStateFlow(callMock)
+        val actual = flow.isVirtualBackgroundEnabled().first()
         Assert.assertEquals(true, actual)
     }
 }

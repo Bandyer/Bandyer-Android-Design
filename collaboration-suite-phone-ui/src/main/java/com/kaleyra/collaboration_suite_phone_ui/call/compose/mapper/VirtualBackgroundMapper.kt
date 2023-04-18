@@ -3,7 +3,6 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 import com.kaleyra.collaboration_suite.phonebox.Effect
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.mapToVirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -14,21 +13,9 @@ import kotlinx.coroutines.flow.map
 internal object VirtualBackgroundMapper {
 
     fun Flow<CallUI>.toCurrentVirtualBackgroundUi(): Flow<VirtualBackgroundUi> {
-         return this
-            .flatMapLatest { it.participants }
-            .map { it.me }
-            .flatMapLatest { it.streams }
-             .map { streams ->
-                 streams.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID }
-             }
-             .filterNotNull()
-             .flatMapLatest { it.video }
-             .filterNotNull()
-             .flatMapLatest { it.currentEffect }
-             .map { effect ->
-                 effect.mapToVirtualBackgroundUi()
-             }
-             .filterNotNull()
+        return this.toCurrentCameraVideoEffect()
+            .map { it.mapToVirtualBackgroundUi() }
+            .filterNotNull()
     }
 
     fun Flow<CallUI>.toVirtualBackgroundsUi(): Flow<List<VirtualBackgroundUi>> {
@@ -48,6 +35,24 @@ internal object VirtualBackgroundMapper {
         return combine(preselectedFlow, availableFlow) { preselectedEffect, availableEffect ->
             preselectedEffect != Effect.Video.None && availableEffect.isNotEmpty()
         }
+    }
+
+    fun Flow<CallUI>.isVirtualBackgroundEnabled(): Flow<Boolean> {
+        return this.toCurrentCameraVideoEffect().map { it != Effect.Video.None }
+    }
+
+    private fun Flow<CallUI>.toCurrentCameraVideoEffect(): Flow<Effect> {
+        return this
+            .flatMapLatest { it.participants }
+            .map { it.me }
+            .flatMapLatest { it.streams }
+            .map { streams ->
+                streams.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID }
+            }
+            .filterNotNull()
+            .flatMapLatest { it.video }
+            .filterNotNull()
+            .flatMapLatest { it.currentEffect }
     }
 
     private fun Effect.mapToVirtualBackgroundUi(): VirtualBackgroundUi? {
