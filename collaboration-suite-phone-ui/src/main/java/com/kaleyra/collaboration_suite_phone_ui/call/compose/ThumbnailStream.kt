@@ -11,6 +11,9 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamPointerWrapper
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 // TODO add tests in case stream video = null
 @Composable
@@ -28,12 +31,19 @@ internal fun ThumbnailStream(
             onClick = onClick
         )
     ) {
-        Stream(
-            streamView = stream.video?.view,
-            avatar = stream.avatar,
-            avatarVisible = stream.video == null || !stream.video.isEnabled,
+        StreamContainer(
             backgroundColor = Color.DarkGray,
-            avatarSize = 64.dp
-        )
+            contentColor = Color.White
+        ) {
+            StreamPointerWrapper(pointerList = stream.video?.pointers) {
+                Stream(
+                    streamView = stream.video?.view,
+                    avatar = stream.avatar,
+                    avatarVisible = stream.video == null || !stream.video.isEnabled,
+                    avatarSize = 64.dp
+                )
+            }
+        }
+
     }
 }
