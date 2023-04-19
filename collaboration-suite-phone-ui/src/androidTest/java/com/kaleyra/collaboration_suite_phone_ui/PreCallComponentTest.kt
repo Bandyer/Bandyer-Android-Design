@@ -5,9 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
@@ -43,7 +43,7 @@ abstract class PreCallComponentTest {
 
     @Test
     fun streamViewNotNullAndStreamHasVideoDisabled_avatarIsDisplayed() {
-        val video = VideoUi(id = "videoId", view = View(composeTestRule.activity), isEnabled = false)
+        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false)
         uiState.value = PreCallUiState(stream = streamUiMock.copy(video = video))
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
         composeTestRule.findAvatar().assertIsDisplayed()
@@ -51,7 +51,7 @@ abstract class PreCallComponentTest {
 
     @Test
     fun streamViewNotNullAndStreamHasVideoEnabled_streamIsDisplayed() {
-        val video = VideoUi(id = "videoId", view = View(composeTestRule.activity), isEnabled = true)
+        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
         uiState.value = PreCallUiState(stream = streamUiMock.copy(video = video))
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertIsDisplayed()
         composeTestRule.findAvatar().assertDoesNotExist()

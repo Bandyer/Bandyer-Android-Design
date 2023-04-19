@@ -20,6 +20,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCa
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.DefaultStreamAvatarSize
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
 
 @Composable
 internal fun PreCallComponent(
@@ -34,7 +35,9 @@ internal fun PreCallComponent(
             val video = uiState.stream?.video
 
             if (video?.view != null && video.isEnabled) {
-                Stream(streamView = video.view, avatar = uiState.stream.avatar)
+                StreamContainer {
+                    Stream(streamView = video.view, avatar = null, avatarVisible = false)
+                }
             } else {
                 Avatar(
                     uri = ImmutableUri(Uri.EMPTY),
