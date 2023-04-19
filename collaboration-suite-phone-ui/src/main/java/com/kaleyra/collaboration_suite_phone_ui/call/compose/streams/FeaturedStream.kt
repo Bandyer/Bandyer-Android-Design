@@ -21,6 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 // TODO add tests in case stream video = null
@@ -34,11 +35,15 @@ internal fun FeaturedStream(
     modifier: Modifier = Modifier
 ) {
     Box(modifier) {
-        Stream(
-            streamView = stream.video?.view,
-            avatar = stream.avatar,
-            avatarVisible = stream.video == null || !stream.video.isEnabled
-        )
+        StreamContainer {
+            StreamPointerWrapper(pointerList = stream.video?.pointers) {
+                Stream(
+                    streamView = stream.video?.view,
+                    avatar = stream.avatar,
+                    avatarVisible = stream.video == null || !stream.video.isEnabled
+                )
+            }
+        }
 
         Header(
             username = stream.username,
@@ -91,8 +96,8 @@ private fun Header(
 
 @Preview
 @Composable
-fun StreamPreview() {
-    KaleyraTheme() {
+internal fun FeaturedStreamPreview() {
+    KaleyraTheme {
         FeaturedStream(
             stream = streamUiMock,
             onBackPressed = { },
