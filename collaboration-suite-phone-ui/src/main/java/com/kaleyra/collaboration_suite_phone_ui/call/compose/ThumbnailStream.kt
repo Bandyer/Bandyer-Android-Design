@@ -10,10 +10,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamPointerWrapper
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 // TODO add tests in case stream video = null
 @Composable
@@ -35,7 +34,7 @@ internal fun ThumbnailStream(
             backgroundColor = Color.DarkGray,
             contentColor = Color.White
         ) {
-            StreamPointerWrapper(pointerList = stream.video?.pointers) {
+            PointerStreamWrapper(pointerList = stream.video?.pointers) {
                 Stream(
                     streamView = stream.video?.view,
                     avatar = stream.avatar,

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
@@ -36,7 +37,7 @@ internal fun FeaturedStream(
 ) {
     Box(modifier) {
         StreamContainer {
-            StreamPointerWrapper(pointerList = stream.video?.pointers) {
+            PointerStreamWrapper(pointerList = stream.video?.pointers) {
                 Stream(
                     streamView = stream.video?.view,
                     avatar = stream.avatar,
