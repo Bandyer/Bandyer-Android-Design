@@ -11,6 +11,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
 import org.junit.After
@@ -25,7 +26,7 @@ class StreamTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var streamView by mutableStateOf<View?>(null)
+    private var streamView by mutableStateOf<ImmutableView?>(null)
 
     private var isAvatarVisible by mutableStateOf(false)
 
@@ -54,7 +55,7 @@ class StreamTest {
 
     @Test
     fun streamViewNotNull_streamViewIsDisplayed() {
-        streamView = View(composeTestRule.activity)
+        streamView = ImmutableView(View(composeTestRule.activity))
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertIsDisplayed()
     }
 

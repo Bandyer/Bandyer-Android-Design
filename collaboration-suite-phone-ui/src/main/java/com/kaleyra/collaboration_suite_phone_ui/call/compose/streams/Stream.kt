@@ -1,68 +1,70 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.streams
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.LocalContentColor
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 const val StreamViewTestTag = "StreamTestTag"
 val DefaultStreamAvatarSize = 128.dp
 
-// TODO add test when avatar is null
 @Composable
 internal fun Stream(
-    streamView: View? = null,
+    streamView: ImmutableView? = null,
     avatar: ImmutableUri?,
-    backgroundColor: Color = Color.Black,
-    contentColor: Color = Color.White,
     avatarSize: Dp = DefaultStreamAvatarSize,
-    avatarVisible: Boolean = false,
-    modifier: Modifier = Modifier
+    avatarVisible: Boolean = false
 ) {
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = backgroundColor,
-        contentColor = contentColor
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            if (streamView != null && !avatarVisible) {
-                AndroidView(
-                    factory = {
-                        val parentView = streamView.parent as? ViewGroup
-                        parentView?.removeView(streamView)
-                        streamView
-                    },
-                    modifier = Modifier.testTag(StreamViewTestTag)
-                )
-            }
-
-            if (avatarVisible) {
-                Avatar(
-                    uri = avatar,
-                    contentDescription = stringResource(id = R.string.kaleyra_avatar),
-                    placeholder = R.drawable.ic_kaleyra_avatar_bold,
-                    error = R.drawable.ic_kaleyra_avatar_bold,
-                    contentColor = LocalContentColor.current,
-                    backgroundColor = colorResource(id = R.color.kaleyra_color_background_dark),
-                    size = avatarSize
-                )
-            }
+    Box {
+        if (streamView != null && !avatarVisible) {
+            AndroidView(
+                factory = {
+                    streamView.value.also {
+                        val parentView = streamView.value.parent as? ViewGroup
+                        parentView?.removeView(it)
+                    }
+                },
+                modifier = Modifier.testTag(StreamViewTestTag)
+            )
         }
+
+        if (avatarVisible) {
+            Avatar(
+                uri = avatar,
+                contentDescription = stringResource(id = R.string.kaleyra_avatar),
+                placeholder = R.drawable.ic_kaleyra_avatar_bold,
+                error = R.drawable.ic_kaleyra_avatar_bold,
+                contentColor = LocalContentColor.current,
+                backgroundColor = colorResource(id = R.color.kaleyra_color_background_dark),
+                size = avatarSize
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+internal fun StreamPreview() {
+    KaleyraTheme {
+        Stream(
+            streamView = streamUiMock.video?.view,
+            avatar = streamUiMock.avatar,
+            avatarVisible = false
+        )
     }
 }
 
