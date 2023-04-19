@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 
 val PointerSize = 16.dp
 
-// TODO test username, onTextWidth is invoked and Pointer size
 @Composable
 internal fun TextPointer(
     username: String,

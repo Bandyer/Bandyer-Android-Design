@@ -29,15 +29,16 @@ class StreamContainerTest {
     fun setUp() {
         composeTestRule.setContent {
             StreamContainer {
-                Spacer(modifier = Modifier.testTag("StreamTag"))
+                Spacer(modifier = Modifier.testTag("ChildTag"))
             }
         }
     }
 
     @Test
     fun childIsCentered() {
-        val child = composeTestRule.onNodeWithTag("StreamTag")
+        val child = composeTestRule.onNodeWithTag("ChildTag")
         val parent = child.onParent()
+        child.assertExists()
         child.assertTopPositionInRootIsEqualTo(parent.getBoundsInRoot().height / 2)
         child.assertLeftPositionInRootIsEqualTo(parent.getBoundsInRoot().width / 2)
     }
