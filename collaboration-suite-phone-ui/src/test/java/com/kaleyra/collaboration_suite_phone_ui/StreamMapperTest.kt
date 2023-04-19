@@ -3,11 +3,13 @@ package com.kaleyra.collaboration_suite_phone_ui
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.mapToStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toMyStreamsUi
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -57,35 +59,35 @@ class StreamMapperTest {
 
     private val streamUi1 = StreamUi(
         id = "streamId1",
-        video = VideoUi(id = "videoId", view = viewMock, isEnabled = true),
+        video = VideoUi(id = "videoId", view = ImmutableView(viewMock), isEnabled = true),
         username = "displayName",
         avatar = ImmutableUri(uriMock)
     )
 
     private val streamUi2 = StreamUi(
         id = "streamId2",
-        video = VideoUi(id = "videoId", view = viewMock, isEnabled = true),
+        video = VideoUi(id = "videoId", view = ImmutableView(viewMock), isEnabled = true),
         username = "displayName",
         avatar = ImmutableUri(uriMock)
     )
 
     private val streamUi3 = StreamUi(
         id = "streamId3",
-        video = VideoUi(id = "videoId", view = viewMock, isEnabled = true),
+        video = VideoUi(id = "videoId", view = ImmutableView(viewMock), isEnabled = true),
         username = "displayName",
         avatar = ImmutableUri(uriMock)
     )
 
     private val myStreamUi1 = StreamUi(
         id = "myStreamId",
-        video = VideoUi(id = "myVideoId", view = viewMock, isEnabled = true),
+        video = VideoUi(id = "myVideoId", view = ImmutableView(viewMock), isEnabled = true),
         username = "myDisplayName",
         avatar = ImmutableUri(uriMock)
     )
 
     private val myStreamUi2 = StreamUi(
         id = "myStreamId2",
-        video = VideoUi(id = "myVideoId", view = viewMock, isEnabled = true),
+        video = VideoUi(id = "myVideoId", view = ImmutableView(viewMock), isEnabled = true),
         username = "myDisplayName",
         avatar = ImmutableUri(uriMock)
     )
@@ -457,7 +459,7 @@ class StreamMapperTest {
         }
         val modifiedStreamUi = StreamUi(
             id = "modifiedStreamId",
-            video = VideoUi(id = "videoId", view = viewMock, isEnabled = true),
+            video = VideoUi(id = "videoId", view = ImmutableView(viewMock), isEnabled = true),
             username = "displayName",
             avatar = ImmutableUri(uriMock)
         )
@@ -481,7 +483,7 @@ class StreamMapperTest {
             modifiedStreamUi.copy(
                 video = VideoUi(
                     id = "videoId2",
-                    view = viewMock,
+                    view =  ImmutableView(viewMock),
                     isEnabled = false
                 )
             ),
