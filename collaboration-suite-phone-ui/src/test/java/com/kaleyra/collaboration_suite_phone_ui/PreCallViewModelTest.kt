@@ -7,6 +7,7 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
@@ -136,7 +137,7 @@ class PreCallViewModelTest {
             id = "myStreamId",
             video = VideoUi(
                 id = myVideoMock.id,
-                view = myVideoMock.view.value,
+                view = myVideoMock.view.value?.let { ImmutableView(it) },
                 isEnabled = myVideoMock.enabled.value
             ),
             username = "myDisplayName",
