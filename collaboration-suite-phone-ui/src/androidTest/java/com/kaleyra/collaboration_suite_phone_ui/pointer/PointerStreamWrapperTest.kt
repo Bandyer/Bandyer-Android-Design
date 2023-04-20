@@ -1,15 +1,20 @@
 package com.kaleyra.collaboration_suite_phone_ui.pointer
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.unit.IntSize
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.PointerUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerLayerTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.MovablePointerTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.mockk
@@ -42,7 +47,7 @@ class PointerStreamWrapperTest {
 
     @Test
     fun checkPointerLayersCount() {
-        composeTestRule.onAllNodesWithTag(PointerLayerTag).assertCountEquals(pointerList.count())
+        composeTestRule.onAllNodesWithTag(MovablePointerTag).assertCountEquals(pointerList.count())
     }
 
 }

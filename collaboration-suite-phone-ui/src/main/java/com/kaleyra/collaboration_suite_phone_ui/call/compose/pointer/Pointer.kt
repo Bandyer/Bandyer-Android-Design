@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.applyShadow
+import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 
 val PointerSize = 16.dp
 
@@ -30,7 +30,7 @@ internal fun TextPointer(
             text = username,
             color = MaterialTheme.colors.secondary,
             modifier = Modifier.onGloballyPositioned { onTextWidth(it.size.width) },
-            style = textStyle.applyShadow()
+            style = textStyle.shadow()
         )
     }
 }
