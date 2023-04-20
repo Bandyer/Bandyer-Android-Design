@@ -10,10 +10,13 @@ import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.MovablePointerTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.mockk
 import org.junit.Test
 
@@ -41,7 +44,7 @@ abstract class StreamParentComposableTest {
     fun viewNotNullAndStreamVideoIsDisabled_streamDoesNotExists() {
         val video =  VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false)
         stream.value = streamUiMock.copy(video = video)
-        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
+        findStreamView().assertDoesNotExist()
     }
 
     @Test
@@ -56,6 +59,18 @@ abstract class StreamParentComposableTest {
         val video =  VideoUi(id = "videoId", view = null, isEnabled = true)
         stream.value = streamUiMock.copy(video = video)
         composeTestRule.findAvatar().assertDoesNotExist()
+    }
+
+    @Test
+    fun streamVideoPointerIsDisplayed() {
+        val video =  VideoUi(
+            id = "videoId",
+            view = ImmutableView(View(composeTestRule.activity)),
+            isEnabled = true,
+            pointers = ImmutableList(listOf(PointerUi("username", 30f, 30f)))
+        )
+        stream.value = streamUiMock.copy(video = video)
+        composeTestRule.onNodeWithTag(MovablePointerTag, useUnmergedTree = true).assertExists()
     }
 
     private fun findStreamView(): SemanticsNodeInteraction {
