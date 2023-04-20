@@ -32,7 +32,7 @@ class VideoMapperTest {
 
     private val viewMock = mockk<VideoStreamView>()
 
-    private val videoMock = mockk<Input.Video.Camera>(relaxed = true)
+    private val videoMock = mockk<Input.Video>(relaxed = true)
 
     private val pointerMock1 = mockk<Input.Video.Event.Pointer>(relaxed = true)
 
@@ -131,12 +131,62 @@ class VideoMapperTest {
         assertEquals(expected2, values[3])
     }
 
+
     @Test
-    fun videoPointerEvent_mapToPointerUi_mapperPointerUi() {
+    fun pointerEventOnInternalCameraVideo_mapToPointerUi_pointerIsMirrored() = runTest {
+        val cameraMock = mockk<Input.Video.Camera.Internal>(relaxed = true)
+        val events = MutableSharedFlow<Input.Video.Event.Pointer>()
+        every { cameraMock.events } returns events
+
+        val expected = listOf(PointerUi(pointerMock1.producer.displayName.value ?: "", 100 - pointerMock1.position.x, pointerMock1.position.y))
+
+        val values = mutableListOf<List<PointerUi>>()
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            MutableStateFlow(cameraMock).mapToPointersUi().toList(values)
+        }
+
+        assertEquals(listOf<PointerUi>(), values[0])
+
+        events.emit(pointerMock1)
+        assertEquals(expected, values[1])
+    }
+
+    @Test
+    fun pointerEventOnUsbCameraVideo_mapToPointerUi_pointerIsMirrored() = runTest {
+        val cameraMock = mockk<Input.Video.Camera.Usb>(relaxed = true)
+        val events = MutableSharedFlow<Input.Video.Event.Pointer>()
+        every { cameraMock.events } returns events
+
+        val expected = listOf(PointerUi(pointerMock1.producer.displayName.value ?: "", 100 - pointerMock1.position.x, pointerMock1.position.y))
+
+        val values = mutableListOf<List<PointerUi>>()
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            MutableStateFlow(cameraMock).mapToPointersUi().toList(values)
+        }
+
+        assertEquals(listOf<PointerUi>(), values[0])
+
+        events.emit(pointerMock1)
+        assertEquals(expected, values[1])
+    }
+
+    @Test
+    fun videoPointerEvent_mapToPointerUi_mappedPointerUi() {
         val actual = pointerMock1.mapToPointerUi()
         val expected = PointerUi(
             username = pointerMock1.producer.displayName.value ?: "",
             x = pointerMock1.position.x,
+            y = pointerMock1.position.y
+        )
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun mirrorTrue_mapToPointerUi_mirroredPointerUi() {
+        val actual = pointerMock1.mapToPointerUi(mirror = true)
+        val expected = PointerUi(
+            username = pointerMock1.producer.displayName.value ?: "",
+            x = 100 - pointerMock1.position.x,
             y = pointerMock1.position.y
         )
         Assert.assertEquals(expected, actual)

@@ -29,8 +29,8 @@ internal object StreamMapper {
                             }
                     }
                     .merge()
-                    .transform { (userId, streamsFlow) ->
-                        map[userId] = streamsFlow
+                    .transform { (userId, streams) ->
+                        map[userId] = streams
                         val values = map.values.toList()
                         if (values.size == participants.list.size) {
                             emit(values.flatten())
