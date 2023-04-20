@@ -38,7 +38,6 @@ internal object VideoMapper {
 
     fun Flow<Input.Video>.mapToPointersUi(): Flow<List<PointerUi>> {
         val list = mutableMapOf<String, PointerUi>()
-        list["userId"] = PointerUi("userId", 30f, 30f)
         return flow {
             emit(emptyList())
             this@mapToPointersUi.flatMapLatest { it.events }
