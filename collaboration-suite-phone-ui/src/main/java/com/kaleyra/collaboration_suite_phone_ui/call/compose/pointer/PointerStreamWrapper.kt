@@ -19,8 +19,14 @@ internal fun PointerStreamWrapper(
     stream: @Composable () -> Unit
 ) {
     var size by remember { mutableStateOf(IntSize(0, 0)) }
-    Box(modifier = modifier.onGloballyPositioned { size = it.size }) {
+    Box {
         stream()
-        pointerList?.value?.forEach { MovablePointer(it, size) }
+        Box(
+            modifier = modifier
+                .matchParentSize()
+                .onGloballyPositioned { size = it.size }
+        ) {
+            pointerList?.value?.forEach { MovablePointer(it, size) }
+        }
     }
 }

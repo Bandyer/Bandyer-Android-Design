@@ -22,7 +22,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 // TODO add tests in case stream video = null
