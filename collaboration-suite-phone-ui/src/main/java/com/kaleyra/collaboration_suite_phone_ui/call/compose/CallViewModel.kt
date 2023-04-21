@@ -26,6 +26,8 @@ class CallViewModel(configure: suspend () -> Configuration) :
 
     private val maxFeatured = MutableStateFlow(2)
 
+    private var fullscreenStreamId = MutableStateFlow<String?>(null)
+
     private val streams = call
         .toStreamsUi()
         .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
@@ -58,6 +60,14 @@ class CallViewModel(configure: suspend () -> Configuration) :
                 }
             }
             .launchIn(viewModelScope)
+
+        combine(
+            streamsHandler.streamsArrangement.map { it.first },
+            fullscreenStreamId
+        ) { featuredStreams, fullscreenStreamId ->
+            val stream = featuredStreams.find { it.id == fullscreenStreamId }
+            _uiState.update { it.copy(fullscreenStream = stream) }
+        }.launchIn(viewModelScope)
 
         call
             .toCallStateUi()
@@ -98,7 +108,11 @@ class CallViewModel(configure: suspend () -> Configuration) :
         maxFeatured.value = number
     }
 
-    fun swapThumbnail(streamUi: StreamUi) = streamsHandler.swapThumbnail(streamUi)
+    fun swapThumbnail(stream: StreamUi) = streamsHandler.swapThumbnail(stream)
+
+    fun notifyFullscreenStream(streamId: String) {
+        fullscreenStreamId.value = if (fullscreenStreamId.value != streamId) streamId else null
+    }
 
     companion object {
         fun provideFactory(configure: suspend () -> Configuration) =

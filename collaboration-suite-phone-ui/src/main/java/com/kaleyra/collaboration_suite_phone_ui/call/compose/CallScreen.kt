@@ -20,11 +20,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -68,7 +66,6 @@ private val HalfExpandedHeight = 166.dp
 
 @Composable
 internal fun rememberCallScreenState(
-    callUiState: CallUiState,
     sheetState: BottomSheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Hidden,
         collapsable = true,
@@ -84,7 +81,6 @@ internal fun rememberCallScreenState(
     scope: CoroutineScope = rememberCoroutineScope(),
     density: Density = LocalDensity.current
 ) = remember(
-    callUiState,
     sheetState,
     sheetContentState,
     shouldShowFileShareComponent,
@@ -94,7 +90,6 @@ internal fun rememberCallScreenState(
     density
 ) {
     CallScreenState(
-        callUiState = callUiState,
         sheetState = sheetState,
         sheetContentState = sheetContentState,
         shouldShowFileShareComponent = shouldShowFileShareComponent,
@@ -107,7 +102,6 @@ internal fun rememberCallScreenState(
 
 // TODO remove callUiState from CallScreenState to optimize recompositions
 internal class CallScreenState(
-    val callUiState: CallUiState,
     val sheetState: BottomSheetState,
     val sheetContentState: BottomSheetContentState,
     val shouldShowFileShareComponent: Boolean,
@@ -128,9 +122,7 @@ internal class CallScreenState(
 
     private val isSheetHalfExpanding by sheetState.isHalfExpanding()
 
-    private val isSheetHidden by sheetState.isHidden()
-
-    private var isStreamFullscreen by mutableStateOf(false)
+    val isSheetHidden by sheetState.isHidden()
 
     val isSheetNotDraggableDown by sheetState.isNotDraggableDown()
 
@@ -148,11 +140,6 @@ internal class CallScreenState(
 
     val statusBarIconsShouldUseSystemMode by derivedStateOf {
         isSheetFullScreen && hasCurrentSheetComponentAppBar
-    }
-
-    // TODO test this
-    val shouldShowThumbnails by derivedStateOf {
-        !isSheetHidden && isStreamFullscreen
     }
 
     // TODO test this
@@ -182,11 +169,6 @@ internal class CallScreenState(
         if (sheetState.isCollapsed) {
             halfExpandSheet()
         }
-    }
-
-    // TODO test for this
-    fun onStreamFullscreen(isFullscreen: Boolean) {
-        isStreamFullscreen = isFullscreen
     }
 
     fun navigateToCallActionsComponent() {
@@ -238,11 +220,10 @@ internal fun CallScreen(
         confirmStateChange = { it != BottomSheetValue.Hidden }
     )
     val callScreenState = rememberCallScreenState(
-        callUiState = callUiState,
         sheetState = sheetState,
         shouldShowFileShareComponent = shouldShowFileShareComponent
     )
-    val permissions by remember(callScreenState) { getPermissions(callScreenState) }
+    val permissions by remember(callScreenState) { getPermissions(callUiState) }
     val permissionsState = rememberMultiplePermissionsState(permissions = permissions) { permissionsResult ->
         permissionsResult.forEach { (permission, isGranted) ->
             when {
@@ -251,23 +232,32 @@ internal fun CallScreen(
             }
         }
     }
+    val backPressed by remember {
+        derivedStateOf {
+            if (callUiState.fullscreenStream != null) { { viewModel.notifyFullscreenStream(callUiState.fullscreenStream!!.id) } }
+            else onBackPressed
+        }
+    }
 
     LaunchedEffect(permissionsState) {
         permissionsState.launchMultiplePermissionRequest()
     }
 
     CallScreen(
+        callUiState = callUiState,
         callScreenState = callScreenState,
         permissionsState = permissionsState,
         onThumbnailStreamClick = viewModel::swapThumbnail,
-        onBackPressed = onBackPressed,
+        onFullscreenStreamClick = viewModel::notifyFullscreenStream,
+        // TODO remember on back pressed
+        onBackPressed = backPressed,
         onFileShareDisplayed = onFileShareDisplayed
     )
 }
 
-private fun getPermissions(callScreenState: CallScreenState): State<List<String>> {
+private fun getPermissions(callUiState: CallUiState): State<List<String>> {
     return derivedStateOf {
-        with(callScreenState.callUiState) {
+        with(callUiState) {
             listOfNotNull(
                 if (isMicPermissionRequired) RecordAudioPermission else null,
                 if (isCameraPermissionRequired) CameraPermission else null
@@ -278,14 +268,16 @@ private fun getPermissions(callScreenState: CallScreenState): State<List<String>
 
 @Composable
 internal fun CallScreen(
+    callUiState: CallUiState,
     callScreenState: CallScreenState,
     permissionsState: MultiplePermissionsState,
     onThumbnailStreamClick: (StreamUi) -> Unit,
+    onFullscreenStreamClick: (String) -> Unit,
     onBackPressed: () -> Unit,
     onFileShareDisplayed: () -> Unit
 ) {
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
-    val callState by rememberUpdatedState(callScreenState.callUiState.callState)
+    val callState by rememberUpdatedState(callUiState.callState)
 
     LaunchedEffect(callScreenState) {
         combine(
@@ -348,12 +340,12 @@ internal fun CallScreen(
             anchor = {
                 // TODO test visibility
                 AnimatedVisibility(
-                    visible = !callScreenState.shouldShowThumbnails,
+                    visible = !callScreenState.isSheetHidden && callUiState.fullscreenStream == null,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
                     ThumbnailStreams(
-                        streams = callScreenState.callUiState.thumbnailStreams,
+                        streams = callUiState.thumbnailStreams,
                         contentPadding = PaddingValues(16.dp),
                         onStreamClick = onThumbnailStreamClick
                     )
@@ -378,10 +370,10 @@ internal fun CallScreen(
             },
             content = {
                 CallScreenContent(
-                    callState = callScreenState.callUiState.callState,
+                    callState = callUiState.callState,
                     maxWidth = maxWidth,
                     onBackPressed = onBackPressed,
-                    onFullscreen = callScreenState::onStreamFullscreen
+                    onFullscreenClick = onFullscreenStreamClick
                 )
             }
         )

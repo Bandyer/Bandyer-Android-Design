@@ -10,6 +10,7 @@ data class CallUiState(
     val callState: CallStateUi = CallStateUi.Disconnected,
     val thumbnailStreams: ImmutableList<StreamUi> = ImmutableList(listOf()),
     val featuredStreams: ImmutableList<StreamUi> = ImmutableList(listOf()),
+    val fullscreenStream: StreamUi? = null,
     val watermarkInfo: WatermarkInfo? = null,
     val isGroupCall: Boolean = false,
     val isRecording: Boolean = false,
