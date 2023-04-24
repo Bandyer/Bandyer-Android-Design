@@ -3,16 +3,13 @@ package com.kaleyra.collaboration_suite_core_ui
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Stream
-import com.kaleyra.collaboration_suite_core_ui.TestHelper.stopCollecting
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsOpeningDelegate
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -41,10 +38,9 @@ class StreamsOpeningDelegateTest {
         every { meMock.streams } returns MutableStateFlow(listOf(myStreamMock))
         every { callParticipantsMock.list } returns listOf(meMock)
 
-        streamsOpeningDelegateTest.openParticipantsStreams(flowOf(callParticipantsMock), this)
+        streamsOpeningDelegateTest.openParticipantsStreams(flowOf(callParticipantsMock), backgroundScope)
 
         verify { myStreamMock.open() }
-        stopCollecting()
     }
 
     @Test
@@ -53,11 +49,10 @@ class StreamsOpeningDelegateTest {
         every { participantMock2.streams } returns MutableStateFlow(listOf(streamMock2))
         every { callParticipantsMock.list } returns listOf(participantMock1, participantMock2)
 
-        streamsOpeningDelegateTest.openParticipantsStreams(flowOf(callParticipantsMock), this)
+        streamsOpeningDelegateTest.openParticipantsStreams(flowOf(callParticipantsMock), backgroundScope)
 
         verify { streamMock1.open() }
         verify { streamMock2.open() }
-        stopCollecting()
     }
 
     @Test
@@ -68,13 +63,12 @@ class StreamsOpeningDelegateTest {
         every { participantMock2.streams } returns otherStreamList
         every { callParticipantsMock.list } returns listOf(meMock, participantMock2)
 
-        streamsOpeningDelegateTest.openParticipantsStreams(flowOf(callParticipantsMock), this)
+        streamsOpeningDelegateTest.openParticipantsStreams(flowOf(callParticipantsMock), backgroundScope)
 
         myStreamList.value = listOf(myStreamMock)
         otherStreamList.value = listOf(streamMock2)
         verify { myStreamMock.open() }
         verify { streamMock2.open() }
-        stopCollecting()
     }
 
     @Test
@@ -86,7 +80,7 @@ class StreamsOpeningDelegateTest {
         }
         val participantsFlow = MutableStateFlow(callParticipantsMock)
 
-        streamsOpeningDelegateTest.openParticipantsStreams(participantsFlow, this)
+        streamsOpeningDelegateTest.openParticipantsStreams(participantsFlow, backgroundScope)
         verify { myStreamMock.open() }
 
         val newCallParticipantsMock = mockk<CallParticipants> {
@@ -95,6 +89,5 @@ class StreamsOpeningDelegateTest {
         participantsFlow.value = newCallParticipantsMock
         verify { streamMock1.open() }
         verify { streamMock2.open() }
-        stopCollecting()
     }
 }

@@ -35,8 +35,7 @@ internal object VideoMapper {
                 flow.flatMapLatest { it.enabled },
                 flow.mapToPointersUi()
             ) { id, view, enabled, pointers ->
-                val pointerList =
-                    ImmutableList(if (view != null && enabled) pointers else emptyList())
+                val pointerList = ImmutableList(if (view != null && enabled) pointers else emptyList())
                 VideoUi(id, view, enabled, pointerList)
             }.collect {
                 emit(it)

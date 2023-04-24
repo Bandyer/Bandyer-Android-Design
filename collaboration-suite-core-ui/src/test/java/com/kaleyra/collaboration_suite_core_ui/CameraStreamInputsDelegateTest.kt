@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite.phonebox.*
-import com.kaleyra.collaboration_suite_core_ui.TestHelper.stopCollecting
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamInputsDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import io.mockk.every
@@ -52,10 +51,9 @@ class CameraStreamInputsDelegateTest {
             every { currentQuality } returns MutableStateFlow(mockk(relaxed = true))
         }
         every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(videoMock))
-        cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, this)
+        cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, backgroundScope)
         val actual = meMock.streams.value.first().video.value
         assertEquals(videoMock, actual)
-        stopCollecting()
     }
 
     @Test
@@ -64,19 +62,17 @@ class CameraStreamInputsDelegateTest {
             every { currentQuality } returns MutableStateFlow(Input.Video.Quality(Input.Video.Quality.Definition.SD, 30))
         }
         every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(videoMock))
-        cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, this)
+        cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, backgroundScope)
         verify { videoMock.setQuality(Input.Video.Quality.Definition.HD, any()) }
-        stopCollecting()
     }
 
     @Test
     fun updateCameraStreamOnInputs_streamUpdatedOnAudioInput() = runTest(UnconfinedTestDispatcher()) {
         val audioMock = mockk<Input.Audio>(relaxed = true)
         every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(audioMock))
-        cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, this)
+        cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, backgroundScope)
         val actual =  meMock.streams.value.first().audio.value
         assertEquals(audioMock,  actual)
-        stopCollecting()
     }
 
     @Test
@@ -114,10 +110,9 @@ class CameraStreamInputsDelegateTest {
 
     private fun checkStreamNotUpdatedOnVideoInput(videoMock: Input.Video) = runTest(UnconfinedTestDispatcher()) {
         every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(videoMock))
-        cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, this)
+        cameraStreamInputsDelegate.updateCameraStreamOnInputs(callMock, backgroundScope)
         val actual = meMock.streams.value.first().video.value
         assertEquals(null, actual)
-        stopCollecting()
     }
 
 }
