@@ -18,7 +18,7 @@ internal fun CallScreenContent(
     callState: CallStateUi,
     maxWidth: Dp,
     onBackPressed: () -> Unit,
-    onFullscreenClick: (String) -> Unit,
+    onStreamFullscreenClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(
@@ -35,8 +35,7 @@ internal fun CallScreenContent(
             when(target) {
                 CallStateUi.Ringing -> RingingComponent(onBackPressed = onBackPressed)
                 CallStateUi.Dialing -> DialingComponent(onBackPressed = onBackPressed)
-                // TODO add test for onFullscreen
-                else -> CallComponent(maxWidth = maxWidth, onBackPressed = onBackPressed, onFullscreenStreamClick = onFullscreenClick)
+                else -> CallComponent(maxWidth = maxWidth, onBackPressed = onBackPressed, onStreamFullscreenClick = onStreamFullscreenClick)
             }
         }
     }

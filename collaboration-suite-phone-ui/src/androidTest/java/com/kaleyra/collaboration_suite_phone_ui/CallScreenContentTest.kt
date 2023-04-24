@@ -37,7 +37,8 @@ class CallScreenContentTest {
             CallScreenContent(
                 callState = callState,
                 maxWidth = 600.dp,
-                onBackPressed = { backPressed = true }
+                onBackPressed = { backPressed = true },
+                onStreamFullscreenClick = {}
             )
         }
         backPressed = false
@@ -58,85 +59,85 @@ class CallScreenContentTest {
     @Test
     fun callStateConnecting_callContentIsDisplayed() {
         callState = CallStateUi.Connecting
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateConnected_callContentIsDisplayed() {
         callState = CallStateUi.Connected
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateReconnecting_callContentIsDisplayed() {
         callState = CallStateUi.Reconnecting
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateDisconnected_callContentIsDisplayed() {
         callState = CallStateUi.Disconnected
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateEnded_callContentIsDisplayed() {
         callState = CallStateUi.Disconnected.Ended
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateHungUp_callContentIsDisplayed() {
         callState = CallStateUi.Disconnected.Ended.HungUp
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateDeclined_callContentIsDisplayed() {
         callState = CallStateUi.Disconnected.Ended.Declined
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateKicked_callContentIsDisplayed() {
         callState = CallStateUi.Disconnected.Ended.Kicked("")
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateAnsweredOnAnotherDevice_callContentIsDisplayed() {
         callState = CallStateUi.Disconnected.Ended.AnsweredOnAnotherDevice
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateLineBusy_callContentIsDisplayed() {
         callState = CallStateUi.Disconnected.Ended.LineBusy
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateTimeout_callContentIsDisplayed() {
         callState = CallStateUi.Disconnected.Ended.Timeout
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateError_callContentIsDisplayed() {
         callState = CallStateUi.Disconnected.Ended.Error
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateServerError_callContentIsDisplayed() {
         callState = CallStateUi.Disconnected.Ended.Error.Server
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
     fun callStateUnknownError_callContentIsDisplayed() {
         callState = CallStateUi.Disconnected.Ended.Error.Unknown
-        composeTestRule.onNodeWithTag(CallContentTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test

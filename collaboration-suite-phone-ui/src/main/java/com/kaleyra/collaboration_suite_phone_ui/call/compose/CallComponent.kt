@@ -14,6 +14,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -28,7 +29,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
-const val CallContentTag = "CallContentTag"
+const val CallComponentTag = "CallComponentTag"
 private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
 
 @Composable
@@ -73,7 +74,7 @@ internal fun CallComponent(
     ),
     maxWidth: Dp,
     onBackPressed: () -> Unit,
-    onFullscreenStreamClick: (String) -> Unit,
+    onStreamFullscreenClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -87,7 +88,7 @@ internal fun CallComponent(
         callUiState = callUiState,
         callComponentState = callComponentState,
         onBackPressed = onBackPressed,
-        onFullscreenStreamClick = onFullscreenStreamClick,
+        onStreamFullscreenClick = onStreamFullscreenClick,
         modifier = modifier
     )
 }
@@ -98,7 +99,7 @@ internal fun CallComponent(
     callUiState: CallUiState,
     callComponentState: CallComponentState,
     onBackPressed: () -> Unit,
-    onFullscreenStreamClick: (String) -> Unit,
+    onStreamFullscreenClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val shouldShowCallInfo by remember(callUiState) { callUiState.shouldShowCallInfo() }
@@ -114,52 +115,54 @@ internal fun CallComponent(
 //    )
 //
 
-    AdaptiveGrid(
-        columns = if (callUiState.fullscreenStream == null) callComponentState.columns else 1,
-        modifier = modifier.then(StatusBarPaddingModifier)
-    ) {
-        val streams = callUiState.fullscreenStream?.let { listOf(it) } ?: callUiState.featuredStreams.value
-        repeat(streams.count()) { index ->
-            val stream = streams[index]
-            key(stream.id) {
-                FeaturedStream(
-                    stream = stream,
-                    isFullscreen = callUiState.fullscreenStream != null,
-                    onBackPressed = if (index == 0 && !shouldShowCallInfo) onBackPressed else null,
-                    onFullscreenClick = onFullscreenStreamClick,
-                    modifier = remember(onFullscreenStreamClick) {
-                        Modifier.pointerInput(onFullscreenStreamClick) {
-                            detectTapGestures(onDoubleTap = { onFullscreenStreamClick(stream.id) })
-                        }
+    Box(modifier.testTag(CallComponentTag)) {
+        AdaptiveGrid(
+            columns = if (callUiState.fullscreenStream == null) callComponentState.columns else 1,
+            modifier = StatusBarPaddingModifier
+        ) {
+            val streams = callUiState.fullscreenStream?.let { listOf(it) } ?: callUiState.featuredStreams.value
+            repeat(streams.count()) { index ->
+                val stream = streams[index]
+                key(stream.id) {
+                    FeaturedStream(
+                        stream = stream,
+                        isFullscreen = callUiState.fullscreenStream != null,
+                        onBackPressed = if (index == 0 && !shouldShowCallInfo) onBackPressed else null,
+                        onFullscreenClick = onStreamFullscreenClick,
+                        modifier = remember(onStreamFullscreenClick) {
+                            Modifier.pointerInput(onStreamFullscreenClick) {
+                                detectTapGestures(onDoubleTap = { onStreamFullscreenClick(stream.id) })
+                            }
 //                        Modifier.streamClickable { resetCountDown = !resetCountDown }
-                    },
-                    headerModifier = remember(index, callComponentState, streamHeaderOffset) {
-                        Modifier.offset { IntOffset(x = 0, y = if (index < callComponentState.columns) streamHeaderOffset else 0) }
+                        },
+                        headerModifier = remember(index, callComponentState, streamHeaderOffset) {
+                            Modifier.offset { IntOffset(x = 0, y = if (index < callComponentState.columns) streamHeaderOffset else 0) }
 //                                    .graphicsLayer { alpha = streamsHeaderAlpha }
-                    }
-                )
+                        }
+                    )
+                }
             }
         }
-    }
 
-    AnimatedVisibility(
-        visible = shouldShowCallInfo,
-        enter = fadeIn(),
-        exit = fadeOut()
-    ) {
-        CallInfoWidget(
-            onBackPressed = onBackPressed,
-            title = titleFor(callUiState.callState),
-            subtitle = subtitleFor(
-                callState = callUiState.callState,
-                groupCall = callUiState.isGroupCall
-            ),
-            watermarkInfo = if (!shouldHideWatermark) callUiState.watermarkInfo else null,
-            recording = callUiState.isRecording,
-            modifier = StatusBarPaddingModifier.onGloballyPositioned {
-                callInfoWidgetHeight = it.size.height
-            }
-        )
+        AnimatedVisibility(
+            visible = shouldShowCallInfo,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            CallInfoWidget(
+                onBackPressed = onBackPressed,
+                title = titleFor(callUiState.callState),
+                subtitle = subtitleFor(
+                    callState = callUiState.callState,
+                    groupCall = callUiState.isGroupCall
+                ),
+                watermarkInfo = if (!shouldHideWatermark) callUiState.watermarkInfo else null,
+                recording = callUiState.isRecording,
+                modifier = StatusBarPaddingModifier.onGloballyPositioned {
+                    callInfoWidgetHeight = it.size.height
+                }
+            )
+        }
     }
 }
 
@@ -228,7 +231,7 @@ fun CallContentPreview() {
                 maxWidth = 400.dp
             ),
             onBackPressed = { },
-            onFullscreenStreamClick = {  }
+            onStreamFullscreenClick = {  }
         )
     }
 }

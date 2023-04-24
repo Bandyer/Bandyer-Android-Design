@@ -373,7 +373,7 @@ internal fun CallScreen(
                     callState = callUiState.callState,
                     maxWidth = maxWidth,
                     onBackPressed = onBackPressed,
-                    onFullscreenClick = onFullscreenStreamClick
+                    onStreamFullscreenClick = onFullscreenStreamClick
                 )
             }
         )

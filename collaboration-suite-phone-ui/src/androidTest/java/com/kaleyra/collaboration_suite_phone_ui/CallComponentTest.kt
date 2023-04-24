@@ -54,7 +54,7 @@ class CallComponentTest {
                 callUiState = callUiState,
                 callComponentState = callComponentState,
                 onBackPressed = { isBackPressed = true },
-                onFullscreenStreamClick = { fullscreenStreamId = it }
+                onStreamFullscreenClick = { fullscreenStreamId = it }
             )
         }
     }
