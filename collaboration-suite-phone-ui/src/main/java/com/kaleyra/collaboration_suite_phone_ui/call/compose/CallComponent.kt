@@ -102,6 +102,7 @@ internal fun CallComponent(
     modifier: Modifier = Modifier
 ) {
     val shouldShowCallInfo by remember(callUiState) { callUiState.shouldShowCallInfo() }
+    val shouldHideWatermark by remember(callUiState) { callUiState.shouldHideWatermark() }
     var callInfoWidgetHeight by remember { mutableStateOf(0) }
     val streamHeaderOffset by animateIntAsState(targetValue = if (shouldShowCallInfo) callInfoWidgetHeight else 0)
 
@@ -153,7 +154,7 @@ internal fun CallComponent(
                 callState = callUiState.callState,
                 groupCall = callUiState.isGroupCall
             ),
-            watermarkInfo = callUiState.watermarkInfo,
+            watermarkInfo = if (!shouldHideWatermark) callUiState.watermarkInfo else null,
             recording = callUiState.isRecording,
             modifier = StatusBarPaddingModifier.onGloballyPositioned {
                 callInfoWidgetHeight = it.size.height
@@ -162,10 +163,15 @@ internal fun CallComponent(
     }
 }
 
-// TODO add tests for this
-internal fun CallUiState.shouldShowCallInfo(): State<Boolean> {
+private fun CallUiState.shouldShowCallInfo(): State<Boolean> {
     return derivedStateOf {
-        callState is CallStateUi.Reconnecting || callState is CallStateUi.Connecting || callState is CallStateUi.Disconnected
+        callState is CallStateUi.Reconnecting || callState is CallStateUi.Connecting || callState is CallStateUi.Disconnected || isRecording
+    }
+}
+
+private fun CallUiState.shouldHideWatermark(): State<Boolean> {
+    return derivedStateOf {
+        callState is CallStateUi.Connected && isRecording
     }
 }
 

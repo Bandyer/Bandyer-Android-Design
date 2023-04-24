@@ -9,6 +9,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.core.view.KeyEventDispatcher.Component
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 
+internal fun SemanticsNodeInteraction.performDoubleClick() {
+    performTouchInput {
+        doubleClick()
+    }
+}
+
 internal fun SemanticsNodeInteraction.performScrollUp() {
     performTouchInput {
         this.swipe(
