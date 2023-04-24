@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -21,10 +22,12 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 private val MaxWatermarkHeight = 80.dp
 private val MaxWatermarkWidth = 300.dp
 
+const val WatermarkTag = "WatermarkTag"
+
 @Composable
 internal fun Watermark(watermarkInfo: WatermarkInfo, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier,
+        modifier = modifier.testTag(WatermarkTag),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (watermarkInfo.image != null) {

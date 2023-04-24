@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +26,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStre
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
+const val FeaturedStreamTag = "FeaturedStreamTag"
+
 // TODO add tests in case stream video = null
 @Composable
 internal fun FeaturedStream(
@@ -35,7 +38,9 @@ internal fun FeaturedStream(
     headerModifier: Modifier = Modifier,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier) {
+    Box(
+        modifier = modifier.testTag(FeaturedStreamTag)
+    ) {
         StreamContainer {
             PointerStreamWrapper(pointerList = stream.video?.pointers) {
                 Stream(
