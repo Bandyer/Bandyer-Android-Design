@@ -10,6 +10,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStream
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +24,7 @@ class FeaturedStreamTest: StreamParentComposableTest() {
 
     private var isBackPressed = false
 
-    private var isFullscreenClicked = false
+    private var fullscreenClickId: String? = null
 
     override var stream = mutableStateOf(streamUiMock)
 
@@ -38,7 +39,7 @@ class FeaturedStreamTest: StreamParentComposableTest() {
                 stream = stream.value,
                 isFullscreen = isFullscreen,
                 onBackPressed = onBackPressed,
-                onFullscreenClick = { isFullscreenClicked = true }
+                onFullscreenClick = { fullscreenClickId = it }
             )
         }
     }
@@ -46,7 +47,7 @@ class FeaturedStreamTest: StreamParentComposableTest() {
     @After
     fun tearDown() {
         isBackPressed = false
-        isFullscreenClicked = false
+        fullscreenClickId = null
         stream = mutableStateOf(streamUiMock)
         onBackPressed = null
         isFullscreen = false
@@ -95,7 +96,7 @@ class FeaturedStreamTest: StreamParentComposableTest() {
     fun userClicksFullscreenButton_onFullscreenClickInvoked() {
         isFullscreen = false
         findEnterFullscreenButton().performClick()
-        assert(isFullscreenClicked)
+        assertEquals(stream.value.id, fullscreenClickId)
     }
 
     private fun findEnterFullscreenButton(): SemanticsNodeInteraction {

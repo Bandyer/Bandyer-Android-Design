@@ -28,7 +28,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 const val FeaturedStreamTag = "FeaturedStreamTag"
 
-// TODO add tests in case stream video = null
 @Composable
 internal fun FeaturedStream(
     stream: StreamUi,
@@ -107,7 +106,7 @@ internal fun FeaturedStreamPreview() {
         FeaturedStream(
             stream = streamUiMock,
             onBackPressed = { },
-            onFullscreenClick = {  }
+            onFullscreenClick = { }
         )
     }
 }

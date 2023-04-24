@@ -62,6 +62,12 @@ abstract class StreamParentComposableTest {
     }
 
     @Test
+    fun streamVideoIsNull_avatarIsDisplayed() {
+        stream.value = streamUiMock.copy(video = null)
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
     fun streamVideoPointerIsDisplayed() {
         val video =  VideoUi(
             id = "videoId",
