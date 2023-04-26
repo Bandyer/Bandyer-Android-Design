@@ -19,6 +19,7 @@ interface StreamsVideoViewDelegate {
             .map { it.list }
             .mapParticipantsToVideos()
             .transform { videos -> videos.forEach { emit(it) } }
+            .filterIsInstance<Input.Video>()
             .onEach { video ->
                 if (video.view.value != null) return@onEach
                 video.view.value = VideoStreamView(context.applicationContext)
@@ -26,9 +27,9 @@ interface StreamsVideoViewDelegate {
             .launchIn(scope)
     }
 
-    private fun Flow<List<CallParticipant>>.mapParticipantsToVideos(): Flow<List<Input.Video>> {
+    private fun Flow<List<CallParticipant>>.mapParticipantsToVideos(): Flow<List<Input.Video?>> {
         return this.flatMapLatest { participants ->
-            val participantVideos = mutableMapOf<String, List<Input.Video>>()
+            val participantVideos = mutableMapOf<String, List<Input.Video?>>()
             participants.map { participant ->
                 participant.streams
                     .mapStreamsToVideos()
@@ -45,24 +46,22 @@ interface StreamsVideoViewDelegate {
         }
     }
 
-    private fun Flow<List<Stream>>.mapStreamsToVideos(): Flow<List<Input.Video>> {
+    private fun Flow<List<Stream>>.mapStreamsToVideos(): Flow<List<Input.Video?>> {
         return this.flatMapLatest { streams ->
-                val streamVideos = mutableMapOf<String, Input.Video>()
-                streams
-                    .map { stream ->
-                        stream.video
-                            .filterIsInstance<Input.Video>()
-                            .map { Pair(stream.id, it) }
+            val streamVideos = mutableMapOf<String, Input.Video?>()
+            streams
+                .map { stream ->
+                    stream.video
+                        .map { Pair(stream.id, it) }
+                }
+                .merge()
+                .transform { (streamId, video) ->
+                    streamVideos[streamId] = video
+                    val values = streamVideos.values.toList()
+                    if (values.size == streams.size) {
+                        emit(values)
                     }
-                    .merge()
-                    .transform { (streamId, video) ->
-                        streamVideos[streamId] = video
-                        val values = streamVideos.values.toList()
-                        if (values.size == streams.size) {
-                            emit(values)
-                        }
-                    }
-            }
-
+                }
+        }
     }
 }

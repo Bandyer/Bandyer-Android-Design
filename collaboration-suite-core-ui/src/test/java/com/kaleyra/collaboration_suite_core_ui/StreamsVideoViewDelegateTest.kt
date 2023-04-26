@@ -99,6 +99,13 @@ class StreamsVideoViewDelegateTest {
     }
 
     @Test
+    fun setStreamsVideoViewWhenAParticipantVideoIsNull() = runTest(UnconfinedTestDispatcher()) {
+        every { myStreamMock.video } returns MutableStateFlow(null)
+        streamsVideoViewDelegate.setStreamsVideoView(context, MutableStateFlow(participantsMock), backgroundScope)
+        assertNotEquals(null, videoMock1.view.value)
+    }
+
+    @Test
     fun setStreamsVideoView_viewSetOnNewParticipant() = runTest(UnconfinedTestDispatcher()) {
         val participants = MutableStateFlow(participantsMock)
         streamsVideoViewDelegate.setStreamsVideoView(context, participants, backgroundScope)
