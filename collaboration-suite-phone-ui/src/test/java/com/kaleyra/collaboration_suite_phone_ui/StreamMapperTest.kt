@@ -112,9 +112,8 @@ class StreamMapperTest {
             every { displayName } returns MutableStateFlow("displayName2")
             every { displayImage } returns MutableStateFlow(uriMock)
         }
-
         with(participantMeMock) {
-            every { userId } returns "userId1"
+            every { userId } returns "myUserId"
             every { streams } returns MutableStateFlow(listOf(myStreamMock1, myStreamMock2))
             every { displayName } returns MutableStateFlow("myDisplayName")
             every { displayImage } returns MutableStateFlow(uriMock)
