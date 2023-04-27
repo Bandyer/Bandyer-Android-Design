@@ -24,6 +24,7 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
     private val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
     private val streams = call
+        .debounce(300)
         .toStreamsUi()
         .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
 
