@@ -24,7 +24,7 @@ class FeaturedStreamTest: StreamParentComposableTest() {
 
     private var isBackPressed = false
 
-    private var fullscreenClickId: String? = null
+    private var fullscreenClicked = false
 
     override var stream = mutableStateOf(streamUiMock)
 
@@ -39,7 +39,7 @@ class FeaturedStreamTest: StreamParentComposableTest() {
                 stream = stream.value,
                 isFullscreen = isFullscreen,
                 onBackPressed = onBackPressed,
-                onFullscreenClick = { fullscreenClickId = it }
+                onFullscreenClick = { fullscreenClicked = true }
             )
         }
     }
@@ -47,7 +47,7 @@ class FeaturedStreamTest: StreamParentComposableTest() {
     @After
     fun tearDown() {
         isBackPressed = false
-        fullscreenClickId = null
+        fullscreenClicked = false
         stream = mutableStateOf(streamUiMock)
         onBackPressed = null
         isFullscreen = false
@@ -96,7 +96,7 @@ class FeaturedStreamTest: StreamParentComposableTest() {
     fun userClicksFullscreenButton_onFullscreenClickInvoked() {
         isFullscreen = false
         findEnterFullscreenButton().performClick()
-        assertEquals(stream.value.id, fullscreenClickId)
+        assertEquals(true, fullscreenClicked)
     }
 
     private fun findEnterFullscreenButton(): SemanticsNodeInteraction {
