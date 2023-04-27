@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isMediumSizeWidth
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeWidth
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isOrientationPortrait
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -56,7 +56,7 @@ internal class CallComponentState(
     val columns by derivedStateOf {
         when {
             // Smartphone portrait
-            configuration.isOrientationPortrait() && !maxWidth.isMediumSizeWidth() -> 1
+            configuration.isOrientationPortrait() && !maxWidth.isAtLeastMediumSizeWidth() -> 1
             // Tablet portrait
             configuration.isOrientationPortrait() && featuredStreamsCount > 2 -> 2
             // Landscape
