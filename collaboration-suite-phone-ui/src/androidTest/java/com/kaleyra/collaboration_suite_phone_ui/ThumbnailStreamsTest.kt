@@ -13,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailStreams
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailStreamsTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -60,8 +61,8 @@ class ThumbnailStreamsTest {
 
     @Test
     fun thumbnailStreamsReverseOrder() {
-        val firstChildren = composeTestRule.onNodeWithTag("Ciao").onChildren().onFirst()
-        val lastChildren = composeTestRule.onNodeWithTag("Ciao").onChildren().onLast()
+        val firstChildren = composeTestRule.onNodeWithTag(ThumbnailStreamsTag).onChildren().onFirst()
+        val lastChildren = composeTestRule.onNodeWithTag(ThumbnailStreamsTag).onChildren().onLast()
         assert(firstChildren.getBoundsInRoot().left > lastChildren.getBoundsInRoot().left)
     }
 }
