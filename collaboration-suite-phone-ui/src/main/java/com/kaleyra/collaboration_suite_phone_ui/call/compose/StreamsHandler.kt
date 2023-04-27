@@ -36,7 +36,7 @@ internal class StreamsHandler(
                 val removedFeaturedStreams = findRemovedFeaturedStreams(newStreamsIds).toSet()
                 val removedThumbnailsStreams = findRemovedThumbnailsStreams(newStreamsIds).toSet()
 
-                var newFeaturedStreams = (featuredStreams + thumbnailsStreams + addedStreams - removedFeaturedStreams).take(nOfMaxFeatured)
+                var newFeaturedStreams = (featuredStreams + addedStreams + thumbnailsStreams - removedFeaturedStreams).take(nOfMaxFeatured)
                 val movedToThumbnails = featuredStreams - removedFeaturedStreams - newFeaturedStreams.toSet()
                 var newThumbnailsStreams = movedToThumbnails + thumbnailsStreams + addedStreams - newFeaturedStreams.toSet() - removedThumbnailsStreams
 
@@ -79,6 +79,12 @@ internal class StreamsHandler(
      * @return List<StreamUi> The added streams
      */
     private fun updateStreams(newStreams: List<StreamUi>): List<StreamUi> {
+        // Reset the streams arrangement if there was only one stream before
+        if (newStreams.size > 1 && thumbnailsStreams.isEmpty()) {
+            featuredStreams = listOf()
+            thumbnailsStreams = listOf()
+        }
+
         val newFeaturedStreams = featuredStreams.toMutableList()
         val newThumbnailsStreams = thumbnailsStreams.toMutableList()
         val addedStreams = mutableListOf<StreamUi>()

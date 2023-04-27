@@ -145,8 +145,8 @@ class StreamsHandlerTest {
 
         advanceUntilIdle()
         val (newFeaturedStreams, newThumbnailsStreams) = streamsHandler.streamsArrangement.first()
-        assertEquals(newStreams.take(DefaultMaxFeatured), newFeaturedStreams)
-        assertEquals(newStreams.takeLast(newStreams.size - DefaultMaxFeatured), newThumbnailsStreams)
+        assertEquals(listOf(streamMock2, streamMock5), newFeaturedStreams)
+        assertEquals(listOf(streamMock3, streamMock6), newThumbnailsStreams)
     }
 
     @Test
@@ -251,8 +251,8 @@ class StreamsHandlerTest {
 
         advanceUntilIdle()
         val (newFeaturedStreams, newThumbnailsStreams) = streamsHandler.streamsArrangement.first()
-        assertEquals(listOf(streamMock4, streamMock3), newFeaturedStreams)
-        assertEquals(listOf(streamMock2, streamMock6), newThumbnailsStreams)
+        assertEquals(listOf(streamMock4, streamMock6), newFeaturedStreams)
+        assertEquals(listOf(streamMock3, streamMock2), newThumbnailsStreams)
     }
 
     @Test
@@ -291,6 +291,25 @@ class StreamsHandlerTest {
         val (newFeaturedStreams, newThumbnailsStreams) = streamsHandler.streamsArrangement.first()
         assertEquals(streams.take(DefaultMaxFeatured), newFeaturedStreams)
         assertEquals(streams.takeLast(streams.size - DefaultMaxFeatured), newThumbnailsStreams)
+    }
+
+    @Test
+    fun resetArrangementWhenReceivingMoreThanOneStreamAndThereAreNoThumbnails() = runTest {
+        val streams = listOf(streamMock1)
+        streamsFlow.value = streams
+
+        advanceUntilIdle()
+        val (featuredStreams, thumbnailsStreams) = streamsHandler.streamsArrangement.first()
+        assertEquals(listOf(streamMock1), featuredStreams)
+        assertEquals(0, thumbnailsStreams.count())
+
+        val newStreams = listOf(streamMock2, streamMock1)
+        streamsFlow.value = newStreams
+
+        advanceUntilIdle()
+        val (newFeaturedStreams, newThumbnailsStreams) = streamsHandler.streamsArrangement.first()
+        assertEquals(listOf(streamMock2), newFeaturedStreams)
+        assertEquals(listOf(streamMock1), newThumbnailsStreams)
     }
 
     companion object {
