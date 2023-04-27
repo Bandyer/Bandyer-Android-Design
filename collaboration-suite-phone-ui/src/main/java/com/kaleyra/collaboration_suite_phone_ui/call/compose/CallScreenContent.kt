@@ -18,7 +18,7 @@ internal fun CallScreenContent(
     callState: CallStateUi,
     maxWidth: Dp,
     onBackPressed: () -> Unit,
-    onStreamFullscreenClick: (String) -> Unit,
+    onStreamFullscreenClick: (String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(
