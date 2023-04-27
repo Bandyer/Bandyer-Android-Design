@@ -17,38 +17,28 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class CallViewModel(configure: suspend () -> Configuration) :
-    BaseViewModel<CallUiState>(configure) {
+class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallUiState>(configure) {
 
     override fun initialState() = CallUiState()
 
     private val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
-    private val maxFeatured = MutableStateFlow(2)
-
-    private var fullscreenStreamId = MutableStateFlow<String?>(null)
-
     private val streams = call
         .toStreamsUi()
         .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
 
+    private val maxNumberOfFeaturedStreams = MutableStateFlow(DEFAULT_FEATURED_STREAMS_COUNT)
+
     private val streamsHandler = StreamsHandler(
         streams = streams,
-        nOfMaxFeatured = maxFeatured,
+        nOfMaxFeatured = maxNumberOfFeaturedStreams,
         coroutineScope = viewModelScope
     )
 
+    private var fullscreenStreamId = MutableStateFlow<String?>(null)
+
     init {
         // TODO add watermark
-
-//        call
-//            .map { it.extras.preferredType }
-//            .take(1)
-//            .onEach {
-//                if (!viewModel.micPermission.value.isAllowed && it.hasAudio() && it.isAudioEnabled()) viewModel.onRequestMicPermission(this)
-//                if (!viewModel.camPermission.value.isAllowed && it.hasVideo() && it.isVideoEnabled()) viewModel.onRequestCameraPermission(this)
-//            }
-//            .launchIn(lifecycleScope)
 
         streamsHandler.streamsArrangement
             .onEach { (featuredStreams, thumbnailsStreams) ->
@@ -104,17 +94,28 @@ class CallViewModel(configure: suspend () -> Configuration) :
         }
     }
 
-    fun setNumberOfFeaturedStreams(number: Int) {
-        maxFeatured.value = number
+    fun updateStreamsArrangement(isPortrait: Boolean, isLargeScreen: Boolean) {
+        val count = when {
+            // smartphone portrait
+            !isLargeScreen && isPortrait -> 1
+            // smartphone landscape
+            !isLargeScreen && !isPortrait -> 2
+            // tablet
+            else -> 4
+        }
+        maxNumberOfFeaturedStreams.value = count
     }
 
     fun swapThumbnail(stream: StreamUi) = streamsHandler.swapThumbnail(stream)
 
-    fun notifyFullscreenStream(streamId: String) {
-        fullscreenStreamId.value = if (fullscreenStreamId.value != streamId) streamId else null
+    fun fullscreenStream(streamId: String?) {
+        fullscreenStreamId.value = streamId
     }
 
     companion object {
+
+        const val DEFAULT_FEATURED_STREAMS_COUNT = 2
+
         fun provideFactory(configure: suspend () -> Configuration) =
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")

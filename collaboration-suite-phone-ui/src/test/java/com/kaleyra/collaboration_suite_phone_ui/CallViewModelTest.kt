@@ -9,11 +9,19 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.*
@@ -37,70 +45,94 @@ class CallViewModelTest {
 
     private val viewMock = mockk<VideoStreamView>()
 
-    private val videoMock = mockk<Input.Video.Camera>(relaxed = true) {
-        every { id } returns "videoId"
-        every { this@mockk.view } returns MutableStateFlow(viewMock)
-        every { enabled } returns MutableStateFlow(true)
-    }
+    private val videoMock = mockk<Input.Video.Camera>(relaxed = true)
 
-    private val myVideoMock = mockk<Input.Video.Camera.Internal>(relaxed = true) {
-        every { id } returns "myVideoId"
-        every { this@mockk.view } returns MutableStateFlow(viewMock)
-        every { enabled } returns MutableStateFlow(true)
-    }
+    private val myVideoMock = mockk<Input.Video.Camera.Internal>(relaxed = true)
 
-    private val streamMock1 = mockk<Stream> {
-        every { id } returns "streamId1"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
+    private val streamMock1 = mockk<Stream>()
 
-    private val streamMock2 = mockk<Stream> {
-        every { id } returns "streamId2"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
+    private val streamMock2 = mockk<Stream>()
 
-    private val streamMock3 = mockk<Stream> {
-        every { id } returns "streamId3"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
+    private val streamMock3 = mockk<Stream>()
 
-    private val myStreamMock = mockk<Stream.Mutable> {
-        every { id } returns "myStreamId"
-        every { this@mockk.video } returns MutableStateFlow(myVideoMock)
-    }
+    private val streamMock4 = mockk<Stream>()
+
+    private val myStreamMock = mockk<Stream.Mutable>()
 
     private val callParticipantsMock = mockk<CallParticipants>()
 
-    private val participantMeMock = mockk<CallParticipant.Me> {
-        every { userId } returns "userId1"
-        every { streams } returns MutableStateFlow(listOf(myStreamMock))
-        every { displayName } returns MutableStateFlow("myDisplayName")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
+    private val participantMeMock = mockk<CallParticipant.Me>()
 
-    private val participantMock1 = mockk<CallParticipant> {
-        every { userId } returns "userId1"
-        every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
-        every { displayName } returns MutableStateFlow("displayName1")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
+    private val participantMock1 = mockk<CallParticipant>()
 
-    private val participantMock2 = mockk<CallParticipant> {
-        every { userId } returns "userId2"
-        every { streams } returns MutableStateFlow(listOf(streamMock3))
-        every { displayName } returns MutableStateFlow("displayName2")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
+    private val participantMock2 = mockk<CallParticipant>()
 
     @Before
     fun setUp() {
+        mockkConstructor(StreamsHandler::class)
+        every { anyConstructed<StreamsHandler>().swapThumbnail(any()) } returns Unit
         viewModel = spyk(CallViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
-        every { callMock.inputs } returns inputsMock
-        every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
-        every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
-        every { callParticipantsMock.me } returns participantMeMock
-        every { callMock.extras.recording.state } returns MutableStateFlow(Call.Recording.State.Started)
+        with(callMock) {
+            every { inputs } returns inputsMock
+            every { participants } returns MutableStateFlow(callParticipantsMock)
+            every { extras.recording.state } returns MutableStateFlow(Call.Recording.State.Started)
+            every { state } returns MutableStateFlow(Call.State.Disconnected)
+        }
+        with(callParticipantsMock) {
+            every { others } returns listOf(participantMock1, participantMock2)
+            every { me } returns participantMeMock
+            every { list } returns others + me
+            every { creator() } returns me
+        }
+        with(videoMock) {
+            every { id } returns "videoId"
+            every { view } returns MutableStateFlow(viewMock)
+            every { enabled } returns MutableStateFlow(true)
+        }
+        with(myVideoMock) {
+            every { id } returns "myVideoId"
+            every { view } returns MutableStateFlow(viewMock)
+            every { enabled } returns MutableStateFlow(true)
+        }
+        with(streamMock1) {
+            every { id } returns "streamId1"
+            every { video } returns MutableStateFlow(videoMock)
+        }
+        with(streamMock2) {
+            every { id } returns "streamId2"
+            every { video } returns MutableStateFlow(videoMock)
+        }
+        with(streamMock3) {
+            every { id } returns "streamId3"
+            every { video } returns MutableStateFlow(videoMock)
+        }
+        with(streamMock4) {
+            every { id } returns "streamId4"
+            every { video } returns MutableStateFlow(videoMock)
+        }
+        with(myStreamMock) {
+            every { id } returns "myStreamId"
+            every { video } returns MutableStateFlow(myVideoMock)
+        }
+        with(participantMeMock) {
+            every { userId } returns "myUserId"
+            every { streams } returns MutableStateFlow(listOf(myStreamMock))
+            every { displayName } returns MutableStateFlow("myDisplayName")
+            every { displayImage } returns MutableStateFlow(uriMock)
+        }
+        with(participantMock1) {
+            every { userId } returns "userId1"
+            every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+            every { displayName } returns MutableStateFlow("displayName1")
+            every { displayImage } returns MutableStateFlow(uriMock)
+        }
+        with(participantMock2) {
+            every { userId } returns "userId2"
+            every { streams } returns MutableStateFlow(listOf(streamMock3))
+            every { displayName } returns MutableStateFlow("displayName2")
+            every { displayImage } returns MutableStateFlow(uriMock)
+        }
     }
 
     @After
@@ -116,6 +148,26 @@ class CallViewModelTest {
         advanceUntilIdle()
         val new = viewModel.uiState.first().callState
         assertEquals(CallStateUi.Connected, new)
+    }
+
+    @Test
+    fun testCallUiState_featuredStreamsUpdated() = runTest {
+        val current = viewModel.uiState.first().featuredStreams
+        assertEquals(ImmutableList<StreamUi>(listOf()), current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().featuredStreams
+        val featuredStreamsIds = new.value.map { it.id }
+        assertEquals(listOf(streamMock1.id, streamMock2.id), featuredStreamsIds)
+    }
+
+    @Test
+    fun testCallUiState_thumbnailStreamsUpdated() = runTest {
+        val current = viewModel.uiState.first().thumbnailStreams
+        assertEquals(ImmutableList<StreamUi>(listOf()), current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().thumbnailStreams
+        val thumbnailStreamsIds = new.value.map { it.id }
+        assertEquals(listOf(streamMock3.id, myStreamMock.id), thumbnailStreamsIds)
     }
 
     @Test
@@ -172,5 +224,71 @@ class CallViewModelTest {
         advanceUntilIdle()
         coVerify { inputsMock.request(contextMock, Inputs.Type.Camera.Internal) }
         assertEquals(cameraMock, myStreamMock.video.value)
+    }
+
+    @Test
+    fun testFullscreenStream() = runTest {
+        viewModel.fullscreenStream(streamMock1.id)
+        advanceUntilIdle()
+        val fullscreenStream = viewModel.uiState.first().fullscreenStream
+        assertEquals(streamMock1.id, fullscreenStream?.id)
+    }
+
+    @Test
+    fun testUpdateStreamArrangement_isPortraitAndIsLargeScreen_fourMaxFeaturedStreams() = runTest {
+        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2, streamMock4))
+        viewModel.updateStreamsArrangement(isPortrait = true, isLargeScreen = true)
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().featuredStreams
+        assertEquals(4, actual.count())
+    }
+
+    @Test
+    fun testUpdateStreamArrangement_isNotPortraitAndIsNotLargeScreen_twoMaxFeaturedStreams() = runTest {
+        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2, streamMock4))
+        viewModel.updateStreamsArrangement(isPortrait = false, isLargeScreen = false)
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().featuredStreams
+        assertEquals(2, actual.count())
+    }
+
+    @Test
+    fun testUpdateStreamArrangement_isPortraitAndIsNotLargeScreen_oneMaxFeaturedStreams() = runTest {
+        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2, streamMock4))
+        viewModel.updateStreamsArrangement(isPortrait = true, isLargeScreen = false)
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().featuredStreams
+        assertEquals(1, actual.count())
+    }
+
+    @Test
+    fun testUpdateStreamArrangement_isNotPortraitAndIsLargeScreen_fourMaxFeaturedStreams() = runTest {
+        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2, streamMock4))
+        viewModel.updateStreamsArrangement(isPortrait = false, isLargeScreen = true)
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().featuredStreams
+        assertEquals(4, actual.count())
+    }
+
+    @Test
+    fun testSwapThumbnail() {
+        val streamMock = mockk<StreamUi>()
+        viewModel.swapThumbnail(streamMock)
+        verify { anyConstructed<StreamsHandler>().swapThumbnail(streamMock) }
+    }
+
+    @Test
+    fun fullscreenStreamRemovedFromStreams_fullscreenStreamIsNull() = runTest {
+        val participantStreams = MutableStateFlow(listOf(streamMock1, streamMock2))
+        every { participantMock1.streams } returns participantStreams
+        viewModel.fullscreenStream(streamMock1.id)
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().fullscreenStream
+        assertEquals(streamMock1.id, actual?.id)
+
+        participantStreams.value = listOf(streamMock2)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().fullscreenStream
+        assertEquals(null, new?.id)
     }
 }
