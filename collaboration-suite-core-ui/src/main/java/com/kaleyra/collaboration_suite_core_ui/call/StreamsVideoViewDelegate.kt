@@ -49,7 +49,8 @@ interface StreamsVideoViewDelegate {
     private fun Flow<List<Stream>>.mapStreamsToVideos(): Flow<List<Input.Video?>> {
         return this.flatMapLatest { streams ->
             val streamVideos = mutableMapOf<String, Input.Video?>()
-            streams
+            if (streams.isEmpty()) flowOf(listOf())
+            else streams
                 .map { stream ->
                     stream.video
                         .map { Pair(stream.id, it) }
