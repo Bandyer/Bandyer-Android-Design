@@ -26,6 +26,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +36,9 @@ import androidx.fragment.app.FragmentActivity
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeDevice
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeHeight
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isOrientationPortrait
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContent
@@ -234,7 +238,7 @@ internal fun CallScreen(
     }
     val backPressed by remember {
         derivedStateOf {
-            if (callUiState.fullscreenStream != null) { { viewModel.notifyFullscreenStream(callUiState.fullscreenStream!!.id) } }
+            if (callUiState.fullscreenStream != null) { { viewModel.fullscreenStream(null) } }
             else onBackPressed
         }
     }
@@ -248,10 +252,11 @@ internal fun CallScreen(
         callScreenState = callScreenState,
         permissionsState = permissionsState,
         onThumbnailStreamClick = viewModel::swapThumbnail,
-        onFullscreenStreamClick = viewModel::notifyFullscreenStream,
+        onFullscreenStreamClick = viewModel::fullscreenStream,
         // TODO remember on back pressed
         onBackPressed = backPressed,
-        onFileShareDisplayed = onFileShareDisplayed
+        onFileShareDisplayed = onFileShareDisplayed,
+        onConfigurationChange = viewModel::updateStreamsArrangement
     )
 }
 
@@ -271,11 +276,13 @@ internal fun CallScreen(
     callUiState: CallUiState,
     callScreenState: CallScreenState,
     permissionsState: MultiplePermissionsState,
-    onThumbnailStreamClick: (StreamUi) -> Unit,
-    onFullscreenStreamClick: (String) -> Unit,
     onBackPressed: () -> Unit,
-    onFileShareDisplayed: () -> Unit
+    onConfigurationChange: (Boolean, Boolean) -> Unit,
+    onThumbnailStreamClick: (StreamUi) -> Unit,
+    onFullscreenStreamClick: (String?) -> Unit,
+    onFileShareDisplayed: () -> Unit,
 ) {
+    val configuration = LocalConfiguration.current
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
     val callState by rememberUpdatedState(callUiState.callState)
 
@@ -328,6 +335,11 @@ internal fun CallScreen(
 
     // TODO check if I can remove this
     BoxWithConstraints(modifier = Modifier.horizontalSystemBarsPadding()) {
+
+        LaunchedEffect(configuration, maxWidth, onConfigurationChange) {
+            onConfigurationChange(configuration.isOrientationPortrait(), isAtLeastMediumSizeDevice(maxWidth, maxHeight))
+        }
+
         val navBarsBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         BottomSheetScaffold(
             modifier = Modifier.fillMaxSize(),
@@ -377,11 +389,6 @@ internal fun CallScreen(
                 )
             }
         )
-
-        // telefono portrait -> featured max 1
-        // telefono landscape -> featured max 2
-        // tablet portrait -> featured max 2
-        // tablet landscape -> featured max 4
 
         CallScreenAppBar(
             currentSheetComponent = callScreenState.sheetContentState.currentComponent,
