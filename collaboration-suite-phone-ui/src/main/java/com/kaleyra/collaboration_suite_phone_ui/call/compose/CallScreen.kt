@@ -277,7 +277,7 @@ internal fun CallScreen(
     callScreenState: CallScreenState,
     permissionsState: MultiplePermissionsState,
     onBackPressed: () -> Unit,
-    onConfigurationChange: (Boolean, Boolean) -> Unit,
+    onConfigurationChange: (Boolean) -> Unit,
     onThumbnailStreamClick: (StreamUi) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
     onFileShareDisplayed: () -> Unit,
@@ -337,7 +337,7 @@ internal fun CallScreen(
     BoxWithConstraints(modifier = Modifier.horizontalSystemBarsPadding()) {
 
         LaunchedEffect(configuration, maxWidth, onConfigurationChange) {
-            onConfigurationChange(configuration.isOrientationPortrait(), isAtLeastMediumSizeDevice(maxWidth, maxHeight))
+            onConfigurationChange(isAtLeastMediumSizeDevice(maxWidth, maxHeight))
         }
 
         val navBarsBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
