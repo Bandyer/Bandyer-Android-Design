@@ -19,7 +19,6 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class StreamsHandlerTest {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     var mainDispatcherRule = MainDispatcherRule()
 

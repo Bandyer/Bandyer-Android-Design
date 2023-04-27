@@ -94,13 +94,9 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
         }
     }
 
-    fun updateStreamsArrangement(isPortrait: Boolean, isLargeScreen: Boolean) {
+    fun updateStreamsArrangement(isMediumSizeDevice: Boolean) {
         val count = when {
-            // smartphone portrait
-            !isLargeScreen && isPortrait -> 1
-            // smartphone landscape
-            !isLargeScreen && !isPortrait -> 2
-            // tablet
+            !isMediumSizeDevice -> 2
             else -> 4
         }
         maxNumberOfFeaturedStreams.value = count

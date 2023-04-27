@@ -9,19 +9,14 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.*
@@ -235,36 +230,18 @@ class CallViewModelTest {
     }
 
     @Test
-    fun testUpdateStreamArrangement_isPortraitAndIsLargeScreen_fourMaxFeaturedStreams() = runTest {
+    fun testUpdateStreamArrangement_isNotMediumSizeDevice_twoMaxFeaturedStreams() = runTest {
         every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2, streamMock4))
-        viewModel.updateStreamsArrangement(isPortrait = true, isLargeScreen = true)
-        advanceUntilIdle()
-        val actual = viewModel.uiState.first().featuredStreams
-        assertEquals(4, actual.count())
-    }
-
-    @Test
-    fun testUpdateStreamArrangement_isNotPortraitAndIsNotLargeScreen_twoMaxFeaturedStreams() = runTest {
-        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2, streamMock4))
-        viewModel.updateStreamsArrangement(isPortrait = false, isLargeScreen = false)
+        viewModel.updateStreamsArrangement(false)
         advanceUntilIdle()
         val actual = viewModel.uiState.first().featuredStreams
         assertEquals(2, actual.count())
     }
 
     @Test
-    fun testUpdateStreamArrangement_isPortraitAndIsNotLargeScreen_oneMaxFeaturedStreams() = runTest {
+    fun testUpdateStreamArrangement_isMediumSizeDevice_fourMaxFeaturedStreams() = runTest {
         every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2, streamMock4))
-        viewModel.updateStreamsArrangement(isPortrait = true, isLargeScreen = false)
-        advanceUntilIdle()
-        val actual = viewModel.uiState.first().featuredStreams
-        assertEquals(1, actual.count())
-    }
-
-    @Test
-    fun testUpdateStreamArrangement_isNotPortraitAndIsLargeScreen_fourMaxFeaturedStreams() = runTest {
-        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2, streamMock4))
-        viewModel.updateStreamsArrangement(isPortrait = false, isLargeScreen = true)
+        viewModel.updateStreamsArrangement(true)
         advanceUntilIdle()
         val actual = viewModel.uiState.first().featuredStreams
         assertEquals(4, actual.count())
