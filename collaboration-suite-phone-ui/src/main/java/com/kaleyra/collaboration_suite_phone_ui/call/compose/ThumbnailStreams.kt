@@ -18,6 +18,7 @@ internal fun ThumbnailStreams(
 ) {
     LazyRow(
         contentPadding = contentPadding,
+        reverseLayout = true,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
     ) {
