@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isMediumSizeWidth
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isOrientationPortrait
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
@@ -51,15 +53,12 @@ internal class CallComponentState(
     private val maxWidth: Dp
 ) {
 
-    private val isDevicePortrait: Boolean
-        get() = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
-
     val columns by derivedStateOf {
         when {
             // Smartphone portrait
-            isDevicePortrait && maxWidth < 600.dp -> 1
+            configuration.isOrientationPortrait() && !maxWidth.isMediumSizeWidth() -> 1
             // Tablet portrait
-            isDevicePortrait && featuredStreamsCount > 2 -> 2
+            configuration.isOrientationPortrait() && featuredStreamsCount > 2 -> 2
             // Landscape
             featuredStreamsCount > 1 -> 2
             else -> 1
@@ -74,7 +73,7 @@ internal fun CallComponent(
     ),
     maxWidth: Dp,
     onBackPressed: () -> Unit,
-    onStreamFullscreenClick: (String) -> Unit,
+    onStreamFullscreenClick: (String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -99,7 +98,7 @@ internal fun CallComponent(
     callUiState: CallUiState,
     callComponentState: CallComponentState,
     onBackPressed: () -> Unit,
-    onStreamFullscreenClick: (String) -> Unit,
+    onStreamFullscreenClick: (String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val shouldShowCallInfo by remember(callUiState) { callUiState.shouldShowCallInfo() }
@@ -128,7 +127,10 @@ internal fun CallComponent(
                         stream = stream,
                         isFullscreen = callUiState.fullscreenStream != null,
                         onBackPressed = if (index == 0 && !shouldShowCallInfo) onBackPressed else null,
-                        onFullscreenClick = onStreamFullscreenClick,
+                        // TODO optimize recomposition
+                        onFullscreenClick = remember(onStreamFullscreenClick, callUiState.fullscreenStream) {
+                            { if (callUiState.fullscreenStream != null) onStreamFullscreenClick(null) else onStreamFullscreenClick(stream.id) }
+                        },
                         modifier = remember(onStreamFullscreenClick) {
                             Modifier.pointerInput(onStreamFullscreenClick) {
                                 detectTapGestures(onDoubleTap = { onStreamFullscreenClick(stream.id) })

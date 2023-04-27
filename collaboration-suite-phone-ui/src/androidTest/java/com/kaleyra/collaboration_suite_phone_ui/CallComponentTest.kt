@@ -44,7 +44,7 @@ class CallComponentTest {
 
     private var isBackPressed = false
 
-    private var fullscreenStreamId: String? = null
+    private var fullscreenStreamId: String? = ""
 
     @Before
     fun setUp() {
@@ -64,7 +64,7 @@ class CallComponentTest {
         callUiState = CallUiState()
         callComponentState = defaultState()
         isBackPressed = false
-        fullscreenStreamId = null
+        fullscreenStreamId = ""
     }
 
     @Test
@@ -92,7 +92,7 @@ class CallComponentTest {
     fun userClicksExitFullscreen_onFullscreenStreamClickInvoked() {
         callUiState = CallUiState(featuredStreams = featuredStreamsMock, fullscreenStream = streamMock1)
         composeTestRule.onNodeWithContentDescription(getExitFullscreenText()).performClick()
-        assertEquals(streamMock1.id, fullscreenStreamId)
+        assertEquals(null, fullscreenStreamId)
     }
 
     @Test
