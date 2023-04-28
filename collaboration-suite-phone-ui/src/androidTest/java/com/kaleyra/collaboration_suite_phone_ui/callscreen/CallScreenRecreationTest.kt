@@ -36,7 +36,7 @@ class CallScreenRecreationTest {
                         initialLineState = LineState.Expanded
                     )
                 ),
-                permissionsState = rememberMultiplePermissionsState(listOf()) { },
+                permissionsState = rememberMultiplePermissionsState(listOf()),
                 onThumbnailStreamClick = { },
                 onFullscreenStreamClick = { },
                 onFileShareDisplayed = { },

@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.Dp
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetValue
 
-private const val TargetStateFractionThreshold = .99f
+const val TargetStateFractionThreshold = .99f
 
 @OptIn(ExperimentalMaterialApi::class)
 internal fun BottomSheetState.isHidden(): State<Boolean> {
