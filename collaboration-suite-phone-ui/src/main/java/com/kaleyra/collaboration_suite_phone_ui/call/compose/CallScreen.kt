@@ -23,6 +23,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,8 +39,6 @@ import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeDevice
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeHeight
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isOrientationPortrait
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContent
@@ -64,6 +64,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 private val PeekHeight = 48.dp
 private val HalfExpandedHeight = 166.dp
@@ -84,14 +85,15 @@ internal fun rememberCallScreenState(
     isDarkMode: Boolean = isSystemInDarkTheme(),
     scope: CoroutineScope = rememberCoroutineScope(),
     density: Density = LocalDensity.current
-) = remember(
+) = rememberSaveable(
     sheetState,
     sheetContentState,
     shouldShowFileShareComponent,
     systemUiController,
     isDarkMode,
     scope,
-    density
+    density,
+    saver = CallScreenState.Saver()
 ) {
     CallScreenState(
         sheetState = sheetState,
@@ -104,7 +106,6 @@ internal fun rememberCallScreenState(
     )
 }
 
-// TODO remove callUiState from CallScreenState to optimize recompositions
 internal class CallScreenState(
     val sheetState: BottomSheetState,
     val sheetContentState: BottomSheetContentState,
@@ -112,7 +113,7 @@ internal class CallScreenState(
     private val systemUiController: SystemUiController,
     private val isDarkMode: Boolean,
     private val scope: CoroutineScope,
-    density: Density
+    private val density: Density
 ) {
 
     private val hasCurrentSheetComponentAppBar by derivedStateOf {
@@ -203,8 +204,23 @@ internal class CallScreenState(
 
     companion object {
         private val FullScreenThreshold = 64.dp
+
+        fun Saver(): Saver<CallScreenState, *> = Saver(
+            save = { CallScreenStateSaver(it.sheetState, it.sheetContentState, it.shouldShowFileShareComponent, it.systemUiController, it.isDarkMode, it.scope, it.density) },
+            restore = { CallScreenState(it.first, it.second, it.third, it.fourth, it.fifth, it.sixth, it.seventh) }
+        )
     }
 }
+
+internal data class CallScreenStateSaver<out A, out B, out C, out D, out E, out F, out G>(
+    val first: A,
+    val second: B,
+    val third: C,
+    val fourth: D,
+    val fifth: E,
+    val sixth: F,
+    val seventh: G,
+) : Serializable
 
 @Composable
 internal fun CallScreen(
