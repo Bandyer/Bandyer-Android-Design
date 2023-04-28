@@ -28,7 +28,7 @@ class CallScreenRecreationTest {
         val restorationTester = StateRestorationTester(composeTestRule)
         restorationTester.setContent {
             CallScreen(
-                callUiState = CallUiState(),
+                callUiState = CallUiState(callState = CallStateUi.Connected),
                 callScreenState = rememberCallScreenState(
                     sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Expanded),
                     sheetContentState = rememberBottomSheetContentState(
