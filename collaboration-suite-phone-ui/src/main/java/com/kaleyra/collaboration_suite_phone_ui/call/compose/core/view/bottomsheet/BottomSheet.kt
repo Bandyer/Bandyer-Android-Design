@@ -107,6 +107,7 @@ internal fun rememberBottomSheetState(
 ): BottomSheetState {
     return rememberSaveable(
         animationSpec,
+        collapsable,
         saver = BottomSheetState.Saver(
             animationSpec = animationSpec,
             collapsable = collapsable,
