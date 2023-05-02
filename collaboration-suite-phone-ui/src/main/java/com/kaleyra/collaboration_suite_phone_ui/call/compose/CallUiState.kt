@@ -12,6 +12,7 @@ data class CallUiState(
     val featuredStreams: ImmutableList<StreamUi> = ImmutableList(listOf()),
     val fullscreenStream: StreamUi? = null,
     val watermarkInfo: WatermarkInfo? = null,
+    val isAudioOnly: Boolean = false,
     val isGroupCall: Boolean = false,
     val isRecording: Boolean = false,
     val isCameraPermissionRequired: Boolean = true,
