@@ -51,6 +51,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.Multiple
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.RecordAudioPermission
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.rememberMultiplePermissionsState
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
@@ -142,7 +143,6 @@ internal class CallScreenState(
         isSheetFullScreen && hasCurrentSheetComponentAppBar
     }
 
-    // TODO test this
     val shouldEnableSheetGesture by derivedStateOf {
         sheetContentState.currentComponent != BottomSheetComponent.Whiteboard
     }
@@ -184,7 +184,7 @@ internal class CallScreenState(
 
     fun onCallActionClick(action: CallAction) {
         when (action) {
-            is CallAction.Audio, is CallAction.ScreenShare, is CallAction.FileShare, is CallAction.Whiteboard -> {
+            is CallAction.Audio, is CallAction.ScreenShare, is CallAction.FileShare, is CallAction.Whiteboard, is CallAction.VirtualBackground -> {
                 scope.launch {
                     sheetState.expand()
                 }
@@ -232,7 +232,7 @@ internal fun CallScreen(
             }
         }
     }
-    val backPressed by remember {
+    val onBackPressedInternal by remember {
         derivedStateOf {
             if (callUiState.fullscreenStream != null) { { viewModel.fullscreenStream(null) } }
             else onBackPressed
@@ -249,8 +249,7 @@ internal fun CallScreen(
         permissionsState = permissionsState,
         onThumbnailStreamClick = viewModel::swapThumbnail,
         onFullscreenStreamClick = viewModel::fullscreenStream,
-        // TODO remember on back pressed
-        onBackPressed = backPressed,
+        onBackPressed = onBackPressedInternal,
         onFileShareDisplayed = onFileShareDisplayed,
         onConfigurationChange = viewModel::updateStreamsArrangement
     )
@@ -271,7 +270,7 @@ private fun getPermissions(callUiState: CallUiState): State<List<String>> {
 internal fun CallScreen(
     callUiState: CallUiState,
     callScreenState: CallScreenState,
-    permissionsState: MultiplePermissionsState,
+    permissionsState: MultiplePermissionsState?,
     onBackPressed: () -> Unit,
     onConfigurationChange: (Boolean) -> Unit,
     onThumbnailStreamClick: (StreamUi) -> Unit,
@@ -305,30 +304,26 @@ internal fun CallScreen(
             .launchIn(this)
     }
 
-    // TODO test this
-    if (callScreenState.shouldShowFileShareComponent && !callScreenState.sheetState.isHidden) {
+    if (callScreenState.shouldShowFileShareComponent) {
         LaunchedEffect(Unit) {
             callScreenState.navigateToFileShareComponent()
             onFileShareDisplayed()
         }
     }
 
-    // TODO test this
     LaunchedEffect(callUiState) {
         when {
-            callUiState.callState != CallStateUi.Dialing && callUiState.callState != CallStateUi.Connected -> callScreenState.hideSheet()
+            callUiState.callState != CallStateUi.Dialing && callUiState.callState != CallStateUi.Connected && callUiState.callState != CallStateUi.Reconnecting -> callScreenState.hideSheet()
             callScreenState.isSheetHidden -> callScreenState.halfExpandSheet()
         }
     }
 
     when {
-        // TODO test this
-        callScreenState.sheetState.isHidden -> BackHandler(onBack = onBackPressed)
+        callScreenState.sheetState.isHidden && callUiState.callState is CallStateUi.Disconnected.Ended -> BackHandler(onBack = onBackPressed)
         callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackHandler(onBack = callScreenState::navigateToCallActionsComponent)
         !callScreenState.isSheetNotDraggableDown -> BackHandler(onBack = callScreenState::collapseSheet)
     }
 
-    // TODO check if I can remove this
     BoxWithConstraints(modifier = Modifier.horizontalSystemBarsPadding()) {
 
         LaunchedEffect(configuration, maxWidth, onConfigurationChange) {
@@ -338,14 +333,12 @@ internal fun CallScreen(
         val navBarsBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         BottomSheetScaffold(
             modifier = Modifier.fillMaxSize(),
-            // TODO test this
             sheetGesturesEnabled = callScreenState.shouldEnableSheetGesture,
             sheetState = callScreenState.sheetState,
             sheetPeekHeight = PeekHeight + navBarsBottomPadding,
             sheetHalfExpandedHeight = HalfExpandedHeight + navBarsBottomPadding,
             sheetElevation = 0.dp,
             anchor = {
-                // TODO test visibility
                 AnimatedVisibility(
                     visible = !callScreenState.isSheetHidden && callUiState.fullscreenStream == null,
                     enter = fadeIn(),
@@ -393,14 +386,24 @@ internal fun CallScreen(
     }
 }
 
-// TODO add these insets anchor's composable
-// val anchorInsets = navigationBarsInsets.only(WindowInsetsSides.Horizontal).add(cutOutInsets)
-
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 fun CallScreenPreview() {
     KaleyraTheme {
-//        CallScreen()
+        CallScreen(
+            callUiState = CallUiState(
+                callState = CallStateUi.Connected,
+                featuredStreams = ImmutableList(listOf(streamUiMock)),
+                thumbnailStreams = ImmutableList(listOf(streamUiMock))
+            ),
+            callScreenState = rememberCallScreenState(),
+            permissionsState = null,
+            onFileShareDisplayed = {},
+            onConfigurationChange = {},
+            onBackPressed = {},
+            onFullscreenStreamClick = {},
+            onThumbnailStreamClick = {}
+        )
     }
 }

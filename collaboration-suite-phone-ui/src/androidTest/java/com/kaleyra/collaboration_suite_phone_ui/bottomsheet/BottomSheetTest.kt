@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.min
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.performSwipe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -478,19 +479,6 @@ class BottomSheetTest {
             ) {
                 sheetInsets = it
             }
-        }
-    }
-
-    // Swipe for a fraction of the node's height
-    private fun SemanticsNodeInteraction.performSwipe(amount: Float) {
-        performTouchInput {
-            val startY = top
-            val endY = top - amount * height
-            swipe(
-                start = Offset(center.x, startY),
-                end = Offset(center.x, endY),
-                durationMillis = 200
-            )
         }
     }
 

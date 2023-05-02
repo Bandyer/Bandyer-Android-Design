@@ -25,6 +25,18 @@ internal fun SemanticsNodeInteraction.performScrollUp() {
     }
 }
 
+internal fun SemanticsNodeInteraction.performSwipe(amount: Float) {
+    performTouchInput {
+        val startY = top
+        val endY = top - amount * height
+        swipe(
+            start = Offset(center.x, startY),
+            end = Offset(center.x, endY),
+            durationMillis = 200
+        )
+    }
+}
+
 internal fun SemanticsNodeInteraction.assertRightPositionInRootIsEqualTo(
     expectedRight: Dp
 ): SemanticsNodeInteraction {

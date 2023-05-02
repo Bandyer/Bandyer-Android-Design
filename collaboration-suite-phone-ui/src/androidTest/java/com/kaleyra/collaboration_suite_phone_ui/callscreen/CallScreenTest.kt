@@ -7,28 +7,32 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.MockCallViewModelsStatesRule
+import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.mockAudioDevices
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.viewmodel.AudioOutputViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.rememberMultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.mockVirtualBackgrounds
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.viewmodel.VirtualBackgroundViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.findBackButton
+import com.kaleyra.collaboration_suite_phone_ui.performSwipe
 import io.mockk.every
 import io.mockk.mockkConstructor
+import io.mockk.spyk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -45,41 +49,56 @@ class CallScreenTest {
 
     private var callUiState by mutableStateOf(CallUiState())
 
-    private var sheetState by mutableStateOf(BottomSheetState(BottomSheetValue.Expanded))
+    private var sheetState by mutableStateOf(spyk(BottomSheetState(BottomSheetValue.Expanded)))
 
     private var sheetContentState by mutableStateOf(BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded))
 
+    private var shouldShowFileShareComponent by mutableStateOf(false)
+
     private var sideEffect by mutableStateOf(suspend { })
+
+    private var callScreenState: CallScreenState? = null
 
     private var thumbnailClickedStream: StreamUi? = null
 
     private var backPressed = false
 
-    private var answerClicked = false
-
-    private var declineClicked = false
+    private var fileShareDisplayed = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            val onBackPressedDispatcher = composeTestRule.activity.onBackPressedDispatcher
-            CompositionLocalProvider(LocalBackPressedDispatcher provides onBackPressedDispatcher) {
-                CallScreen(
-                    callScreenState = rememberCallScreenState(
-                        callUiState = callUiState,
-                        sheetState = sheetState,
-                        sheetContentState = sheetContentState
-                    ),
-                    onThumbnailStreamClick = { thumbnailClickedStream = it },
-                    onBackPressed = { backPressed = true },
-                    onAnswerClick = { answerClicked = true },
-                    onDeclineClick = { declineClicked =  true }
-                )
-                LaunchedEffect(sideEffect) {
-                    sideEffect.invoke()
-                }
+            CallScreen(
+                callUiState = callUiState,
+                callScreenState = rememberCallScreenState(
+                    sheetState = sheetState,
+                    sheetContentState = sheetContentState,
+                    shouldShowFileShareComponent = shouldShowFileShareComponent
+                ).also {
+                    callScreenState = spyk(it)
+                },
+                onThumbnailStreamClick = { thumbnailClickedStream = it },
+                onBackPressed = { backPressed = true },
+                permissionsState = null,
+                onConfigurationChange = { },
+                onFullscreenStreamClick = { },
+                onFileShareDisplayed = { fileShareDisplayed = true }
+            )
+            LaunchedEffect(sideEffect) {
+                sideEffect.invoke()
             }
         }
+    }
+
+    @After
+    fun tearDown() {
+        callScreenState = null
+        callUiState = CallUiState()
+        sheetState = spyk(BottomSheetState(BottomSheetValue.Expanded))
+        shouldShowFileShareComponent = false
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded)
+        thumbnailClickedStream = null
+        backPressed = false
     }
 
     @Test
@@ -146,6 +165,11 @@ class CallScreenTest {
         expandedComponent_userPerformsBack_callActionsDisplayed(initialComponent = BottomSheetComponent.Whiteboard)
     }
 
+    @Test
+    fun virtualBackgroundComponent_userPerformsBack_callActionsDisplayed() {
+        expandedComponent_userPerformsBack_callActionsDisplayed(initialComponent = BottomSheetComponent.VirtualBackground)
+    }
+
     private fun expandedComponent_userPerformsBack_callActionsDisplayed(initialComponent: BottomSheetComponent) {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         sheetContentState = BottomSheetContentState(initialComponent, LineState.Expanded)
@@ -166,11 +190,38 @@ class CallScreenTest {
     }
 
     @Test
+    fun callActionsComponentExpandedAndNotCollapsable_userPerformsBack_sheetIsHalfExpanded() {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded, isCollapsable = false)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded)
+        composeTestRule.onNodeWithTag(CallActionsComponentTag).assertIsDisplayed()
+        Espresso.pressBack()
+        composeTestRule.waitForIdle()
+        assertEquals(BottomSheetValue.HalfExpanded, sheetState.currentValue)
+    }
+
+    @Test
+    fun callActionsComponentHalfExpandedAndNotCollapsable_userPerformsBack_activityIsFinished() {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.HalfExpanded, isCollapsable = false)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
+        Espresso.pressBackUnconditionally()
+        assertEquals(Lifecycle.State.DESTROYED, composeTestRule.activityRule.scenario.state)
+    }
+
+    @Test
     fun callActionsComponentCollapsed_userPerformsBack_activityIsFinished() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
         Espresso.pressBackUnconditionally()
         assertEquals(Lifecycle.State.DESTROYED, composeTestRule.activityRule.scenario.state)
+    }
+
+    @Test
+    fun sheetHiddenAndCallStateEnded_userPerformsBack_onBackPressedInvoked() {
+        callUiState = CallUiState(callState = CallStateUi.Disconnected.Ended)
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Hidden)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
+        Espresso.pressBack()
+        assert(backPressed)
     }
 
     @Test
@@ -195,6 +246,12 @@ class CallScreenTest {
     fun userClicksAudioOutputAction_sheetIsExpanded() {
         val audioOutput = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route)
         userClicksAction_sheetIsExpanded(audioOutput)
+    }
+
+    @Test
+    fun userClicksVirtualBackgroundAction_sheetIsExpanded() {
+        val virtualBackground = composeTestRule.activity.getString(R.string.kaleyra_call_action_virtual_background)
+        userClicksAction_sheetIsExpanded(virtualBackground)
     }
 
     private fun userClicksAction_sheetIsExpanded(actionDescription: String) {
@@ -225,6 +282,11 @@ class CallScreenTest {
         sheetHalfExpanding_callActionsComponentDisplayed(BottomSheetComponent.Whiteboard)
     }
 
+    @Test
+    fun virtualBackgroundComponent_sheetHalfExpanding_callActionsComponentDisplayed() {
+        sheetHalfExpanding_callActionsComponentDisplayed(BottomSheetComponent.VirtualBackground)
+    }
+
     private fun sheetHalfExpanding_callActionsComponentDisplayed(initialComponent: BottomSheetComponent) {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         sheetContentState = BottomSheetContentState(initialComponent, LineState.Collapsed())
@@ -250,6 +312,11 @@ class CallScreenTest {
 
     @Test
     fun whiteboardComponent_sheetCollapsing_callActionsComponentDisplayed() {
+        sheetCollapsing_callActionsComponentDisplayed(BottomSheetComponent.Whiteboard)
+    }
+
+    @Test
+    fun virtualBackgroundComponent_sheetCollapsing_callActionsComponentDisplayed() {
         sheetCollapsing_callActionsComponentDisplayed(BottomSheetComponent.Whiteboard)
     }
 
@@ -294,6 +361,15 @@ class CallScreenTest {
             actionContentDescription = composeTestRule.activity.getString(R.string.kaleyra_call_action_file_share),
             targetComponentTag = FileShareComponentTag,
             targetComponent = BottomSheetComponent.FileShare
+        )
+    }
+
+    @Test
+    fun userClicksVirtualBackgroundAction_virtualBackgroundIsDisplayed() {
+        userClicksAction_componentIsDisplayed(
+            actionContentDescription = composeTestRule.activity.getString(R.string.kaleyra_call_action_virtual_background),
+            targetComponentTag = VirtualBackgroundComponentTag,
+            targetComponent = BottomSheetComponent.VirtualBackground
         )
     }
 
@@ -349,6 +425,11 @@ class CallScreenTest {
         componentExpanded_appBarNotDisplayed(BottomSheetComponent.ScreenShare)
     }
 
+    @Test
+    fun virtualBackgroundComponentExpanded_appBarNotDisplayed() {
+        componentExpanded_appBarNotDisplayed(BottomSheetComponent.VirtualBackground)
+    }
+
     private fun componentExpanded_appBarNotDisplayed(component: BottomSheetComponent) {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         sheetContentState = BottomSheetContentState(component, LineState.Expanded)
@@ -357,28 +438,35 @@ class CallScreenTest {
 
     @Test
     fun sheetHidden_thumbnailStreamsAreNotDisplayed() {
+        callUiState = CallUiState(CallStateUi.Disconnected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
         checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.Hidden, areVisible = false)
     }
 
     @Test
     fun sheetCollapsed_thumbnailStreamsAreDisplayed() {
+        callUiState = CallUiState(CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
         checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.Collapsed, areVisible = true)
     }
 
     @Test
     fun sheetHalfExpanded_thumbnailStreamsAreDisplayed() {
+        callUiState = CallUiState(CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
         checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.HalfExpanded, areVisible = true)
     }
 
     @Test
     fun sheetExpanded_thumbnailStreamsAreDisplayed() {
+        callUiState = CallUiState(CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
         checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.Expanded, areVisible = true)
     }
 
     private fun checkThumbnailStreamsVisibility(sheetValue: BottomSheetValue, areVisible: Boolean) {
         sheetState = BottomSheetState(initialValue = sheetValue)
-        callUiState = CallUiState(thumbnailStreams = ImmutableList(listOf(streamUiMock)))
-        composeTestRule.onAllNodesWithTag(ThumbnailTag).assertCountEquals(if (areVisible) 1 else 0)
+        runBlocking {
+            val sheetStateValue = snapshotFlow { sheetState.currentValue }.first()
+            assertEquals(sheetValue, sheetStateValue)
+            composeTestRule.onAllNodesWithTag(ThumbnailTag).assertCountEquals(if (areVisible) 1 else 0)
+        }
     }
 
     @Test
@@ -419,7 +507,7 @@ class CallScreenTest {
     fun virtualBackgroundComponent_userClicksVirtualBackground_sheetHalfExpand() {
         mockkConstructor(VirtualBackgroundViewModel::class)
         every { anyConstructed<VirtualBackgroundViewModel>().uiState } returns MutableStateFlow(
-            VirtualBackgroundUiState(backgrounds = ImmutableList(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur("id1"), VirtualBackgroundUi.Image("id2"))))
+            VirtualBackgroundUiState(backgroundList = mockVirtualBackgrounds)
         )
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.VirtualBackground, LineState.Collapsed())
@@ -433,8 +521,65 @@ class CallScreenTest {
     }
 
     @Test
+    fun callStateConnected_sheetIsNotHidden() {
+        callUiState = CallUiState(callState = CallStateUi.Connected)
+        composeTestRule.waitForIdle()
+        assertNotEquals(BottomSheetValue.Hidden, sheetState.currentValue)
+    }
+
+    @Test
+    fun callStateDialing_sheetIsNotHidden() {
+        callUiState = CallUiState(callState = CallStateUi.Dialing)
+        composeTestRule.waitForIdle()
+        assertNotEquals(BottomSheetValue.Hidden, sheetState.currentValue)
+    }
+
+    @Test
+    fun callStateReconnecting_sheetIsNotHidden() {
+        callUiState = CallUiState(callState = CallStateUi.Reconnecting)
+        composeTestRule.waitForIdle()
+        assertNotEquals(BottomSheetValue.Hidden, sheetState.currentValue)
+    }
+
+    @Test
+    fun callStateRinging_sheetIsHidden() {
+        callUiState = CallUiState(callState = CallStateUi.Ringing)
+        composeTestRule.waitForIdle()
+        assertEquals(BottomSheetValue.Hidden, sheetState.currentValue)
+    }
+
+    @Test
+    fun callStateConnecting_sheetIsHidden() {
+        callUiState = CallUiState(callState = CallStateUi.Connecting)
+        composeTestRule.waitForIdle()
+        assertEquals(BottomSheetValue.Hidden, sheetState.currentValue)
+    }
+
+    @Test
+    fun callStateDisconnected_sheetIsHidden() {
+        callUiState = CallUiState(callState = CallStateUi.Disconnected)
+        composeTestRule.waitForIdle()
+        assertEquals(BottomSheetValue.Hidden, sheetState.currentValue)
+    }
+
+    @Test
+    fun shouldShowFileShareComponentTrue_fileShareComponentDisplayed() {
+        shouldShowFileShareComponent = true
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithTag(FileShareComponentTag).assertIsDisplayed()
+        assertEquals(BottomSheetComponent.FileShare, sheetContentState.currentComponent)
+    }
+
+    @Test
+    fun shouldShowFileShareComponentTrue_onFileShareDisplayedInvoked() {
+        shouldShowFileShareComponent = true
+        composeTestRule.waitForIdle()
+        assert(fileShareDisplayed)
+    }
+
+    @Test
     fun userClicksThumbnail_onThumbnailStreamClickInvoked() {
-        callUiState = CallUiState(thumbnailStreams = ImmutableList(listOf(streamUiMock)))
+        callUiState = CallUiState(callState = CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
         composeTestRule.onNodeWithTag(ThumbnailTag).performClick()
         assertEquals(streamUiMock, thumbnailClickedStream)
     }
@@ -446,20 +591,16 @@ class CallScreenTest {
     }
 
     @Test
-    fun userClicksAnswerButton_onAnswerClickInvoked() {
-        sheetState = BottomSheetState(BottomSheetValue.Hidden)
-        callUiState = callUiState.copy(callInfo = callInfoMock.copy(callState = CallState.Ringing))
-        val answer = composeTestRule.activity.getString(R.string.kaleyra_ringing_answer)
-        composeTestRule.onAllNodesWithContentDescription(answer).onFirst().performClick()
-        assert(answerClicked)
-    }
-
-    @Test
-    fun userClicksDeclineButton_onDeclineClickInvoked() {
-        sheetState = BottomSheetState(BottomSheetValue.Hidden)
-        callUiState = callUiState.copy(callInfo = callInfoMock.copy(callState = CallState.Ringing))
-        val decline = composeTestRule.activity.getString(R.string.kaleyra_ringing_decline)
-        composeTestRule.onAllNodesWithContentDescription(decline).onFirst().performClick()
-        assert(declineClicked)
+    fun whiteboardComponent_sheetGesturesAreDisabled() {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.Whiteboard, LineState.Expanded)
+        composeTestRule.onNodeWithTag(WhiteboardComponentTag).performSwipe(-0.5f)
+        composeTestRule.waitForIdle()
+        runBlocking {
+            val currentValue = snapshotFlow { sheetState.currentValue }.first()
+            composeTestRule.onNodeWithTag(WhiteboardComponentTag).assertIsDisplayed()
+            assertEquals(BottomSheetValue.Expanded, currentValue)
+            assertEquals(BottomSheetComponent.Whiteboard, sheetContentState.currentComponent)
+        }
     }
 }
