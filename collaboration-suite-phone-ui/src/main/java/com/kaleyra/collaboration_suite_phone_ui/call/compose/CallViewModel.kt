@@ -12,6 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMap
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.toCallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
@@ -59,6 +60,13 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
             val stream = featuredStreams.find { it.id == fullscreenStreamId }
             _uiState.update { it.copy(fullscreenStream = stream) }
         }.launchIn(viewModelScope)
+
+        call
+            .hasVideo()
+            .onEach { hasVideo ->
+                _uiState.update { it.copy(isAudioOnly = !hasVideo) }
+            }
+            .launchIn(viewModelScope)
 
         call
             .toCallStateUi()

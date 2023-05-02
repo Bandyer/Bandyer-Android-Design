@@ -72,6 +72,7 @@ class CallViewModelTest {
             every { inputs } returns inputsMock
             every { participants } returns MutableStateFlow(callParticipantsMock)
             every { extras.recording.state } returns MutableStateFlow(Call.Recording.State.Started)
+            every { extras.preferredType } returns Call.PreferredType()
             every { state } returns MutableStateFlow(Call.State.Disconnected)
         }
         with(callParticipantsMock) {
@@ -180,6 +181,16 @@ class CallViewModelTest {
         assertEquals(false, current)
         advanceUntilIdle()
         val new = viewModel.uiState.first().isRecording
+        assertEquals(true, new)
+    }
+
+    @Test
+    fun testCallUiState_isAudioOnlyUpdated() = runTest {
+        every { callMock.extras.preferredType } returns Call.PreferredType(video = null)
+        val current = viewModel.uiState.first().isAudioOnly
+        assertEquals(false, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().isAudioOnly
         assertEquals(true, new)
     }
 
