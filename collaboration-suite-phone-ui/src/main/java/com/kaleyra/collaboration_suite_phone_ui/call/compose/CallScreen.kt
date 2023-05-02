@@ -213,10 +213,9 @@ internal fun CallScreen(
 ) {
     val activity = LocalContext.current.findActivity() as FragmentActivity
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    // TODO link collapsable flag to call's type
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Hidden,
-        collapsable = true,
+        collapsable = !callUiState.isAudioOnly,
         confirmStateChange = { it != BottomSheetValue.Hidden }
     )
     val callScreenState = rememberCallScreenState(
