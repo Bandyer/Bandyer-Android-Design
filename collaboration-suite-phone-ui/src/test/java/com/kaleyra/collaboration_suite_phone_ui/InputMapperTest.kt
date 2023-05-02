@@ -4,6 +4,8 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasAudio
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isSharingScreen
@@ -99,5 +101,49 @@ class InputMapperTest {
         val result = call.isSharingScreen()
         val actual = result.first()
         Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun preferredTypeHasVideoNull_hasVideo_false() = runTest {
+        every { callMock.extras } returns mockk {
+            every { preferredType } returns Call.PreferredType(video = null)
+        }
+        val call = MutableStateFlow(callMock)
+        val result = call.hasVideo()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun preferredTypeHasVideo_hasVideo_true() = runTest {
+        every { callMock.extras } returns mockk {
+            every { preferredType } returns Call.PreferredType()
+        }
+        val call = MutableStateFlow(callMock)
+        val result = call.hasVideo()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun preferredTypeHasAudioNull_hasAudio_false() = runTest {
+        every { callMock.extras } returns mockk {
+            every { preferredType } returns Call.PreferredType(audio = null)
+        }
+        val call = MutableStateFlow(callMock)
+        val result = call.hasAudio()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun preferredTypeHasAudio_hasAudio_true() = runTest {
+        every { callMock.extras } returns mockk {
+            every { preferredType } returns Call.PreferredType()
+        }
+        val call = MutableStateFlow(callMock)
+        val result = call.hasAudio()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
     }
 }

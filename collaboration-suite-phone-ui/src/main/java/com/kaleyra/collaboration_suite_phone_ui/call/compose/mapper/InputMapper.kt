@@ -3,10 +3,19 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
 import kotlinx.coroutines.flow.*
 
 internal object InputMapper {
+
+    fun Flow<Call>.hasVideo(): Flow<Boolean> =
+        this.map { it.extras }
+            .map { it.preferredType.hasVideo() }
+
+    fun Flow<Call>.hasAudio(): Flow<Boolean> =
+        this.map { it.extras }
+            .map { it.preferredType.hasAudio() }
 
     fun Flow<Call>.isMyCameraEnabled(): Flow<Boolean> =
         this.toMe()
