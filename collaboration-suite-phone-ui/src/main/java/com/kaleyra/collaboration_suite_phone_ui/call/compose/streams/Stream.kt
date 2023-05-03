@@ -1,10 +1,14 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.streams
 
+import android.graphics.Rect
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toAndroidRect
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -27,7 +31,8 @@ internal fun Stream(
     streamView: ImmutableView? = null,
     avatar: ImmutableUri?,
     avatarSize: Dp = DefaultStreamAvatarSize,
-    avatarVisible: Boolean = false
+    avatarVisible: Boolean = false,
+    onStreamPositioned: ((Rect) -> Unit)? = null
 ) {
     Box {
         if (streamView != null && !avatarVisible) {
@@ -38,7 +43,11 @@ internal fun Stream(
                         parentView?.removeView(it)
                     }
                 },
-                modifier = Modifier.testTag(StreamViewTestTag)
+                modifier = Modifier
+                    .testTag(StreamViewTestTag)
+                    .onGloballyPositioned {
+                        onStreamPositioned?.invoke(it.boundsInRoot().toAndroidRect())
+                    }
             )
         }
 

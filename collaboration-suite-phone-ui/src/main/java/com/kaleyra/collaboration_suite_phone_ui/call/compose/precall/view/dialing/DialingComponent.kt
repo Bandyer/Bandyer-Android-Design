@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.dialing
 
+import android.graphics.Rect
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -24,11 +25,13 @@ internal fun DialingComponent(
         factory = PreCallViewModel.provideFactory(::requestConfiguration)
     ),
     onBackPressed: () -> Unit,
+    onPipStreamPositioned: (Rect) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     DialingComponent(
         uiState = uiState,
         onBackPressed = onBackPressed,
+        onPipStreamPositioned = onPipStreamPositioned,
         modifier = modifier
     )
 }
@@ -38,11 +41,13 @@ internal fun DialingComponent(
     uiState: PreCallUiState,
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = { },
+    onPipStreamPositioned: (Rect) -> Unit
 ) {
     PreCallComponent(
         uiState = uiState,
         subtitle = stringResource(id = R.string.kaleyra_call_status_dialing),
         onBackPressed = onBackPressed,
+        onPipStreamPositioned = onPipStreamPositioned,
         modifier = modifier.testTag(DialingContentTag)
     )
 }
@@ -53,7 +58,8 @@ fun DialingComponentPreview() {
     KaleyraTheme {
         DialingComponent(
             uiState = PreCallUiState(participants = listOf("user1", "user2")),
-            onBackPressed = { }
+            onBackPressed = { },
+            onPipStreamPositioned = { }
         )
     }
 }

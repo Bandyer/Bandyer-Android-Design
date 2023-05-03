@@ -1,6 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.content.res.Configuration
+import android.graphics.Rect
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.clickable
@@ -11,7 +13,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.toAndroidRect
+import androidx.compose.ui.graphics.toAndroidRectF
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
@@ -74,6 +79,7 @@ internal fun CallComponent(
     maxWidth: Dp,
     onBackPressed: () -> Unit,
     onStreamFullscreenClick: (String?) -> Unit,
+    onPipStreamPositioned: (Rect) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -88,17 +94,18 @@ internal fun CallComponent(
         callComponentState = callComponentState,
         onBackPressed = onBackPressed,
         onStreamFullscreenClick = onStreamFullscreenClick,
+        onPipStreamPositioned = onPipStreamPositioned,
         modifier = modifier
     )
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun CallComponent(
     callUiState: CallUiState,
     callComponentState: CallComponentState,
     onBackPressed: () -> Unit,
     onStreamFullscreenClick: (String?) -> Unit,
+    onPipStreamPositioned: (Rect) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val shouldShowCallInfo by remember(callUiState) { callUiState.shouldShowCallInfo() }
@@ -131,14 +138,17 @@ internal fun CallComponent(
                         onFullscreenClick = remember(onStreamFullscreenClick, callUiState.fullscreenStream) {
                             { if (callUiState.fullscreenStream != null) onStreamFullscreenClick(null) else onStreamFullscreenClick(stream.id) }
                         },
+                        onStreamPositioned = remember(onPipStreamPositioned) { { if (index == 0) onPipStreamPositioned(it) } },
                         modifier = remember(onStreamFullscreenClick) {
                             Modifier.pointerInput(onStreamFullscreenClick) {
                                 detectTapGestures(onDoubleTap = { onStreamFullscreenClick(stream.id) })
                             }
+
 //                        Modifier.streamClickable { resetCountDown = !resetCountDown }
                         },
                         headerModifier = remember(index, callComponentState, streamHeaderOffset) {
-                            Modifier.offset { IntOffset(x = 0, y = if (index < callComponentState.columns) streamHeaderOffset else 0) }
+                            Modifier
+                                .offset { IntOffset(x = 0, y = if (index < callComponentState.columns) streamHeaderOffset else 0) }
 //                                    .graphicsLayer { alpha = streamsHeaderAlpha }
                         }
                     )
@@ -233,7 +243,8 @@ fun CallContentPreview() {
                 maxWidth = 400.dp
             ),
             onBackPressed = { },
-            onStreamFullscreenClick = {  }
+            onStreamFullscreenClick = {  },
+            onPipStreamPositioned = { }
         )
     }
 }

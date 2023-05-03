@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
+import android.graphics.Rect
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -19,6 +20,7 @@ internal fun CallScreenContent(
     maxWidth: Dp,
     onBackPressed: () -> Unit,
     onStreamFullscreenClick: (String?) -> Unit,
+    onPipStreamPositioned: (Rect) -> Unit,
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(
@@ -33,9 +35,9 @@ internal fun CallScreenContent(
             }
         ) { target ->
             when(target) {
-                CallStateUi.Ringing -> RingingComponent(onBackPressed = onBackPressed)
-                CallStateUi.Dialing -> DialingComponent(onBackPressed = onBackPressed)
-                else -> CallComponent(maxWidth = maxWidth, onBackPressed = onBackPressed, onStreamFullscreenClick = onStreamFullscreenClick)
+                CallStateUi.Ringing -> RingingComponent(onBackPressed = onBackPressed, onPipStreamPositioned = onPipStreamPositioned)
+                CallStateUi.Dialing -> DialingComponent(onBackPressed = onBackPressed, onPipStreamPositioned = onPipStreamPositioned)
+                else -> CallComponent(maxWidth = maxWidth, onBackPressed = onBackPressed, onStreamFullscreenClick = onStreamFullscreenClick, onPipStreamPositioned = onPipStreamPositioned)
             }
         }
     }

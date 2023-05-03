@@ -20,6 +20,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtension
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getFileSize
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.PhoneCallActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick.FilePickActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick.FilePickBroadcastReceiver
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
@@ -127,12 +128,6 @@ internal fun FileShareComponent(
         }
     }
 
-    DisposableEffect(Unit) {
-        onDispose {
-            FilePickActivity.close()
-        }
-    }
-
     if (showFileSizeLimitAlertDialog) {
         MaxFileSizeDialog(onDismiss = { onAlertDialogDismiss?.invoke() })
     }
@@ -140,6 +135,7 @@ internal fun FileShareComponent(
     FilePickBroadcastReceiver(FilePickActivity.ACTION_FILE_PICK_EVENT) { uri ->
         if (uri.getFileSize(context) > MaxFileUploadBytes) onFileSizeLimitExceed?.invoke()
         else onUpload(uri)
+        context.startActivity(Intent(context, PhoneCallActivity::class.java))
     }
 
     Column(

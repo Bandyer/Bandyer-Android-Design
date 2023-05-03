@@ -23,16 +23,18 @@ internal class FilePickActivity : ComponentActivity() {
         const val ACTION_FILE_PICK_EVENT = "com.kaleyra.collaboration_suite_phone_ui.FILE_PICK_EVENT_ACTION"
 
         fun show(context: Context) {
+            val applicationContext = context.applicationContext
             instance?.let {
-                context.applicationContext.startActivity(it.intent)
+                applicationContext.startActivity(it.intent)
                 return
             }
-            val intent = Intent(context, FilePickActivity::class.java).apply {
+            val intent = Intent(applicationContext, FilePickActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME)
                 addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             }
-            context.startActivity(intent)
+            applicationContext.startActivity(intent)
         }
 
         fun close() {

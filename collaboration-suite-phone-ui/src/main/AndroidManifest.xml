@@ -28,6 +28,8 @@
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
             android:showForAllUsers="true"
+            android:supportsPictureInPicture="true"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             tools:targetApi="o_mr1" />
         <activity
             android:name=".chat.PhoneChatActivity"
@@ -40,7 +42,7 @@
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
             android:launchMode="singleInstance"
             android:resizeableActivity="false"
-            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.compose.FilePickActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick.FilePickActivity"
             android:theme="@style/Theme.AppCompat" />
     </application>
 

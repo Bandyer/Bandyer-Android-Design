@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
 
+// TODO find a way to handle this when in pip
 @Composable
 internal fun FilePickBroadcastReceiver(
     filePickerAction: String,
