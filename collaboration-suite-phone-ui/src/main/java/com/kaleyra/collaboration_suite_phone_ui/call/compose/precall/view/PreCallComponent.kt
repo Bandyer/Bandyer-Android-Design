@@ -41,6 +41,7 @@ internal fun PreCallComponent(
             } else {
                 Avatar(
                     uri = ImmutableUri(Uri.EMPTY),
+                    uri = if (uiState.isGroupCall) ImmutableUri(Uri.EMPTY) else uiState.stream?.avatar,
                     contentDescription = stringResource(id = R.string.kaleyra_avatar),
                     placeholder = if (uiState.isGroupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
                     error = if (uiState.isGroupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
