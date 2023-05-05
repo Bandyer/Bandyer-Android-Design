@@ -59,14 +59,14 @@ interface FadableViewGroup<T> where T : ViewGroup {
      * @param endAnimationCallback Function0<Unit>? animation end callback
      */
     fun fadeOut(endAnimationCallback: (() -> Unit)? = null, durationMillis: Long? = FADE_ANIMATION_DURATION) =
-            fade(this as ViewGroup, true, endAnimationCallback, durationMillis!!)
+        fade(this as ViewGroup, true, endAnimationCallback, durationMillis!!)
 
     /**
      * Fade in the fading view
      * @param endAnimationCallback Function0<Unit>? animation end callback
      */
     fun fadeIn(endAnimationCallback: (() -> Unit)? = null, durationMillis: Long? = FADE_ANIMATION_DURATION) =
-            fade(this as ViewGroup, false, endAnimationCallback, durationMillis!!)
+        fade(this as ViewGroup, false, endAnimationCallback, durationMillis!!)
 
     private fun <T> fade(viewGroup: T, out: Boolean, endAnimationCallback: (() -> Unit)? = null, durationMillis: Long) where T : ViewGroup {
         if (fadingView == null)
@@ -74,9 +74,9 @@ interface FadableViewGroup<T> where T : ViewGroup {
                 this.id = R.id.kaleyra_id_fading_view
                 this.background = getFadeBackground()
                 viewGroup.addView(
-                        this,
-                        viewGroup.getViewIndex(getFadePivotViewId()),
-                        ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+                    this,
+                    viewGroup.getViewIndex(getFadePivotViewId()),
+                    ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
             }
 
         fadingView!!.clearAnimation()
@@ -92,17 +92,19 @@ interface FadableViewGroup<T> where T : ViewGroup {
             fadingView!!.alpha = finalAlpha
             endAnimationCallback?.invoke()
             return
-        } else
-            fadingView!!.alpha = getFadeValue(out, true, viewGroup)
+        } else fadingView!!.alpha = getFadeValue(out, true, viewGroup)
+
+        this@FadableViewGroup.endAnimationCallback = endAnimationCallback
 
         fadingView!!.animate().alpha(finalAlpha).setDuration(durationMillis).setListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {}
+            override fun onAnimationRepeat(animation: Animator?) = Unit
             override fun onAnimationEnd(animation: Animator?) {
-                endAnimationCallback?.invoke()
+                this@FadableViewGroup.endAnimationCallback?.invoke()
+                this@FadableViewGroup.endAnimationCallback = null
             }
 
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationStart(animation: Animator?) {}
+            override fun onAnimationCancel(animation: Animator?) = Unit
+            override fun onAnimationStart(animation: Animator?) = Unit
         }).start()
     }
 
@@ -119,6 +121,7 @@ interface FadableViewGroup<T> where T : ViewGroup {
                     else 1f
                 }
             }
+
             else -> {
                 return if (startValue) {
                     if (isFadingViewGroup) 0f
@@ -130,9 +133,20 @@ interface FadableViewGroup<T> where T : ViewGroup {
             }
         }
     }
+
+    fun clearFadingView() {
+        endAnimationCallback = null
+        fadingView?.clearAnimation()
+        fadingView = null
+    }
 }
 
 /**
  * Property specifying the fading view
  */
 var <T> FadableViewGroup<T>.fadingView: View? where T : ViewGroup by FieldProperty { null }
+
+/**
+ * Property specifying the fade animation callback
+ */
+var <T> FadableViewGroup<T>.endAnimationCallback: (() -> Unit)? where T : ViewGroup by FieldProperty { null }

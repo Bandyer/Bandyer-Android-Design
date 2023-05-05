@@ -36,6 +36,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ColorIntExtensions.requiresLightColor
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
@@ -464,6 +465,12 @@ open class BaseKaleyraBottomSheet(
     override fun isVisible() = bottomSheetLayoutContent.visibility == View.VISIBLE && initialized
 
     init {
+        updateBottomSheetLayoutType(bottomSheetLayoutType)
+        recyclerView!!.adapter = fastAdapter
+        recyclerView!!.itemAnimator = null//AlphaCrossFadeAnimator()
+    }
+
+    fun updateBottomSheetLayoutType(bottomSheetLayoutType: BottomSheetLayoutType) {
         when (bottomSheetLayoutType) {
             is BottomSheetLayoutType.GRID -> {
                 recyclerView!!.layoutManager =
@@ -481,8 +488,6 @@ open class BaseKaleyraBottomSheet(
                         false)
             }
         }
-        recyclerView!!.adapter = fastAdapter
-        recyclerView!!.itemAnimator = AlphaCrossFadeAnimator()
     }
 
     final override fun onTopInsetChanged(pixels: Int) = Unit
@@ -678,6 +683,13 @@ open class BaseKaleyraBottomSheet(
 
     override fun setItems(items: List<ActionItem>) {
         this.views = items
+        fastItemAdapter.fastAdapter?.registerAdapterDataObserver(object : AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                fastItemAdapter.fastAdapter?.unregisterAdapterDataObserver(this)
+                fadeRecyclerViewLinesBelowNavigation(true)
+            }
+        })
         val diffResult = FastAdapterDiffUtil.calculateDiff(fastItemAdapter, items.map { AdapterActionItem(it) })
         FastAdapterDiffUtil[fastItemAdapter] = diffResult
     }
