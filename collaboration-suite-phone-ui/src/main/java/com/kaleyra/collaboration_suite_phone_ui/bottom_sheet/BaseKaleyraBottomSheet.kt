@@ -687,7 +687,7 @@ open class BaseKaleyraBottomSheet(
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 fastItemAdapter.fastAdapter?.unregisterAdapterDataObserver(this)
-                 fadeRecyclerViewLinesBelowNavigation(true)
+                fadeRecyclerViewLinesBelowNavigation(true)
             }
         })
         val diffResult = FastAdapterDiffUtil.calculateDiff(fastItemAdapter, items.map { AdapterActionItem(it) })
