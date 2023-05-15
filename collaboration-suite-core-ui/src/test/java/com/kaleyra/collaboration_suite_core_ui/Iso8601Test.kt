@@ -53,9 +53,11 @@ class Iso8601Test {
     fun testNowISO8601() {
         val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         df.timeZone = TimeZone.getTimeZone("UTC")
-        val expected = df.format(Calendar.getInstance().time)
-        val result = Iso8601.nowISO8601()
-        assertEquals(expected, result)
+        val nowIso8601 = Iso8601.nowISO8601()
+        val nowIso8601Millis = Iso8601.getISO8601TstampInMillis(nowIso8601)
+        val iso8601Date = Date(nowIso8601Millis)
+        val expected = df.format(iso8601Date)
+        assertEquals(expected, nowIso8601)
     }
 
     @Test
