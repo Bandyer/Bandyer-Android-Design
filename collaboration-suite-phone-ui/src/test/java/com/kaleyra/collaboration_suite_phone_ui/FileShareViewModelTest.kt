@@ -8,15 +8,20 @@ import com.kaleyra.collaboration_suite.sharedfolder.SharedFolder
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getFileSize
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick.FilePickProvider
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.viewmodel.FileShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.viewmodel.FileShareViewModel.Companion.MaxFileUploadBytes
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -56,7 +61,14 @@ class FileShareViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = FileShareViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk()) }
+        mockkObject(UriExtensions)
+        every { any<Uri>().getFileSize() } returns 0
+        viewModel = FileShareViewModel(
+            configure = { Configuration.Success(phoneBoxMock, mockk(), mockk()) },
+            filePickProvider = object : FilePickProvider {
+                override val fileUri: Flow<Uri> = MutableStateFlow(uriMock)
+            }
+        )
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { sharedFolder } returns sharedFolderMock
@@ -101,6 +113,11 @@ class FileShareViewModelTest {
         }
     }
 
+    @After
+    fun tearDown() {
+        unmockkAll()
+    }
+
     @Test
     fun testFileShareUiState_sharedFilesUpdated() = runTest {
         every { sharedFolderMock.files } returns MutableStateFlow(setOf(sharedFileMock1))
@@ -119,6 +136,21 @@ class FileShareViewModelTest {
         val new = viewModel.uiState.first().sharedFiles
         val expected = ImmutableList(listOf(sharedFileUi3, sharedFileUi2, sharedFileUi1))
         assertEquals(expected, new)
+    }
+
+    @Test
+    fun testFileShareUiState_showFileSizeLimitUpdated() = runTest {
+        every { any<Uri>().getFileSize() } returns MaxFileUploadBytes + 1L
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().showFileSizeLimit
+        assertEquals(true, new)
+    }
+
+    @Test
+    fun testUploadOnFilePick() = runTest {
+        advanceUntilIdle()
+        verify { sharedFolderMock.upload(uriMock) }
+        verify { phoneBoxMock.showCall() }
     }
 
     @Test
@@ -141,5 +173,11 @@ class FileShareViewModelTest {
         advanceUntilIdle()
         viewModel.cancel("id")
         verify { sharedFolderMock.cancel("id") }
+    }
+
+    @Test
+    fun testDismissUploadLimit() = runTest {
+        viewModel.dismissUploadLimit()
+        assertEquals(false,  viewModel.uiState.first().showFileSizeLimit)
     }
 }
