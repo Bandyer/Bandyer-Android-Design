@@ -7,7 +7,6 @@ import android.content.res.Configuration
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.util.Rational
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
@@ -29,6 +28,7 @@ class PhoneCallActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         handleIntentAction(intent)
+        updatePipParams()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             MdcTheme(setDefaultFontFamily = true) {
@@ -41,9 +41,6 @@ class PhoneCallActivity : FragmentActivity() {
                 )
             }
         }
-        setPictureInPictureParams(PictureInPictureParams.Builder()
-            .setAutoEnterEnabled(false)
-            .build())
     }
 
     override fun onPictureInPictureModeChanged(
@@ -63,12 +60,12 @@ class PhoneCallActivity : FragmentActivity() {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             PictureInPictureParams.Builder()
                 .setAspectRatio(getAspectRatioRational(pipRect))
-                .setAutoEnterEnabled(false)
+                .apply { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) setAutoEnterEnabled(false) }
                 .build()
         } else null
     }
 
-    private fun getAspectRatioRational(rect: Rect): Rational? {
+    private fun getAspectRatioRational(rect: Rect): Rational {
         val width = rect.width()
         val height = rect.height()
         return if (width > height) Rational(16, 9)
