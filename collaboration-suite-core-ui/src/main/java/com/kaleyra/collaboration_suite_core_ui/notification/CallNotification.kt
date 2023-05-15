@@ -85,7 +85,7 @@ class CallNotification {
         val channelName: String,
         val type: Type,
         var isHighImportance: Boolean = false,
-        var enableCallStyle: Boolean = false,
+        var enableCallStyle: Boolean = true,
         var color: Int? = null,
         var smallIconResource: Int? = null,
         var user: String? = null,
