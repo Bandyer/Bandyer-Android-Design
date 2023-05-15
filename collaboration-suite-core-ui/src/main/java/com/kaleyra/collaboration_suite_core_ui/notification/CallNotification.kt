@@ -30,7 +30,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
@@ -85,7 +84,7 @@ class CallNotification {
         val channelName: String,
         val type: Type,
         var isHighImportance: Boolean = false,
-        var enableCallStyle: Boolean = false,
+        var enableCallStyle: Boolean = true,
         var color: Int? = null,
         var smallIconResource: Int? = null,
         var user: String? = null,
@@ -368,12 +367,12 @@ class CallNotification {
                             context.getString(R.string.kaleyra_notification_decline),
                             declineIntent
                         ).build()
-                        builder.setActions(answerAction, declineAction)
+                        builder.setActions(declineAction, answerAction)
                     }
                     else -> {
                         val declineAction = Notification.Action.Builder(
                             Icon.createWithResource(context, R.drawable.ic_kaleyra_decline),
-                            context.getString(R.string.kaleyra_notification_decline),
+                            context.getString(R.string.kaleyra_notification_hangup),
                             declineIntent
                         ).build()
                         builder.setActions(declineAction)
