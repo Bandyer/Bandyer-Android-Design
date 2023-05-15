@@ -3,11 +3,22 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
-import androidx.compose.foundation.layout.*
+import android.util.Log
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -17,10 +28,8 @@ import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareVisibilityObserver
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.tryToOpenFile
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getFileSize
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.PhoneCallActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick.FilePickActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick.FilePickBroadcastReceiver
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
@@ -33,20 +42,18 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.viewmodel
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
-private const val MaxFileUploadBytes = 150 * 1000 * 1000
 const val ProgressIndicatorTag = "ProgressIndicatorTag"
 
 @Composable
 internal fun FileShareComponent(
     viewModel: FileShareViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-        factory = FileShareViewModel.provideFactory(::requestConfiguration)
+        factory = FileShareViewModel.provideFactory(configure = ::requestConfiguration, filePickProvider = FilePickBroadcastReceiver)
     ),
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val (showUnableToOpenFileSnackBar, setShowUnableToOpenSnackBar) = remember { mutableStateOf(false) }
     val (showCancelledFileSnackBar, setShowCancelledFileSnackBar) = remember { mutableStateOf(false) }
-    val (showFileSizeLimitAlertDialog, setShowFileSizeLimitAlertDialog) = remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     DisposableEffect(context) {
@@ -64,17 +71,15 @@ internal fun FileShareComponent(
         uiState = uiState,
         showUnableToOpenFileSnackBar = showUnableToOpenFileSnackBar,
         showCancelledFileSnackBar = showCancelledFileSnackBar,
-        showFileSizeLimitAlertDialog = showFileSizeLimitAlertDialog,
         onFileOpenFailure = { doesFileExists ->
             if (doesFileExists) setShowUnableToOpenSnackBar(true)
             else setShowCancelledFileSnackBar(true)
         },
-        onFileSizeLimitExceed = { setShowFileSizeLimitAlertDialog(true) },
         onSnackBarShowed = {
             setShowUnableToOpenSnackBar(false)
             setShowCancelledFileSnackBar(false)
         },
-        onAlertDialogDismiss = { setShowFileSizeLimitAlertDialog(false) },
+        onAlertDialogDismiss = viewModel::dismissUploadLimit,
         onUpload = viewModel::upload,
         onDownload = viewModel::download,
         onShareCancel = viewModel::cancel,
@@ -87,9 +92,7 @@ internal fun FileShareComponent(
     uiState: FileShareUiState,
     showUnableToOpenFileSnackBar: Boolean = false,
     showCancelledFileSnackBar: Boolean = false,
-    showFileSizeLimitAlertDialog: Boolean = false,
     onFileOpenFailure: ((doesFileExists: Boolean) -> Unit)? = null,
-    onFileSizeLimitExceed: (() -> Unit)? = null,
     onSnackBarShowed: (() -> Unit)? = null,
     onAlertDialogDismiss: (() -> Unit)? = null,
     onUpload: (Uri) -> Unit,
@@ -128,14 +131,8 @@ internal fun FileShareComponent(
         }
     }
 
-    if (showFileSizeLimitAlertDialog) {
+    if (uiState.showFileSizeLimit) {
         MaxFileSizeDialog(onDismiss = { onAlertDialogDismiss?.invoke() })
-    }
-
-    FilePickBroadcastReceiver(FilePickActivity.ACTION_FILE_PICK_EVENT) { uri ->
-        if (uri.getFileSize(context) > MaxFileUploadBytes) onFileSizeLimitExceed?.invoke()
-        else onUpload(uri)
-        context.startActivity(Intent(context, PhoneCallActivity::class.java))
     }
 
     Column(

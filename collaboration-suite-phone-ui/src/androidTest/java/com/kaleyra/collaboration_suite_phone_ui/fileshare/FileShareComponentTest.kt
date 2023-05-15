@@ -39,13 +39,17 @@ class FileShareComponentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var items by mutableStateOf(ImmutableList(emptyList<SharedFileUi>()))
+    private var fileShareUiState by mutableStateOf(FileShareUiState())
 
     private var showUnableToOpenFileSnackBar by mutableStateOf(false)
 
     private var showCancelledFileSnackBar by mutableStateOf(false)
 
     private var showFileSizeLimitAlertDialog by mutableStateOf(false)
+
+    private var openFailure: Boolean = false
+
+    private var alertDialogDismissed: Boolean = false
 
     private var uploadUri: Uri? = null
 
@@ -57,10 +61,11 @@ class FileShareComponentTest {
     fun setUp() {
         composeTestRule.setContent {
             FileShareComponent(
-                uiState = FileShareUiState(sharedFiles = items),
+                uiState = fileShareUiState,
                 showUnableToOpenFileSnackBar = showUnableToOpenFileSnackBar,
                 showCancelledFileSnackBar = showCancelledFileSnackBar,
-                showFileSizeLimitAlertDialog = showFileSizeLimitAlertDialog,
+                onFileOpenFailure = { openFailure = true },
+                onAlertDialogDismiss = { alertDialogDismissed = true },
                 onUpload = { uploadUri = it },
                 onDownload = { downloadId = it },
                 onShareCancel = { cancelId = it },
@@ -71,10 +76,12 @@ class FileShareComponentTest {
 
     @After
     fun tearDown() {
-        items = ImmutableList(emptyList())
+        fileShareUiState = FileShareUiState(sharedFiles = ImmutableList(emptyList()))
         showUnableToOpenFileSnackBar = false
         showCancelledFileSnackBar = false
         showFileSizeLimitAlertDialog = false
+        openFailure = false
+        alertDialogDismissed = false
         uploadUri = null
         downloadId = null
         cancelId = null
@@ -85,10 +92,10 @@ class FileShareComponentTest {
     fun emptyItems_noItemsUIDisplayed() {
         val title = composeTestRule.activity.getString(R.string.kaleyra_no_file_shared)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_click_to_share_file)
-        items = ImmutableList(listOf(mockUploadSharedFile))
+        fileShareUiState = FileShareUiState(sharedFiles = ImmutableList(listOf(mockUploadSharedFile)))
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
-        items = ImmutableList(listOf())
+        fileShareUiState = fileShareUiState.copy(sharedFiles = ImmutableList(listOf()))
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
     }
@@ -103,7 +110,7 @@ class FileShareComponentTest {
 
     @Test
     fun atLeastOneItem_fabTextNotExist() {
-        items = ImmutableList(listOf(mockDownloadSharedFile))
+        fileShareUiState = FileShareUiState(sharedFiles = ImmutableList(listOf(mockDownloadSharedFile)))
         val iconDescription = composeTestRule.activity.getString(R.string.kaleyra_fileshare_add_description)
         val text = composeTestRule.activity.getString(R.string.kaleyra_fileshare_add).uppercase()
         composeTestRule.onNodeWithContentDescription(iconDescription).assertIsDisplayed()
@@ -112,7 +119,7 @@ class FileShareComponentTest {
 
     @Test
     fun oneSharedFileItem_itemDisplayed() {
-        items = ImmutableList(listOf(mockDownloadSharedFile))
+        fileShareUiState = FileShareUiState(sharedFiles = ImmutableList(listOf(mockDownloadSharedFile)))
         composeTestRule.onNodeWithTag(FileShareItemTag).assertIsDisplayed()
     }
 
@@ -137,9 +144,9 @@ class FileShareComponentTest {
     @Test
     fun showFileSizeLimitAlertDialogTrue_dialogIsDisplayed() {
         val text = composeTestRule.activity.getString(R.string.kaleyra_max_bytes_dialog_title)
-        showFileSizeLimitAlertDialog = false
+        fileShareUiState = FileShareUiState(showFileSizeLimit = false)
         composeTestRule.onNodeWithText(text).assertDoesNotExist()
-        showFileSizeLimitAlertDialog = true
+        fileShareUiState = FileShareUiState(showFileSizeLimit = true)
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
@@ -157,7 +164,7 @@ class FileShareComponentTest {
         mockkObject(ContextExtensions)
         every { any<Context>().tryToOpenFile(any(), any()) } returns Unit
         val sharedFile = mockDownloadSharedFile.copy(state = SharedFileUi.State.Success(uri = ImmutableUri(Uri.EMPTY)))
-        items = ImmutableList(listOf(sharedFile))
+        fileShareUiState = FileShareUiState(sharedFiles = ImmutableList(listOf(sharedFile)))
         composeTestRule.onNodeWithTag(FileShareItemTag).performClick()
         verify { any<Context>().tryToOpenFile(any(), any()) }
     }
@@ -167,7 +174,7 @@ class FileShareComponentTest {
         mockkObject(ContextExtensions)
         every { any<Context>().tryToOpenFile(any(), any()) } returns Unit
         val sharedFile = mockDownloadSharedFile.copy(state = SharedFileUi.State.Success(uri = ImmutableUri(Uri.EMPTY)))
-        items = ImmutableList(listOf(sharedFile))
+        fileShareUiState = FileShareUiState(sharedFiles = ImmutableList(listOf(sharedFile)))
         val openFile = composeTestRule.activity.getString(R.string.kaleyra_fileshare_open_file)
         composeTestRule.onNodeWithContentDescription(openFile).performClick()
         verify { any<Context>().tryToOpenFile(any(), any()) }
@@ -176,7 +183,7 @@ class FileShareComponentTest {
     @Test
     fun userClicksAvailableStateAction_onDownloadInvoked() {
         val sharedFile = mockDownloadSharedFile.copy(id = "fileId", state = SharedFileUi.State.Available)
-        items = ImmutableList(listOf(sharedFile))
+        fileShareUiState = FileShareUiState(sharedFiles = ImmutableList(listOf(sharedFile)))
         val startDownload = composeTestRule.activity.getString(R.string.kaleyra_fileshare_download_descr)
         composeTestRule.onNodeWithContentDescription(startDownload).performClick()
         assertEquals("fileId", downloadId)
@@ -185,7 +192,7 @@ class FileShareComponentTest {
     @Test
     fun userClicksPendingStateAction_onShareCancelInvoked() {
         val sharedFile = mockDownloadSharedFile.copy(id = "fileId", state = SharedFileUi.State.Pending)
-        items = ImmutableList(listOf(sharedFile))
+        fileShareUiState = FileShareUiState(sharedFiles = ImmutableList(listOf(sharedFile)))
         val cancel = composeTestRule.activity.getString(R.string.kaleyra_fileshare_cancel)
         composeTestRule.onNodeWithContentDescription(cancel).performClick()
         assertEquals("fileId", cancelId)
@@ -195,7 +202,7 @@ class FileShareComponentTest {
     fun userClicksErrorStateActionOnUpload_onUploadInvoked() {
         val uriMock = mockk<Uri>()
         val sharedFile = mockUploadSharedFile.copy(uri = ImmutableUri(uriMock), state = SharedFileUi.State.Error)
-        items = ImmutableList(listOf(sharedFile))
+        fileShareUiState = FileShareUiState(sharedFiles = ImmutableList(listOf(sharedFile)))
         val retry = composeTestRule.activity.getString(R.string.kaleyra_fileshare_retry)
         composeTestRule.onNodeWithContentDescription(retry).performClick()
         assertEquals(uriMock, uploadUri)
@@ -204,10 +211,31 @@ class FileShareComponentTest {
     @Test
     fun userClicksErrorStateActionOnDownload_onDownloadInvoked() {
         val sharedFile = mockDownloadSharedFile.copy(id = "fileId", state = SharedFileUi.State.Error)
-        items = ImmutableList(listOf(sharedFile))
+        fileShareUiState = FileShareUiState(sharedFiles = ImmutableList(listOf(sharedFile)))
         val retry = composeTestRule.activity.getString(R.string.kaleyra_fileshare_retry)
         composeTestRule.onNodeWithContentDescription(retry).performClick()
         assertEquals("fileId", downloadId)
+    }
+
+    @Test
+    fun userClicksSuccessStateActionAndFileFailsToOpen_onFileOpenFailureInvoked() {
+        mockkObject(ContextExtensions)
+        every { any<Context>().tryToOpenFile(any(), any()) } answers {
+            thirdArg<(Boolean) -> Unit>().invoke(true)
+        }
+        val sharedFile = mockDownloadSharedFile.copy(state = SharedFileUi.State.Success(uri = ImmutableUri(Uri.EMPTY)))
+        fileShareUiState = FileShareUiState(sharedFiles = ImmutableList(listOf(sharedFile)))
+        val openFile = composeTestRule.activity.getString(R.string.kaleyra_fileshare_open_file)
+        composeTestRule.onNodeWithContentDescription(openFile).performClick()
+        assertEquals(true, openFailure)
+    }
+
+    @Test
+    fun onAlertDialogDismissedInvoked() {
+        fileShareUiState = FileShareUiState(showFileSizeLimit = true)
+        val ok = composeTestRule.activity.getString(R.string.kaleyra_button_ok)
+        composeTestRule.onNodeWithText(ok).performClick()
+        assertEquals(true, alertDialogDismissed)
     }
 
 }
