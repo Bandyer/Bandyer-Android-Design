@@ -28,6 +28,6 @@ class FilePickBroadcastReceiverTest {
         receiver.onReceive(contextMock, Intent(FilePickBroadcastReceiver.ACTION_FILE_PICK_EVENT).apply {
           putExtra("uri", uriMock)
         })
-        assertEquals(uriMock, FilePickBroadcastReceiver.uri.first())
+        assertEquals(uriMock, FilePickBroadcastReceiver.fileUri.first())
     }
 }
