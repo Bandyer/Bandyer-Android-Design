@@ -373,7 +373,7 @@ class CallNotification {
                     else -> {
                         val declineAction = Notification.Action.Builder(
                             Icon.createWithResource(context, R.drawable.ic_kaleyra_decline),
-                            context.getString(R.string.kaleyra_notification_decline),
+                            context.getString(R.string.kaleyra_notification_hangup),
                             declineIntent
                         ).build()
                         builder.setActions(declineAction)
