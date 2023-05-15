@@ -22,6 +22,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import android.webkit.MimeTypeMap
 import androidx.core.net.toFile
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import java.io.File
 import java.util.*
 
@@ -66,9 +67,9 @@ object UriExtensions {
      * @param context Context
      * @return size
      */
-    fun Uri.getFileSize(context: Context): Long = kotlin.runCatching {
+    fun Uri.getFileSize(): Long = kotlin.runCatching {
         if (ContentResolver.SCHEME_CONTENT == this.scheme)
-            context.contentResolver.query(this, null, null, null, null)
+            ContextRetainer.context.contentResolver.query(this, null, null, null, null)
                 .use { if (it?.moveToFirst() == true) it.getLong(it.getColumnIndexOrThrow(OpenableColumns.SIZE)) else -1L }
         else this.toFile().run { if (exists()) length() else -1L }
     }.getOrNull() ?: -1L
