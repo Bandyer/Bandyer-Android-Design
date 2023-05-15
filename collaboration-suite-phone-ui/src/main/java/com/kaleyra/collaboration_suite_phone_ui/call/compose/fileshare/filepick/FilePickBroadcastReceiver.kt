@@ -5,36 +5,30 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
-// TODO find a way to handle this when in pip
-@Composable
-internal fun FilePickBroadcastReceiver(
-    filePickerAction: String,
-    onFilePickEvent: (uri: Uri) -> Unit
-) {
-    val context = LocalContext.current
-    val currentOnFilePickEvent by rememberUpdatedState(onFilePickEvent)
+internal class FilePickBroadcastReceiver : BroadcastReceiver() {
 
-    DisposableEffect(context, filePickerAction) {
-        val intentFilter = IntentFilter(filePickerAction)
-        val broadcast = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                if (intent.action != FilePickActivity.ACTION_FILE_PICK_EVENT) return
+    companion object {
+        const val ACTION_FILE_PICK_EVENT = "com.kaleyra.collaboration_suite_phone_ui.FILE_PICK_EVENT_ACTION"
 
-                val uri = intent.getParcelableExtra<Uri>("uri") ?: return
-                currentOnFilePickEvent(uri)
-            }
-        }
-
-        context.registerReceiver(broadcast, intentFilter)
-
-        onDispose {
-            context.unregisterReceiver(broadcast)
-        }
+        private val mUri: MutableSharedFlow<Uri> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
+        val uri: SharedFlow<Uri> = mUri.asSharedFlow()
     }
+
+    override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action != ACTION_FILE_PICK_EVENT) return
+        val uri = intent.getParcelableExtra<Uri>("uri") ?: return
+        mUri.tryEmit(uri)
+    }
+
 }

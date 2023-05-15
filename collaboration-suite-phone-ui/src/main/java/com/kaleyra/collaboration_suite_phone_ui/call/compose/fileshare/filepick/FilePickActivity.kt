@@ -13,14 +13,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.CallSuper
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick.FilePickBroadcastReceiver.Companion.ACTION_FILE_PICK_EVENT
 
 internal class FilePickActivity : ComponentActivity() {
 
     companion object {
 
         private var instance: FilePickActivity? = null
-
-        const val ACTION_FILE_PICK_EVENT = "com.kaleyra.collaboration_suite_phone_ui.FILE_PICK_EVENT_ACTION"
 
         fun show(context: Context) {
             val applicationContext = context.applicationContext
