@@ -368,7 +368,7 @@ class CallNotification {
                             context.getString(R.string.kaleyra_notification_decline),
                             declineIntent
                         ).build()
-                        builder.setActions(answerAction, declineAction)
+                        builder.setActions(declineAction, answerAction)
                     }
                     else -> {
                         val declineAction = Notification.Action.Builder(
