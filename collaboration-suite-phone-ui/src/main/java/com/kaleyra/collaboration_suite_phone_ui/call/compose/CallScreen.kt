@@ -290,10 +290,6 @@ internal fun CallScreen(
     onFileShareDisplayed: () -> Unit
 ) {
     if (isInPipMode) {
-//        LaunchedEffect(Unit) {
-//            callScreenState.collapseSheet()
-//        }
-
         val firstFeaturedStream = callUiState.featuredStreams.value.getOrNull(0)
         if (firstFeaturedStream != null) {
             StreamContainer {
