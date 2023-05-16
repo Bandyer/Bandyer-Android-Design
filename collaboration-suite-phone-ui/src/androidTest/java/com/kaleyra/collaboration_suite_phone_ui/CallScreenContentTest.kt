@@ -16,6 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.every
 import io.mockk.mockkConstructor
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,9 +39,14 @@ class CallScreenContentTest {
                 callState = callState,
                 maxWidth = 600.dp,
                 onBackPressed = { backPressed = true },
-                onStreamFullscreenClick = {}
+                onStreamFullscreenClick = {},
+                onPipStreamPositioned = {}
             )
         }
+    }
+
+    @After
+    fun tearDown() {
         backPressed = false
     }
 

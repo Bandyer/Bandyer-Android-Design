@@ -25,13 +25,13 @@ internal fun DialingComponent(
         factory = PreCallViewModel.provideFactory(::requestConfiguration)
     ),
     onBackPressed: () -> Unit,
-    onPipStreamPositioned: (Rect) -> Unit
+    onStreamViewPositioned: (Rect) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     DialingComponent(
         uiState = uiState,
         onBackPressed = onBackPressed,
-        onStreamViewPositioned = onPipStreamPositioned,
+        onStreamViewPositioned = onStreamViewPositioned,
         modifier = modifier
     )
 }
