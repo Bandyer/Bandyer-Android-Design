@@ -19,7 +19,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,6 +28,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.PreCallComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.common.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
@@ -81,7 +81,7 @@ internal fun RingingComponent(
         ) {
             Spacer(modifier = Modifier.weight(1f))
             if (uiState.recording != null) {
-                HelperText(text = stringResource(id = if (uiState.recording == RecordingUi.OnConnect) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer))
+                HelperText(text = stringResource(id = if (uiState.recording == RecordingTypeUi.OnConnect) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer))
             }
             val countDownTimer by rememberCountdownTimerState(tapToAnswerTimerMillis)
             if (countDownTimer == 0L) {
@@ -140,10 +140,6 @@ private fun RingingActionButton(
         )
     }
 }
-
-@Composable
-private fun HelperText(text: String) =
-    Text(text = text, fontSize = 12.sp, fontStyle = FontStyle.Italic)
 
 @Preview
 @Composable
