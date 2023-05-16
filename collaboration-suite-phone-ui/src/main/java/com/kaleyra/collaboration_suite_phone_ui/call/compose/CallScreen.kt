@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -29,6 +30,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -36,6 +39,7 @@ import androidx.fragment.app.FragmentActivity
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
+import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeDevice
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetComponent
@@ -52,6 +56,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.Multiple
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.RecordAudioPermission
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.rememberMultiplePermissionsState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.common.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -369,6 +374,14 @@ internal fun CallScreen(
                             streams = callUiState.thumbnailStreams,
                             contentPadding = PaddingValues(16.dp),
                             onStreamClick = onThumbnailStreamClick
+                        )
+                    }
+                    if (callUiState.recordingType != null && callUiState.callState == CallStateUi.Dialing) {
+                        HelperText(
+                            text = stringResource(id = if (callUiState.recordingType == RecordingTypeUi.OnConnect) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer),
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
                 },

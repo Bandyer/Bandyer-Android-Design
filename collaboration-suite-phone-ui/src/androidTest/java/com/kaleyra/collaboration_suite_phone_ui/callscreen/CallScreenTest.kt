@@ -603,4 +603,18 @@ class CallScreenTest {
             assertEquals(BottomSheetComponent.Whiteboard, sheetContentState.currentComponent)
         }
     }
+
+    @Test
+    fun recordingTypeOnConnectAndCallStateDialing_onConnectHelperTextIsDisplayed() {
+        callUiState = CallUiState(callState = CallStateUi.Dialing, recordingType = RecordingTypeUi.OnConnect)
+        val text = composeTestRule.activity.getString(R.string.kaleyra_automatic_recording_disclaimer)
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
+    }
+
+    @Test
+    fun recordingTypeOnDemandAndCallStateDialing_onDemandHelperTextIsDisplayed() {
+        callUiState = CallUiState(callState = CallStateUi.Dialing, recordingType = RecordingTypeUi.OnDemand)
+        val text = composeTestRule.activity.getString(R.string.kaleyra_manual_recording_disclaimer)
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
+    }
 }
