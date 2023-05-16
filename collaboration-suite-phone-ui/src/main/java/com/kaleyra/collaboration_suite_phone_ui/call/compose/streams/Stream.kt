@@ -32,7 +32,7 @@ internal fun Stream(
     avatar: ImmutableUri?,
     avatarSize: Dp = DefaultStreamAvatarSize,
     avatarVisible: Boolean = false,
-    onStreamPositioned: ((Rect) -> Unit)? = null
+    onStreamViewPositioned: ((Rect) -> Unit)? = null
 ) {
     Box {
         if (streamView != null && !avatarVisible) {
@@ -46,7 +46,7 @@ internal fun Stream(
                 modifier = Modifier
                     .testTag(StreamViewTestTag)
                     .onGloballyPositioned {
-                        onStreamPositioned?.invoke(it.boundsInRoot().toAndroidRect())
+                        onStreamViewPositioned?.invoke(it.boundsInRoot().toAndroidRect())
                     }
             )
         }

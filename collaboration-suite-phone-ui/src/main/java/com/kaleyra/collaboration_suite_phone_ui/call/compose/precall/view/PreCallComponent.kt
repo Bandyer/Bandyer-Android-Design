@@ -28,7 +28,7 @@ internal fun PreCallComponent(
     uiState: PreCallUiState,
     subtitle: String,
     onBackPressed: () -> Unit,
-    onPipStreamPositioned: (Rect) -> Unit,
+    onStreamViewPositioned: (Rect) -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable (BoxScope.() -> Unit)? = null
 ) {
@@ -38,7 +38,7 @@ internal fun PreCallComponent(
 
             if (video?.view != null && video.isEnabled) {
                 StreamContainer {
-                    Stream(streamView = video.view, avatar = null, avatarVisible = false, onStreamPositioned = onPipStreamPositioned)
+                    Stream(streamView = video.view, avatar = null, avatarVisible = false, onStreamViewPositioned = onStreamViewPositioned)
                 }
             } else {
                 Avatar(

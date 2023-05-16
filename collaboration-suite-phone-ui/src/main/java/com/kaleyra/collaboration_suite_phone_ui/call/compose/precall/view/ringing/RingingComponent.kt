@@ -43,7 +43,7 @@ internal fun RingingComponent(
         factory = PreCallViewModel.provideFactory(::requestConfiguration)
     ),
     onBackPressed: () -> Unit,
-    onPipStreamPositioned: (Rect) -> Unit
+    onStreamViewPositioned: (Rect) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     RingingComponent(
@@ -51,7 +51,7 @@ internal fun RingingComponent(
         onBackPressed = onBackPressed,
         onAnswerClick = viewModel::answer,
         onDeclineClick = viewModel::decline,
-        onPipStreamPositioned = onPipStreamPositioned,
+        onStreamViewPositioned = onStreamViewPositioned,
         modifier = modifier
     )
 }
@@ -65,7 +65,7 @@ internal fun RingingComponent(
     onBackPressed: () -> Unit,
     onAnswerClick: () -> Unit,
     onDeclineClick: () -> Unit,
-    onPipStreamPositioned: (Rect) -> Unit
+    onStreamViewPositioned: (Rect) -> Unit
 ) {
     val isDarkTheme = isSystemInDarkTheme()
 
@@ -73,7 +73,7 @@ internal fun RingingComponent(
         uiState = uiState,
         subtitle = pluralStringResource(id = R.plurals.kaleyra_call_incoming_status_ringing, count = uiState.participants.size),
         onBackPressed = onBackPressed,
-        onPipStreamPositioned = onPipStreamPositioned,
+        onStreamViewPositioned = onStreamViewPositioned,
         modifier = modifier.testTag(RingingContentTag)
     ) {
         Column(
@@ -157,7 +157,7 @@ internal fun RingingComponentPreview() {
             onAnswerClick = { },
             onDeclineClick = { },
             onBackPressed = { },
-            onPipStreamPositioned = { }
+            onStreamViewPositioned = { }
         )
     }
 }

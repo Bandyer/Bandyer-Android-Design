@@ -1,5 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import android.graphics.Rect
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,11 +10,14 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.RecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.ringing.RingingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import org.junit.After
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -34,6 +39,8 @@ class RingingComponentTest: PreCallComponentTest() {
 
     private var declineClicked = false
 
+    private var streamViewRect: Rect? = null
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
@@ -42,7 +49,8 @@ class RingingComponentTest: PreCallComponentTest() {
                 tapToAnswerTimerMillis = timerMillis,
                 onBackPressed = { backPressed = true },
                 onAnswerClick = { answerClicked = true },
-                onDeclineClick = { declineClicked = true }
+                onDeclineClick = { declineClicked = true },
+                onStreamViewPositioned = { streamViewRect = it }
             )
         }
     }
@@ -54,6 +62,7 @@ class RingingComponentTest: PreCallComponentTest() {
         backPressed = false
         answerClicked = false
         declineClicked = false
+        streamViewRect = null
     }
 
     @Test
@@ -122,7 +131,7 @@ class RingingComponentTest: PreCallComponentTest() {
         composeTestRule.onNodeWithContentDescription("user1, user2").assertIsDisplayed()
     }
 
-        @Test
+    @Test
     fun callStateRinging_ringingSubtitleIsDisplayed() {
         val resources = composeTestRule.activity.resources
         val ringingQuantityOne = resources.getQuantityString(R.plurals.kaleyra_call_incoming_status_ringing, 1)
@@ -131,6 +140,14 @@ class RingingComponentTest: PreCallComponentTest() {
         composeTestRule.onNodeWithText(ringingQuantityOne).assertIsDisplayed()
         uiState.value = PreCallUiState(participants = listOf("user1", "user2"))
         composeTestRule.onNodeWithText(ringingQuantityOther).assertIsDisplayed()
+    }
+
+    @Test
+    fun onStreamViewPositionedInvoked() {
+        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
+        uiState.value = PreCallUiState(stream = streamUiMock.copy(video = video))
+        composeTestRule.waitForIdle()
+        Assert.assertNotEquals(null, streamViewRect)
     }
 
     private fun ComposeTestRule.assertRingingButtonIsDisplayed(text: String) {

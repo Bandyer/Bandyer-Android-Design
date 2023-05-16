@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import android.graphics.Rect
 import android.net.Uri
 import android.view.View
 import androidx.activity.ComponentActivity
@@ -15,6 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
 import org.junit.After
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,13 +32,16 @@ class StreamTest {
 
     private var isAvatarVisible by mutableStateOf(false)
 
+    private var streamViewRect: Rect? = null
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
             Stream(
                 streamView = streamView,
                 avatar = ImmutableUri(Uri.EMPTY),
-                avatarVisible = isAvatarVisible
+                avatarVisible = isAvatarVisible,
+                onStreamViewPositioned = { streamViewRect = it }
             )
         }
     }
@@ -45,6 +50,7 @@ class StreamTest {
     fun tearDown() {
         streamView = null
         isAvatarVisible = false
+        streamViewRect = null
     }
 
     @Test
@@ -69,5 +75,12 @@ class StreamTest {
     fun avatarVisibleFalse_avatarDoesNotExists() {
         isAvatarVisible = false
         composeTestRule.findAvatar().assertDoesNotExist()
+    }
+
+    @Test
+    fun onStreamViewPositionedInvoked() {
+        streamView = ImmutableView(View(composeTestRule.activity))
+        composeTestRule.waitForIdle()
+        assertNotEquals(null, streamViewRect)
     }
 }

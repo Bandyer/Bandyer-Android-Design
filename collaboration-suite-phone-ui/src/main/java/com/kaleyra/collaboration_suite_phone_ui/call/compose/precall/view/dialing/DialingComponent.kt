@@ -31,7 +31,7 @@ internal fun DialingComponent(
     DialingComponent(
         uiState = uiState,
         onBackPressed = onBackPressed,
-        onPipStreamPositioned = onPipStreamPositioned,
+        onStreamViewPositioned = onPipStreamPositioned,
         modifier = modifier
     )
 }
@@ -41,13 +41,13 @@ internal fun DialingComponent(
     uiState: PreCallUiState,
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = { },
-    onPipStreamPositioned: (Rect) -> Unit
+    onStreamViewPositioned: (Rect) -> Unit
 ) {
     PreCallComponent(
         uiState = uiState,
         subtitle = stringResource(id = R.string.kaleyra_call_status_dialing),
         onBackPressed = onBackPressed,
-        onPipStreamPositioned = onPipStreamPositioned,
+        onStreamViewPositioned = onStreamViewPositioned,
         modifier = modifier.testTag(DialingContentTag)
     )
 }
@@ -59,7 +59,7 @@ fun DialingComponentPreview() {
         DialingComponent(
             uiState = PreCallUiState(participants = listOf("user1", "user2")),
             onBackPressed = { },
-            onPipStreamPositioned = { }
+            onStreamViewPositioned = { }
         )
     }
 }

@@ -1,5 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import android.graphics.Rect
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,9 +9,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStream
 import org.junit.After
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -32,6 +37,8 @@ class FeaturedStreamTest: StreamParentComposableTest() {
 
     private var isFullscreen by mutableStateOf(false)
 
+    private var streamViewRect: Rect? = null
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
@@ -39,7 +46,8 @@ class FeaturedStreamTest: StreamParentComposableTest() {
                 stream = stream.value,
                 isFullscreen = isFullscreen,
                 onBackPressed = onBackPressed,
-                onFullscreenClick = { fullscreenClicked = true }
+                onFullscreenClick = { fullscreenClicked = true },
+                onStreamPositioned = { streamViewRect = it }
             )
         }
     }
@@ -51,6 +59,7 @@ class FeaturedStreamTest: StreamParentComposableTest() {
         stream = mutableStateOf(streamUiMock)
         onBackPressed = null
         isFullscreen = false
+        streamViewRect = null
     }
 
     @Test
@@ -97,6 +106,14 @@ class FeaturedStreamTest: StreamParentComposableTest() {
         isFullscreen = false
         findEnterFullscreenButton().performClick()
         assertEquals(true, fullscreenClicked)
+    }
+
+    @Test
+    fun onStreamViewPositionedInvoked() {
+        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
+        stream.value = streamUiMock.copy(video = video)
+        composeTestRule.waitForIdle()
+        Assert.assertNotEquals(null, streamViewRect)
     }
 
     private fun findEnterFullscreenButton(): SemanticsNodeInteraction {

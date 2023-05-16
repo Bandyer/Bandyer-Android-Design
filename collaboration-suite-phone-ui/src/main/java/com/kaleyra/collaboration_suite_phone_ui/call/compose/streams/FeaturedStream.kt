@@ -47,7 +47,7 @@ internal fun FeaturedStream(
                     streamView = stream.video?.view,
                     avatar = stream.avatar,
                     avatarVisible = stream.video == null || !stream.video.isEnabled,
-                    onStreamPositioned = onStreamPositioned
+                    onStreamViewPositioned = onStreamPositioned
                 )
             }
         }
