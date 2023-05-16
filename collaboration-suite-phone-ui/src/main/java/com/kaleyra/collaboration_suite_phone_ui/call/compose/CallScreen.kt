@@ -7,16 +7,13 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -27,7 +24,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -260,7 +256,7 @@ internal fun CallScreen(
         onBackPressed = onBackPressedInternal,
         isInPipMode = isInPipMode,
         onFileShareDisplayed = onFileShareDisplayed,
-        onFirstStreamPositioned = onFirstStreamPositioned,
+        onPipStreamPositioned = onFirstStreamPositioned,
         onConfigurationChange = viewModel::updateStreamsArrangement
     )
 }
@@ -286,7 +282,7 @@ internal fun CallScreen(
     onConfigurationChange: (Boolean) -> Unit,
     onThumbnailStreamClick: (StreamUi) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
-    onFirstStreamPositioned: (Rect) -> Unit,
+    onPipStreamPositioned: (Rect) -> Unit,
     onFileShareDisplayed: () -> Unit
 ) {
     if (isInPipMode) {
@@ -399,7 +395,7 @@ internal fun CallScreen(
                         maxWidth = maxWidth,
                         onBackPressed = onBackPressed,
                         onStreamFullscreenClick = onFullscreenStreamClick,
-                        onPipStreamPositioned = onFirstStreamPositioned
+                        onPipStreamPositioned = onPipStreamPositioned
                     )
                 }
             )
@@ -432,7 +428,7 @@ fun CallScreenPreview() {
             onBackPressed = {},
             onFullscreenStreamClick = {},
             onThumbnailStreamClick = {},
-            onFirstStreamPositioned = {}
+            onPipStreamPositioned = {}
         )
     }
 }

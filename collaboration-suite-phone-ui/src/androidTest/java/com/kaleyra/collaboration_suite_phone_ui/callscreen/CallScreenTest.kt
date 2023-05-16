@@ -14,7 +14,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.A
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.mockAudioDevices
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.viewmodel.AudioOutputViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.rememberMultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
@@ -82,7 +81,8 @@ class CallScreenTest {
                 permissionsState = null,
                 onConfigurationChange = { },
                 onFullscreenStreamClick = { },
-                onFileShareDisplayed = { fileShareDisplayed = true }
+                onFileShareDisplayed = { fileShareDisplayed = true },
+                onPipStreamPositioned = { }
             )
             LaunchedEffect(sideEffect) {
                 sideEffect.invoke()

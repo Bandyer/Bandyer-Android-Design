@@ -41,7 +41,7 @@ class CallScreenRecreationTest {
                 onFullscreenStreamClick = { },
                 onFileShareDisplayed = { },
                 onConfigurationChange = { },
-                onFirstStreamPositioned = {},
+                onPipStreamPositioned = {},
                 onBackPressed = { }
             )
         }
