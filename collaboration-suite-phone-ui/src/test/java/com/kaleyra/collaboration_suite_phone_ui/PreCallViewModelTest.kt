@@ -8,7 +8,7 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.RecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
@@ -171,7 +171,7 @@ class PreCallViewModelTest {
         assertEquals(null, current)
         advanceUntilIdle()
         val new = viewModel.uiState.first().recording
-        val expected = RecordingUi.OnConnect
+        val expected = RecordingTypeUi.OnConnect
         assertEquals(expected, new)
     }
 

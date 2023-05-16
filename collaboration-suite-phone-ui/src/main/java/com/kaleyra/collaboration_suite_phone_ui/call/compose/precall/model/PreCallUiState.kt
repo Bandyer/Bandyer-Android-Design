@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model
 
 import androidx.compose.runtime.Immutable
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.RecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.model.UiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
@@ -13,6 +13,6 @@ data class PreCallUiState(
     val participants: List<String> = listOf(),
     val watermarkInfo: WatermarkInfo? = null,
     val isGroupCall: Boolean = false,
-    val recording: RecordingUi? = null,
+    val recording: RecordingTypeUi? = null,
     override val userMessage: String? = null
 ) : UiState

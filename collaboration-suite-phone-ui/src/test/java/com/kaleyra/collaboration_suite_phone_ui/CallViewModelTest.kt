@@ -10,6 +10,7 @@ import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -72,6 +73,7 @@ class CallViewModelTest {
             every { inputs } returns inputsMock
             every { participants } returns MutableStateFlow(callParticipantsMock)
             every { extras.recording.state } returns MutableStateFlow(Call.Recording.State.Started)
+            every { extras.recording.type } returns Call.Recording.Type.OnConnect
             every { extras.preferredType } returns Call.PreferredType()
             every { state } returns MutableStateFlow(Call.State.Disconnected)
         }
@@ -182,6 +184,15 @@ class CallViewModelTest {
         advanceUntilIdle()
         val new = viewModel.uiState.first().isRecording
         assertEquals(true, new)
+    }
+
+    @Test
+    fun testCallUiState_recordingTypeUpdated() = runTest {
+        val current = viewModel.uiState.first().recordingType
+        assertEquals(null, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().recordingType
+        assertEquals(RecordingTypeUi.OnConnect, new)
     }
 
     @Test
