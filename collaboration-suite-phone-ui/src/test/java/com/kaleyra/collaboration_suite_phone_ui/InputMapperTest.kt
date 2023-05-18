@@ -5,6 +5,7 @@ import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasAudio
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasBeenMutedBy
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
@@ -145,5 +146,19 @@ class InputMapperTest {
         val result = call.hasAudio()
         val actual = result.first()
         Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun inputAudioRequestMute_hasBeenMutedBy_adminDisplayName() = runTest {
+        val event = mockk<Input.Audio.Event.Request.Mute>()
+        val producer = mockk<CallParticipant>()
+        every { producer.displayName } returns MutableStateFlow("username")
+        every { event.producer } returns producer
+        every { audioMock.events } returns MutableStateFlow(event)
+        val call = MutableStateFlow(callMock)
+        val result = call.hasBeenMutedBy()
+        val actual = result.first()
+        val expected = "username"
+        Assert.assertEquals(expected, actual)
     }
 }
