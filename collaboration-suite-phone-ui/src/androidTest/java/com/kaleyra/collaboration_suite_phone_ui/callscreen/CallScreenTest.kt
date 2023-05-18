@@ -14,7 +14,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.A
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.mockAudioDevices
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.viewmodel.AudioOutputViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
@@ -607,14 +609,14 @@ class CallScreenTest {
 
     @Test
     fun recordingTypeOnConnectAndCallStateDialing_onConnectHelperTextIsDisplayed() {
-        callUiState = CallUiState(callState = CallStateUi.Dialing, recordingType = RecordingTypeUi.OnConnect)
+        callUiState = CallUiState(callState = CallStateUi.Dialing, recording = RecordingUi(RecordingTypeUi.OnConnect, RecordingStateUi.Started))
         val text = composeTestRule.activity.getString(R.string.kaleyra_automatic_recording_disclaimer)
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
     @Test
     fun recordingTypeOnDemandAndCallStateDialing_onDemandHelperTextIsDisplayed() {
-        callUiState = CallUiState(callState = CallStateUi.Dialing, recordingType = RecordingTypeUi.OnDemand)
+        callUiState = CallUiState(callState = CallStateUi.Dialing, recording = RecordingUi(RecordingTypeUi.OnDemand, RecordingStateUi.Started))
         val text = composeTestRule.activity.getString(R.string.kaleyra_manual_recording_disclaimer)
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }

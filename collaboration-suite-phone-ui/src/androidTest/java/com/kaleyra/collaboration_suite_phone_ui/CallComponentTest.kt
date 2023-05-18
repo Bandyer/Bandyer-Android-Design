@@ -16,6 +16,9 @@ import androidx.compose.ui.unit.height
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStreamTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
@@ -352,9 +355,9 @@ class CallComponentTest {
     @Test
     fun callStateRecording_recordingIsDisplayed() {
         val recording = composeTestRule.activity.getString(R.string.kaleyra_call_info_rec)
-        callUiState = CallUiState(isRecording = false)
+        callUiState = CallUiState(recording = RecordingUi(RecordingTypeUi.OnDemand, RecordingStateUi.Stopped))
         composeTestRule.onNodeWithText(recording, ignoreCase = true).assertDoesNotExist()
-        callUiState = CallUiState(isRecording = true)
+        callUiState = CallUiState(recording = RecordingUi(RecordingTypeUi.OnDemand, RecordingStateUi.Started))
         composeTestRule.onNodeWithText(recording, ignoreCase = true).assertIsDisplayed()
     }
 
@@ -387,7 +390,7 @@ class CallComponentTest {
 
     @Test
     fun callIsRecording_callInfoWidgetIsDisplayed() {
-        callUiState = CallUiState(isRecording = true)
+        callUiState = CallUiState(recording = RecordingUi(RecordingTypeUi.OnDemand, RecordingStateUi.Started))
         composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
     }
 
