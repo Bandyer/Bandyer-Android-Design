@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.utils.FlowUtils.combine
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startCamera
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startMicrophone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
@@ -19,22 +20,14 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallActionsM
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isSharingScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.isVirtualBackgroundEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
-import com.kaleyra.collaboration_suite_core_ui.utils.FlowUtils.combine
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.mockCallActions
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.isVirtualBackgroundEnabled
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.toCurrentVirtualBackgroundUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
 import kotlinx.coroutines.launch
 
 internal class CallActionsViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallActionsUiState>(configure) {
     override fun initialState() = CallActionsUiState()
-
-    private val call = phoneBox
-        .flatMapLatest { it.call }
-        .shareInEagerly(viewModelScope)
 
     private val callActions = call
         .toCallActions()
