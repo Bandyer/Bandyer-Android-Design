@@ -23,10 +23,6 @@ internal class WhiteboardViewModel(configure: suspend () -> Configuration, white
 
     override fun initialState() = WhiteboardUiState()
 
-    private val call = phoneBox
-        .flatMapLatest { it.call }
-        .shareInEagerly(viewModelScope)
-
     private val whiteboard = call
         .map { it.whiteboard }
         .shareInEagerly(viewModelScope)

@@ -17,8 +17,6 @@ import kotlinx.coroutines.flow.*
 internal class FileShareViewModel(configure: suspend () -> Configuration, filePickProvider: FilePickProvider) : BaseViewModel<FileShareUiState>(configure) {
     override fun initialState() = FileShareUiState()
 
-    private val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
-
     private val sharedFolder: SharedFolder?
         get() = call.getValue()?.sharedFolder
 

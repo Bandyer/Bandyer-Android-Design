@@ -21,8 +21,6 @@ internal class VirtualBackgroundViewModel(configure: suspend () -> Configuration
 
     override fun initialState() = VirtualBackgroundUiState()
 
-    private val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
-
     init {
         call
             .toCurrentVirtualBackgroundUi()

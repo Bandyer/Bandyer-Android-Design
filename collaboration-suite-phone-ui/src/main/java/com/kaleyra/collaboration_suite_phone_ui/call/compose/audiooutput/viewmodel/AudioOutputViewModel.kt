@@ -20,8 +20,6 @@ internal class AudioOutputViewModel(configure: suspend () -> Configuration) : Ba
 
     override fun initialState() = AudioOutputUiState()
 
-    val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
-
     init {
         call
             .toAudioDevicesUi()

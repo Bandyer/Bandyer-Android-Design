@@ -16,8 +16,6 @@ import kotlinx.coroutines.flow.*
 internal class PreCallViewModel(configure: suspend () -> Configuration) : BaseViewModel<PreCallUiState>(configure) {
     override fun initialState() = PreCallUiState()
 
-    val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
-
     init {
         // TODO add watermark
 
