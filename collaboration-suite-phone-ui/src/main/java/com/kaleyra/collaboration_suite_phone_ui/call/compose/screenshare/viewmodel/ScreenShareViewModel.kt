@@ -7,18 +7,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Inputs
-import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
 import kotlinx.coroutines.launch
 
 internal class ScreenShareViewModel(configure: suspend () -> Configuration) : BaseViewModel<ScreenShareUiState>(configure) {
     override fun initialState() = ScreenShareUiState()
-
-    private val call: CallUI?
-        get() = phoneBox.getValue()?.call?.getValue()
 
     fun shareApplicationScreen(context: Context) = shareScreen(context, Inputs.Type.Application)
 
@@ -26,7 +21,7 @@ internal class ScreenShareViewModel(configure: suspend () -> Configuration) : Ba
 
     private fun shareScreen(context: Context, inputType: Inputs.Type) {
         viewModelScope.launch {
-            val call = call
+            val call = call.getValue()
             if (context !is FragmentActivity || call == null) return@launch
             val input = call.inputs
                 .request(context, inputType)
