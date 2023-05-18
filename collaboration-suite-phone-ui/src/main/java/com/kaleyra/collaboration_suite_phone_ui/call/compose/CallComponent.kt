@@ -9,12 +9,14 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -28,6 +30,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeWidth
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isOrientationPortrait
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
@@ -107,7 +110,13 @@ internal fun CallComponent(
     val shouldShowCallInfo by remember(callUiState) { callUiState.shouldShowCallInfo() }
     val shouldHideWatermark by remember(callUiState) { callUiState.shouldHideWatermark() }
     var callInfoWidgetHeight by remember { mutableStateOf(0) }
+    var streamHeaderHeight by remember { mutableStateOf(0) }
+    val snackbarTopPadding = with(LocalDensity.current) { 16.dp.toPx() }
+    val snackbarOffsetValue by derivedStateOf {
+        snackbarTopPadding + streamHeaderHeight + if (shouldShowCallInfo) callInfoWidgetHeight else 0
+    }
     val streamHeaderOffset by animateIntAsState(targetValue = if (shouldShowCallInfo) callInfoWidgetHeight else 0)
+    val snackbarOffset by animateIntAsState(targetValue = snackbarOffsetValue.toInt())
 
 //    var resetCountDown by remember { mutableStateOf(false) }
 //    val countDown by rememberCountdownTimerState(initialMillis = 5000L, resetFlag = resetCountDown)
@@ -115,7 +124,6 @@ internal fun CallComponent(
 //        targetValue = if (countDown > 0L) 1f else 0f,
 //        animationSpec = tween()
 //    )
-//
 
     Box(modifier.testTag(CallComponentTag)) {
         AdaptiveGrid(
@@ -145,6 +153,7 @@ internal fun CallComponent(
                         headerModifier = remember(index, callComponentState, streamHeaderOffset) {
                             Modifier
                                 .offset { IntOffset(x = 0, y = if (index < callComponentState.columns) streamHeaderOffset else 0) }
+                                .onGloballyPositioned { streamHeaderHeight = it.size.height }
 //                                    .graphicsLayer { alpha = streamsHeaderAlpha }
                         }
                     )
@@ -171,6 +180,13 @@ internal fun CallComponent(
                 }
             )
         }
+
+        UserMessageSnackbarsContainer(
+            userMessages = callUiState.userMessages,
+            modifier = modifier
+                .align(Alignment.TopCenter)
+                .offset { IntOffset(0, snackbarOffset) }
+        )
     }
 }
 

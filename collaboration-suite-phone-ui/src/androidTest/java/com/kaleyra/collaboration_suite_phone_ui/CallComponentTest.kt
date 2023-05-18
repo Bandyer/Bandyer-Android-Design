@@ -22,6 +22,10 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.Rec
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStreamTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.mockk
 import org.junit.After
@@ -410,6 +414,20 @@ class CallComponentTest {
         callUiState = CallUiState(callState = CallStateUi.Connected, featuredStreams = ImmutableList(listOf(stream)))
         composeTestRule.waitForIdle()
         assertNotEquals(null, pipStreamRect)
+    }
+
+    @Test
+    fun recordingMessage_recordingSnackbarIsDisplayed() {
+        callUiState = CallUiState(userMessages = UserMessages(recordingMessage = RecordingMessage.Started()))
+        val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun mutedMessage_mutedSnackbarIsDisplayed() {
+        callUiState = CallUiState(userMessages = UserMessages(mutedMessage = MutedMessage(null)))
+        val title = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 
     private fun <T: ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<T>, T>.assertConnectingTitleIsDisplayed() {
