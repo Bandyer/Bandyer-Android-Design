@@ -59,6 +59,22 @@ internal class WhiteboardViewModel(configure: suspend () -> Configuration, white
                 onTextConfirmed.value = onCompletion
                 _uiState.update { it.copy(text = text) }
             }.launchIn(viewModelScope)
+
+        callUserMessageProvider
+            .recordingUserMessage()
+            .onEach { message ->
+                _uiState.update {
+                    it.copy(userMessages = it.userMessages.copy(recordingMessage = message))
+                }
+            }.launchIn(viewModelScope)
+
+        callUserMessageProvider
+            .mutedUserMessage()
+            .onEach { message ->
+                _uiState.update {
+                    it.copy(userMessages = it.userMessages.copy(mutedMessage = message))
+                }
+            }.launchIn(viewModelScope)
     }
 
     override fun onCleared() {

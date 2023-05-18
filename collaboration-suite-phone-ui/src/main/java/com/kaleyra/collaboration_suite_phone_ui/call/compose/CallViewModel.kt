@@ -84,8 +84,23 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
             .toRecordingUi()
             .onEach { rec -> _uiState.update { it.copy(recording = rec) } }
             .launchIn(viewModelScope)
-    }
 
+        callUserMessageProvider
+            .recordingUserMessage()
+            .onEach { message ->
+                _uiState.update {
+                    it.copy(userMessages = it.userMessages.copy(recordingMessage = message))
+                }
+            }.launchIn(viewModelScope)
+
+        callUserMessageProvider
+            .mutedUserMessage()
+            .onEach { message ->
+                _uiState.update {
+                    it.copy(userMessages = it.userMessages.copy(mutedMessage = message))
+                }
+            }.launchIn(viewModelScope)
+    }
 
     fun startMicrophone(context: FragmentActivity) {
         viewModelScope.launch {

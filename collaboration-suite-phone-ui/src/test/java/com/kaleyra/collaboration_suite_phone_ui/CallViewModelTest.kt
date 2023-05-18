@@ -10,9 +10,12 @@ import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -67,6 +70,9 @@ class CallViewModelTest {
     fun setUp() {
         mockkConstructor(StreamsHandler::class)
         every { anyConstructed<StreamsHandler>().swapThumbnail(any()) } returns Unit
+        mockkConstructor(CallUserMessagesProvider::class)
+        every { anyConstructed<CallUserMessagesProvider>().recordingUserMessage() } returns MutableStateFlow(RecordingMessage.Started())
+        every { anyConstructed<CallUserMessagesProvider>().mutedUserMessage() } returns MutableStateFlow(MutedMessage(null))
         viewModel = spyk(CallViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
@@ -203,6 +209,20 @@ class CallViewModelTest {
         advanceUntilIdle()
         val new = viewModel.uiState.first().isAudioOnly
         assertEquals(true, new)
+    }
+
+    @Test
+    fun testRecordingUserMessageReceived_userMessagesUpdated() = runTest {
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().userMessages.recordingMessage
+        assert(actual is RecordingMessage.Started)
+    }
+
+    @Test
+    fun testMutedUserMessageReceived_userMessagesUpdated() = runTest {
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().userMessages.mutedMessage
+        Assert.assertNotEquals(null, actual)
     }
 
     @Test

@@ -38,6 +38,22 @@ internal class FileShareViewModel(configure: suspend () -> Configuration, filePi
                 val list = ImmutableList(files.sortedByDescending { it.time })
                 _uiState.update { it.copy(sharedFiles = list) }
             }.launchIn(viewModelScope)
+
+        callUserMessageProvider
+            .recordingUserMessage()
+            .onEach { message ->
+                _uiState.update {
+                    it.copy(userMessages = it.userMessages.copy(recordingMessage = message))
+                }
+            }.launchIn(viewModelScope)
+
+        callUserMessageProvider
+            .mutedUserMessage()
+            .onEach { message ->
+                _uiState.update {
+                    it.copy(userMessages = it.userMessages.copy(mutedMessage = message))
+                }
+            }.launchIn(viewModelScope)
     }
 
     override fun onCleared() {

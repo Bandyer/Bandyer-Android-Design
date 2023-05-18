@@ -7,6 +7,9 @@ import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel.WhiteboardViewModel
 import io.mockk.*
@@ -42,6 +45,9 @@ class WhiteboardViewModelTest {
 
     @Before
     fun setUp() {
+        mockkConstructor(CallUserMessagesProvider::class)
+        every { anyConstructed<CallUserMessagesProvider>().recordingUserMessage() } returns MutableStateFlow(RecordingMessage.Started())
+        every { anyConstructed<CallUserMessagesProvider>().mutedUserMessage() } returns MutableStateFlow(MutedMessage(null))
         viewModel = spyk(WhiteboardViewModel(configure = { Configuration.Success(phoneBoxMock, mockk(), mockk()) }, whiteboardView = mockk(relaxed = true)))
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.whiteboard } returns whiteboardMock
@@ -74,6 +80,20 @@ class WhiteboardViewModelTest {
         every { whiteboardMock.state } returns MutableStateFlow(Whiteboard.State.Loading)
         advanceUntilIdle()
         assertEquals(true, viewModel.uiState.first().isLoading)
+    }
+
+    @Test
+    fun testRecordingUserMessageReceived_userMessagesUpdated() = runTest {
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().userMessages.recordingMessage
+        assert(actual is RecordingMessage.Started)
+    }
+
+    @Test
+    fun testMutedUserMessageReceived_userMessagesUpdated() = runTest {
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().userMessages.mutedMessage
+        assertNotEquals(null, actual)
     }
 
     @Test
