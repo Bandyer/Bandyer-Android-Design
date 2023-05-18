@@ -37,6 +37,7 @@ import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.Messages
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.UserInput
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
@@ -137,28 +138,37 @@ internal fun ChatScreen(
 
         if (uiState.isInCall) OngoingCallLabel(onClick = onShowCall)
 
-        Messages(
-            uiState = uiState.conversationState,
-            onDirectionLeft = topBarRef::requestFocus,
-            onMessageScrolled = onMessageScrolled,
-            onApproachingTop = onFetchMessages,
-            onResetScroll = onResetMessagesScroll,
-            scrollState = scrollState,
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .testTag(MessagesTag)
-        )
+        Box {
+            Column {
+                Messages(
+                    uiState = uiState.conversationState,
+                    onDirectionLeft = topBarRef::requestFocus,
+                    onMessageScrolled = onMessageScrolled,
+                    onApproachingTop = onFetchMessages,
+                    onResetScroll = onResetMessagesScroll,
+                    scrollState = scrollState,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .testTag(MessagesTag)
+                )
 
-        Divider(
-            color = colorResource(id = R.color.kaleyra_color_grey_light),
-            modifier = Modifier.fillMaxWidth()
-        )
-        UserInput(
-            onTextChanged = onTyping,
-            onMessageSent = onMessageSent,
-            onDirectionLeft = topBarRef::requestFocus
-        )
+                Divider(
+                    color = colorResource(id = R.color.kaleyra_color_grey_light),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                UserInput(
+                    onTextChanged = onTyping,
+                    onMessageSent = onMessageSent,
+                    onDirectionLeft = topBarRef::requestFocus
+                )
+            }
+
+            UserMessageSnackbarsContainer(
+                userMessages = uiState.userMessages,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+        }
     }
 }
 

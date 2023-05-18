@@ -18,6 +18,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.RecordingS
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 
+// TODO move to common package between call and chat
 @Composable
 internal fun UserMessageSnackbarsContainer(
     userMessages: UserMessages,

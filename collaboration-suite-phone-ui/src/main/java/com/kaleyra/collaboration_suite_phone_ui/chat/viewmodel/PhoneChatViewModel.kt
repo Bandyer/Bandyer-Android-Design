@@ -7,6 +7,7 @@ import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -21,6 +22,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure), ChatUiViewModel {
+
+    private val callUserMessageProvider = CallUserMessagesProvider(call)
 
     private val showUnreadHeader = MutableStateFlow(true)
 
@@ -71,6 +74,22 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
                 it.copy(conversationState = conversationState)
             }
         }.launchIn(viewModelScope)
+
+        callUserMessageProvider
+            .recordingUserMessage()
+            .onEach { message ->
+                _uiState.update {
+                    it.copy(userMessages = it.userMessages.copy(recordingMessage = message))
+                }
+            }.launchIn(viewModelScope)
+
+        callUserMessageProvider
+            .mutedUserMessage()
+            .onEach { message ->
+                _uiState.update {
+                    it.copy(userMessages = it.userMessages.copy(mutedMessage = message))
+                }
+            }.launchIn(viewModelScope)
     }
 
     override fun sendMessage(text: String) {
