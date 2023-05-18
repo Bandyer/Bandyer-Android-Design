@@ -7,12 +7,14 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.Rec
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.map
 
 class CallUserMessagesProvider(private val call: Flow<Call>) {
 
     fun recordingUserMessage(): Flow<RecordingMessage> = call
         .toRecordingStateUi()
+        .dropWhile { it == RecordingStateUi.Stopped }
         .map { state ->
             when (state) {
                 RecordingStateUi.Started -> RecordingMessage.Started()
