@@ -3,7 +3,6 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,6 +38,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.File
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareFab
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.MaxFileSizeDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.viewmodel.FileShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
@@ -163,12 +163,14 @@ internal fun FileShareComponent(
                 )
             }
 
-            SnackbarHost(
-                hostState = snackBarHostState,
+            Column(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 72.dp)
-            )
+            ) {
+                UserMessageSnackbarsContainer(userMessages = uiState.userMessages)
+                SnackbarHost(hostState = snackBarHostState)
+            }
 
             FileShareFab(
                 collapsed = uiState.sharedFiles.count() > 0,

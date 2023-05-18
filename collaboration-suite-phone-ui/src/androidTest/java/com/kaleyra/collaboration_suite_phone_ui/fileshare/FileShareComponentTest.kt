@@ -24,6 +24,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.Sha
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItemTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import org.junit.After
@@ -238,4 +241,17 @@ class FileShareComponentTest {
         assertEquals(true, alertDialogDismissed)
     }
 
+    @Test
+    fun recordingMessage_recordingSnackbarIsDisplayed() {
+        fileShareUiState = FileShareUiState(userMessages = UserMessages(recordingMessage = RecordingMessage.Started()))
+        val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun mutedMessage_mutedSnackbarIsDisplayed() {
+        fileShareUiState = FileShareUiState(userMessages = UserMessages(mutedMessage = MutedMessage(null)))
+        val title = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
 }
