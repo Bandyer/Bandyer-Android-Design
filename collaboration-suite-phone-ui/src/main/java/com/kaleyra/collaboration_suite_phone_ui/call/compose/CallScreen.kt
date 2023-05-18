@@ -57,6 +57,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.RecordAu
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.rememberMultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.common.HelperText
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -376,9 +377,9 @@ internal fun CallScreen(
                             onStreamClick = onThumbnailStreamClick
                         )
                     }
-                    if (callUiState.recordingType != null && callUiState.callState == CallStateUi.Dialing) {
+                    if (callUiState.recording != null && callUiState.recording.type != RecordingTypeUi.Never && callUiState.callState == CallStateUi.Dialing) {
                         HelperText(
-                            text = stringResource(id = if (callUiState.recordingType == RecordingTypeUi.OnConnect) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer),
+                            text = stringResource(id = if (callUiState.recording.type == RecordingTypeUi.OnConnect) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer),
                             color = Color.White,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()

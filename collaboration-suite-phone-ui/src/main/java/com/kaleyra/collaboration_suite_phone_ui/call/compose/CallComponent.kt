@@ -165,7 +165,7 @@ internal fun CallComponent(
                     groupCall = callUiState.isGroupCall
                 ),
                 watermarkInfo = if (!shouldHideWatermark) callUiState.watermarkInfo else null,
-                recording = callUiState.isRecording,
+                recording = callUiState.recording?.isRecording() ?: false,
                 modifier = StatusBarPaddingModifier.onGloballyPositioned {
                     callInfoWidgetHeight = it.size.height
                 }
@@ -176,13 +176,13 @@ internal fun CallComponent(
 
 private fun CallUiState.shouldShowCallInfo(): State<Boolean> {
     return derivedStateOf {
-        callState is CallStateUi.Reconnecting || callState is CallStateUi.Connecting || callState is CallStateUi.Disconnected || isRecording
+        callState is CallStateUi.Reconnecting || callState is CallStateUi.Connecting || callState is CallStateUi.Disconnected || recording?.isRecording() ?: false
     }
 }
 
 private fun CallUiState.shouldHideWatermark(): State<Boolean> {
     return derivedStateOf {
-        callState is CallStateUi.Connected && isRecording
+        callState is CallStateUi.Connected && recording?.isRecording() ?: false
     }
 }
 

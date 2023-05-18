@@ -30,6 +30,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCa
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.PreCallComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.common.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 

@@ -12,7 +12,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.Base
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.toCallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.isRecording
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -84,13 +83,8 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
             .launchIn(viewModelScope)
 
         call
-            .isRecording()
-            .onEach { rec -> _uiState.update { it.copy(isRecording = rec) } }
-            .launchIn(viewModelScope)
-
-        call
             .toRecordingUi()
-            .onEach { rec -> _uiState.update { it.copy(recordingType = rec) } }
+            .onEach { rec -> _uiState.update { it.copy(recording = rec) } }
             .launchIn(viewModelScope)
     }
 
