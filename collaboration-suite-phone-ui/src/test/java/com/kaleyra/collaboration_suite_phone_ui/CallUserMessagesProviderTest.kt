@@ -21,6 +21,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.withTimeoutOrNull
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -34,6 +36,16 @@ class CallUserMessagesProviderTest {
         val provider = CallUserMessagesProvider(flowOf(callMock))
         val actual = provider.recordingUserMessage().first()
         assert(actual is RecordingMessage.Started)
+    }
+
+    @Test
+    fun recordingStateInitializedWithStopped_recordingStoppedUserMessageNotReceived() = runTest {
+        every { callMock.extras.recording.state } returns MutableStateFlow(Call.Recording.State.Stopped)
+        val provider = CallUserMessagesProvider(flowOf(callMock))
+        val result = withTimeoutOrNull(100) {
+            provider.recordingUserMessage().first()
+        }
+        assertEquals(null, result)
     }
 
     @Test
