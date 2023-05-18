@@ -8,6 +8,7 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -18,6 +19,7 @@ import com.kaleyra.collaboration_suite.whiteboard.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.*
@@ -96,29 +98,36 @@ internal fun WhiteboardComponent(
             )
         },
         content = {
-            Column {
-                val contentModifier = Modifier
-                    .weight(1f)
-                    .background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))
-                when {
-                    uiState.isOffline -> {
-                        WhiteboardOfflineContent(
-                            loading = uiState.isLoading,
-                            onReloadClick = onReloadClick,
-                            modifier = contentModifier
-                        )
+            Box {
+                Column {
+                    val contentModifier = Modifier
+                        .weight(1f)
+                        .background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))
+                    when {
+                        uiState.isOffline -> {
+                            WhiteboardOfflineContent(
+                                loading = uiState.isLoading,
+                                onReloadClick = onReloadClick,
+                                modifier = contentModifier
+                            )
+                        }
+                        uiState.whiteboardView != null -> {
+                            WhiteboardContent(
+                                whiteboardView = uiState.whiteboardView,
+                                loading = uiState.isLoading,
+                                upload = uiState.upload,
+                                modifier = contentModifier
+                            )
+                        }
                     }
-                    uiState.whiteboardView != null -> {
-                        WhiteboardContent(
-                            whiteboardView = uiState.whiteboardView,
-                            loading = uiState.isLoading,
-                            upload = uiState.upload,
-                            modifier = contentModifier
-                        )
-                    }
+
+                    NavigationBarsSpacer()
                 }
 
-                NavigationBarsSpacer()
+                UserMessageSnackbarsContainer(
+                    userMessages = uiState.userMessages,
+                    modifier = Modifier.align(Alignment.TopCenter)
+                )
             }
         },
     )
