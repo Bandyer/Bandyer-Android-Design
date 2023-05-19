@@ -1,7 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -9,12 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
@@ -30,17 +34,14 @@ internal fun Watermark(watermarkInfo: WatermarkInfo, modifier: Modifier = Modifi
         modifier = modifier.testTag(WatermarkTag),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (watermarkInfo.image != null) {
-            val painter = painterResource(id = watermarkInfo.image)
-            val logoRatio = with(painter.intrinsicSize) { width / height }
-            Image(
-                painter = painter,
+        if (watermarkInfo.logo != null) {
+            AsyncImage(
+                model = watermarkInfo.logo.let { if (!isSystemInDarkTheme()) it.light else it.dark },
                 contentDescription = stringResource(id = R.string.kaleyra_company_logo),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .heightIn(max = MaxWatermarkHeight)
-                    .widthIn(max = MaxWatermarkWidth)
-                    .aspectRatio(logoRatio)
+                    .widthIn(max = MaxWatermarkWidth),
             )
             Spacer(modifier = Modifier.width(16.dp))
         }
@@ -60,8 +61,8 @@ internal fun Watermark(watermarkInfo: WatermarkInfo, modifier: Modifier = Modifi
 @Composable
 fun CallInfoWidgetPreview() {
     KaleyraTheme {
-        Watermark(
-            watermarkInfo = WatermarkInfo(R.drawable.kaleyra_z_screen_share, "text")
-        )
+//        Watermark(
+//            watermarkInfo = WatermarkInfo(R.drawable.kaleyra_z_screen_share, "text")
+//        )
     }
 }

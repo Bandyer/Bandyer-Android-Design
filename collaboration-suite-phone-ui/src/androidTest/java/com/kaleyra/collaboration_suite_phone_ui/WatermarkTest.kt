@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.width
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Watermark
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 import org.junit.After
 import org.junit.Before
@@ -39,7 +41,8 @@ class WatermarkInfoTest {
 
     @Test
     fun imageNotNull_watermarkImageIsDisplayed() {
-        watermarkInfo = WatermarkInfo(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo)
+        val uri = Uri.parse("com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo")
+        watermarkInfo = WatermarkInfo(logo = Logo(uri, uri))
         composeTestRule.onNodeWithContentDescription(findLogo()).assertIsDisplayed()
     }
 
@@ -51,13 +54,14 @@ class WatermarkInfoTest {
 
     @Test
     fun imageNull_textIsDisplayedAtTheStart() {
-        watermarkInfo = WatermarkInfo(image = null, text = "text")
+        watermarkInfo = WatermarkInfo(logo = null, text = "text")
         composeTestRule.onNodeWithText("text").assertLeftPositionInRootIsEqualTo(0.dp)
     }
 
     @Test
     fun imageNotNull_textIsDisplayedToImageEnd() {
-        watermarkInfo = WatermarkInfo(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = "text")
+        val uri = Uri.parse("com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo")
+        watermarkInfo = WatermarkInfo(logo = Logo(uri, uri), text = "text")
         val imageWidth = composeTestRule.onNodeWithContentDescription(findLogo()).getBoundsInRoot().width
         val imageSpacerWidth = 16.dp
         val expectedPosition = imageWidth + imageSpacerWidth
@@ -66,13 +70,15 @@ class WatermarkInfoTest {
 
     @Test
     fun testLogoExpandsToMaxWidth() {
-        watermarkInfo = WatermarkInfo(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo_clipped)
+        val uri = Uri.parse("com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo_clipped")
+        watermarkInfo = WatermarkInfo(logo = Logo(uri, uri))
         composeTestRule.onNodeWithContentDescription(findLogo()).assertWidthIsEqualTo(300.dp)
     }
 
     @Test
     fun testLogoExpandsToMaxHeight() {
-        watermarkInfo = WatermarkInfo(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo)
+        val uri = Uri.parse("com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo")
+        watermarkInfo = WatermarkInfo(logo = Logo(uri, uri))
         composeTestRule.onNodeWithContentDescription(findLogo()).assertHeightIsEqualTo(80.dp)
     }
 
