@@ -66,6 +66,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -74,6 +75,8 @@ import kotlinx.coroutines.launch
 
 private val PeekHeight = 48.dp
 private val HalfExpandedHeight = 166.dp
+
+private const val AutoFinishTimer = 3000L
 
 @Composable
 internal fun rememberCallScreenState(
@@ -251,6 +254,13 @@ internal fun CallScreen(
 
     LaunchedEffect(permissionsState) {
         permissionsState.launchMultiplePermissionRequest()
+    }
+
+    if (callUiState.callState is CallStateUi.Disconnected.Ended) {
+        LaunchedEffect(Unit) {
+            delay(AutoFinishTimer)
+            activity.finishAndRemoveTask()
+        }
     }
 
     CallScreen(
