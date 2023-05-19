@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.content.res.Configuration
 import android.graphics.Rect
+import android.net.Uri
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
@@ -21,11 +22,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.Rec
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStreamTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.mockk
 import org.junit.After
@@ -226,9 +227,10 @@ class CallComponentTest {
 
     @Test
     fun watermarkInfoNotNull_titleIsDisplayedBelowWatermark() {
+        val uri = Uri.parse("com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo")
         callUiState = CallUiState(
             callState = CallStateUi.Connecting,
-            watermarkInfo = WatermarkInfo(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = "watermark")
+            watermarkInfo = WatermarkInfo(logo = Logo(uri, uri), text = "watermark")
         )
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
         val titleTop = composeTestRule.onNodeWithContentDescription(connecting).getBoundsInRoot().top
@@ -400,9 +402,10 @@ class CallComponentTest {
 
     @Test
     fun callStateConnectedAndRecordingTrue_watermarkIsNotDisplayed() {
+        val uri = Uri.parse("com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo")
         callUiState = CallUiState(
             callState = CallStateUi.Connected,
-            watermarkInfo = WatermarkInfo(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = "watermark")
+            watermarkInfo = WatermarkInfo(logo = Logo(uri, uri), text = "watermark")
         )
         composeTestRule.onNodeWithTag(WatermarkTag).assertDoesNotExist()
     }
