@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +9,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 import org.junit.After
 import org.junit.Before
@@ -78,14 +80,15 @@ class CallInfoWidgetTest {
 
     @Test
     fun watermarkImageNotNull_watermarkImageIsDisplayed() {
-        watermarkInfo = WatermarkInfo(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = null)
-        val logo = composeTestRule.activity.getString(R.string.kaleyra_company_logo)
-        composeTestRule.onNodeWithContentDescription(logo).assertIsDisplayed()
+        val uri = Uri.parse("com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo")
+        watermarkInfo = WatermarkInfo(logo = Logo(uri, uri), text = null)
+        val logoContentDescr = composeTestRule.activity.getString(R.string.kaleyra_company_logo)
+        composeTestRule.onNodeWithContentDescription(logoContentDescr).assertIsDisplayed()
     }
 
     @Test
     fun watermarkTextNotNull_watermarkTextIsDisplayed() {
-        watermarkInfo = WatermarkInfo(image = null, text = "watermark")
+        watermarkInfo = WatermarkInfo(logo = null, text = "watermark")
         composeTestRule.onNodeWithText("watermark").assertIsDisplayed()
     }
 
