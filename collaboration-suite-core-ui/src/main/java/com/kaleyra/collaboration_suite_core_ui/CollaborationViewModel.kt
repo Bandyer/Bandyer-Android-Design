@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
@@ -16,6 +17,8 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
     val phoneBox = _configuration.mapSuccess { it.phoneBox }.shareInEagerly(viewModelScope)
 
     val chatBox = _configuration.mapSuccess { it.chatBoxUI }.shareInEagerly(viewModelScope)
+
+    val company = _configuration.mapSuccess { it.company }.shareInEagerly(viewModelScope)
 
     val usersDescription = _configuration.mapSuccess { it.usersDescription }.shareInEagerly(viewModelScope)
 
@@ -36,12 +39,12 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
 }
 
 sealed class Configuration {
-    data class Success(val phoneBox: PhoneBoxUI, val chatBoxUI: ChatBoxUI, val usersDescription: UsersDescription) : Configuration()
+    data class Success(val phoneBox: PhoneBoxUI, val chatBoxUI: ChatBoxUI, val company: Company, val usersDescription: UsersDescription) : Configuration()
     object Failure : Configuration()
 }
 
 suspend fun requestConfiguration(): Configuration {
     if (!CollaborationUI.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
-    return if (CollaborationUI.isConfigured) Configuration.Success(CollaborationUI.phoneBox, CollaborationUI.chatBox, CollaborationUI.usersDescription)
+    return if (CollaborationUI.isConfigured) Configuration.Success(CollaborationUI.phoneBox, CollaborationUI.chatBox, CollaborationUI.company, CollaborationUI.usersDescription)
     else Configuration.Failure
 }
