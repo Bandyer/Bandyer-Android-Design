@@ -240,9 +240,13 @@ internal fun CallScreen(
     val permissions by remember(callScreenState) { getPermissions(callUiState) }
     val permissionsState = rememberMultiplePermissionsState(permissions = permissions) { permissionsResult ->
         permissionsResult.forEach { (permission, isGranted) ->
-            when {
-                permission == RecordAudioPermission && isGranted -> viewModel.startMicrophone(activity)
-                permission == CameraPermission && isGranted -> viewModel.startCamera(activity)
+            if (!isGranted) {
+                viewModel.hangUp()
+                return@forEach
+            }
+            when (permission) {
+                RecordAudioPermission -> viewModel.startMicrophone(activity)
+                CameraPermission -> viewModel.startCamera(activity)
             }
         }
     }
@@ -258,8 +262,8 @@ internal fun CallScreen(
     }
 
     if (callUiState.callState is CallStateUi.Disconnected.Ended) {
-        onCallEnded()
         LaunchedEffect(Unit) {
+            onCallEnded()
             delay(AutoFinishTimer)
             activity.finishAndRemoveTask()
         }

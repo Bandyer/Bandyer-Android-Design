@@ -13,7 +13,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
@@ -26,12 +25,10 @@ import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.*
 import org.junit.Assert.assertEquals
-import kotlin.math.log
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CallViewModelTest {
@@ -43,7 +40,7 @@ class CallViewModelTest {
     
     private val phoneBoxMock = mockk<PhoneBoxUI>()
     
-    private val callMock = mockk<CallUI>()
+    private val callMock = mockk<CallUI>(relaxed = true)
 
     private val inputsMock = mockk<Inputs>()
 
@@ -328,6 +325,13 @@ class CallViewModelTest {
         val streamMock = mockk<StreamUi>()
         viewModel.swapThumbnail(streamMock)
         verify { anyConstructed<StreamsHandler>().swapThumbnail(streamMock) }
+    }
+
+    @Test
+    fun testHangUp() = runTest {
+        advanceUntilIdle()
+        viewModel.hangUp()
+        verify(exactly = 1) { callMock.end() }
     }
 
     @Test

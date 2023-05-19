@@ -15,7 +15,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantM
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper.toWatermarkInfo
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -111,6 +110,10 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
         viewModelScope.launch {
             call.getValue()?.startCamera(context)
         }
+    }
+
+    fun hangUp() {
+        call.getValue()?.end()
     }
 
     fun updateStreamsArrangement(isMediumSizeDevice: Boolean) {
