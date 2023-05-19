@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
+import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
 import com.kaleyra.collaboration_suite_utils.cached
@@ -87,6 +88,12 @@ object CollaborationUI {
         get() {
             require(collaboration != null) { "configure the CollaborationUI to use the chatBox" }
             return _chatBox!!
+        }
+
+    val company: Company
+        get() {
+            require(collaboration != null) { "configure the CollaborationUI to access the company" }
+            return collaboration!!.company
         }
 
     /**
