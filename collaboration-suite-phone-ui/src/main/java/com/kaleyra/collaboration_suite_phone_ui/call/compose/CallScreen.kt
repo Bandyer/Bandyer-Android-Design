@@ -223,7 +223,8 @@ internal fun CallScreen(
     isInPipMode: Boolean,
     onBackPressed: () -> Unit,
     onFirstStreamPositioned: (Rect) -> Unit,
-    onFileShareDisplayed: () -> Unit
+    onFileShareDisplayed: () -> Unit,
+    onCallEnded: () -> Unit
 ) {
     val activity = LocalContext.current.findActivity() as FragmentActivity
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -257,6 +258,7 @@ internal fun CallScreen(
     }
 
     if (callUiState.callState is CallStateUi.Disconnected.Ended) {
+        onCallEnded()
         LaunchedEffect(Unit) {
             delay(AutoFinishTimer)
             activity.finishAndRemoveTask()

@@ -23,7 +23,9 @@ class PhoneCallActivity : FragmentActivity() {
 
     private val isInPipMode = MutableStateFlow(false)
 
-    private var pipRect = Rect()
+    private var pictureInPictureRect = Rect()
+
+    private var isCallEnded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,8 @@ class PhoneCallActivity : FragmentActivity() {
                     shouldShowFileShareComponent = shouldShowFileShare.collectAsStateWithLifecycle().value,
                     isInPipMode = isInPipMode.collectAsStateWithLifecycle().value,
                     onFileShareDisplayed = { shouldShowFileShare.value = false },
-                    onFirstStreamPositioned = { pipRect = it },
+                    onFirstStreamPositioned = { pictureInPictureRect = it },
+                    onCallEnded = { isCallEnded = true },
                     onBackPressed = this::finishAndRemoveTask
                 )
             }
@@ -59,7 +62,7 @@ class PhoneCallActivity : FragmentActivity() {
     private fun updatePipParams(): PictureInPictureParams? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             PictureInPictureParams.Builder()
-                .setAspectRatio(getAspectRatioRational(pipRect))
+                .setAspectRatio(getAspectRatioRational(pictureInPictureRect))
                 .apply { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) setAutoEnterEnabled(false) }
                 .build()
         } else null
@@ -84,16 +87,18 @@ class PhoneCallActivity : FragmentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        handleIntentAction(intent)
+        if (handleIntentAction(intent)) return
+        restartActivityIfCurrentCallIsEnded(intent)
     }
 
-    private fun handleIntentAction(intent: Intent) {
-        val action = intent.extras?.getString("action") ?: return
-        when (action) {
+    private fun handleIntentAction(intent: Intent): Boolean {
+        val action = intent.extras?.getString("action") ?: return false
+        return when (action) {
             CallNotificationActionReceiver.ACTION_ANSWER, CallNotificationActionReceiver.ACTION_HANGUP -> {
                 sendBroadcast(Intent(this, CallNotificationActionReceiver::class.java).apply {
                     this.action = action
                 })
+                true
             }
             FileShareNotificationActionReceiver.ACTION_DOWNLOAD -> {
                 sendBroadcast(Intent(this, FileShareNotificationActionReceiver::class.java).apply {
@@ -101,8 +106,16 @@ class PhoneCallActivity : FragmentActivity() {
                     this.putExtras(intent)
                 })
                 shouldShowFileShare.value = true
+                true
             }
+            else -> false
         }
+    }
 
+    private fun restartActivityIfCurrentCallIsEnded(intent: Intent) {
+        if (isCallEnded && Intent.FLAG_ACTIVITY_NEW_TASK.let { intent.flags.and(it) == it } ) {
+            finishAndRemoveTask()
+            startActivity(intent)
+        }
     }
 }
