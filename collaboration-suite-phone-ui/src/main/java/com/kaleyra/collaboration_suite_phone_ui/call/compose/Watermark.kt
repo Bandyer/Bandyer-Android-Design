@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
+import android.net.Uri
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -61,8 +62,8 @@ internal fun Watermark(watermarkInfo: WatermarkInfo, modifier: Modifier = Modifi
 @Composable
 fun CallInfoWidgetPreview() {
     KaleyraTheme {
-//        Watermark(
-//            watermarkInfo = WatermarkInfo(R.drawable.kaleyra_z_screen_share, "text")
-//        )
+        Watermark(
+            watermarkInfo = WatermarkInfo(text = "text", logo = null)
+        )
     }
 }

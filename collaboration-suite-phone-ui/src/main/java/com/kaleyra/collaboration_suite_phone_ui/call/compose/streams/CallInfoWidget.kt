@@ -113,13 +113,13 @@ private fun Header(
 @Composable
 internal fun CallInfoWidgetWithWatermarkPreview() {
     KaleyraTheme {
-//        CallInfoWidget(
-//            onBackPressed = { },
-//            title = "Title",
-//            subtitle = "Subtitle",
-//            watermarkInfo = WatermarkInfo(image = R.drawable.ic_kaleyra_screen_share),
-//            recording = true
-//        )
+        CallInfoWidget(
+            onBackPressed = { },
+            title = "Title",
+            subtitle = "Subtitle",
+            watermarkInfo = WatermarkInfo(logo = null, text = "text"),
+            recording = true
+        )
     }
 }
 
