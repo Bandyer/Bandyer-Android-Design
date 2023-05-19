@@ -63,7 +63,7 @@ class CallActionsViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = spyk(CallActionsViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk()) })
+        viewModel = spyk(CallActionsViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk(), mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { inputs } returns inputsMock
@@ -71,6 +71,7 @@ class CallActionsViewModelTest {
             every { state } returns MutableStateFlow(mockk())
             every { participants } returns MutableStateFlow(callParticipantsMock)
             every { effects }returns effectsMock
+            every { extras.preferredType } returns Call.PreferredType.audioVideo()
         }
         with(callParticipantsMock) {
             every { me } returns meMock
@@ -106,7 +107,7 @@ class CallActionsViewModelTest {
         assertEquals(listOf<CallAction>(), current)
         advanceUntilIdle()
         val new = viewModel.uiState.first().actionList.value
-        val expected = listOf(CallAction.HangUp(), CallAction.Audio())
+        val expected = listOf(CallAction.Audio(), CallAction.HangUp())
         assertEquals(expected, new)
     }
 
@@ -179,7 +180,7 @@ class CallActionsViewModelTest {
         advanceUntilIdle()
         val result = viewModel.uiState
         val actual = result.first().actionList.value
-        val expected = listOf(CallAction.HangUp(), CallAction.VirtualBackground(isToggled = true))
+        val expected = listOf(CallAction.VirtualBackground(isToggled = true), CallAction.HangUp())
         assertEquals(expected, actual)
 
         // Update call actions

@@ -40,7 +40,7 @@ class ScreenShareViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = spyk(ScreenShareViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk()) })
+        viewModel = spyk(ScreenShareViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk(), mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { inputs } returns inputsMock

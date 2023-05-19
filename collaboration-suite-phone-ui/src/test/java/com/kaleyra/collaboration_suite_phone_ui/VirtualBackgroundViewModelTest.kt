@@ -52,7 +52,7 @@ class VirtualBackgroundViewModelTest {
     @Before
     fun setUp() {
         viewModel =
-            VirtualBackgroundViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk()) }
+            VirtualBackgroundViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk(), mockk()) }
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.participants } returns MutableStateFlow(participantsMock)
         every { participantsMock.me } returns meMock
@@ -86,7 +86,7 @@ class VirtualBackgroundViewModelTest {
     fun testVirtualBackgroundUiState_backgroundsUpdated() = runTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().backgroundList.value
-        assertEquals(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur("blurId")), actual)
+        assertEquals(listOf(VirtualBackgroundUi.None, VirtualBackgroundUi.Blur("blurId"), VirtualBackgroundUi.Image("imageId")), actual)
     }
 
     @Test

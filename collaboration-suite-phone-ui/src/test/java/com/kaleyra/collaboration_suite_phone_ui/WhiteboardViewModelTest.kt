@@ -48,7 +48,7 @@ class WhiteboardViewModelTest {
         mockkConstructor(CallUserMessagesProvider::class)
         every { anyConstructed<CallUserMessagesProvider>().recordingUserMessage() } returns MutableStateFlow(RecordingMessage.Started())
         every { anyConstructed<CallUserMessagesProvider>().mutedUserMessage() } returns MutableStateFlow(MutedMessage(null))
-        viewModel = spyk(WhiteboardViewModel(configure = { Configuration.Success(phoneBoxMock, mockk(), mockk()) }, whiteboardView = mockk(relaxed = true)))
+        viewModel = spyk(WhiteboardViewModel(configure = { Configuration.Success(phoneBoxMock, mockk(), mockk(), mockk()) }, whiteboardView = mockk(relaxed = true)))
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.whiteboard } returns whiteboardMock
         with(sharedFileMock) {

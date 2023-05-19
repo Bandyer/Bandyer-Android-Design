@@ -71,7 +71,7 @@ class FileShareViewModelTest {
         every { anyConstructed<CallUserMessagesProvider>().recordingUserMessage() } returns MutableStateFlow(RecordingMessage.Started())
         every { anyConstructed<CallUserMessagesProvider>().mutedUserMessage() } returns MutableStateFlow(MutedMessage(null))
         viewModel = FileShareViewModel(
-            configure = { Configuration.Success(phoneBoxMock, mockk(), mockk()) },
+            configure = { Configuration.Success(phoneBoxMock, mockk(), mockk(), mockk()) },
             filePickProvider = object : FilePickProvider {
                 override val fileUri: Flow<Uri> = MutableStateFlow(uriMock)
             }
