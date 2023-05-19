@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity
+import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -12,7 +13,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
@@ -21,10 +26,12 @@ import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.*
 import org.junit.Assert.assertEquals
+import kotlin.math.log
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CallViewModelTest {
@@ -66,6 +73,14 @@ class CallViewModelTest {
 
     private val participantMock2 = mockk<CallParticipant>()
 
+    private val companyMock = mockk<Company>()
+
+    private val themeMock = mockk<Company.Theme>()
+
+    private val dayLogo = mockk<Uri>()
+
+    private val nightLogo = mockk<Uri>()
+
     @Before
     fun setUp() {
         mockkConstructor(StreamsHandler::class)
@@ -73,7 +88,7 @@ class CallViewModelTest {
         mockkConstructor(CallUserMessagesProvider::class)
         every { anyConstructed<CallUserMessagesProvider>().recordingUserMessage() } returns MutableStateFlow(RecordingMessage.Started())
         every { anyConstructed<CallUserMessagesProvider>().mutedUserMessage() } returns MutableStateFlow(MutedMessage(null))
-        viewModel = spyk(CallViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk()) })
+        viewModel = spyk(CallViewModel { Configuration.Success(phoneBoxMock, mockk(), companyMock, mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { inputs } returns inputsMock
@@ -137,6 +152,18 @@ class CallViewModelTest {
             every { displayName } returns MutableStateFlow("displayName2")
             every { displayImage } returns MutableStateFlow(uriMock)
         }
+        with(themeMock) {
+            every { day } returns mockk {
+                every { logo } returns dayLogo
+            }
+            every { night } returns mockk {
+                every { logo } returns nightLogo
+            }
+        }
+        with(companyMock) {
+            every { name } returns MutableStateFlow("companyName")
+            every { theme } returns MutableStateFlow(themeMock)
+        }
     }
 
     @After
@@ -186,10 +213,10 @@ class CallViewModelTest {
     @Test
     fun testCallUiState_isRecordingUpdated() = runTest {
         val current = viewModel.uiState.first().recording?.state
-        assertEquals(false, current)
+        assertEquals(null, current)
         advanceUntilIdle()
         val new = viewModel.uiState.first().recording?.state
-        assertEquals(true, new)
+        assertEquals(RecordingStateUi.Started, new)
     }
 
     @Test
@@ -216,6 +243,13 @@ class CallViewModelTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().userMessages.recordingMessage
         assert(actual is RecordingMessage.Started)
+    }
+
+    @Test
+    fun testCallUiState_watermarkInfoUpdated() = runTest {
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().watermarkInfo
+        assertEquals(WatermarkInfo(text = "companyName", logo = Logo(dayLogo, nightLogo)), actual)
     }
 
     @Test

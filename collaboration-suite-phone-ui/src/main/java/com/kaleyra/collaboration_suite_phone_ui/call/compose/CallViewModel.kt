@@ -14,6 +14,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper.toWatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -38,8 +40,6 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
     private var fullscreenStreamId = MutableStateFlow<String?>(null)
 
     init {
-        // TODO add watermark
-
         streamsHandler.streamsArrangement
             .onEach { (featuredStreams, thumbnailsStreams) ->
                 _uiState.update {
@@ -59,25 +59,24 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
             _uiState.update { it.copy(fullscreenStream = stream) }
         }.launchIn(viewModelScope)
 
+        company
+            .toWatermarkInfo()
+            .onEach { watermarkInfo -> _uiState.update { it.copy(watermarkInfo = watermarkInfo) } }
+            .launchIn(viewModelScope)
+
         call
             .hasVideo()
-            .onEach { hasVideo ->
-                _uiState.update { it.copy(isAudioOnly = !hasVideo) }
-            }
+            .onEach { hasVideo -> _uiState.update { it.copy(isAudioOnly = !hasVideo) } }
             .launchIn(viewModelScope)
 
         call
             .toCallStateUi()
-            .onEach { callState ->
-                _uiState.update { it.copy(callState = callState) }
-            }
+            .onEach { callState -> _uiState.update { it.copy(callState = callState) } }
             .launchIn(viewModelScope)
 
         call
             .isGroupCall()
-            .onEach { isGroupCall ->
-                _uiState.update { it.copy(isGroupCall = isGroupCall) }
-            }
+            .onEach { isGroupCall -> _uiState.update { it.copy(isGroupCall = isGroupCall) } }
             .launchIn(viewModelScope)
 
         call

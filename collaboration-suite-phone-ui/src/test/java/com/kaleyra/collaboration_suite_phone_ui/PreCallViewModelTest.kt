@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
+import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -8,10 +9,12 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,9 +66,17 @@ class PreCallViewModelTest {
 
     private val recordingMock = mockk<Call.Recording>()
 
+    private val companyMock = mockk<Company>()
+
+    private val themeMock = mockk<Company.Theme>()
+
+    private val dayLogo = mockk<Uri>()
+
+    private val nightLogo = mockk<Uri>()
+
     @Before
     fun setUp() {
-        viewModel = spyk(PreCallViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk()) })
+        viewModel = spyk(PreCallViewModel { Configuration.Success(phoneBoxMock, mockk(), companyMock, mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { recordingMock.type } returns Call.Recording.Type.OnConnect
         with(callMock) {
@@ -120,6 +131,18 @@ class PreCallViewModelTest {
             every { displayName } returns MutableStateFlow("displayName2")
             every { displayImage } returns MutableStateFlow(uriMock)
         }
+        with(themeMock) {
+            every { day } returns mockk {
+                every { logo } returns dayLogo
+            }
+            every { night } returns mockk {
+                every { logo } returns nightLogo
+            }
+        }
+        with(companyMock) {
+            every { name } returns MutableStateFlow("companyName")
+            every { theme } returns MutableStateFlow(themeMock)
+        }
     }
 
     @After
@@ -173,6 +196,13 @@ class PreCallViewModelTest {
         val new = viewModel.uiState.first().recording
         val expected = RecordingTypeUi.OnConnect
         assertEquals(expected, new)
+    }
+
+    @Test
+    fun testCallUiState_watermarkInfoUpdated() = runTest {
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().watermarkInfo
+        assertEquals(WatermarkInfo(text = "companyName", logo = Logo(dayLogo, nightLogo)), actual)
     }
 
     @Test
