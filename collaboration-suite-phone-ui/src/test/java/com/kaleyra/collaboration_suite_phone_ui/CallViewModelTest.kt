@@ -29,6 +29,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.*
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CallViewModelTest {
@@ -257,7 +258,20 @@ class CallViewModelTest {
     }
 
     @Test
-    fun testStartMicrophone() = runTest {
+    fun testStartMicrophone_callDialing_micIsStarted() {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connecting)
+        every { callParticipantsMock.creator() } returns participantMeMock
+        testStartMicrophone_micIsStarted()
+    }
+
+    @Test
+    fun testStartMicrophone_callRinging_micIsStarted() {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
+        every { callParticipantsMock.creator() } returns participantMock1
+        testStartMicrophone_micIsStarted()
+    }
+
+    private fun testStartMicrophone_micIsStarted() = runTest {
         val audioMock = mockk<Input.Audio>()
         val myStreamMock = mockk<Stream.Mutable> {
             every { id } returns CAMERA_STREAM_ID
@@ -276,7 +290,41 @@ class CallViewModelTest {
     }
 
     @Test
-    fun testStartCamera() = runTest {
+    fun testStartMicrophone_callConnected_micIsNotStarted() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
+
+        val audioMock = mockk<Input.Audio>()
+        val myStreamMock = mockk<Stream.Mutable> {
+            every { id } returns CAMERA_STREAM_ID
+            every { audio } returns MutableStateFlow(null)
+        }
+        every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
+        val contextMock = mockk<FragmentActivity>()
+        coEvery { inputsMock.request(contextMock, Inputs.Type.Microphone) } returns Inputs.RequestResult.Success(audioMock)
+
+        advanceUntilIdle()
+        viewModel.startMicrophone(contextMock)
+
+        advanceUntilIdle()
+        coVerify(exactly = 0) { inputsMock.request(contextMock, Inputs.Type.Microphone) }
+        assertNotEquals(audioMock, myStreamMock.audio.value)
+    }
+
+    @Test
+    fun testStartCamera_callDialing_cameraIsStarted() {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connecting)
+        every { callParticipantsMock.creator() } returns participantMeMock
+        testStartCamera_cameraIsStarted()
+    }
+
+    @Test
+    fun testStartCamera_callRinging_cameraIsStarted() {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
+        every { callParticipantsMock.creator() } returns participantMock1
+        testStartCamera_cameraIsStarted()
+    }
+
+    private fun testStartCamera_cameraIsStarted() = runTest {
         val cameraMock = mockk<Input.Video.Camera.Internal>()
         val myStreamMock = mockk<Stream.Mutable> {
             every { id } returns CAMERA_STREAM_ID
@@ -292,6 +340,27 @@ class CallViewModelTest {
         advanceUntilIdle()
         coVerify { inputsMock.request(contextMock, Inputs.Type.Camera.Internal) }
         assertEquals(cameraMock, myStreamMock.video.value)
+    }
+
+    @Test
+    fun testStartCamera_callConnected_cameraIsNotStarted() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
+
+        val cameraMock = mockk<Input.Video.Camera.Internal>()
+        val myStreamMock = mockk<Stream.Mutable> {
+            every { id } returns CAMERA_STREAM_ID
+            every { video } returns MutableStateFlow(null)
+        }
+        every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
+        val contextMock = mockk<FragmentActivity>()
+        coEvery { inputsMock.request(contextMock, Inputs.Type.Camera.Internal) } returns Inputs.RequestResult.Success(cameraMock)
+
+        advanceUntilIdle()
+        viewModel.startCamera(contextMock)
+
+        advanceUntilIdle()
+        coVerify(exactly = 0) { inputsMock.request(contextMock, Inputs.Type.Camera.Internal) }
+        assertNotEquals(cameraMock, myStreamMock.video.value)
     }
 
     @Test

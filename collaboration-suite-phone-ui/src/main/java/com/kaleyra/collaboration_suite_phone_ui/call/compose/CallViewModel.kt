@@ -102,12 +102,14 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
 
     fun startMicrophone(context: FragmentActivity) {
         viewModelScope.launch {
+            if (call.getValue()?.let { it.isDialing() || it.isRinging() } == false) return@launch
             call.getValue()?.startMicrophone(context)
         }
     }
 
     fun startCamera(context: FragmentActivity) {
         viewModelScope.launch {
+            if (call.getValue()?.let { it.isDialing() || it.isRinging() } == false) return@launch
             call.getValue()?.startCamera(context)
         }
     }
@@ -129,6 +131,12 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
     fun fullscreenStream(streamId: String?) {
         fullscreenStreamId.value = streamId
     }
+
+    private fun Call.isDialing(): Boolean =
+        state.value is Call.State.Connecting && participants.value.let { it.creator() == it.me }
+
+    private fun Call.isRinging(): Boolean =
+        state.value is Call.State.Disconnected && participants.value.let { it.creator() != it.me && it.creator() != null }
 
     companion object {
 
