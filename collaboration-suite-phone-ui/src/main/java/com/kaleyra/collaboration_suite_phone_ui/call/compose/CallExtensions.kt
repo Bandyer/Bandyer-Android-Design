@@ -12,16 +12,16 @@ internal object CallExtensions {
     suspend fun Call.startMicrophone(context: FragmentActivity) {
         val result = inputs.request(context, Inputs.Type.Microphone)
         val audio = result.getOrNull<Input.Audio>() ?: return
-        myMainStream()?.audio?.value = audio
+        toMyCameraStream()?.audio?.value = audio
     }
 
     suspend fun Call.startCamera(context: FragmentActivity) {
         val result = inputs.request(context, Inputs.Type.Camera.Internal)
         val video = result.getOrNull<Input.Video.Camera.Internal>() ?: return
-        myMainStream()?.video?.value = video
+        toMyCameraStream()?.video?.value = video
     }
 
-    fun Call.myMainStream(): Stream.Mutable? {
+    fun Call.toMyCameraStream(): Stream.Mutable? {
         val me = participants.value.me
         val streams = me.streams.value
         return streams.firstOrNull { it.id == CAMERA_STREAM_ID }
