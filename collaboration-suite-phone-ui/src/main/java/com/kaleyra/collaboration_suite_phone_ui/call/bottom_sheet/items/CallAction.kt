@@ -108,9 +108,9 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
          * @param enable true to enable, false otherwise
          */
         open fun toggle(enable: Boolean) {
+            toggled = enable
             val actionButton = itemView?.findViewById<KaleyraActionButton>(viewId) ?: return
             actionButton.isActivated = enable
-            toggled = enable
             updateContentDescription(actionButton.button)
         }
 
