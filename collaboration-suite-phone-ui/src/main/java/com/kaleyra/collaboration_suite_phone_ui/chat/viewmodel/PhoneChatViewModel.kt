@@ -38,7 +38,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
             _uiState.update { it.copy(state = state) }
         }.launchIn(viewModelScope)
 
-        getChatInfo(participants, usersDescription).onEach { info ->
+        getChatInfo(participants).onEach { info ->
             _uiState.update { it.copy(info = info) }
         }.launchIn(viewModelScope)
 

@@ -31,15 +31,16 @@ object Mocks {
     val now: Instant = Instant.now()
     val yesterday: Instant = now.minus(1, ChronoUnit.DAYS)
 
-    val otherParticipantMock = object : ChatParticipant {
-        override val state: StateFlow<ChatParticipant.State> = otherParticipantState
-        override val events: StateFlow<ChatParticipant.Event> = otherParticipantEvents
-        override val userId: String = "userId"
-        override val restrictions: Contact.Restrictions = mockk()
-        override val displayName: StateFlow<String?> = MutableStateFlow(null)
-        override val displayImage: StateFlow<Uri?> = MutableStateFlow(null)
-
-    }
+    val otherParticipantMock = spyk(
+        object : ChatParticipant {
+            override val state: StateFlow<ChatParticipant.State> = otherParticipantState
+            override val events: StateFlow<ChatParticipant.Event> = otherParticipantEvents
+            override val userId: String = "userId"
+            override val restrictions: Contact.Restrictions = mockk()
+            override val displayName: StateFlow<String?> = MutableStateFlow(null)
+            override val displayImage: StateFlow<Uri?> = MutableStateFlow(null)
+        }
+    )
 
     val chatParticipantsMock = object : ChatParticipants {
         override val me: ChatParticipant.Me = mockk(relaxed = true)

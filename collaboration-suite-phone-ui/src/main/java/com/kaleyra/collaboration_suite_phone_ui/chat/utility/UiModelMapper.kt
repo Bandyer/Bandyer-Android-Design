@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.utility
 
+import android.net.Uri
 import com.kaleyra.collaboration_suite.chatbox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
@@ -68,17 +69,11 @@ internal object UiModelMapper {
     }
 
     fun getChatInfo(
-        participants: Flow<ChatParticipants>,
-        usersDescription: Flow<UsersDescription>
+        participants: Flow<ChatParticipants>
     ): Flow<ChatInfo> {
-        return combine(
-            participants.otherParticipant(),
-            usersDescription
-        ) { participant, usersDesc ->
-            ChatInfo(
-                name = usersDesc.name(listOf(participant.userId)),
-                image = ImmutableUri(usersDesc.image(listOf(participant.userId)))
-            )
+        val participant = participants.otherParticipant()
+        return combine(participant.flatMapLatest { it.displayName }, participant.flatMapLatest { it.displayImage }) { name, image ->
+            ChatInfo(name = name ?: "", image = ImmutableUri(image ?: Uri.EMPTY))
         }
     }
 

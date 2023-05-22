@@ -196,13 +196,12 @@ class UiModelMapperTest {
         assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.UserState.Typing)
     }
 
-    // Does it makes sense?
     @Test
     fun usersDescription_getChatInfo_userIdAndImageUri() = runTest {
         val uriMock = mockk<Uri>()
-        coEvery { usersDescriptionMock.name(any()) } returns otherParticipantMock.userId
-        coEvery { usersDescriptionMock.image(any()) } returns uriMock
-        assertEquals(getChatInfo(flowOf(chatParticipantsMock), flowOf(usersDescriptionMock)).first(), ChatInfo(otherParticipantMock.userId, ImmutableUri(uriMock)))
+        every { otherParticipantMock.displayName } returns MutableStateFlow("customDisplayName")
+        every { otherParticipantMock.displayImage } returns MutableStateFlow(uriMock)
+        assertEquals(getChatInfo(flowOf(chatParticipantsMock)).first(), ChatInfo("customDisplayName", ImmutableUri(uriMock)))
     }
 
     @Test
