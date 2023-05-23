@@ -37,7 +37,6 @@ dependencies {
     testImplementation test.robolectric
 
     androidTestImplementation test.runner
-    androidTestImplementation test.mockito
     androidTestImplementation test.espresso
 
     /*** Platform ***/
