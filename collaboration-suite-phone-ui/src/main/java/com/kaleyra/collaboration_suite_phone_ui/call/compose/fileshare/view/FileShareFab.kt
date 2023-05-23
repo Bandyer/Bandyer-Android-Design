@@ -2,9 +2,11 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view
 
 import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -14,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 
 private val FabSize = 56.dp
 private val FabIconPadding = 16.dp
@@ -25,8 +28,13 @@ internal fun FileShareFab(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     FloatingActionButton(
-        modifier = modifier.sizeIn(minWidth = FabSize, minHeight = FabSize),
+        interactionSource = interactionSource,
+        modifier = modifier
+            .sizeIn(minWidth = FabSize, minHeight = FabSize)
+            .highlightOnFocus(interactionSource),
         onClick = onClick,
         contentColor = MaterialTheme.colors.surface
     ) {

@@ -40,12 +40,13 @@ internal sealed class LineState : Serializable {
 internal fun Line(
     state: LineState,
     onClickLabel: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val contentColor = LocalContentColor.current
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp)
             .clickable(

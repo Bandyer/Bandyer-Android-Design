@@ -13,22 +13,26 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 
-// TODO add tests in case stream video = null
+// TODO fix avatar size for large screens
 @Composable
 internal fun ThumbnailStream(
     stream: StreamUi,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
     Thumbnail(
-        modifier = modifier.clickable(
-            interactionSource = remember { MutableInteractionSource() },
-            indication = null,
-            onClickLabel = stringResource(id = R.string.kaleyra_move_to_featured_streams),
-            role = Role.Button,
-            onClick = onClick
-        )
+        modifier = modifier
+            .highlightOnFocus(interactionSource)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClickLabel = stringResource(id = R.string.kaleyra_move_to_featured_streams),
+                role = Role.Button,
+                onClick = onClick
+            )
     ) {
         StreamContainer(
             backgroundColor = Color.DarkGray,

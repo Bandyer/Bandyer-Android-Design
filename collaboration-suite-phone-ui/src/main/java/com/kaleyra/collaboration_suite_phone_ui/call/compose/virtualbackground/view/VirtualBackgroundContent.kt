@@ -1,20 +1,28 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.view
 
 import android.content.res.Configuration
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 
 @Composable
 internal fun VirtualBackgroundContent(
@@ -24,11 +32,17 @@ internal fun VirtualBackgroundContent(
 ) {
     LazyColumn {
         items(items = items.value.distinctBy { it.id }, key = { it.id }) {
+            val interactionSource = remember { MutableInteractionSource() }
+            val isSelected = it == currentBackground
+
             VirtualBackgroundItem(
                 background = it,
-                selected = it == currentBackground,
+                selected = isSelected,
                 modifier = Modifier
+                    .highlightOnFocus(interactionSource)
                     .clickable(
+                        interactionSource = interactionSource,
+                        indication = LocalIndication.current,
                         onClickLabel = clickLabelFor(it),
                         role = Role.Button,
                         onClick = { onItemClick(it) }

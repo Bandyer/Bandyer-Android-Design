@@ -7,17 +7,27 @@ import android.text.format.Formatter
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,6 +47,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.Sha
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.extensions.isArchiveMimeType
 import com.kaleyra.collaboration_suite_phone_ui.extensions.isImageMimeType
 import kotlin.math.roundToInt
@@ -45,16 +56,27 @@ private const val FileMediaType = "MediaType"
 private const val FileArchiveType = "ArchiveType"
 private val LinearProgressIndicatorWidth = 3000.dp
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun FileShareItem(
     sharedFile: SharedFileUi,
     onActionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val focusManager = LocalFocusManager.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .onPreviewKeyEvent {
+                when  {
+                    it.type == KeyEventType.KeyUp && it.key == Key.DirectionRight -> {
+                        focusManager.moveFocus(FocusDirection.In); true
+                    }
+                    else -> false
+                }
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         FileTypeAndSize(
@@ -196,9 +218,11 @@ private fun ActionButton(
     onActionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
     IconButton(
         onClick = onActionClick,
-        modifier = modifier
+        interactionSource = interactionSource,
+        modifier = modifier.highlightOnFocus(interactionSource)
     ) {
         Icon(
             painter = painterResource(

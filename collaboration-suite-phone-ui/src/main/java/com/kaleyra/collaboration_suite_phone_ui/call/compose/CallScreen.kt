@@ -7,6 +7,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,7 +27,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -177,6 +182,12 @@ internal class CallScreenState(
         }
     }
 
+    fun expandSheet() {
+        scope.launch {
+            sheetState.expand()
+        }
+    }
+
     fun halfExpandSheetIfCollapsed() {
         if (sheetState.isCollapsed) {
             halfExpandSheet()
@@ -294,6 +305,7 @@ private fun getPermissions(callUiState: CallUiState): State<List<String>> {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun CallScreen(
     callUiState: CallUiState,
@@ -416,7 +428,9 @@ internal fun CallScreen(
                         onScreenShareTargetClick = callScreenState::halfExpandSheet,
                         onVirtualBackgroundClick = callScreenState::halfExpandSheet,
                         contentVisible = !callScreenState.isSheetCollapsed,
-                        modifier = Modifier.horizontalCutoutPadding()
+                        modifier = Modifier.horizontalCutoutPadding().onFocusChanged {
+                            if (it.hasFocus && !callScreenState.isSheetHidden) callScreenState.expandSheet()
+                        }
                     )
                 },
                 content = {
@@ -433,7 +447,7 @@ internal fun CallScreen(
             CallScreenAppBar(
                 currentSheetComponent = callScreenState.sheetContentState.currentComponent,
                 visible = callScreenState.shouldShowAppBar,
-                onBackPressed = callScreenState::navigateToCallActionsComponent,
+                onBackPressed = callScreenState::navigateToCallActionsComponent
             )
         }
     }

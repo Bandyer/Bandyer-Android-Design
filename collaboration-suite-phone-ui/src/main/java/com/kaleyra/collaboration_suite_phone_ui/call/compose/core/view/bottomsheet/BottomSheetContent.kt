@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.testTag
@@ -93,7 +94,10 @@ internal fun BottomSheetContent(
         Line(
             state = contentState.currentLineState,
             onClickLabel = stringResource(id = R.string.kaleyra_call_show_buttons),
-            onClick = onLineClick
+            onClick = onLineClick,
+            modifier = Modifier.focusProperties {
+                canFocus = false
+            }
         )
         AnimatedVisibility(
             visible = contentVisible,

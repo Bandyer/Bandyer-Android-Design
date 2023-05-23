@@ -2,6 +2,8 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.view
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -10,9 +12,17 @@ import androidx.compose.material.*
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,6 +34,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 
 @Stable
 internal interface CallActionColors {
@@ -134,6 +145,7 @@ private class DefaultColors(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun CallAction(
     action: CallAction,
@@ -146,15 +158,17 @@ internal fun CallAction(
             action is CallAction.Toggleable && action.isToggled
         }
     }
+    val interactionSource = remember { MutableInteractionSource() }
 
     Column(
-        modifier = modifier,
+        modifier = modifier.highlightOnFocus(interactionSource),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         IconToggleButton(
             checked = toggled,
             onCheckedChange = onToggle,
             enabled = action.isEnabled,
+            interactionSource = interactionSource,
             indication = rememberRipple(bounded = false, radius = CallActionDefaults.RippleRadius),
             modifier = Modifier
                 .size(CallActionDefaults.Size)
@@ -165,6 +179,15 @@ internal fun CallAction(
                     ).value,
                     shape = CircleShape
                 )
+                .onPreviewKeyEvent {
+                    return@onPreviewKeyEvent when {
+                        it.type != KeyEventType.KeyDown && it.key == Key.Enter -> {
+                            onToggle(toggled)
+                            true
+                        }
+                        else -> false
+                    }
+                }
         ) {
             Icon(
                 painter = painterFor(action),

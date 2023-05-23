@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -91,6 +92,7 @@ internal fun WhiteboardComponent(
                 onTextConfirmed = onTextConfirmed,
                 modifier = Modifier
                     .navigationBarsPadding()
+                    .focusProperties { canFocus = false }
                     // Disable gestures on the modal bottom sheet
                     .pointerInput(Unit) {
                         detectDragGestures { _, _ -> }

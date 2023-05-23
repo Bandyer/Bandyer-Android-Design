@@ -1,7 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view
 
 import android.content.res.Configuration
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -11,6 +13,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -23,6 +26,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.moc
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 
 const val FileShareItemTag = "FileShareItemTag"
 const val FileShareItemDividerTag = "FileShareItemDividerTag"
@@ -41,10 +45,15 @@ internal fun FileShareContent(
         modifier = modifier
     ) {
         itemsIndexed(items = items.value, key = { _, item -> item.id }) { index, item ->
+            val interactionSource = remember { MutableInteractionSource() }
+
             FileShareItem(
                 sharedFile = item,
                 modifier = Modifier
+                    .highlightOnFocus(interactionSource)
                     .clickable(
+                        interactionSource = interactionSource,
+                        indication = LocalIndication.current,
                         enabled = item.state is SharedFileUi.State.Success,
                         onClickLabel = stringResource(R.string.kaleyra_fileshare_open_file),
                         role = Role.Button,

@@ -35,12 +35,13 @@ private val FocusHighlightColor = Color.Red
 
 private const val FadeVisibilityThreshold = 0.15
 
+// TODO move in common package between chat and call
+
 @Stable
 internal fun Modifier.supportRtl(): Modifier =
     composed {
         if (LocalLayoutDirection.current == LayoutDirection.Rtl) scale(-1f, -1f) else this
     }
-
 @Stable
 internal fun Modifier.highlightOnFocus(interactionSource: MutableInteractionSource): Modifier =
     composed {

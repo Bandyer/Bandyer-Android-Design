@@ -4,7 +4,9 @@ import android.content.res.Configuration
 import android.graphics.Rect
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -98,6 +100,7 @@ internal fun CallComponent(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun CallComponent(
     callUiState: CallUiState,
@@ -154,6 +157,7 @@ internal fun CallComponent(
                             Modifier
                                 .offset { IntOffset(x = 0, y = if (index < callComponentState.columns) streamHeaderOffset else 0) }
                                 .onGloballyPositioned { streamHeaderHeight = it.size.height }
+                                .focusGroup()
 //                                    .graphicsLayer { alpha = streamsHeaderAlpha }
                         }
                     )
@@ -175,9 +179,9 @@ internal fun CallComponent(
                 ),
                 watermarkInfo = if (!shouldHideWatermark) callUiState.watermarkInfo else null,
                 recording = callUiState.recording?.isRecording() ?: false,
-                modifier = StatusBarPaddingModifier.onGloballyPositioned {
-                    callInfoWidgetHeight = it.size.height
-                }
+                modifier = StatusBarPaddingModifier
+                    .onGloballyPositioned { callInfoWidgetHeight = it.size.height }
+                    .focusGroup()
             )
         }
 
