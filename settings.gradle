@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+ * Copyright 2023 Kaleyra S.p.A. @ https://www.kaleyra.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,3 +22,20 @@ include ':app',
 
 //project(':collaboration-suite').projectDir = file('../bandyer-android-collaborationcenter/collaboration-suite/')
 //project(':collaboration-suite-extension-audio').projectDir = file('../bandyer-android-collaborationcenter/collaboration-suite-extension-audio/')
+
+dependencyResolutionManagement {
+    repositories {
+        mavenLocal()
+        google()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.bandyer.com/releases' }
+    }
+
+    versionCatalogs {
+        create("catalog") {
+            from("com.kaleyra:version-catalog:1")
+        }
+    }
+}

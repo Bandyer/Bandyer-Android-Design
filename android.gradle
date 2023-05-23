@@ -14,11 +14,13 @@
  *  limitations under the License.
  */
 android {
-    compileSdkVersion sdkVersion
-    buildToolsVersion buildToolsVersion
+
+    compileSdkVersion catalog.versions.sdkVersion.get().toInteger()
+    buildToolsVersion catalog.versions.toolsVersion.get()
+
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion sdkVersion
+        minSdkVersion catalog.versions.minSdkVersion.get()
+        targetSdkVersion catalog.versions.sdkVersion.get().toInteger()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

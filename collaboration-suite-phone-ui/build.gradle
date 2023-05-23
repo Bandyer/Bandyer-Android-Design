@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,51 +19,51 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version("1.5.31")
+    id 'org.jetbrains.dokka' version "$dokkaPluginVersion"
 }
 
 apply from: '../versions.gradle'
+apply from: '../licenses.gradle'
 apply from: '../android.gradle'
 apply from: '../publish.gradle'
 apply from: '../moveIcons.gradle'
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    coreLibraryDesugaring androidX.desugar
+    coreLibraryDesugaring catalog.desugar
 
     /*** Testing ***/
-    testImplementation test.jUnit
-    testImplementation test.mockk
+    testImplementation catalog.junit
+    testImplementation catalog.mockk
 
-    androidTestImplementation test.runner
-    androidTestImplementation test.mockito
-    androidTestImplementation test.espresso
+    androidTestImplementation catalog.androidxTestRunner
+    androidTestImplementation catalog.androidxTestEspressoCore
 
     /*** Platform ***/
-    implementation jetbrains.reflect
+    implementation catalog.kotlinReflect
 
-    implementation androidX.appCompat
-    implementation ktxExtensions.core
-    implementation ktxExtensions.fragment
-    implementation ktxExtensions.activity
-    implementation ktxExtensions.lifecycleViewModel
-    implementation google.material
-    implementation androidX.vectorDrawable
-    implementation androidX.vectorDrawableAnimated
+    implementation catalog.appcompat
+    implementation catalog.androidxCoreKtx
+    implementation catalog.androidxFragment
+    implementation catalog.androidxActivity
+    implementation catalog.androidxLifecycleViewModel
+    implementation catalog.material
+    implementation catalog.androidxVectorDrawable
+    implementation catalog.androidxVectorDrawableAnimated
 
-    compileOnly 'io.github.imablanco:zoomy:1.0.0'
+    compileOnly catalog.zoomy
 
     /*** UI ***/
-    api picasso.picasso
-    api androidX.constraintLayout
-    api fastAdapter.fastAdapter
-    api fastAdapter.diff
+    api catalog.squareupPicasso
+    api catalog.androidxConstraintLayout
+    api catalog.fastadapter
+    api catalog.fastadapterExtensionsDiff
 
-    implementation androidX.recyclerView
-    api google.flexbox
+    implementation catalog.androidxRecyclerview
+    api catalog.flexbox
     implementation project(':collaboration-suite-core-ui')
 
     /** Kaleyra **/
-    compileOnly kaleyra.collaboration
-    compileOnly kaleyra.collaboration_extension_audio
+    compileOnly catalog.kaleyraCollaborationSuite
+    compileOnly catalog.kaleyraCollaborationSuiteExtensionAudio
 }

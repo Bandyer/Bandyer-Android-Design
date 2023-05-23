@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,34 +14,28 @@
  *  limitations under the License.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply plugin: 'com.github.ben-manes.versions'
-
 buildscript {
 
-    apply from: 'versions.gradle'
-
     repositories {
-        gradlePluginPortal()
         mavenLocal()
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        gradlePluginPortal()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+        maven { url 'https://jitpack.io' }
         maven { url 'https://maven.bandyer.com/releases' }
+        maven { url "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
 
     dependencies {
-        classpath classPaths.gradleClassPath
-        classpath classPaths.neenbedanktGradlePlugin
-        classpath classPaths.benManesGradlePlugin
-
-        //classpath dependencies to import library project
-        classpath classPaths.kotlinGradlePluginClassPath
-        classpath classPaths.sageArgsClassPath
-        classpath 'com.guardsquare:proguard-gradle:7.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${catalog.versions.kotlinVersion.get()}"
+        classpath "com.android.tools.build:gradle:${catalog.versions.gradleVersion.get()}"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions-runtime:${catalog.versions.kotlinVersion.get()}"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${catalog.plugins.androidxNavigationSafeArgs.get().version}"
     }
+
+    ext.dokkaPluginVersion = "${catalog.plugins.dokka.get().version}"
 }
 
 allprojects {
@@ -49,10 +43,12 @@ allprojects {
         mavenLocal()
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        gradlePluginPortal()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+        maven { url 'https://jitpack.io' }
         maven { url 'https://maven.bandyer.com/releases' }
+        maven { url "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
 }
 

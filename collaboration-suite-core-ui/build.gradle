@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,11 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version("1.5.31")
+    id 'org.jetbrains.dokka' version "$dokkaPluginVersion"
 }
 
 apply from: '../versions.gradle'
+apply from: '../licenses.gradle'
 apply from: '../android.gradle'
 apply from: '../publish.gradle'
 apply from: '../downloadIcons.gradle'
@@ -30,23 +31,23 @@ apply from: '../moveIcons.gradle'
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    coreLibraryDesugaring androidX.desugar
+    implementation catalog.androidxConstraintLayout
+    coreLibraryDesugaring catalog.desugar
 
-    testImplementation test.jUnit
-    testImplementation test.mockk
-    testImplementation test.robolectric
-    testImplementation test.coroutines
-    testImplementation kaleyra.collaboration
-    androidTestImplementation test.espresso
+    testImplementation catalog.junit
+    testImplementation catalog.mockk
+    testImplementation catalog.roboelectric
+    testImplementation catalog.coroutines
+    testImplementation catalog.kaleyraCollaborationSuite
+    androidTestImplementation catalog.androidxTestEspressoCore
 
-    api jetbrains.stdlib
-    api ktxExtensions.core
-    api androidX.appCompat
-    api google.material
-    api picasso.picasso
+    api catalog.kotlinStdLib
+    api catalog.androidxCoreKtx
+    api catalog.appcompat
+    api catalog.material
+    api catalog.squareupPicasso
 
     /** Kaleyra **/
-    compileOnly kaleyra.collaboration
-    compileOnly kaleyra.collaboration_extension_audio
+    compileOnly catalog.kaleyraCollaborationSuite
+    compileOnly catalog.kaleyraCollaborationSuiteExtensionAudio
 }
