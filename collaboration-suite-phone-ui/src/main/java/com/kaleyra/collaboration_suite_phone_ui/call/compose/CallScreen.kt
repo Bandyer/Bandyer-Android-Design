@@ -260,18 +260,23 @@ internal fun CallScreen(
         }
     }
 
-    val onFeedbackDismiss = remember {
+    val onFeedbackDismiss = remember(activity) {
         {
-            activity.finishAndRemoveTask()
             onActivityFinish()
+            activity.finishAndRemoveTask()
         }
     }
 
     LaunchedEffect(Unit) {
         viewModel.setOnCallEnded {
             onActivityFinish()
-            if (!isInPipMode && activity.isAtLeastResumed()) delay(ActivityFinishDelay)
-            activity.finishAndRemoveTask()
+            when {
+                isInPipMode -> activity.finishAndRemoveTask()
+                !callUiState.showFeedback && activity.isAtLeastResumed() -> {
+                    delay(ActivityFinishDelay)
+                    activity.finishAndRemoveTask()
+                }
+            }
         }
     }
 

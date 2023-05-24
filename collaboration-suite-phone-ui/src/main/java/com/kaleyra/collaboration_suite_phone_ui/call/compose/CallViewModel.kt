@@ -43,6 +43,8 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
 
     private var fullscreenStreamId = MutableStateFlow<String?>(null)
 
+    private var onCallEnded: (suspend () -> Unit)? = null
+
     init {
         streamsHandler.streamsArrangement
             .onEach { (featuredStreams, thumbnailsStreams) ->
@@ -157,6 +159,10 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
         val call = call.getValue() ?: return
         val me = call.participants.value.me
         me.feedback.value = CallParticipant.Me.Feedback(rating.toInt(), comment)
+    }
+
+    fun setOnCallEnded(block: suspend () -> Unit) {
+        onCallEnded = block
     }
 
     companion object {
