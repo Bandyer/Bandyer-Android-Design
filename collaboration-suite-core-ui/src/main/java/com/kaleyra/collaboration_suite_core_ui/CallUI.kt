@@ -40,6 +40,11 @@ class CallUI(
     val isLink: Boolean get() = call is Call.Link
 
     /**
+     * A property that indicates whether the user feedback is asked at the end of call.
+     **/
+    var withFeedback: Boolean = true
+
+    /**
      * The call action sealed class
      */
     @Keep
