@@ -10,6 +10,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.star
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startMicrophone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.toMyCameraStream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.isConnected
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.toCallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
@@ -36,6 +37,9 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
         nOfMaxFeatured = maxNumberOfFeaturedStreams,
         coroutineScope = viewModelScope
     )
+
+    private val askUserFeedback: Boolean
+        get() = call.getValue()?.withFeedback == true
 
     private var fullscreenStreamId = MutableStateFlow<String?>(null)
 
@@ -71,7 +75,11 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
 
         call
             .toCallStateUi()
-            .onEach { callState -> _uiState.update { it.copy(callState = callState) } }
+            .onEach { callState ->
+                _uiState.update { it.copy(callState = callState) }
+                if (callState !is CallStateUi.Disconnected.Ended) return@onEach
+                onCallEnded?.invoke()
+            }
             .launchIn(viewModelScope)
 
         call
@@ -99,6 +107,16 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
                     it.copy(userMessages = it.userMessages.copy(mutedMessage = message))
                 }
             }.launchIn(viewModelScope)
+
+        call
+            .map { it.withFeedback }
+            .combine(call.isConnected()) { withFeedback, isConnected ->
+                val showFeedback = withFeedback && isConnected
+                _uiState.update { it.copy(showFeedback = showFeedback) }
+                isConnected
+            }
+            .takeWhile { !it }
+            .launchIn(viewModelScope)
     }
 
     fun startMicrophone(context: FragmentActivity) {

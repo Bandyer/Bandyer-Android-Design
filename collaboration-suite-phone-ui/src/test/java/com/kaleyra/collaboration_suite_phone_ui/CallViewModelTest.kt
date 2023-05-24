@@ -37,7 +37,7 @@ class CallViewModelTest {
     var mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var viewModel: CallViewModel
-    
+
     private val phoneBoxMock = mockk<PhoneBoxUI>()
     
     private val callMock = mockk<CallUI>(relaxed = true)
@@ -85,7 +85,6 @@ class CallViewModelTest {
         mockkConstructor(CallUserMessagesProvider::class)
         every { anyConstructed<CallUserMessagesProvider>().recordingUserMessage() } returns MutableStateFlow(RecordingMessage.Started())
         every { anyConstructed<CallUserMessagesProvider>().mutedUserMessage() } returns MutableStateFlow(MutedMessage(null))
-        viewModel = spyk(CallViewModel { Configuration.Success(phoneBoxMock, mockk(), companyMock, mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { inputs } returns inputsMock
@@ -93,7 +92,7 @@ class CallViewModelTest {
             every { extras.recording.state } returns MutableStateFlow(Call.Recording.State.Started)
             every { extras.recording.type } returns Call.Recording.Type.OnConnect
             every { extras.preferredType } returns Call.PreferredType()
-            every { state } returns MutableStateFlow(Call.State.Disconnected)
+            every { state } returns MutableStateFlow<Call.State>(Call.State.Disconnected)
         }
         with(callParticipantsMock) {
             every { others } returns listOf(participantMock1, participantMock2)
@@ -161,6 +160,7 @@ class CallViewModelTest {
             every { name } returns MutableStateFlow("companyName")
             every { theme } returns MutableStateFlow(themeMock)
         }
+        viewModel = spyk(CallViewModel { Configuration.Success(phoneBoxMock, mockk(), companyMock, mockk()) })
     }
 
     @After
@@ -254,6 +254,17 @@ class CallViewModelTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().userMessages.mutedMessage
         Assert.assertNotEquals(null, actual)
+    }
+
+    @Test
+    fun testCallUiState_showFeedbackUpdated() = runTest {
+        with(callMock) {
+            every { withFeedback } returns true
+            every { state } returns MutableStateFlow(Call.State.Connected)
+        }
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().showFeedback
+        assertEquals(true, actual)
     }
 
     @Test
