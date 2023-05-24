@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.content.res.Configuration
 import android.graphics.Rect
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -36,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
@@ -51,6 +53,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomshe
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.LineState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.rememberBottomSheetContentState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.rememberBottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.UserFeedback
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.CameraPermission
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.MultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.RecordAudioPermission
@@ -76,7 +79,7 @@ import kotlinx.coroutines.launch
 private val PeekHeight = 48.dp
 private val HalfExpandedHeight = 166.dp
 
-private const val AutoFinishTimer = 3000L
+private const val ActivityFinishDelay = 3000L
 
 @Composable
 internal fun rememberCallScreenState(
@@ -224,7 +227,7 @@ internal fun CallScreen(
     onBackPressed: () -> Unit,
     onFirstStreamPositioned: (Rect) -> Unit,
     onFileShareDisplayed: () -> Unit,
-    onCallEnded: () -> Unit
+    onActivityFinish: () -> Unit
 ) {
     val activity = LocalContext.current.findActivity() as FragmentActivity
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -257,16 +260,23 @@ internal fun CallScreen(
         }
     }
 
-    LaunchedEffect(permissionsState) {
-        permissionsState.launchMultiplePermissionRequest()
+    val onFeedbackDismiss = remember {
+        {
+            activity.finishAndRemoveTask()
+            onActivityFinish()
+        }
     }
 
-    if (callUiState.callState is CallStateUi.Disconnected.Ended) {
-        LaunchedEffect(Unit) {
-            onCallEnded()
-            delay(AutoFinishTimer)
+    LaunchedEffect(Unit) {
+        viewModel.setOnCallEnded {
+            onActivityFinish()
+            if (!isInPipMode && activity.isAtLeastResumed()) delay(ActivityFinishDelay)
             activity.finishAndRemoveTask()
         }
+    }
+
+    LaunchedEffect(permissionsState) {
+        permissionsState.launchMultiplePermissionRequest()
     }
 
     CallScreen(
@@ -275,11 +285,13 @@ internal fun CallScreen(
         permissionsState = permissionsState,
         onThumbnailStreamClick = viewModel::swapThumbnail,
         onFullscreenStreamClick = viewModel::fullscreenStream,
+        onUserFeedback = viewModel::sendUserFeedback,
+        onConfigurationChange = viewModel::updateStreamsArrangement,
         onBackPressed = onBackPressedInternal,
+        onFeedbackDismiss = onFeedbackDismiss,
         isInPipMode = isInPipMode,
         onFileShareDisplayed = onFileShareDisplayed,
         onPipStreamPositioned = onFirstStreamPositioned,
-        onConfigurationChange = viewModel::updateStreamsArrangement
     )
 }
 
@@ -304,6 +316,8 @@ internal fun CallScreen(
     onConfigurationChange: (Boolean) -> Unit,
     onThumbnailStreamClick: (StreamUi) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
+    onUserFeedback: (Float, String) -> Unit,
+    onFeedbackDismiss: () -> Unit,
     onPipStreamPositioned: (Rect) -> Unit,
     onFileShareDisplayed: () -> Unit
 ) {
@@ -382,8 +396,11 @@ internal fun CallScreen(
                 sheetHalfExpandedHeight = HalfExpandedHeight + navBarsBottomPadding,
                 sheetElevation = 0.dp,
                 anchor = {
+                    val shouldShowThumbnailStreams = !callScreenState.isSheetHidden && callUiState.fullscreenStream == null
+                    val shouldShowRecordingHint = callUiState.recording != null && callUiState.recording.type != RecordingTypeUi.Never && callUiState.callState == CallStateUi.Dialing
+
                     AnimatedVisibility(
-                        visible = !callScreenState.isSheetHidden && callUiState.fullscreenStream == null,
+                        visible = shouldShowThumbnailStreams,
                         enter = fadeIn(),
                         exit = fadeOut()
                     ) {
@@ -393,9 +410,10 @@ internal fun CallScreen(
                             onStreamClick = onThumbnailStreamClick
                         )
                     }
-                    if (callUiState.recording != null && callUiState.recording.type != RecordingTypeUi.Never && callUiState.callState == CallStateUi.Dialing) {
+
+                    if (shouldShowRecordingHint) {
                         HelperText(
-                            text = stringResource(id = if (callUiState.recording.type == RecordingTypeUi.OnConnect) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer),
+                            text = stringResource(id = if (callUiState.recording?.type == RecordingTypeUi.OnConnect) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer),
                             color = Color.White,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
@@ -435,10 +453,21 @@ internal fun CallScreen(
                 visible = callScreenState.shouldShowAppBar,
                 onBackPressed = callScreenState::navigateToCallActionsComponent,
             )
+
+            if (callUiState.showFeedback && callUiState.callState is CallStateUi.Disconnected.Ended) {
+                val activity = LocalContext.current.findActivity() as ComponentActivity
+                val isActivityResumed = activity.isAtLeastResumed()
+                if (isActivityResumed) {
+                    UserFeedback(onUserFeedback = onUserFeedback, onDismiss = onFeedbackDismiss)
+                }
+            }
         }
     }
 
 }
+
+private fun ComponentActivity.isAtLeastResumed() =
+    lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
@@ -458,7 +487,9 @@ fun CallScreenPreview() {
             onBackPressed = {},
             onFullscreenStreamClick = {},
             onThumbnailStreamClick = {},
-            onPipStreamPositioned = {}
+            onPipStreamPositioned = {},
+            onFeedbackDismiss = {},
+            onUserFeedback = { _,_ -> }
         )
     }
 }

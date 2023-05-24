@@ -85,7 +85,9 @@ class CallScreenTest {
                 onConfigurationChange = { },
                 onFullscreenStreamClick = { },
                 onFileShareDisplayed = { fileShareDisplayed = true },
-                onPipStreamPositioned = { }
+                onPipStreamPositioned = { },
+                onFeedbackDismiss = {},
+                onUserFeedback = { _,_ -> }
             )
             LaunchedEffect(sideEffect) {
                 sideEffect.invoke()
