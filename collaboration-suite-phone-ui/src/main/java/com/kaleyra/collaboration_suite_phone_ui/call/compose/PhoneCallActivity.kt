@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
+import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -25,7 +26,7 @@ class PhoneCallActivity : FragmentActivity() {
 
     private var pictureInPictureRect = Rect()
 
-    private var isCallEnded = false
+    private var isActivityFinishing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,15 +38,16 @@ class PhoneCallActivity : FragmentActivity() {
                 CallScreen(
                     shouldShowFileShareComponent = shouldShowFileShare.collectAsStateWithLifecycle().value,
                     isInPipMode = isInPipMode.collectAsStateWithLifecycle().value,
+                    onBackPressed = this::finishAndRemoveTask,
                     onFileShareDisplayed = { shouldShowFileShare.value = false },
                     onFirstStreamPositioned = { pictureInPictureRect = it },
-                    onCallEnded = { isCallEnded = true },
-                    onBackPressed = this::finishAndRemoveTask
+                    onActivityFinish = { isActivityFinishing = true },
                 )
             }
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onPictureInPictureModeChanged(
         isInPictureInPictureMode: Boolean,
         newConfig: Configuration
@@ -113,7 +115,7 @@ class PhoneCallActivity : FragmentActivity() {
     }
 
     private fun restartActivityIfCurrentCallIsEnded(intent: Intent) {
-        if (isCallEnded && Intent.FLAG_ACTIVITY_NEW_TASK.let { intent.flags.and(it) == it } ) {
+        if (isActivityFinishing && Intent.FLAG_ACTIVITY_NEW_TASK.let { intent.flags.and(it) == it } ) {
             finishAndRemoveTask()
             startActivity(intent)
         }
