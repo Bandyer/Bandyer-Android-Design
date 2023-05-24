@@ -153,6 +153,12 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
         fullscreenStreamId.value = streamId
     }
 
+    fun sendUserFeedback(rating: Float, comment: String) {
+        val call = call.getValue() ?: return
+        val me = call.participants.value.me
+        me.feedback.value = CallParticipant.Me.Feedback(rating.toInt(), comment)
+    }
+
     companion object {
 
         const val DEFAULT_FEATURED_STREAMS_COUNT = 2

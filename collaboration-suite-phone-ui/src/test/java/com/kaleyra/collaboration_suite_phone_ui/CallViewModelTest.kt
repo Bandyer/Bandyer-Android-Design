@@ -135,6 +135,7 @@ class CallViewModelTest {
             every { streams } returns MutableStateFlow(listOf(myStreamMock))
             every { displayName } returns MutableStateFlow("myDisplayName")
             every { displayImage } returns MutableStateFlow(uriMock)
+            every { feedback } returns MutableStateFlow(null)
         }
         with(participantMock1) {
             every { userId } returns "userId1"
@@ -383,6 +384,15 @@ class CallViewModelTest {
         advanceUntilIdle()
         viewModel.hangUp()
         verify(exactly = 1) { callMock.end() }
+    }
+
+    @Test
+    fun testSendUserFeedback() = runTest {
+        advanceUntilIdle()
+        viewModel.sendUserFeedback(3f, "comment")
+        val actual = participantMeMock.feedback.first()
+        val expected = CallParticipant.Me.Feedback(3, "comment")
+        assertEquals(expected, actual)
     }
 
     @Test
