@@ -127,8 +127,7 @@ internal fun CallComponent(
 
     Box(modifier.testTag(CallComponentTag)) {
         AdaptiveGrid(
-            columns = if (callUiState.fullscreenStream == null) callComponentState.columns else 1,
-            modifier = StatusBarPaddingModifier
+            columns = if (callUiState.fullscreenStream == null) callComponentState.columns else 1
         ) {
             val streams = callUiState.fullscreenStream?.let { listOf(it) } ?: callUiState.featuredStreams.value
             repeat(streams.count()) { index ->
@@ -143,16 +142,17 @@ internal fun CallComponent(
                             { if (callUiState.fullscreenStream != null) onStreamFullscreenClick(null) else onStreamFullscreenClick(stream.id) }
                         },
                         onStreamPositioned = remember(onPipStreamPositioned) { { if (index == 0) onPipStreamPositioned(it) } },
-                        modifier = remember(onStreamFullscreenClick) {
-                            Modifier.pointerInput(onStreamFullscreenClick) {
-                                detectTapGestures(onDoubleTap = { onStreamFullscreenClick(stream.id) })
-                            }
+//                        modifier = remember(onStreamFullscreenClick) {
+//                            Modifier.pointerInput(onStreamFullscreenClick) {
+//                                detectTapGestures(onDoubleTap = { onStreamFullscreenClick(stream.id) })
+//                            }
 
 //                        Modifier.streamClickable { resetCountDown = !resetCountDown }
-                        },
+//                        },
                         headerModifier = remember(index, callComponentState, streamHeaderOffset) {
                             Modifier
                                 .offset { IntOffset(x = 0, y = if (index < callComponentState.columns) streamHeaderOffset else 0) }
+                                .statusBarsPadding()
                                 .onGloballyPositioned { streamHeaderHeight = it.size.height }
 //                                    .graphicsLayer { alpha = streamsHeaderAlpha }
                         }

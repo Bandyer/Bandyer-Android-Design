@@ -3,6 +3,9 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.streams
 import android.graphics.Rect
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -43,10 +46,20 @@ internal fun Stream(
                         parentView?.removeView(it)
                     }
                 },
+                update = { view ->
+                    val newLayoutParams = view.layoutParams
+                    newLayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+                    newLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+                    view.layoutParams = newLayoutParams
+                },
                 modifier = Modifier
                     .testTag(StreamViewTestTag)
                     .onGloballyPositioned {
-                        onStreamViewPositioned?.invoke(it.boundsInRoot().toAndroidRect())
+                        onStreamViewPositioned?.invoke(
+                            it
+                                .boundsInRoot()
+                                .toAndroidRect()
+                        )
                     }
             )
         }
