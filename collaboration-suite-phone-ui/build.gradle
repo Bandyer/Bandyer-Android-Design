@@ -35,13 +35,19 @@ dependencies {
     testImplementation test.jUnit
     testImplementation test.mockk
     testImplementation test.robolectric
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
+    testImplementation 'io.mockk:mockk:1.13.3'
+    //    testImplementation kaleyra.collaboration
+    testImplementation project(":collaboration-suite")
 
     androidTestImplementation test.runner
     androidTestImplementation test.espresso
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.1")
+    androidTestImplementation "io.mockk:mockk-android:1.13.3"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:3.4.0"
 
     /*** Platform ***/
     implementation jetbrains.reflect
-
     implementation androidX.appCompat
     implementation ktxExtensions.core
     implementation ktxExtensions.fragment
@@ -61,31 +67,17 @@ dependencies {
 
     implementation androidX.recyclerView
     api google.flexbox
-    implementation project(':collaboration-suite-core-ui')
-
-    debugImplementation("androidx.compose.ui:ui-tooling:1.2.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.1")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.1")
 
     implementation("io.coil-kt:coil-compose:2.1.0")
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.25.1"
 
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
-
-    androidTestImplementation "io.mockk:mockk-android:1.13.3"
-    testImplementation 'io.mockk:mockk:1.13.3'
-
-//    testImplementation kaleyra.collaboration
-    testImplementation project(":collaboration-suite")
-
-    androidTestImplementation "androidx.test.espresso:espresso-intents:3.4.0"
-
-    androidTestImplementation "androidx.test.espresso:espresso-intents:3.4.0"
+    debugImplementation("androidx.compose.ui:ui-tooling:1.2.1")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.1")
 
     /** Kaleyra **/
 //    compileOnly kaleyra.collaboration
 //    compileOnly kaleyra.collaboration_extension_audio
-
-    implementation project(":collaboration-suite")
-    implementation project(":collaboration-suite-extension-audio")
+    api project(':collaboration-suite-core-ui')
+    api project(":collaboration-suite")
+    api project(":collaboration-suite-extension-audio")
 }
