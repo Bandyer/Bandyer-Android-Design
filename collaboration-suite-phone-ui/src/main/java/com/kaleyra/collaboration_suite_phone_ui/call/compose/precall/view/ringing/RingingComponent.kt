@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.ringing
 
-import android.graphics.Rect
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -43,8 +42,7 @@ internal fun RingingComponent(
     viewModel: PreCallViewModel = viewModel(
         factory = PreCallViewModel.provideFactory(::requestConfiguration)
     ),
-    onBackPressed: () -> Unit,
-    onStreamViewPositioned: (Rect) -> Unit
+    onBackPressed: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     RingingComponent(
@@ -52,7 +50,6 @@ internal fun RingingComponent(
         onBackPressed = onBackPressed,
         onAnswerClick = viewModel::answer,
         onDeclineClick = viewModel::decline,
-        onStreamViewPositioned = onStreamViewPositioned,
         modifier = modifier
     )
 }
@@ -65,8 +62,7 @@ internal fun RingingComponent(
     tapToAnswerTimerMillis: Long = TapToAnswerTimerMillis,
     onBackPressed: () -> Unit,
     onAnswerClick: () -> Unit,
-    onDeclineClick: () -> Unit,
-    onStreamViewPositioned: (Rect) -> Unit
+    onDeclineClick: () -> Unit
 ) {
     val isDarkTheme = isSystemInDarkTheme()
 
@@ -74,7 +70,6 @@ internal fun RingingComponent(
         uiState = uiState,
         subtitle = pluralStringResource(id = R.plurals.kaleyra_call_incoming_status_ringing, count = uiState.participants.size),
         onBackPressed = onBackPressed,
-        onStreamViewPositioned = onStreamViewPositioned,
         modifier = modifier.testTag(RingingContentTag)
     ) {
         Column(
@@ -153,8 +148,7 @@ internal fun RingingComponentPreview() {
             ),
             onAnswerClick = { },
             onDeclineClick = { },
-            onBackPressed = { },
-            onStreamViewPositioned = { }
+            onBackPressed = { }
         )
     }
 }

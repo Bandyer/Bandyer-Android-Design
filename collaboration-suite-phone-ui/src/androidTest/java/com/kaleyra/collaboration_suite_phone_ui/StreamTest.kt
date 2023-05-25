@@ -32,16 +32,13 @@ class StreamTest {
 
     private var isAvatarVisible by mutableStateOf(false)
 
-    private var streamViewRect: Rect? = null
-
     @Before
     fun setUp() {
         composeTestRule.setContent {
             Stream(
                 streamView = streamView,
                 avatar = ImmutableUri(Uri.EMPTY),
-                avatarVisible = isAvatarVisible,
-                onStreamViewPositioned = { streamViewRect = it }
+                avatarVisible = isAvatarVisible
             )
         }
     }
@@ -50,7 +47,6 @@ class StreamTest {
     fun tearDown() {
         streamView = null
         isAvatarVisible = false
-        streamViewRect = null
     }
 
     @Test
@@ -77,10 +73,4 @@ class StreamTest {
         composeTestRule.findAvatar().assertDoesNotExist()
     }
 
-    @Test
-    fun onStreamViewPositionedInvoked() {
-        streamView = ImmutableView(View(composeTestRule.activity))
-        composeTestRule.waitForIdle()
-        assertNotEquals(null, streamViewRect)
-    }
 }

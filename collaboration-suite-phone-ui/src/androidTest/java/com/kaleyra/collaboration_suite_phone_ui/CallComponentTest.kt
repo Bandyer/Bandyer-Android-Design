@@ -1,9 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import android.content.res.Configuration
-import android.graphics.Rect
 import android.net.Uri
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +29,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.mockk
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -57,8 +54,6 @@ class CallComponentTest {
 
     private var fullscreenStreamId: String? = ""
 
-    private var pipStreamRect: Rect? = null
-
     @Before
     fun setUp() {
         callComponentState = defaultState()
@@ -67,8 +62,7 @@ class CallComponentTest {
                 callUiState = callUiState,
                 callComponentState = callComponentState,
                 onBackPressed = { isBackPressed = true },
-                onStreamFullscreenClick = { fullscreenStreamId = it },
-                onPipStreamPositioned = { pipStreamRect = it }
+                onStreamFullscreenClick = { fullscreenStreamId = it }
             )
         }
     }
@@ -79,7 +73,6 @@ class CallComponentTest {
         callComponentState = defaultState()
         isBackPressed = false
         fullscreenStreamId = ""
-        pipStreamRect = null
     }
 
     @Test
@@ -408,15 +401,6 @@ class CallComponentTest {
             watermarkInfo = WatermarkInfo(logo = Logo(uri, uri), text = "watermark")
         )
         composeTestRule.onNodeWithTag(WatermarkTag).assertDoesNotExist()
-    }
-
-    @Test
-    fun onPipStreamPositionedInvoked() {
-        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
-        val stream = streamMock1.copy(video = video)
-        callUiState = CallUiState(callState = CallStateUi.Connected, featuredStreams = ImmutableList(listOf(stream)))
-        composeTestRule.waitForIdle()
-        assertNotEquals(null, pipStreamRect)
     }
 
     @Test

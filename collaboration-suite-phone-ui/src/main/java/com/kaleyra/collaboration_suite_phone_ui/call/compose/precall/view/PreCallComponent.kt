@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view
 
-import android.graphics.Rect
 import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -28,7 +27,6 @@ internal fun PreCallComponent(
     uiState: PreCallUiState,
     subtitle: String,
     onBackPressed: () -> Unit,
-    onStreamViewPositioned: (Rect) -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable (BoxScope.() -> Unit)? = null
 ) {
@@ -38,7 +36,7 @@ internal fun PreCallComponent(
 
             if (video?.view != null && video.isEnabled) {
                 StreamContainer {
-                    Stream(streamView = video.view, avatar = null, avatarVisible = false, onStreamViewPositioned = onStreamViewPositioned)
+                    Stream(streamView = video.view, avatar = null, avatarVisible = false)
                 }
             } else {
                 Avatar(

@@ -40,7 +40,6 @@ class CallScreenRecreationTest {
                 onFullscreenStreamClick = { },
                 onFileShareDisplayed = { },
                 onConfigurationChange = { },
-                onPipStreamPositioned = {},
                 onBackPressed = { },
                 onFeedbackDismiss = {},
                 onUserFeedback = {_,_ ->}

@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.content.res.Configuration
-import android.graphics.Rect
+import android.util.Rational
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -225,7 +225,7 @@ internal fun CallScreen(
     shouldShowFileShareComponent: Boolean,
     isInPipMode: Boolean,
     onBackPressed: () -> Unit,
-    onFirstStreamPositioned: (Rect) -> Unit,
+    onPipAspectRatio: (Rational) -> Unit,
     onFileShareDisplayed: () -> Unit,
     onActivityFinish: () -> Unit
 ) {
@@ -267,7 +267,7 @@ internal fun CallScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(onActivityFinish) {
         viewModel.setOnCallEnded {
             onActivityFinish()
             when {
@@ -278,6 +278,10 @@ internal fun CallScreen(
                 }
             }
         }
+    }
+
+    LaunchedEffect(onPipAspectRatio) {
+        viewModel.setOnPipAspectRatio(onPipAspectRatio)
     }
 
     LaunchedEffect(permissionsState) {
@@ -295,8 +299,7 @@ internal fun CallScreen(
         onBackPressed = onBackPressedInternal,
         onFeedbackDismiss = onFeedbackDismiss,
         isInPipMode = isInPipMode,
-        onFileShareDisplayed = onFileShareDisplayed,
-        onPipStreamPositioned = onFirstStreamPositioned,
+        onFileShareDisplayed = onFileShareDisplayed
     )
 }
 
@@ -323,18 +326,17 @@ internal fun CallScreen(
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
     onFeedbackDismiss: () -> Unit,
-    onPipStreamPositioned: (Rect) -> Unit,
     onFileShareDisplayed: () -> Unit
 ) {
     if (isInPipMode) {
-        val firstFeaturedStream = callUiState.featuredStreams.value.getOrNull(0)
-        if (firstFeaturedStream != null) {
+        val pictureInPictureStream = callUiState.featuredStreams.value.firstOrNull()
+        if (pictureInPictureStream != null) {
             StreamContainer {
                 Stream(
-                    streamView = firstFeaturedStream.video?.view,
-                    avatar = firstFeaturedStream.avatar,
+                    streamView = pictureInPictureStream.video?.view,
+                    avatar = pictureInPictureStream.avatar,
                     avatarSize = 48.dp,
-                    avatarVisible = firstFeaturedStream.video == null || !firstFeaturedStream.video.isEnabled
+                    avatarVisible = pictureInPictureStream.video == null || !pictureInPictureStream.video.isEnabled
                 )
             }
         }
@@ -447,8 +449,7 @@ internal fun CallScreen(
                         callState = callUiState.callState,
                         maxWidth = maxWidth,
                         onBackPressed = onBackPressed,
-                        onStreamFullscreenClick = onFullscreenStreamClick,
-                        onPipStreamPositioned = onPipStreamPositioned
+                        onStreamFullscreenClick = onFullscreenStreamClick
                     )
                 }
             )
@@ -492,7 +493,6 @@ fun CallScreenPreview() {
             onBackPressed = {},
             onFullscreenStreamClick = {},
             onThumbnailStreamClick = {},
-            onPipStreamPositioned = {},
             onFeedbackDismiss = {},
             onUserFeedback = { _,_ -> }
         )

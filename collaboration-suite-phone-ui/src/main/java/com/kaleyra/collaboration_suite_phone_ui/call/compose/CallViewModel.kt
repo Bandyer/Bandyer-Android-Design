@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
+import android.util.Rational
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.toMy
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.isConnected
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.toCallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallUiStateReducer.toPipAspectRatio
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
@@ -38,12 +40,11 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
         coroutineScope = viewModelScope
     )
 
-    private val askUserFeedback: Boolean
-        get() = call.getValue()?.withFeedback == true
-
     private var fullscreenStreamId = MutableStateFlow<String?>(null)
 
     private var onCallEnded: (suspend () -> Unit)? = null
+
+    private var onPipAspectRatio: ((Rational) -> Unit)? = null
 
     init {
         streamsHandler.streamsArrangement
@@ -119,6 +120,11 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
             }
             .takeWhile { !it }
             .launchIn(viewModelScope)
+
+        uiState
+            .toPipAspectRatio()
+            .onEach { onPipAspectRatio?.invoke(it) }
+            .launchIn(viewModelScope)
     }
 
     fun startMicrophone(context: FragmentActivity) {
@@ -163,6 +169,11 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
 
     fun setOnCallEnded(block: suspend () -> Unit) {
         onCallEnded = block
+    }
+
+    // TODO test this
+    fun setOnPipAspectRatio(block: (Rational) -> Unit) {
+        onPipAspectRatio = block
     }
 
     companion object {

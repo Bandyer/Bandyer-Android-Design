@@ -1,7 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
-import android.graphics.Rect
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
@@ -10,13 +8,10 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.dialing.DialingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import org.junit.After
-import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -32,15 +27,12 @@ class DialingComponentTest: PreCallComponentTest() {
 
     private var backPressed = false
 
-    private var streamViewRect: Rect? = null
-
     @Before
     fun setUp() {
         composeTestRule.setContent {
             DialingComponent(
                 uiState = uiState.value,
-                onBackPressed = { backPressed = true },
-                onStreamViewPositioned = { streamViewRect = it }
+                onBackPressed = { backPressed = true }
             )
         }
     }
@@ -49,7 +41,6 @@ class DialingComponentTest: PreCallComponentTest() {
     fun tearDown() {
         uiState.value = PreCallUiState(stream = streamUiMock)
         backPressed = false
-        streamViewRect = null
     }
 
     @Test
@@ -68,14 +59,6 @@ class DialingComponentTest: PreCallComponentTest() {
     fun callStateDialing_dialingSubtitleIsDisplayed() {
         val dialing = composeTestRule.activity.getString(R.string.kaleyra_call_status_dialing)
         composeTestRule.onNodeWithText(dialing).assertIsDisplayed()
-    }
-
-    @Test
-    fun onStreamViewPositionedInvoked() {
-        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
-        uiState.value = PreCallUiState(stream = streamUiMock.copy(video = video))
-        composeTestRule.waitForIdle()
-        assertNotEquals(null, streamViewRect)
     }
 
 }

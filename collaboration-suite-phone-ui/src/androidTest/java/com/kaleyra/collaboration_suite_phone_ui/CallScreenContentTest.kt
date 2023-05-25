@@ -39,8 +39,7 @@ class CallScreenContentTest {
                 callState = callState,
                 maxWidth = 600.dp,
                 onBackPressed = { backPressed = true },
-                onStreamFullscreenClick = {},
-                onPipStreamPositioned = {}
+                onStreamFullscreenClick = {}
             )
         }
     }

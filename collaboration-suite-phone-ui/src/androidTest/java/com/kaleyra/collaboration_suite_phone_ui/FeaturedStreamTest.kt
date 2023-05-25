@@ -37,8 +37,6 @@ class FeaturedStreamTest: StreamParentComposableTest() {
 
     private var isFullscreen by mutableStateOf(false)
 
-    private var streamViewRect: Rect? = null
-
     @Before
     fun setUp() {
         composeTestRule.setContent {
@@ -46,8 +44,7 @@ class FeaturedStreamTest: StreamParentComposableTest() {
                 stream = stream.value,
                 isFullscreen = isFullscreen,
                 onBackPressed = onBackPressed,
-                onFullscreenClick = { fullscreenClicked = true },
-                onStreamPositioned = { streamViewRect = it }
+                onFullscreenClick = { fullscreenClicked = true }
             )
         }
     }
@@ -59,7 +56,6 @@ class FeaturedStreamTest: StreamParentComposableTest() {
         stream = mutableStateOf(streamUiMock)
         onBackPressed = null
         isFullscreen = false
-        streamViewRect = null
     }
 
     @Test
@@ -106,14 +102,6 @@ class FeaturedStreamTest: StreamParentComposableTest() {
         isFullscreen = false
         findEnterFullscreenButton().performClick()
         assertEquals(true, fullscreenClicked)
-    }
-
-    @Test
-    fun onStreamViewPositionedInvoked() {
-        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
-        stream.value = streamUiMock.copy(video = video)
-        composeTestRule.waitForIdle()
-        Assert.assertNotEquals(null, streamViewRect)
     }
 
     private fun findEnterFullscreenButton(): SemanticsNodeInteraction {

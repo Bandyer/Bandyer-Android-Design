@@ -39,8 +39,6 @@ class RingingComponentTest: PreCallComponentTest() {
 
     private var declineClicked = false
 
-    private var streamViewRect: Rect? = null
-
     @Before
     fun setUp() {
         composeTestRule.setContent {
@@ -49,8 +47,7 @@ class RingingComponentTest: PreCallComponentTest() {
                 tapToAnswerTimerMillis = timerMillis,
                 onBackPressed = { backPressed = true },
                 onAnswerClick = { answerClicked = true },
-                onDeclineClick = { declineClicked = true },
-                onStreamViewPositioned = { streamViewRect = it }
+                onDeclineClick = { declineClicked = true }
             )
         }
     }
@@ -62,7 +59,6 @@ class RingingComponentTest: PreCallComponentTest() {
         backPressed = false
         answerClicked = false
         declineClicked = false
-        streamViewRect = null
     }
 
     @Test
@@ -140,14 +136,6 @@ class RingingComponentTest: PreCallComponentTest() {
         composeTestRule.onNodeWithText(ringingQuantityOne).assertIsDisplayed()
         uiState.value = PreCallUiState(participants = listOf("user1", "user2"))
         composeTestRule.onNodeWithText(ringingQuantityOther).assertIsDisplayed()
-    }
-
-    @Test
-    fun onStreamViewPositionedInvoked() {
-        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
-        uiState.value = PreCallUiState(stream = streamUiMock.copy(video = video))
-        composeTestRule.waitForIdle()
-        Assert.assertNotEquals(null, streamViewRect)
     }
 
     private fun ComposeTestRule.assertRingingButtonIsDisplayed(text: String) {

@@ -85,7 +85,6 @@ class CallScreenTest {
                 onConfigurationChange = { },
                 onFullscreenStreamClick = { },
                 onFileShareDisplayed = { fileShareDisplayed = true },
-                onPipStreamPositioned = { },
                 onFeedbackDismiss = {},
                 onUserFeedback = { _,_ -> }
             )

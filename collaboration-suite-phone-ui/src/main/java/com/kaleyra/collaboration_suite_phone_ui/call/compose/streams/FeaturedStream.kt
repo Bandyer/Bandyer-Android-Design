@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.streams
 
-import android.graphics.Rect
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -34,7 +33,6 @@ internal fun FeaturedStream(
     isFullscreen: Boolean = false,
     onFullscreenClick: () -> Unit,
     onBackPressed: (() -> Unit)? = null,
-    onStreamPositioned: (Rect) -> Unit,
     headerModifier: Modifier = Modifier,
     modifier: Modifier = Modifier
 ) {
@@ -46,8 +44,7 @@ internal fun FeaturedStream(
                 Stream(
                     streamView = stream.video?.view,
                     avatar = stream.avatar,
-                    avatarVisible = stream.video == null || !stream.video.isEnabled,
-                    onStreamViewPositioned = onStreamPositioned
+                    avatarVisible = stream.video == null || !stream.video.isEnabled
                 )
             }
         }
@@ -108,8 +105,7 @@ internal fun FeaturedStreamPreview() {
         FeaturedStream(
             stream = streamUiMock,
             onBackPressed = { },
-            onFullscreenClick = { },
-            onStreamPositioned = { }
+            onFullscreenClick = { }
         )
     }
 }
