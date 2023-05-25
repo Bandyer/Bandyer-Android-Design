@@ -14,7 +14,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStre
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
 
-// TODO add tests in case stream video = null
 @Composable
 internal fun ThumbnailStream(
     stream: StreamUi,
