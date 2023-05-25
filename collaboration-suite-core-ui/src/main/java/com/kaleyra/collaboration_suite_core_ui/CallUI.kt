@@ -42,7 +42,7 @@ class CallUI(
     /**
      * A property that indicates whether the user feedback is asked at the end of call.
      **/
-    var withFeedback: Boolean = true
+    var withFeedback: Boolean = false
 
     /**
      * The call action sealed class
