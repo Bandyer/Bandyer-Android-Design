@@ -36,9 +36,10 @@ internal fun ThumbnailStream(
             contentColor = Color.White
         ) {
             PointerStreamWrapper(pointerList = stream.video?.pointers) {
+                val shouldFit = stream.video?.isScreenShare == true || hasPointers
                 Stream(
                     streamView = stream.video?.view?.thumbnailSettings(
-                        scaleType = if (isActive) StreamView.ScaleType.Fit else StreamView.ScaleType.Fill(1f)
+                        scaleType = if (shouldFit) StreamView.ScaleType.Fit else StreamView.ScaleType.Fill(1f)
                     ),
                     avatar = stream.avatar,
                     avatarVisible = stream.video == null || !stream.video.isEnabled,

@@ -44,8 +44,11 @@ internal fun FeaturedStream(
     ) {
         StreamContainer {
             PointerStreamWrapper(pointerList = stream.video?.pointers) {
+                val shouldFit = stream.video?.isScreenShare == true
                 Stream(
-                    streamView = stream.video?.view?.featuredSettings(),
+                    streamView = stream.video?.view?.featuredSettings(
+                        if (shouldFit) StreamView.ScaleType.Fit else StreamView.ScaleType.Fill()
+                    ),
                     avatar = stream.avatar,
                     avatarVisible = stream.video == null || !stream.video.isEnabled
                 )
