@@ -23,6 +23,7 @@ internal object VideoMapper {
                     video.id,
                     video.view.value?.let { ImmutableView(it) },
                     video.enabled.value,
+                    video.isScreenShare(),
                     ImmutableList(emptyList())
                 )
             }
@@ -33,10 +34,11 @@ internal object VideoMapper {
                 flow.map { it.id },
                 flow.flatMapLatest { it.view }.map { it?.let { ImmutableView(it) } },
                 flow.flatMapLatest { it.enabled },
+                flow.map { it.isScreenShare() },
                 flow.mapToPointersUi()
-            ) { id, view, enabled, pointers ->
+            ) { id, view, enabled, isScreenShare, pointers ->
                 val pointerList = ImmutableList(if (view != null && enabled) pointers else emptyList())
-                VideoUi(id, view, enabled, pointerList)
+                VideoUi(id, view, enabled, isScreenShare, pointerList)
             }.collect {
                 emit(it)
             }
@@ -65,4 +67,7 @@ internal object VideoMapper {
             y = position.y
         )
     }
+
+    private fun Input.Video.isScreenShare() = this is Input.Video.Application || this is Input.Video.Screen
+
 }

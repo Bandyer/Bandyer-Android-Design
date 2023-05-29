@@ -8,5 +8,6 @@ data class VideoUi(
     val id: String,
     val view: ImmutableView? = null,
     val isEnabled: Boolean = false,
+    val isScreenShare: Boolean = false,
     val pointers: ImmutableList<PointerUi> = ImmutableList(emptyList())
 )

@@ -32,7 +32,7 @@ class VideoMapperTest {
 
     private val viewMock = mockk<VideoStreamView>()
 
-    private val videoMock = mockk<Input.Video>(relaxed = true)
+    private val videoMock = mockk<Input.Video.Screen>(relaxed = true)
 
     private val pointerMock1 = mockk<Input.Video.Event.Pointer>(relaxed = true)
 
@@ -75,7 +75,7 @@ class VideoMapperTest {
     fun videoInputNotNull_mapToVideoUi_mappedVideoUi() = runTest {
         val flow = MutableStateFlow(videoMock)
         val actual = flow.mapToVideoUi().first()
-        val expected = VideoUi("videoId", ImmutableView(viewMock), true)
+        val expected = VideoUi("videoId", ImmutableView(viewMock), isEnabled = true, isScreenShare = true)
         Assert.assertEquals(expected, actual)
     }
 
