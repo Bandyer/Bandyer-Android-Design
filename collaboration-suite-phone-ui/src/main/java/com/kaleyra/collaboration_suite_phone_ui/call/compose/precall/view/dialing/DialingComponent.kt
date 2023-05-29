@@ -41,7 +41,7 @@ internal fun DialingComponent(
 ) {
     PreCallComponent(
         uiState = uiState,
-        subtitle = stringResource(id = R.string.kaleyra_call_status_dialing),
+        subtitle = stringResource(id = R.string.kaleyra_call_status_ringing),
         onBackPressed = onBackPressed,
         modifier = modifier.testTag(DialingContentTag)
     )
