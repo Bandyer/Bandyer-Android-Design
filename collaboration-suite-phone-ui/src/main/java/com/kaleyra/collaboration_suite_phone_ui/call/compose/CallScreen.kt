@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,16 +28,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import com.google.accompanist.systemuicontroller.SystemUiController
@@ -64,6 +70,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.common
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
@@ -330,17 +337,11 @@ internal fun CallScreen(
     onFileShareDisplayed: () -> Unit
 ) {
     if (isInPipMode) {
-        val pictureInPictureStream = callUiState.featuredStreams.value.firstOrNull()
-        if (pictureInPictureStream != null) {
-            StreamContainer {
-                Stream(
-                    streamView = pictureInPictureStream.video?.view?.pipSettings(),
-                    avatar = pictureInPictureStream.avatar,
-                    avatarSize = 48.dp,
-                    avatarVisible = pictureInPictureStream.video == null || !pictureInPictureStream.video.isEnabled
-                )
-            }
-        }
+        PipScreen(
+            stream = callUiState.featuredStreams.value.firstOrNull(),
+            callState = callUiState.callState,
+            isGroupCall = callUiState.isGroupCall
+        )
     } else {
         val configuration = LocalConfiguration.current
         val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
@@ -471,6 +472,38 @@ internal fun CallScreen(
         }
     }
 
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun PipScreen(stream: StreamUi?, callState: CallStateUi, isGroupCall: Boolean) {
+    if (stream != null) {
+        StreamContainer {
+            Stream(
+                streamView = stream.video?.view?.pipSettings(),
+                avatar = stream.avatar,
+                avatarSize = 48.dp,
+                avatarVisible = stream.video == null || !stream.video.isEnabled
+            )
+        }
+    }
+    if (callState is CallStateUi.Dialing || callState is CallStateUi.Ringing) {
+        val textStyle = LocalTextStyle.current.shadow()
+        val text = if (callState is CallStateUi.Dialing) {
+            stringResource(id = R.string.kaleyra_call_status_ringing)
+        } else {
+            pluralStringResource(id = R.plurals.kaleyra_call_incoming_status_ringing, count = if (isGroupCall) 2 else 1)
+        }
+        EllipsizeText(
+            text = text,
+            color = Color.White,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 12.sp,
+            ellipsize = Ellipsize.Marquee,
+            shadow = textStyle.shadow,
+            Modifier.padding(vertical = 12.dp, horizontal = 16.dp)
+        )
+    }
 }
 
 private fun ComponentActivity.isAtLeastResumed() =

@@ -32,7 +32,8 @@ internal fun EllipsizeText(
     fontWeight: FontWeight = FontWeight.Normal,
     fontSize: TextUnit = 16.sp,
     ellipsize: Ellipsize,
-    shadow: Shadow? = null
+    shadow: Shadow? = null,
+    modifier: Modifier = Modifier
 ) {
     val fontFamily = LocalTextStyle.current.fontFamily
 
@@ -62,6 +63,6 @@ internal fun EllipsizeText(
             }
         },
         update = { it.text = text },
-        modifier = Modifier.semantics { contentDescription = text }
+        modifier = modifier.semantics { contentDescription = text }
     )
 }
