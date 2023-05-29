@@ -9,7 +9,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite.phonebox.StreamView
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamViewSettings.thumbnailSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
@@ -35,13 +37,14 @@ internal fun ThumbnailStream(
         ) {
             PointerStreamWrapper(pointerList = stream.video?.pointers) {
                 Stream(
-                    streamView = stream.video?.view,
+                    streamView = stream.video?.view?.thumbnailSettings(
+                        scaleType = if (isActive) StreamView.ScaleType.Fit else StreamView.ScaleType.Fill(1f)
+                    ),
                     avatar = stream.avatar,
                     avatarVisible = stream.video == null || !stream.video.isEnabled,
                     avatarSize = 64.dp
                 )
             }
         }
-
     }
 }

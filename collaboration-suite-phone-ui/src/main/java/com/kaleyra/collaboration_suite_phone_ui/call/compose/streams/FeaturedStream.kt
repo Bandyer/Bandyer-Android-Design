@@ -18,9 +18,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite.phonebox.StreamView
+import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamViewSettings.featuredSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
@@ -42,7 +45,7 @@ internal fun FeaturedStream(
         StreamContainer {
             PointerStreamWrapper(pointerList = stream.video?.pointers) {
                 Stream(
-                    streamView = stream.video?.view,
+                    streamView = stream.video?.view?.featuredSettings(),
                     avatar = stream.avatar,
                     avatarVisible = stream.video == null || !stream.video.isEnabled
                 )

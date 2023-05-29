@@ -43,6 +43,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeDevice
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamViewSettings.pipSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContent
@@ -333,7 +334,7 @@ internal fun CallScreen(
         if (pictureInPictureStream != null) {
             StreamContainer {
                 Stream(
-                    streamView = pictureInPictureStream.video?.view,
+                    streamView = pictureInPictureStream.video?.view?.pipSettings(),
                     avatar = pictureInPictureStream.avatar,
                     avatarSize = 48.dp,
                     avatarVisible = pictureInPictureStream.video == null || !pictureInPictureStream.video.isEnabled

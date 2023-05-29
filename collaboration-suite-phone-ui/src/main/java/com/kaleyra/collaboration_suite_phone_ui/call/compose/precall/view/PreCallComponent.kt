@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamViewSettings.featuredSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.DefaultStreamAvatarSize
@@ -36,7 +37,7 @@ internal fun PreCallComponent(
 
             if (video?.view != null && video.isEnabled) {
                 StreamContainer {
-                    Stream(streamView = video.view, avatar = null, avatarVisible = false)
+                    Stream(streamView = video.view.featuredSettings(), avatar = null, avatarVisible = false)
                 }
             } else {
                 Avatar(
