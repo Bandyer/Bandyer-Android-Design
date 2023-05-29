@@ -43,7 +43,7 @@ internal fun FeaturedStream(
         modifier = modifier.testTag(FeaturedStreamTag)
     ) {
         StreamContainer {
-            PointerStreamWrapper(pointerList = stream.video?.pointers) {
+            PointerStreamWrapper(streamView = stream.video?.view, pointerList = stream.video?.pointers) {
                 val shouldFit = stream.video?.isScreenShare == true
                 Stream(
                     streamView = stream.video?.view?.featuredSettings(

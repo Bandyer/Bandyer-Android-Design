@@ -35,7 +35,7 @@ internal fun ThumbnailStream(
             backgroundColor = Color.DarkGray,
             contentColor = Color.White
         ) {
-            PointerStreamWrapper(pointerList = stream.video?.pointers) {
+            PointerStreamWrapper(streamView = stream.video?.view, pointerList = stream.video?.pointers) { hasPointers ->
                 val shouldFit = stream.video?.isScreenShare == true || hasPointers
                 Stream(
                     streamView = stream.video?.view?.thumbnailSettings(
