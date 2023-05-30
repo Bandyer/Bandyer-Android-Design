@@ -13,11 +13,11 @@ import com.bandyer.android_audiosession.session.AudioCallSession
 import com.bandyer.android_audiosession.session.AudioCallSessionInstance
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.getMyInternalCamera
-import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.hasMyCameraFrontLenses
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isMyInternalCameraUsingFrontLens
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.hasUsbInput
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.hasUsersWithCameraEnabled
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isIncoming
-import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isMyCameraEnabled
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isMyInternalCameraEnabled
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isMyScreenShareEnabled
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isNotConnected
 import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
@@ -90,8 +90,8 @@ internal class CallProximityDelegate<T>(private val lifecycleContext: T, private
             proximityWakeLock?.acquire(WakeLockTimeout)
         }
 
-        wasCameraEnabled = call.isMyCameraEnabled()
-        val shouldDisableVideo = wasCameraEnabled && (shouldAcquireProximityLock || call.hasMyCameraFrontLenses())
+        wasCameraEnabled = call.isMyInternalCameraEnabled()
+        val shouldDisableVideo = wasCameraEnabled && (shouldAcquireProximityLock || call.isMyInternalCameraUsingFrontLens())
         if (shouldDisableVideo) {
             call.getMyInternalCamera()?.tryDisable()
         }
@@ -131,7 +131,7 @@ internal class CallProximityDelegate<T>(private val lifecycleContext: T, private
             callActivity.isInPip -> false
             callActivity.isWhiteboardDisplayed -> false
             callActivity.isFileShareDisplayed -> false
-            isDeviceLandscape && call.isNotConnected() && call.isMyCameraEnabled() -> false
+            isDeviceLandscape && call.isNotConnected() && call.isMyInternalCameraEnabled() -> false
             isDeviceLandscape && call.hasUsersWithCameraEnabled() -> false
             call.isMyScreenShareEnabled() -> false
             call.hasUsbInput() -> false
