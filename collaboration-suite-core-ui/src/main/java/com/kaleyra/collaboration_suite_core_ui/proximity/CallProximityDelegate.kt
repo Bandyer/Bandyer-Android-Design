@@ -12,18 +12,18 @@ import com.bandyer.android_audiosession.model.AudioOutputDevice
 import com.bandyer.android_audiosession.session.AudioCallSession
 import com.bandyer.android_audiosession.session.AudioCallSessionInstance
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.utils.CallUtils.getMyInternalCamera
-import com.kaleyra.collaboration_suite_core_ui.utils.CallUtils.hasMyCameraFrontLenses
-import com.kaleyra.collaboration_suite_core_ui.utils.CallUtils.hasUsbInput
-import com.kaleyra.collaboration_suite_core_ui.utils.CallUtils.hasUsersWithCameraEnabled
-import com.kaleyra.collaboration_suite_core_ui.utils.CallUtils.isIncoming
-import com.kaleyra.collaboration_suite_core_ui.utils.CallUtils.isMyCameraEnabled
-import com.kaleyra.collaboration_suite_core_ui.utils.CallUtils.isMyScreenShareEnabled
-import com.kaleyra.collaboration_suite_core_ui.utils.CallUtils.isNotConnected
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.getMyInternalCamera
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.hasMyCameraFrontLenses
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.hasUsbInput
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.hasUsersWithCameraEnabled
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isIncoming
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isMyCameraEnabled
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isMyScreenShareEnabled
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isNotConnected
 import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
 import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensorListener
 
-internal class ProximityDelegate<T>(private val lifecycleContext: T, private val call: CallUI): ProximitySensorListener where T: ContextWrapper, T: LifecycleOwner {
+internal class CallProximityDelegate<T>(private val lifecycleContext: T, private val call: CallUI): ProximitySensorListener where T: ContextWrapper, T: LifecycleOwner {
 
     private var proximityWakeLock: PowerManager.WakeLock? = null
 
@@ -32,6 +32,7 @@ internal class ProximityDelegate<T>(private val lifecycleContext: T, private val
     private var callActivity: ProximityCallActivity? = null
 
     private val configuration = lifecycleContext.resources.configuration
+
     private val isDeviceLandscape: Boolean
         get() = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
@@ -62,20 +63,17 @@ internal class ProximityDelegate<T>(private val lifecycleContext: T, private val
 
     init {
         val powerManager = lifecycleContext.getSystemService(Context.POWER_SERVICE) as PowerManager
-        proximityWakeLock = powerManager
-            .newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, javaClass.simpleName)
-            .apply { setReferenceCounted(false) }
+        proximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, javaClass.simpleName)
+        proximityWakeLock!!.setReferenceCounted(false)
     }
 
     fun bind() {
-        val application = lifecycleContext.applicationContext as? Application
-        application?.registerActivityLifecycleCallbacks(callbacks)
+        getApplication()?.registerActivityLifecycleCallbacks(callbacks)
         proximitySensor = ProximitySensor.bind(lifecycleContext, this)
     }
 
     fun destroy() {
-        val application = lifecycleContext.applicationContext as? Application
-        application?.unregisterActivityLifecycleCallbacks(callbacks)
+        getApplication()?.unregisterActivityLifecycleCallbacks(callbacks)
         proximitySensor?.destroy()
         proximitySensor = null
     }
@@ -83,19 +81,19 @@ internal class ProximityDelegate<T>(private val lifecycleContext: T, private val
     override fun onProximitySensorChanged(isNear: Boolean) = if (isNear) onProximityOn() else onProximityOff()
 
     private fun onProximityOn() {
-        if (isIncoming(call)) return
+        if (call.isIncoming()) return
 
         callActivity?.disableWindowTouch()
 
         val shouldAcquireProximityLock = shouldAcquireProximityLock()
         if (shouldAcquireProximityLock) {
-            proximityWakeLock?.acquire(10*60*1000L)
+            proximityWakeLock?.acquire(WakeLockTimeout)
         }
 
-        wasCameraEnabled = isMyCameraEnabled(call)
-        val shouldDisableVideo = wasCameraEnabled && (shouldAcquireProximityLock || hasMyCameraFrontLenses(call))
+        wasCameraEnabled = call.isMyCameraEnabled()
+        val shouldDisableVideo = wasCameraEnabled && (shouldAcquireProximityLock || call.hasMyCameraFrontLenses())
         if (shouldDisableVideo) {
-            getMyInternalCamera(call)?.tryDisable()
+            call.getMyInternalCamera()?.tryDisable()
         }
 
         val audioCallSession = AudioCallSession.getInstance()
@@ -111,7 +109,7 @@ internal class ProximityDelegate<T>(private val lifecycleContext: T, private val
         proximityWakeLock?.release()
 
         if (wasCameraEnabled) {
-            getMyInternalCamera(call)?.tryEnable()
+            call.getMyInternalCamera()?.tryEnable()
         }
 
         val audioCallSession = AudioCallSession.getInstance()
@@ -133,10 +131,10 @@ internal class ProximityDelegate<T>(private val lifecycleContext: T, private val
             callActivity.isInPip -> false
             callActivity.isWhiteboardDisplayed -> false
             callActivity.isFileShareDisplayed -> false
-            isDeviceLandscape && isNotConnected(call) && isMyCameraEnabled(call) -> false
-            isDeviceLandscape && hasUsersWithCameraEnabled(call) -> false
-            isMyScreenShareEnabled(call) -> false
-            hasUsbInput(call) -> false
+            isDeviceLandscape && call.isNotConnected() && call.isMyCameraEnabled() -> false
+            isDeviceLandscape && call.hasUsersWithCameraEnabled() -> false
+            call.isMyScreenShareEnabled() -> false
+            call.hasUsbInput() -> false
             else -> true
         }
     }
@@ -144,5 +142,11 @@ internal class ProximityDelegate<T>(private val lifecycleContext: T, private val
     private fun AudioCallSessionInstance.tryEnableDevice(audioOutput: AudioOutputDevice) {
         val device = getAvailableAudioOutputDevices.firstOrNull { it.javaClass == audioOutput.javaClass }
         if (device != null) changeAudioOutputDevice(device)
+    }
+
+    private fun getApplication() = lifecycleContext.applicationContext as? Application
+
+    companion object {
+        private const val WakeLockTimeout = 60*60*1000L /*1 hour*/
     }
 }
