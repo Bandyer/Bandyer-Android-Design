@@ -124,9 +124,11 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
     /**
      * @suppress
      */
+    @Suppress("DEPRECATION")
     override fun clearNotification() {
         super.clearNotification()
-        stopForeground(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) stopForeground(STOP_FOREGROUND_REMOVE)
+        else stopForeground(true)
     }
 
     private fun moveToForegroundWhenPossible() {
