@@ -21,6 +21,9 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isIncoming
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isOngoing
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isOutgoing
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
@@ -127,13 +130,4 @@ interface CallNotificationDelegate {
             else -> null
         }
     }
-
-    private fun Call.isIncoming() =
-        state.value is Call.State.Disconnected && participants.value.let { it.creator() != it.me && it.creator() != null }
-
-    private fun Call.isOutgoing() =
-        state.value is Call.State.Connecting && participants.value.let { it.creator() == it.me }
-
-    private fun Call.isOngoing() =
-        state.value is Call.State.Connecting || state.value is Call.State.Connected || participants.value.creator() == null
 }
