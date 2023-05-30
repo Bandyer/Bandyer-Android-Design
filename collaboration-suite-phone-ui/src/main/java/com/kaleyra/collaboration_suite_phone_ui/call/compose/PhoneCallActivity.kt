@@ -8,18 +8,21 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.Rational
+import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.composethemeadapter.MdcTheme
+import com.kaleyra.collaboration_suite_core_ui.ProximityCallActivity
+import com.kaleyra.collaboration_suite_core_ui.WindowTouchDelegate
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationActionReceiver
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class PhoneCallActivity : FragmentActivity() {
+class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() = enterPipModeIfSupported()
@@ -32,6 +35,14 @@ class PhoneCallActivity : FragmentActivity() {
     private var pictureInPictureAspectRatio = Rational(9, 16)
 
     private var isActivityFinishing = false
+
+    override var isInForeground = false
+    override val isInPip: Boolean
+        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) isInPictureInPictureMode else false
+
+    override val isFileShareDisplayed: Boolean = false
+
+    override val isWhiteboardDisplayed: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +64,24 @@ class PhoneCallActivity : FragmentActivity() {
                 )
             }
         }
+    }
+
+    override fun disableWindowTouch() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    override fun enableWindowTouch() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isInForeground = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isInForeground = false
     }
 
     @SuppressLint("MissingSuperCall")

@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import android.app.Notification
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
@@ -29,6 +30,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsOpeningDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsVideoViewDelegate
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate
+import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import kotlinx.coroutines.CoroutineName
@@ -58,6 +60,8 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
     private var foregroundJob: Job? = null
 
+    private var proximityDelegate: ProximityDelegate<LifecycleService>? = null
+
     /**
      * @suppress
      */
@@ -79,6 +83,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
     override fun onDestroy() {
         super.onDestroy()
         clearNotification()
+        clearProximity()
     }
 
     /**
@@ -100,12 +105,16 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                 callActivityClazz,
                 callScope
             )
-            if (!DeviceUtils.isSmartGlass) syncFileShareNotification(this, call, callActivityClazz, callScope)
 
             call.state
                 .takeWhile { it !is Call.State.Disconnected.Ended }
                 .onCompletion { callScope.cancel() }
                 .launchIn(lifecycleScope)
+
+            if (!DeviceUtils.isSmartGlass) {
+                syncFileShareNotification(this, call, callActivityClazz, callScope)
+                bindProximity(call)
+            }
         }
     }
 
@@ -145,5 +154,15 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                 }
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun bindProximity(call: CallUI) {
+        proximityDelegate = ProximityDelegate(this, call)
+        proximityDelegate!!.bind()
+    }
+
+    private fun clearProximity() {
+        proximityDelegate?.destroy()
+        proximityDelegate = null
     }
 }

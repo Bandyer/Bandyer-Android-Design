@@ -45,6 +45,11 @@ class CallUI(
     var withFeedback: Boolean = false
 
     /**
+     * A property that indicates whether to enable or disable the proximity sensor in call behaviour.
+     **/
+    var disableProximitySensor: Boolean = false
+
+    /**
      * The call action sealed class
      */
     @Keep
