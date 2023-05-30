@@ -30,7 +30,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsOpeningDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsVideoViewDelegate
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate
-import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityDelegate
+import com.kaleyra.collaboration_suite_core_ui.proximity.CallProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import kotlinx.coroutines.CoroutineName
@@ -60,7 +60,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
     private var foregroundJob: Job? = null
 
-    private var proximityDelegate: ProximityDelegate<LifecycleService>? = null
+    private var proximityDelegate: CallProximityDelegate<LifecycleService>? = null
 
     /**
      * @suppress
@@ -157,7 +157,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
     }
 
     private fun bindProximity(call: CallUI) {
-        proximityDelegate = ProximityDelegate(this, call)
+        proximityDelegate = CallProximityDelegate(this, call)
         proximityDelegate!!.bind()
     }
 
