@@ -22,6 +22,7 @@ import android.os.Build
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
+import com.bandyer.android_audiosession.session.AudioCallSession
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Companion.CALL_NOTIFICATION_ID
@@ -157,7 +158,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
     }
 
     private fun bindProximity(call: CallUI) {
-        proximityDelegate = CallProximityDelegate(this, call)
+        proximityDelegate = CallProximityDelegate(this, call, AudioCallSession.getInstance())
         proximityDelegate!!.bind()
     }
 

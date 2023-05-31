@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.PowerManager
 import androidx.lifecycle.LifecycleOwner
 import com.bandyer.android_audiosession.model.AudioOutputDevice
-import com.bandyer.android_audiosession.session.AudioCallSession
 import com.bandyer.android_audiosession.session.AudioCallSessionInstance
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.getMyInternalCamera
@@ -23,7 +22,11 @@ import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isNotConnect
 import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
 import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensorListener
 
-internal class CallProximityDelegate<T>(private val lifecycleContext: T, private val call: CallUI): ProximitySensorListener where T: ContextWrapper, T: LifecycleOwner {
+internal class CallProximityDelegate<T>(
+    private val lifecycleContext: T,
+    private val call: CallUI,
+    private val audioCallSession: AudioCallSessionInstance
+) : ProximitySensorListener, Application.ActivityLifecycleCallbacks where T : ContextWrapper, T : LifecycleOwner {
 
     private var proximityWakeLock: PowerManager.WakeLock? = null
 
@@ -40,27 +43,6 @@ internal class CallProximityDelegate<T>(private val lifecycleContext: T, private
 
     private var wasLoudspeakerActive = false
 
-    private val callbacks = object : Application.ActivityLifecycleCallbacks {
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-            if (activity !is ProximityCallActivity) return
-            callActivity = activity
-        }
-
-        override fun onActivityStarted(activity: Activity) = Unit
-
-        override fun onActivityResumed(activity: Activity) = Unit
-
-        override fun onActivityPaused(activity: Activity) = Unit
-
-        override fun onActivityStopped(activity: Activity) = Unit
-
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
-
-        override fun onActivityDestroyed(activity: Activity) {
-            callActivity = null
-        }
-    }
-
     init {
         val powerManager = lifecycleContext.getSystemService(Context.POWER_SERVICE) as PowerManager
         proximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, javaClass.simpleName)
@@ -68,17 +50,37 @@ internal class CallProximityDelegate<T>(private val lifecycleContext: T, private
     }
 
     fun bind() {
-        getApplication()?.registerActivityLifecycleCallbacks(callbacks)
+        getApplication()?.registerActivityLifecycleCallbacks(this)
         proximitySensor = ProximitySensor.bind(lifecycleContext, this)
     }
 
     fun destroy() {
-        getApplication()?.unregisterActivityLifecycleCallbacks(callbacks)
+        getApplication()?.unregisterActivityLifecycleCallbacks(this)
         proximitySensor?.destroy()
         proximitySensor = null
     }
 
-    override fun onProximitySensorChanged(isNear: Boolean) = if (isNear) onProximityOn() else onProximityOff()
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        if (activity !is ProximityCallActivity) return
+        callActivity = activity
+    }
+
+    override fun onActivityStarted(activity: Activity) = Unit
+
+    override fun onActivityResumed(activity: Activity) = Unit
+
+    override fun onActivityPaused(activity: Activity) = Unit
+
+    override fun onActivityStopped(activity: Activity) = Unit
+
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+
+    override fun onActivityDestroyed(activity: Activity) {
+        callActivity = null
+    }
+
+    override fun onProximitySensorChanged(isNear: Boolean) =
+        if (isNear) onProximityOn() else onProximityOff()
 
     private fun onProximityOn() {
         if (call.isIncoming()) return
@@ -96,7 +98,6 @@ internal class CallProximityDelegate<T>(private val lifecycleContext: T, private
             call.getMyInternalCamera()?.tryDisable()
         }
 
-        val audioCallSession = AudioCallSession.getInstance()
         wasLoudspeakerActive = audioCallSession.currentAudioOutputDevice is AudioOutputDevice.Loudspeaker
         if (wasLoudspeakerActive) {
             audioCallSession.tryEnableDevice(AudioOutputDevice.Earpiece())
@@ -112,7 +113,6 @@ internal class CallProximityDelegate<T>(private val lifecycleContext: T, private
             call.getMyInternalCamera()?.tryEnable()
         }
 
-        val audioCallSession = AudioCallSession.getInstance()
         val shouldEnableLoudspeaker = wasLoudspeakerActive && audioCallSession.currentAudioOutputDevice is AudioOutputDevice.Earpiece
         if (shouldEnableLoudspeaker) {
             audioCallSession.tryEnableDevice(AudioOutputDevice.Loudspeaker())
@@ -122,22 +122,16 @@ internal class CallProximityDelegate<T>(private val lifecycleContext: T, private
         wasLoudspeakerActive = false
     }
 
-    private fun shouldAcquireProximityLock(): Boolean {
-        val callActivity = callActivity
-        return when {
+    private fun shouldAcquireProximityLock(): Boolean =
+        when {
             call.disableProximitySensor -> false
-            callActivity == null -> false
-            !callActivity.isInForeground -> false
-            callActivity.isInPip -> false
-            callActivity.isWhiteboardDisplayed -> false
-            callActivity.isFileShareDisplayed -> false
+            callActivity?.enableProximity != true -> false
             isDeviceLandscape && call.isNotConnected() && call.isMyInternalCameraEnabled() -> false
             isDeviceLandscape && call.hasUsersWithCameraEnabled() -> false
             call.isMyScreenShareEnabled() -> false
             call.hasUsbInput() -> false
             else -> true
         }
-    }
 
     private fun AudioCallSessionInstance.tryEnableDevice(audioOutput: AudioOutputDevice) {
         val device = getAvailableAudioOutputDevices.firstOrNull { it.javaClass == audioOutput.javaClass }
@@ -147,6 +141,6 @@ internal class CallProximityDelegate<T>(private val lifecycleContext: T, private
     private fun getApplication() = lifecycleContext.applicationContext as? Application
 
     companion object {
-        private const val WakeLockTimeout = 60*60*1000L /*1 hour*/
+        private const val WakeLockTimeout = 60 * 60 * 1000L /*1 hour*/
     }
 }
