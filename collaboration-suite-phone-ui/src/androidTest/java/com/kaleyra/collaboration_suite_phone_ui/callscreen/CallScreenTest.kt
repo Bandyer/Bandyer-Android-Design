@@ -84,7 +84,8 @@ class CallScreenTest {
                 permissionsState = null,
                 onConfigurationChange = { },
                 onFullscreenStreamClick = { },
-                onFileShareDisplayed = { fileShareDisplayed = true },
+                onFileShareVisibility = { fileShareDisplayed = true },
+                onWhiteboardVisibility = {},
                 onFeedbackDismiss = {},
                 onUserFeedback = { _,_ -> }
             )
@@ -575,7 +576,7 @@ class CallScreenTest {
     }
 
     @Test
-    fun shouldShowFileShareComponentTrue_onFileShareDisplayedInvoked() {
+    fun shouldShowFileShareComponentTrue_fileShareIsDisplayed() {
         shouldShowFileShareComponent = true
         composeTestRule.waitForIdle()
         assert(fileShareDisplayed)

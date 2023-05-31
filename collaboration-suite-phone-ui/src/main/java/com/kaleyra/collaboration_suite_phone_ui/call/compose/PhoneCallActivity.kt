@@ -58,7 +58,11 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
                     shouldShowFileShareComponent = shouldShowFileShare.collectAsStateWithLifecycle().value,
                     isInPipMode = isInPipMode.collectAsStateWithLifecycle().value,
                     onBackPressed = this::finishAndRemoveTask,
-                    onFileShareDisplayed = { shouldShowFileShare.value = false },
+                    onFileShareVisibility = {
+                        isFileShareDisplayed = it
+                        if (it) shouldShowFileShare.value = false
+                    },
+                    onWhiteboardVisibility = { isWhiteboardDisplayed = it },
                     onPipAspectRatio = { pictureInPictureAspectRatio = it },
                     onActivityFinish = { isActivityFinishing = true },
                 )
@@ -155,4 +159,5 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
             startActivity(intent)
         }
     }
+
 }

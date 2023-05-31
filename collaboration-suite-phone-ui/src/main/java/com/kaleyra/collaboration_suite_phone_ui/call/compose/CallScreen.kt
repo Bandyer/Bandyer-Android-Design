@@ -21,12 +21,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -77,10 +80,12 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -234,7 +239,8 @@ internal fun CallScreen(
     isInPipMode: Boolean,
     onBackPressed: () -> Unit,
     onPipAspectRatio: (Rational) -> Unit,
-    onFileShareDisplayed: () -> Unit,
+    onFileShareVisibility: (Boolean) -> Unit,
+    onWhiteboardVisibility: (Boolean) -> Unit,
     onActivityFinish: () -> Unit
 ) {
     val activity = LocalContext.current.findActivity() as FragmentActivity
@@ -307,7 +313,8 @@ internal fun CallScreen(
         onBackPressed = onBackPressedInternal,
         onFeedbackDismiss = onFeedbackDismiss,
         isInPipMode = isInPipMode,
-        onFileShareDisplayed = onFileShareDisplayed
+        onFileShareVisibility = onFileShareVisibility,
+        onWhiteboardVisibility = onWhiteboardVisibility
     )
 }
 
@@ -334,7 +341,8 @@ internal fun CallScreen(
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
     onFeedbackDismiss: () -> Unit,
-    onFileShareDisplayed: () -> Unit
+    onFileShareVisibility: (Boolean) -> Unit,
+    onWhiteboardVisibility: (Boolean) -> Unit
 ) {
     if (isInPipMode) {
         PipScreen(
@@ -343,140 +351,26 @@ internal fun CallScreen(
             isGroupCall = callUiState.isGroupCall
         )
     } else {
-        val configuration = LocalConfiguration.current
-        val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
-
-        LaunchedEffect(callScreenState) {
-            combine(
-                snapshotFlow { callScreenState.isSheetNotDraggableDown },
-                snapshotFlow { callScreenState.isSheetCollapsed }
-            ) { isSheetNotDraggableDown, isSheetCollapsed ->
-                with(callScreenState.sheetContentState) {
-                    if (isSheetNotDraggableDown) collapseLine(color = if (isSheetCollapsed) Color.White else null) else expandLine()
-                }
-            }.launchIn(this)
-        }
-
-        LaunchedEffect(callScreenState) {
-            snapshotFlow { callScreenState.statusBarIconsShouldUseSystemMode }
-                .onEach { callScreenState.updateStatusBarIcons(useSystemMode = it) }
-                .launchIn(this)
-        }
-
-        LaunchedEffect(callScreenState) {
-            snapshotFlow { callScreenState.shouldShowCallActionsComponent }
-                .filter { it }
-                .onEach { callScreenState.navigateToCallActionsComponent() }
-                .launchIn(this)
-        }
-
-        if (callScreenState.shouldShowFileShareComponent) {
-            LaunchedEffect(Unit) {
-                callScreenState.navigateToFileShareComponent()
-                onFileShareDisplayed()
-            }
-        }
-
-        LaunchedEffect(callUiState) {
-            when {
-                callUiState.callState != CallStateUi.Dialing && callUiState.callState != CallStateUi.Connected && callUiState.callState != CallStateUi.Reconnecting -> callScreenState.hideSheet()
-                callScreenState.isSheetHidden -> callScreenState.halfExpandSheet()
-            }
-        }
-
-        when {
-            callScreenState.sheetState.isHidden && callUiState.callState is CallStateUi.Disconnected.Ended -> BackHandler(onBack = onBackPressed)
-            callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackHandler(onBack = callScreenState::navigateToCallActionsComponent)
-            !callScreenState.isSheetNotDraggableDown -> BackHandler(onBack = callScreenState::collapseSheet)
-        }
-
-        BoxWithConstraints(modifier = Modifier.horizontalSystemBarsPadding()) {
-
-            LaunchedEffect(configuration, maxWidth, onConfigurationChange) {
-                onConfigurationChange(isAtLeastMediumSizeDevice(maxWidth, maxHeight))
-            }
-
-            val navBarsBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-            BottomSheetScaffold(
-                modifier = Modifier.fillMaxSize(),
-                sheetGesturesEnabled = callScreenState.shouldEnableSheetGesture,
-                sheetState = callScreenState.sheetState,
-                sheetPeekHeight = PeekHeight + navBarsBottomPadding,
-                sheetHalfExpandedHeight = HalfExpandedHeight + navBarsBottomPadding,
-                sheetElevation = 0.dp,
-                anchor = {
-                    val shouldShowThumbnailStreams = !callScreenState.isSheetHidden && callUiState.fullscreenStream == null
-                    val shouldShowRecordingHint = callUiState.recording != null && callUiState.recording.type != RecordingTypeUi.Never && callUiState.callState == CallStateUi.Dialing
-
-                    AnimatedVisibility(
-                        visible = shouldShowThumbnailStreams,
-                        enter = fadeIn(),
-                        exit = fadeOut()
-                    ) {
-                        ThumbnailStreams(
-                            streams = callUiState.thumbnailStreams,
-                            contentPadding = PaddingValues(16.dp),
-                            onStreamClick = onThumbnailStreamClick
-                        )
-                    }
-
-                    if (shouldShowRecordingHint) {
-                        HelperText(
-                            text = stringResource(id = if (callUiState.recording?.type == RecordingTypeUi.OnConnect) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer),
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                },
-                sheetBackgroundColor = MaterialTheme.colors.surface.copy(alpha = backgroundAlpha),
-                sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-                backgroundColor = Color.Black,
-                contentColor = Color.White,
-                sheetContent = {
-                    BottomSheetContent(
-                        contentState = callScreenState.sheetContentState,
-                        permissionsState = permissionsState,
-                        onLineClick = callScreenState::halfExpandSheetIfCollapsed,
-                        onCallActionClick = callScreenState::onCallActionClick,
-                        onAudioDeviceClick = callScreenState::halfExpandSheet,
-                        onScreenShareTargetClick = callScreenState::halfExpandSheet,
-                        onVirtualBackgroundClick = callScreenState::halfExpandSheet,
-                        contentVisible = !callScreenState.isSheetCollapsed,
-                        modifier = Modifier.horizontalCutoutPadding()
-                    )
-                },
-                content = {
-                    CallScreenContent(
-                        callState = callUiState.callState,
-                        maxWidth = maxWidth,
-                        onBackPressed = onBackPressed,
-                        onStreamFullscreenClick = onFullscreenStreamClick
-                    )
-                }
-            )
-
-            CallScreenAppBar(
-                currentSheetComponent = callScreenState.sheetContentState.currentComponent,
-                visible = callScreenState.shouldShowAppBar,
-                onBackPressed = callScreenState::navigateToCallActionsComponent,
-            )
-
-            if (callUiState.showFeedback && callUiState.callState is CallStateUi.Disconnected.Ended) {
-                val activity = LocalContext.current.findActivity() as ComponentActivity
-                val isActivityResumed = activity.isAtLeastResumed()
-                if (isActivityResumed) {
-                    UserFeedback(onUserFeedback = onUserFeedback, onDismiss = onFeedbackDismiss)
-                }
-            }
-        }
+        DefaultCallScreen(
+            callUiState = callUiState,
+            callScreenState = callScreenState,
+            permissionsState = permissionsState,
+            onBackPressed = onBackPressed,
+            onConfigurationChange = onConfigurationChange,
+            onThumbnailStreamClick = onThumbnailStreamClick,
+            onFullscreenStreamClick = onFullscreenStreamClick,
+            onUserFeedback = onUserFeedback,
+            onFeedbackDismiss = onFeedbackDismiss,
+            onFileShareVisibility = onFileShareVisibility,
+            onWhiteboardVisibility = onWhiteboardVisibility
+        )
     }
-
 }
 
+// TODO test this
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun PipScreen(stream: StreamUi?, callState: CallStateUi, isGroupCall: Boolean) {
+internal fun PipScreen(stream: StreamUi?, callState: CallStateUi, isGroupCall: Boolean) {
     if (stream != null) {
         StreamContainer {
             Stream(
@@ -506,6 +400,196 @@ private fun PipScreen(stream: StreamUi?, callState: CallStateUi, isGroupCall: Bo
     }
 }
 
+@Composable
+internal fun DefaultCallScreen(
+    callUiState: CallUiState,
+    callScreenState: CallScreenState,
+    permissionsState: MultiplePermissionsState?,
+    onBackPressed: () -> Unit,
+    onConfigurationChange: (Boolean) -> Unit,
+    onThumbnailStreamClick: (StreamUi) -> Unit,
+    onFullscreenStreamClick: (String?) -> Unit,
+    onUserFeedback: (Float, String) -> Unit,
+    onFeedbackDismiss: () -> Unit,
+    onFileShareVisibility: (Boolean) -> Unit,
+    onWhiteboardVisibility: (Boolean) -> Unit
+) {
+    val configuration = LocalConfiguration.current
+    val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
+
+    FileShareVisibilityObserver(callScreenState, onFileShareVisibility)
+
+    WhiteboardVisibilityObserver(callScreenState, onWhiteboardVisibility)
+
+    LaunchedEffect(callScreenState) {
+        combine(
+            snapshotFlow { callScreenState.isSheetNotDraggableDown },
+            snapshotFlow { callScreenState.isSheetCollapsed }
+        ) { isSheetNotDraggableDown, isSheetCollapsed ->
+            with(callScreenState.sheetContentState) {
+                if (isSheetNotDraggableDown) collapseLine(color = if (isSheetCollapsed) androidx.compose.ui.graphics.Color.White else null) else expandLine()
+            }
+        }.launchIn(this)
+    }
+
+    LaunchedEffect(callScreenState) {
+        snapshotFlow { callScreenState.statusBarIconsShouldUseSystemMode }
+            .onEach { callScreenState.updateStatusBarIcons(useSystemMode = it) }
+            .launchIn(this)
+    }
+
+    LaunchedEffect(callScreenState) {
+        snapshotFlow { callScreenState.shouldShowCallActionsComponent }
+            .filter { it }
+            .onEach { callScreenState.navigateToCallActionsComponent() }
+            .launchIn(this)
+    }
+
+    if (callScreenState.shouldShowFileShareComponent) {
+        LaunchedEffect(Unit) {
+            callScreenState.navigateToFileShareComponent()
+        }
+    }
+
+    LaunchedEffect(callUiState) {
+        when {
+            callUiState.callState != CallStateUi.Dialing && callUiState.callState != CallStateUi.Connected && callUiState.callState != CallStateUi.Reconnecting -> callScreenState.hideSheet()
+            callScreenState.isSheetHidden -> callScreenState.halfExpandSheet()
+        }
+    }
+
+    when {
+        callScreenState.sheetState.isHidden && callUiState.callState is CallStateUi.Disconnected.Ended -> BackHandler(onBack = onBackPressed)
+        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackHandler(onBack = callScreenState::navigateToCallActionsComponent)
+        !callScreenState.isSheetNotDraggableDown -> BackHandler(onBack = callScreenState::collapseSheet)
+    }
+
+    BoxWithConstraints(modifier = Modifier.horizontalSystemBarsPadding()) {
+
+        LaunchedEffect(configuration, maxWidth, onConfigurationChange) {
+            onConfigurationChange(isAtLeastMediumSizeDevice(maxWidth, maxHeight))
+        }
+
+        val navBarsBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        BottomSheetScaffold(
+            modifier = Modifier.fillMaxSize(),
+            sheetGesturesEnabled = callScreenState.shouldEnableSheetGesture,
+            sheetState = callScreenState.sheetState,
+            sheetPeekHeight = PeekHeight + navBarsBottomPadding,
+            sheetHalfExpandedHeight = HalfExpandedHeight + navBarsBottomPadding,
+            sheetElevation = 0.dp,
+            anchor = {
+                BottomSheetAnchor(callUiState, callScreenState, onThumbnailStreamClick)
+            },
+            sheetBackgroundColor = MaterialTheme.colors.surface.copy(alpha = backgroundAlpha),
+            sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+            backgroundColor = Color.Black,
+            contentColor = Color.White,
+            sheetContent = {
+                BottomSheetContent(
+                    contentState = callScreenState.sheetContentState,
+                    permissionsState = permissionsState,
+                    onLineClick = callScreenState::halfExpandSheetIfCollapsed,
+                    onCallActionClick = callScreenState::onCallActionClick,
+                    onAudioDeviceClick = callScreenState::halfExpandSheet,
+                    onScreenShareTargetClick = callScreenState::halfExpandSheet,
+                    onVirtualBackgroundClick = callScreenState::halfExpandSheet,
+                    contentVisible = !callScreenState.isSheetCollapsed,
+                    modifier = Modifier.horizontalCutoutPadding()
+                )
+            },
+            content = {
+                CallScreenContent(
+                    callState = callUiState.callState,
+                    maxWidth = maxWidth,
+                    onBackPressed = onBackPressed,
+                    onStreamFullscreenClick = onFullscreenStreamClick
+                )
+            }
+        )
+
+        CallScreenAppBar(
+            currentSheetComponent = callScreenState.sheetContentState.currentComponent,
+            visible = callScreenState.shouldShowAppBar,
+            onBackPressed = callScreenState::navigateToCallActionsComponent,
+        )
+
+        if (callUiState.showFeedback && callUiState.callState is CallStateUi.Disconnected.Ended) {
+            val activity = LocalContext.current.findActivity() as ComponentActivity
+            if (activity.isAtLeastResumed()) {
+                UserFeedback(onUserFeedback = onUserFeedback, onDismiss = onFeedbackDismiss)
+            }
+        }
+    }
+}
+
+@Composable
+internal fun BottomSheetAnchor(
+    callUiState: CallUiState,
+    callScreenState: CallScreenState,
+    onThumbnailStreamClick: (StreamUi) -> Unit
+) {
+    val shouldShowThumbnailStreams = !callScreenState.isSheetHidden && callUiState.fullscreenStream == null
+    val shouldShowRecordingHint = callUiState.recording != null && callUiState.recording.type != RecordingTypeUi.Never && callUiState.callState == CallStateUi.Dialing
+
+    AnimatedVisibility(
+        visible = shouldShowThumbnailStreams,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        ThumbnailStreams(
+            streams = callUiState.thumbnailStreams,
+            contentPadding = PaddingValues(16.dp),
+            onStreamClick = onThumbnailStreamClick
+        )
+    }
+
+    if (shouldShowRecordingHint) {
+        HelperText(
+            text = stringResource(id = if (callUiState.recording?.type == RecordingTypeUi.OnConnect) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer),
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+// TODO test this
+@Composable
+internal fun FileShareVisibilityObserver(
+    callScreenState: CallScreenState,
+    onFileShareVisibility: (Boolean) -> Unit
+) {
+    val isFileShareDisplayed by remember(callScreenState) {
+        derivedStateOf {
+            callScreenState.sheetContentState.currentComponent == BottomSheetComponent.FileShare
+        }
+    }
+    LaunchedEffect(callScreenState) {
+        snapshotFlow { isFileShareDisplayed }
+            .onEach { onFileShareVisibility(it) }
+            .launchIn(this)
+    }
+}
+
+// TODO test this
+@Composable
+internal fun WhiteboardVisibilityObserver(
+    callScreenState: CallScreenState,
+    onWhiteboardVisibility: (Boolean) -> Unit
+) {
+    val isWhiteboardDisplayed by remember(callScreenState) {
+        derivedStateOf {
+            callScreenState.sheetContentState.currentComponent == BottomSheetComponent.Whiteboard
+        }
+    }
+    LaunchedEffect(callScreenState) {
+        snapshotFlow { isWhiteboardDisplayed }
+            .onEach { onWhiteboardVisibility(it) }
+            .launchIn(this)
+    }
+}
+
 private fun ComponentActivity.isAtLeastResumed() =
     lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
 
@@ -522,7 +606,8 @@ fun CallScreenPreview() {
             ),
             callScreenState = rememberCallScreenState(),
             permissionsState = null,
-            onFileShareDisplayed = {},
+            onFileShareVisibility = {},
+            onWhiteboardVisibility = {},
             onConfigurationChange = {},
             onBackPressed = {},
             onFullscreenStreamClick = {},
