@@ -15,34 +15,34 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.kaleyra.collaboration_suite_core_ui.ProximityCallActivity
-import com.kaleyra.collaboration_suite_core_ui.WindowTouchDelegate
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationActionReceiver
+import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityCallActivity
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
 
-    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() = enterPipModeIfSupported()
     }
 
-    private val shouldShowFileShare = MutableStateFlow(false)
+    private var pictureInPictureAspectRatio: Rational = Rational(9, 16)
 
-    private val isInPipMode = MutableStateFlow(false)
+    private val shouldShowFileShare: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    private var pictureInPictureAspectRatio = Rational(9, 16)
+    private val isInPipMode: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    private var isActivityFinishing = false
+    private var isActivityFinishing: Boolean = false
 
-    override var isInForeground = false
-    override val isInPip: Boolean
-        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) isInPictureInPictureMode else false
+    private var isInForeground: Boolean = false
 
-    override val isFileShareDisplayed: Boolean = false
+    private var isFileShareDisplayed: Boolean = false
 
-    override val isWhiteboardDisplayed: Boolean = false
+    private var isWhiteboardDisplayed: Boolean = false
+
+    override val enableProximity: Boolean
+        get() = isInForeground && !isInPipMode.value && !isWhiteboardDisplayed && !isFileShareDisplayed
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
