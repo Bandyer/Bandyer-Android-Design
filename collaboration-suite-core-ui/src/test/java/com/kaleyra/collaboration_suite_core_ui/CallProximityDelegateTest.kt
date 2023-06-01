@@ -79,7 +79,7 @@ internal class CallProximityDelegateTest {
     }
 
     @Test
-    fun `test on proximity on`() {
+    fun `test proximity on when the screen is not turned off`() {
         every { wakeLockProximityDelegateMock.isScreenTurnedOff } returns false
         proximityDelegate?.onProximitySensorChanged(true)
         verify(exactly = 1) { wakeLockProximityDelegateMock.tryTurnScreenOff() }
@@ -88,7 +88,7 @@ internal class CallProximityDelegateTest {
     }
 
     @Test
-    fun `test on proximity on, the screen is turned off, camera is forced to be disabled`() {
+    fun `test proximity on when the screen is turned off, the camera is forced to be disabled`() {
         every { wakeLockProximityDelegateMock.isScreenTurnedOff } returns true
         proximityDelegate?.onProximitySensorChanged(true)
         verify(exactly = 1) { wakeLockProximityDelegateMock.tryTurnScreenOff() }
@@ -97,7 +97,7 @@ internal class CallProximityDelegateTest {
     }
 
     @Test
-    fun `test on proximity off`() {
+    fun `test proximity off`() {
         proximityDelegate?.onProximitySensorChanged(false)
         verify(exactly = 1) { wakeLockProximityDelegateMock.restoreScreenOn() }
         verify(exactly = 1) { cameraProximityDelegateMock.restoreCamera() }
