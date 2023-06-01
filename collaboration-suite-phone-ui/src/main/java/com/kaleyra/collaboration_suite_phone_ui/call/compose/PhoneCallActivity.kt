@@ -41,8 +41,8 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
 
     private var isWhiteboardDisplayed: Boolean = false
 
-    override val enableProximity: Boolean
-        get() = isInForeground && !isInPipMode.value && !isWhiteboardDisplayed && !isFileShareDisplayed
+    override val disableProximity: Boolean
+        get() = !isInForeground || isInPipMode.value || isWhiteboardDisplayed || isFileShareDisplayed
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

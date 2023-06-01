@@ -20,6 +20,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.media.AudioManager
@@ -143,6 +144,14 @@ object ContextExtensions {
      * @return True if the screen is off, false otherwise
      */
     internal fun Context.isScreenOff(): Boolean = (getSystemService(Context.DISPLAY_SERVICE) as DisplayManager).displays.all { it.state != Display.STATE_ON }
+
+    /**
+     * Check if the device orientation is landscape
+     *
+     * @receiver Context
+     * @return True if the device is in landscape, false otherwise
+     */
+    internal fun Context.isOrientationLandscape(): Boolean = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     /**
      * Turn on the screen, it is needed for the notifications on some devices

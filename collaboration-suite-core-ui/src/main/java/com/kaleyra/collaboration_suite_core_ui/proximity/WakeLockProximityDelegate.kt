@@ -3,7 +3,6 @@ package com.kaleyra.collaboration_suite_core_ui.proximity
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import android.os.PowerManager
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -12,6 +11,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.hasUsersWith
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isMyInternalCameraEnabled
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isMyScreenShareEnabled
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isNotConnected
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isOrientationLandscape
 
 interface WakeLockProximityDelegate {
 
@@ -41,9 +41,6 @@ internal class WakeLockProximityDelegateImpl(
 
     override var isScreenTurnedOff: Boolean = false
         private set
-
-    private val isDeviceLandscape: Boolean
-        get() = application.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     init {
         val powerManager = application.getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -94,11 +91,12 @@ internal class WakeLockProximityDelegateImpl(
     }
 
     private fun shouldAcquireProximityLock(): Boolean {
+        val isDeviceInLandscape = application.isOrientationLandscape()
         return when {
             call.disableProximitySensor -> false
-            proximityCallActivity?.enableProximity != true -> false
-            isDeviceLandscape && call.isNotConnected() && call.isMyInternalCameraEnabled() -> false
-            isDeviceLandscape && call.hasUsersWithCameraEnabled() -> false
+            proximityCallActivity == null || proximityCallActivity?.disableProximity == true -> false
+            isDeviceInLandscape && call.isNotConnected() && call.isMyInternalCameraEnabled() -> false
+            isDeviceInLandscape && call.hasUsersWithCameraEnabled() -> false
             call.isMyScreenShareEnabled() -> false
             call.hasUsbInput() -> false
             else -> true
@@ -106,6 +104,6 @@ internal class WakeLockProximityDelegateImpl(
     }
 
     companion object {
-        private const val WakeLockTimeout = 60 * 60 * 1000L /*1 hour*/
+        const val WakeLockTimeout = 60 * 60 * 1000L /*1 hour*/
     }
 }
