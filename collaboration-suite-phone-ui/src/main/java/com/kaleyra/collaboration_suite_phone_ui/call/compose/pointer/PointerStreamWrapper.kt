@@ -25,13 +25,11 @@ internal fun PointerStreamWrapper(
     pointerList: ImmutableList<PointerUi>?,
     stream: @Composable (Boolean) -> Unit
 ) {
-    if (streamView != null) {
-        val size by getSize(streamView).collectAsStateWithLifecycle(IntSize(0,0))
-        Box(contentAlignment = Alignment.Center) {
-            stream(!pointerList.isNullOrEmpty())
-            Box(modifier = modifier.size(size.toDpSize())) {
-                pointerList?.value?.forEach { MovablePointer(it, size) }
-            }
+    val size by getSize(streamView).collectAsStateWithLifecycle(IntSize(0,0))
+    Box(contentAlignment = Alignment.Center) {
+        stream(!pointerList.isNullOrEmpty())
+        Box(modifier = modifier.size(size.toDpSize())) {
+            pointerList?.value?.forEach { MovablePointer(it, size) }
         }
     }
 }
@@ -41,8 +39,8 @@ internal fun IntSize.toDpSize() = with(LocalDensity.current) {
     DpSize(width.toDp(), height.toDp())
 }
 
-internal fun getSize(view: ImmutableView): Flow<IntSize> {
-    val streamView = view.value as? VideoStreamView ?: return MutableStateFlow(IntSize(0,0))
+internal fun getSize(view: ImmutableView?): Flow<IntSize> {
+    val streamView = view?.value as? VideoStreamView ?: return MutableStateFlow(IntSize(0, 0))
     return streamView.videoSize.map { IntSize(it.width, it.height) }
 }
 
