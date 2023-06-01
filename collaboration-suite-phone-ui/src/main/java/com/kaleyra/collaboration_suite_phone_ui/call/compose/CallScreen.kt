@@ -554,7 +554,6 @@ internal fun BottomSheetAnchor(
     }
 }
 
-// TODO test this
 @Composable
 internal fun FileShareVisibilityObserver(
     callScreenState: CallScreenState,
@@ -572,7 +571,6 @@ internal fun FileShareVisibilityObserver(
     }
 }
 
-// TODO test this
 @Composable
 internal fun WhiteboardVisibilityObserver(
     callScreenState: CallScreenState,
