@@ -97,6 +97,7 @@
     <string name="kaleyra_ongoing_call_label">Tap to go back to call</string>
     <string name="kaleyra_call_left_alone">You are left alone</string>
     <string name="kaleyra_call_offline">You are offline</string>
+    <string name="kaleyra_call_waiting_for_other_participants">Waiting for other participants…</string>
     <string name="kaleyra_error_button_reload">Reload</string>
     <string name="kaleyra_error_title">An error occurred</string>
     <string name="kaleyra_error_subtitle">Please tap to reload</string>
