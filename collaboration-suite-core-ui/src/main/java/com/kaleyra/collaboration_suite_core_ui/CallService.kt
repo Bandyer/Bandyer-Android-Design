@@ -22,7 +22,6 @@ import android.os.Build
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
-import com.bandyer.android_audiosession.session.AudioCallSession
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Companion.CALL_NOTIFICATION_ID
@@ -31,10 +30,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsOpeningDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsVideoViewDelegate
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate
-import com.kaleyra.collaboration_suite_core_ui.proximity.AudioProximityDelegateImpl
 import com.kaleyra.collaboration_suite_core_ui.proximity.CallProximityDelegate
-import com.kaleyra.collaboration_suite_core_ui.proximity.CameraProximityDelegateImpl
-import com.kaleyra.collaboration_suite_core_ui.proximity.WakeLockProximityDelegateImpl
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import kotlinx.coroutines.CoroutineName
@@ -161,12 +157,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
     }
 
     private fun bindProximity(call: CallUI) {
-        proximityDelegate = CallProximityDelegate(
-            lifecycleContext = this,
-            wakeLockProximityDelegate = WakeLockProximityDelegateImpl(application, call),
-            cameraProximityDelegate = CameraProximityDelegateImpl(call),
-            audioProximityDelegate = AudioProximityDelegateImpl(AudioCallSession.getInstance())
-        )
+        proximityDelegate = CallProximityDelegate(lifecycleContext = this, call = call)
         proximityDelegate!!.bind()
     }
 
