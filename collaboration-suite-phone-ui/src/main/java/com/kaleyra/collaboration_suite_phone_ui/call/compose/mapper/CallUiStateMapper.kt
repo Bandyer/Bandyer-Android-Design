@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
-object CallUiStateReducer {
+object CallUiStateMapper {
 
-    // TODO test this
     fun Flow<CallUiState>.toPipAspectRatio(): Flow<Rational> =
         this.map { it.featuredStreams }
             .map { it.value.firstOrNull() }

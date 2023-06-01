@@ -13,7 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.toMy
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.isConnected
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.toCallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallUiStateReducer.toPipAspectRatio
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallUiStateMapper.toPipAspectRatio
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
