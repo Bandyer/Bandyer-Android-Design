@@ -24,8 +24,8 @@ internal class CameraProximityDelegateImpl(override val call: CallUI) : CameraPr
 
     override fun tryDisableCamera(forceDisableCamera: Boolean) {
         wasCameraEnabled = call.isMyInternalCameraEnabled()
-        val shouldDisableVideo = wasCameraEnabled && (forceDisableCamera || call.isMyInternalCameraUsingFrontLens())
-        if (shouldDisableVideo) {
+        val shouldDisableVideo = forceDisableCamera || call.isMyInternalCameraUsingFrontLens()
+        if (wasCameraEnabled && shouldDisableVideo) {
             call.getMyInternalCamera()?.tryDisable()
         }
     }
