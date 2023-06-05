@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
+import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.Call
 import kotlinx.coroutines.flow.*
 
@@ -30,5 +31,29 @@ internal object ParticipantMapper {
                     }
                 }
         }
+    }
+
+    fun Flow<Call>.toOtherDisplayImages(): Flow<List<Uri>> {
+        return flatMapLatest { it.participants }
+            .flatMapLatest { participants ->
+                val others = participants.others
+                val map = mutableMapOf<String, Uri?>()
+
+                if (others.isEmpty()) flowOf(listOf())
+                else others
+                    .map { participant ->
+                        participant.displayImage.map { displayName ->
+                            Pair(participant.userId, displayName)
+                        }
+                    }
+                    .merge()
+                    .transform { (userId, displayImage) ->
+                        map[userId] = displayImage
+                        val values = map.values.toList().filterNotNull()
+                        if (values.size == others.size) {
+                            emit(values)
+                        }
+                    }
+            }
     }
 }
