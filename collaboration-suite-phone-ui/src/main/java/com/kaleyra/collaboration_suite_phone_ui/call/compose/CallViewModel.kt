@@ -171,7 +171,6 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
         onCallEnded = block
     }
 
-    // TODO test this
     fun setOnPipAspectRatio(block: (Rational) -> Unit) {
         onPipAspectRatio = block
     }

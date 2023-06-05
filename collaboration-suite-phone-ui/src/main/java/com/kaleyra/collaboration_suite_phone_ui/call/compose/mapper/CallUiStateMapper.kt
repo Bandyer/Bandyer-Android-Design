@@ -1,12 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import android.util.Rational
-import com.kaleyra.collaboration_suite.phonebox.StreamView
 import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.MathUtils.findGreatestCommonDivisor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -20,12 +19,11 @@ object CallUiStateMapper {
             .distinctUntilChanged()
             .map { it.video?.view?.value as? VideoStreamView }
             .filterNotNull()
-            .flatMapLatest { it.state }
-            .filterIsInstance<StreamView.State.Rendering>()
-            .flatMapLatest { it.definition }
+            .flatMapLatest { it.videoSize }
             .map {
-                if (it.width > it.height) Rational(16, 9)
-                else Rational(9, 16)
+                val gcd = findGreatestCommonDivisor(it.width, it.height)
+                if (gcd != 0) Rational(it.width / gcd, it.height / gcd)
+                else Rational(1,1)
             }
 
 }

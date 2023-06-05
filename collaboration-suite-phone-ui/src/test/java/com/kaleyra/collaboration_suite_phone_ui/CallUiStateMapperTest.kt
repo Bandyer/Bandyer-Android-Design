@@ -1,8 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import android.util.Rational
-import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite.phonebox.StreamView
+import android.util.Size
 import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -26,10 +24,6 @@ import org.robolectric.RobolectricTestRunner
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
 class CallUiStateMapperTest {
-
-    private val definitionQualityMock = mockk<Input.Video.Quality.Definition>()
-
-    private val streamStateMock = mockk<StreamView.State.Rendering>()
 
     private val viewMock = mockk<VideoStreamView>()
 
@@ -39,19 +33,9 @@ class CallUiStateMapperTest {
 
     private val callUiState = CallUiState(featuredStreams = ImmutableList(listOf(stream)))
 
-    @Before
-    fun setUp() {
-        every { streamStateMock.definition } returns MutableStateFlow(definitionQualityMock)
-        every { viewMock.state } returns MutableStateFlow(streamStateMock)
-    }
-
     @Test
-    fun `first featured video has width higher than height, pip aspect ratio is 16-9`() = runTest {
-        with(definitionQualityMock) {
-            every { width } returns 300
-            every { height } returns 200
-        }
-
+    fun `first featured video width and height have greatest common divisor, the aspect ratio is the resolution divided by the divisor`() = runTest {
+        every { viewMock.videoSize } returns MutableStateFlow(Size(1920, 1080))
         val flow = flowOf(callUiState)
         val actual = flow.toPipAspectRatio().first()
         val expected = Rational(16, 9)
@@ -59,15 +43,11 @@ class CallUiStateMapperTest {
     }
 
     @Test
-    fun `first featured video has width lower than height, pip aspect ratio is 9-16`() = runTest {
-        with(definitionQualityMock) {
-            every { width } returns 200
-            every { height } returns 300
-        }
-
+    fun `first featured video width and height does not have greatest common divisor, the aspect ratio is 1-1`() = runTest {
+        every { viewMock.videoSize } returns MutableStateFlow(Size(234, 433))
         val flow = flowOf(callUiState)
         val actual = flow.toPipAspectRatio().first()
-        val expected = Rational(9, 16)
+        val expected = Rational(234, 433)
         assertEquals(expected, actual)
     }
 }
