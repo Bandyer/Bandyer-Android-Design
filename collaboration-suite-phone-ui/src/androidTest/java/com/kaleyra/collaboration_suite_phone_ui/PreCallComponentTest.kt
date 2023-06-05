@@ -27,32 +27,32 @@ abstract class PreCallComponentTest {
     }
 
     @Test
-    fun streamNull_avatarDisplayed() {
-        uiState.value = PreCallUiState(stream = null)
+    fun videoNull_avatarDisplayed() {
+        uiState.value = PreCallUiState(video = null)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
-    fun streamViewNull_avatarDisplayed() {
+    fun videoViewNull_avatarDisplayed() {
         val video = VideoUi(id = "videoId", view = null, isEnabled = false)
-        uiState.value = PreCallUiState(stream = streamUiMock.copy(video = video))
+        uiState.value = PreCallUiState(video = video)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
-    fun streamViewNotNullAndStreamHasVideoDisabled_avatarIsDisplayed() {
+    fun videoViewNotNullAndDisabled_avatarIsDisplayed() {
         val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false)
-        uiState.value = PreCallUiState(stream = streamUiMock.copy(video = video))
+        uiState.value = PreCallUiState(video = video)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
-    fun streamViewNotNullAndStreamHasVideoEnabled_streamIsDisplayed() {
+    fun videoViewNotNullAndEnabled_streamIsDisplayed() {
         val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
-        uiState.value = PreCallUiState(stream = streamUiMock.copy(video = video))
+        uiState.value = PreCallUiState(video = video)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertIsDisplayed()
         composeTestRule.findAvatar().assertDoesNotExist()
     }

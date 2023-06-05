@@ -12,6 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCa
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.ringing.RingingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -24,7 +25,7 @@ class RingingComponentTest: PreCallComponentTest() {
     @get:Rule
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    override var uiState = mutableStateOf(PreCallUiState(stream = streamUiMock))
+    override var uiState = mutableStateOf(PreCallUiState(video = streamUiMock.video))
 
     private var timerMillis by mutableStateOf(0L)
 
@@ -49,7 +50,7 @@ class RingingComponentTest: PreCallComponentTest() {
 
     @After
     fun tearDown() {
-        uiState.value = PreCallUiState(stream = streamUiMock)
+        uiState.value = PreCallUiState(video = streamUiMock.video)
         timerMillis = 0L
         backPressed = false
         answerClicked = false
@@ -118,7 +119,7 @@ class RingingComponentTest: PreCallComponentTest() {
 
     @Test
     fun callStateRinging_otherParticipantsUsernamesAreDisplayed() {
-        uiState.value = PreCallUiState(participants = listOf("user1", "user2"))
+        uiState.value = PreCallUiState(participants = ImmutableList(listOf("user1", "user2")))
         composeTestRule.onNodeWithContentDescription("user1, user2").assertIsDisplayed()
     }
 
@@ -127,9 +128,9 @@ class RingingComponentTest: PreCallComponentTest() {
         val resources = composeTestRule.activity.resources
         val ringingQuantityOne = resources.getQuantityString(R.plurals.kaleyra_call_incoming_status_ringing, 1)
         val ringingQuantityOther = resources.getQuantityString(R.plurals.kaleyra_call_incoming_status_ringing, 2)
-        uiState.value = PreCallUiState(participants = listOf("user1"))
+        uiState.value = PreCallUiState(participants = ImmutableList(listOf("user1")))
         composeTestRule.onNodeWithText(ringingQuantityOne).assertIsDisplayed()
-        uiState.value = PreCallUiState(participants = listOf("user1", "user2"))
+        uiState.value = PreCallUiState(participants = ImmutableList(listOf("user1", "user2")))
         composeTestRule.onNodeWithText(ringingQuantityOther).assertIsDisplayed()
     }
 

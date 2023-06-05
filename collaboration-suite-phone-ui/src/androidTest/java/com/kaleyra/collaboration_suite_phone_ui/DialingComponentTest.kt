@@ -11,6 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.dialing.DialingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -23,7 +24,7 @@ class DialingComponentTest: PreCallComponentTest() {
     @get:Rule
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    override var uiState = mutableStateOf(PreCallUiState(stream = streamUiMock))
+    override var uiState = mutableStateOf(PreCallUiState(video = streamUiMock.video))
 
     private var backPressed = false
 
@@ -39,7 +40,7 @@ class DialingComponentTest: PreCallComponentTest() {
 
     @After
     fun tearDown() {
-        uiState.value = PreCallUiState(stream = streamUiMock)
+        uiState.value = PreCallUiState(video = streamUiMock.video)
         backPressed = false
     }
 
@@ -51,13 +52,13 @@ class DialingComponentTest: PreCallComponentTest() {
 
     @Test
     fun callStateDialing_otherParticipantsUsernamesAreDisplayed() {
-        uiState.value = PreCallUiState(participants = listOf("user1", "user2"))
+        uiState.value = PreCallUiState(participants = ImmutableList(listOf("user1", "user2")))
         composeTestRule.onNodeWithContentDescription("user1, user2").assertIsDisplayed()
     }
 
     @Test
     fun callStateDialing_dialingSubtitleIsDisplayed() {
-        val dialing = composeTestRule.activity.getString(R.string.kaleyra_call_status_dialing)
+        val dialing = composeTestRule.activity.getString(R.string.kaleyra_call_status_ringing)
         composeTestRule.onNodeWithText(dialing).assertIsDisplayed()
     }
 

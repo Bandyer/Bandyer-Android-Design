@@ -33,18 +33,17 @@ internal fun PreCallComponent(
 ) {
     CompositionLocalProvider(LocalContentColor provides Color.White) {
         Box(modifier = modifier.fillMaxSize()) {
-            val video = uiState.stream?.video
-
-            if (video?.view != null && video.isEnabled) {
+            if (uiState.video?.view != null && uiState.video.isEnabled) {
                 StreamContainer {
-                    Stream(streamView = video.view.featuredSettings(), avatar = null, avatarVisible = false)
+                    Stream(streamView = uiState.video.view.featuredSettings(), avatar = null, avatarVisible = false)
                 }
             } else {
+                val isGroupCall = uiState.participants.count() > 1
                 Avatar(
-                    uri = if (uiState.isGroupCall) ImmutableUri(Uri.EMPTY) else uiState.stream?.avatar,
+                    uri = if (isGroupCall) ImmutableUri(Uri.EMPTY) else uiState.avatar,
                     contentDescription = stringResource(id = R.string.kaleyra_avatar),
-                    placeholder = if (uiState.isGroupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
-                    error = if (uiState.isGroupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
+                    placeholder = if (isGroupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
+                    error = if (isGroupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
                     contentColor = LocalContentColor.current,
                     backgroundColor = colorResource(id = R.color.kaleyra_color_background_dark),
                     size = DefaultStreamAvatarSize,
@@ -55,7 +54,7 @@ internal fun PreCallComponent(
             // TODO how to show connecting when user answered on dialing?
             CallInfoWidget(
                 onBackPressed = onBackPressed,
-                title = uiState.participants.joinToString(separator = ", "),
+                title = uiState.participants.value.joinToString(separator = ", "),
                 subtitle = subtitle,
                 watermarkInfo = uiState.watermarkInfo,
                 recording = false,
