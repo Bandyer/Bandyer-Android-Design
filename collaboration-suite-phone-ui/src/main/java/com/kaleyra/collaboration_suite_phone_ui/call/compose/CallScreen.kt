@@ -9,6 +9,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -21,16 +22,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -71,6 +70,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.findActi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.rememberMultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.common.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.RecordingDot
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
@@ -80,12 +80,10 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -348,7 +346,8 @@ internal fun CallScreen(
         PipScreen(
             stream = callUiState.featuredStreams.value.firstOrNull(),
             callState = callUiState.callState,
-            isGroupCall = callUiState.isGroupCall
+            isGroupCall = callUiState.isGroupCall,
+            isRecording = callUiState.recording?.isRecording() ?: false
         )
     } else {
         DefaultCallScreen(
@@ -367,36 +366,70 @@ internal fun CallScreen(
     }
 }
 
-// TODO test this
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-internal fun PipScreen(stream: StreamUi?, callState: CallStateUi, isGroupCall: Boolean) {
-    if (stream != null) {
-        StreamContainer {
-            Stream(
-                streamView = stream.video?.view?.pipSettings(),
-                avatar = stream.avatar,
-                avatarSize = 48.dp,
-                avatarVisible = stream.video == null || !stream.video.isEnabled
+internal fun PipScreen(
+    stream: StreamUi?,
+    callState: CallStateUi,
+    isGroupCall: Boolean,
+    isRecording: Boolean
+) {
+    Box {
+        if (stream != null) {
+            StreamContainer {
+                Stream(
+                    streamView = stream.video?.view?.pipSettings(),
+                    avatar = stream.avatar,
+                    avatarSize = 48.dp,
+                    avatarVisible = stream.video == null || !stream.video.isEnabled
+                )
+            }
+        }
+
+        val shadowTextStyle = LocalTextStyle.current.shadow()
+        if (callState is CallStateUi.Dialing) {
+            EllipsizeText(
+                text = stringResource(id = R.string.kaleyra_call_status_ringing),
+                color = Color.White,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 12.sp,
+                ellipsize = Ellipsize.Marquee,
+                shadow = shadowTextStyle.shadow,
+                modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp)
             )
         }
-    }
-    if (callState is CallStateUi.Dialing || callState is CallStateUi.Ringing) {
-        val textStyle = LocalTextStyle.current.shadow()
-        val text = if (callState is CallStateUi.Dialing) {
-            stringResource(id = R.string.kaleyra_call_status_ringing)
-        } else {
-            pluralStringResource(id = R.plurals.kaleyra_call_incoming_status_ringing, count = if (isGroupCall) 2 else 1)
+
+        if (callState is CallStateUi.Ringing) {
+            EllipsizeText(
+                text = pluralStringResource(id = R.plurals.kaleyra_call_incoming_status_ringing, count = if (isGroupCall) 2 else 1),
+                color = Color.White,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 12.sp,
+                ellipsize = Ellipsize.Marquee,
+                shadow = shadowTextStyle.shadow,
+                modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp)
+            )
         }
-        EllipsizeText(
-            text = text,
-            color = Color.White,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 12.sp,
-            ellipsize = Ellipsize.Marquee,
-            shadow = textStyle.shadow,
-            Modifier.padding(vertical = 12.dp, horizontal = 16.dp)
-        )
+
+        if (callState is CallStateUi.Reconnecting) {
+            EllipsizeText(
+                text = stringResource(id = R.string.kaleyra_call_offline),
+                color = Color.White,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 16.sp,
+                ellipsize = Ellipsize.Marquee,
+                shadow = shadowTextStyle.shadow,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+
+        if (isRecording) {
+            RecordingDot(
+                modifier = Modifier
+                    .padding(12.dp)
+                    .align(Alignment.TopEnd)
+            )
+        }
     }
 }
 

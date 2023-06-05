@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.pulse
+
+internal const val RecordingDotTestTag = "RecordingDotTestTag"
 
 @Composable
 internal fun RecordingLabel(modifier: Modifier = Modifier) {
@@ -33,14 +36,7 @@ internal fun RecordingLabel(modifier: Modifier = Modifier) {
             .padding(top = 4.dp, bottom = 4.dp, start = 4.dp, end = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_kaleyra_recording_dot),
-            contentDescription = null,
-            tint = colorResource(id = R.color.kaleyra_recording_color),
-            modifier = Modifier
-                .size(20.dp)
-                .pulse()
-        )
+        RecordingDot()
         Text(
             text = stringResource(id = R.string.kaleyra_call_info_rec).uppercase(),
             fontWeight = FontWeight.Bold,
@@ -48,6 +44,19 @@ internal fun RecordingLabel(modifier: Modifier = Modifier) {
             fontSize = 12.sp
         )
     }
+}
+
+@Composable
+internal fun RecordingDot(modifier: Modifier = Modifier) {
+    Icon(
+        painter = painterResource(id = R.drawable.ic_kaleyra_recording_dot),
+        contentDescription = null,
+        tint = colorResource(id = R.color.kaleyra_recording_color),
+        modifier = modifier
+            .size(20.dp)
+            .pulse()
+            .testTag(RecordingDotTestTag)
+    )
 }
 
 @Preview
