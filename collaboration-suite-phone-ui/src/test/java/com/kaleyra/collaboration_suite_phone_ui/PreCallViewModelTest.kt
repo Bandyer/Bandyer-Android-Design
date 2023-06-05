@@ -9,12 +9,12 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +40,11 @@ class PreCallViewModelTest {
 
     private val callMock = mockk<CallUI>(relaxed = true)
 
-    private val uriMock = mockk<Uri>()
+    private val uriMock1 = mockk<Uri>()
+
+    private val uriMock2 = mockk<Uri>()
+
+    private val uriMock3 = mockk<Uri>()
 
     private val viewMock = mockk<VideoStreamView>()
 
@@ -117,19 +121,19 @@ class PreCallViewModelTest {
             every { userId } returns "userId1"
             every { streams } returns MutableStateFlow(listOf(myStreamMock))
             every { displayName } returns MutableStateFlow("myDisplayName")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { displayImage } returns MutableStateFlow(uriMock1)
         }
         with(participantMock1) {
             every { userId } returns "userId1"
             every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
             every { displayName } returns MutableStateFlow("displayName1")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { displayImage } returns MutableStateFlow(uriMock2)
         }
         with(participantMock2) {
             every { userId } returns "userId2"
             every { streams } returns MutableStateFlow(listOf(streamMock3))
             every { displayName } returns MutableStateFlow("displayName2")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { displayImage } returns MutableStateFlow(uriMock3)
         }
         with(themeMock) {
             every { day } returns mockk {
@@ -152,40 +156,26 @@ class PreCallViewModelTest {
 
     @Test
     fun testPreCallUiState_streamUpdated() = runTest {
-        val current = viewModel.uiState.first().stream
+        val current = viewModel.uiState.first().video
         assertEquals(null, current)
         advanceUntilIdle()
-        val new = viewModel.uiState.first().stream
-        val expected = StreamUi(
-            id = "myStreamId",
-            video = VideoUi(
+        val new = viewModel.uiState.first().video
+        val expected = VideoUi(
                 id = myVideoMock.id,
                 view = myVideoMock.view.value?.let { ImmutableView(it) },
                 isEnabled = myVideoMock.enabled.value
-            ),
-            username = "myDisplayName",
-            avatar = ImmutableUri(uriMock)
-        )
+            )
         assertEquals(expected, new)
     }
 
     @Test
     fun testPreCallUiState_participantsUpdated() = runTest {
         val current = viewModel.uiState.first().participants
-        assertEquals(listOf<String>(), current)
+        assertEquals(ImmutableList(listOf<String>()), current)
         advanceUntilIdle()
         val new = viewModel.uiState.first().participants
-        val expected = listOf("displayName1", "displayName2")
+        val expected = ImmutableList(listOf("displayName1", "displayName2"))
         assertEquals(expected, new)
-    }
-
-    @Test
-    fun testPreCallUiState_isGroupCallUpdated() = runTest {
-        val current = viewModel.uiState.first().isGroupCall
-        assertEquals(false, current)
-        advanceUntilIdle()
-        val new = viewModel.uiState.first().isGroupCall
-        assertEquals(true, new)
     }
 
     @Test
@@ -195,6 +185,16 @@ class PreCallViewModelTest {
         advanceUntilIdle()
         val new = viewModel.uiState.first().recording
         val expected = RecordingTypeUi.OnConnect
+        assertEquals(expected, new)
+    }
+
+    @Test
+    fun testPreCallUiState_avatarUpdated() = runTest {
+        val current = viewModel.uiState.first().avatar
+        assertEquals(null, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().avatar
+        val expected = ImmutableUri(uriMock2)
         assertEquals(expected, new)
     }
 

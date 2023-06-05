@@ -30,6 +30,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.PreCal
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.common.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
@@ -68,7 +69,7 @@ internal fun RingingComponent(
 
     PreCallComponent(
         uiState = uiState,
-        subtitle = pluralStringResource(id = R.plurals.kaleyra_call_incoming_status_ringing, count = uiState.participants.size),
+        subtitle = pluralStringResource(id = R.plurals.kaleyra_call_incoming_status_ringing, count = uiState.participants.count()),
         onBackPressed = onBackPressed,
         modifier = modifier.testTag(RingingContentTag)
     ) {
@@ -143,8 +144,8 @@ internal fun RingingComponentPreview() {
     KaleyraTheme {
         RingingComponent(
             PreCallUiState(
-                stream = streamUiMock,
-                participants = listOf("user1")
+                video = streamUiMock.video,
+                participants = ImmutableList(listOf("user1"))
             ),
             onAnswerClick = { },
             onDeclineClick = { },

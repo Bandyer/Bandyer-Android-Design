@@ -12,6 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.PreCallComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
@@ -52,7 +53,7 @@ internal fun DialingComponent(
 fun DialingComponentPreview() {
     KaleyraTheme {
         DialingComponent(
-            uiState = PreCallUiState(participants = listOf("user1", "user2")),
+            uiState = PreCallUiState(participants = ImmutableList(listOf("user1", "user2"))),
             onBackPressed = { }
         )
     }
