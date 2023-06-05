@@ -8,7 +8,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.width
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Watermark
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
@@ -40,32 +39,22 @@ class WatermarkTest {
     }
 
     @Test
-    fun imageNotNull_watermarkImageIsDisplayed() {
+    fun logoWithValidUri_watermarkImageIsDisplayed() {
         val uri = Uri.parse("com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo")
         watermarkInfo = WatermarkInfo(logo = Logo(uri, uri))
         composeTestRule.onNodeWithContentDescription(findLogo()).assertIsDisplayed()
     }
 
     @Test
-    fun textNotNull_textIsDisplayed() {
-        watermarkInfo = WatermarkInfo(text = "text")
+    fun logoWithEmptyUriAndTextNotNull_textIsDisplayed() {
+        watermarkInfo = WatermarkInfo(logo = Logo(Uri.EMPTY, Uri.EMPTY), text = "text")
         composeTestRule.onNodeWithText("text").assertIsDisplayed()
     }
 
     @Test
-    fun imageNull_textIsDisplayedAtTheStart() {
+    fun logoNullAndTextNotNull_textIsDisplayed() {
         watermarkInfo = WatermarkInfo(logo = null, text = "text")
-        composeTestRule.onNodeWithText("text").assertLeftPositionInRootIsEqualTo(0.dp)
-    }
-
-    @Test
-    fun imageNotNull_textIsDisplayedToImageEnd() {
-        val uri = Uri.parse("com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo")
-        watermarkInfo = WatermarkInfo(logo = Logo(uri, uri), text = "text")
-        val imageWidth = composeTestRule.onNodeWithContentDescription(findLogo()).getBoundsInRoot().width
-        val imageSpacerWidth = 16.dp
-        val expectedPosition = imageWidth + imageSpacerWidth
-        composeTestRule.onNodeWithText("text").assertLeftPositionInRootIsEqualTo(expectedPosition)
+        composeTestRule.onNodeWithText("text").assertIsDisplayed()
     }
 
     @Test

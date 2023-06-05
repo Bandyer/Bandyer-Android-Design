@@ -35,25 +35,27 @@ internal fun Watermark(watermarkInfo: WatermarkInfo, modifier: Modifier = Modifi
         modifier = modifier.testTag(WatermarkTag),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (watermarkInfo.logo != null) {
-            AsyncImage(
-                model = watermarkInfo.logo.let { if (!isSystemInDarkTheme()) it.light else it.dark },
-                contentDescription = stringResource(id = R.string.kaleyra_company_logo),
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .heightIn(max = MaxWatermarkHeight)
-                    .widthIn(max = MaxWatermarkWidth),
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-        }
-        if (watermarkInfo.text != null) {
-            Text(
-                text = watermarkInfo.text,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                maxLines = 1
-            )
+        when {
+            watermarkInfo.logo != null && (watermarkInfo.logo.dark != Uri.EMPTY || watermarkInfo.logo.light != Uri.EMPTY) -> {
+                AsyncImage(
+                    model = watermarkInfo.logo.let { if (!isSystemInDarkTheme()) it.light else it.dark },
+                    contentDescription = stringResource(id = R.string.kaleyra_company_logo),
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .heightIn(max = MaxWatermarkHeight)
+                        .widthIn(max = MaxWatermarkWidth),
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+            }
+            watermarkInfo.text != null -> {
+                Text(
+                    text = watermarkInfo.text,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    maxLines = 1
+                )
+            }
         }
     }
 }
