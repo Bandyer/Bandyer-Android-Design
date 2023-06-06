@@ -39,7 +39,7 @@ class FileShareViewModelTest {
 
     private lateinit var viewModel: FileShareViewModel
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>()
+    private val phoneBoxMock = mockk<PhoneBoxUI>(relaxed = true)
 
     private val callMock = mockk<CallUI>(relaxed = true)
 
@@ -51,11 +51,11 @@ class FileShareViewModelTest {
 
     private val sharedFolderMock = mockk<SharedFolder>(relaxed = true)
 
-    private val sharedFileMock1 = mockk<SharedFile>()
+    private val sharedFileMock1 = mockk<SharedFile>(relaxed = true)
 
-    private val sharedFileMock2 = mockk<SharedFile>()
+    private val sharedFileMock2 = mockk<SharedFile>(relaxed = true)
 
-    private val sharedFileMock3 = mockk<SharedFile>()
+    private val sharedFileMock3 = mockk<SharedFile>(relaxed = true)
 
     private val sharedFileUi1 = SharedFileUi(id = "sharedFileId", name = "sharedFileName", uri = ImmutableUri(uriMock), size = 1024L, sender = "displayName", time = 1234L, state = SharedFileUi.State.Available, isMine = false)
 
@@ -71,7 +71,7 @@ class FileShareViewModelTest {
         every { anyConstructed<CallUserMessagesProvider>().recordingUserMessage() } returns MutableStateFlow(RecordingMessage.Started())
         every { anyConstructed<CallUserMessagesProvider>().mutedUserMessage() } returns MutableStateFlow(MutedMessage(null))
         viewModel = FileShareViewModel(
-            configure = { Configuration.Success(phoneBoxMock, mockk(), mockk(), mockk()) },
+            configure = { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true), mockk()) },
             filePickProvider = object : FilePickProvider {
                 override val fileUri: Flow<Uri> = MutableStateFlow(uriMock)
             }

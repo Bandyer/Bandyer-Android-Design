@@ -18,7 +18,9 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
 
     val chatBox = _configuration.mapSuccess { it.chatBoxUI }.shareInEagerly(viewModelScope)
 
-    val company = _configuration.mapSuccess { it.company }.shareInEagerly(viewModelScope)
+    val theme = _configuration.mapSuccess { it.theme }.flatMapLatest { it }.shareInEagerly(viewModelScope)
+
+    val companyName = _configuration.mapSuccess { it.companyName }.flatMapLatest { it }.shareInEagerly(viewModelScope)
 
     val usersDescription = _configuration.mapSuccess { it.usersDescription }.shareInEagerly(viewModelScope)
 
@@ -39,12 +41,20 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
 }
 
 sealed class Configuration {
-    data class Success(val phoneBox: PhoneBoxUI, val chatBoxUI: ChatBoxUI, val company: Company, val usersDescription: UsersDescription) : Configuration()
+    data class Success(val phoneBox: PhoneBoxUI,
+                       val chatBoxUI: ChatBoxUI,
+                       val companyName: SharedFlow<String>,
+                       val theme: SharedFlow<Theme>,
+                       val usersDescription: UsersDescription) : Configuration()
     object Failure : Configuration()
 }
 
 suspend fun requestConfiguration(): Configuration {
     if (!CollaborationUI.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
-    return if (CollaborationUI.isConfigured) Configuration.Success(CollaborationUI.phoneBox, CollaborationUI.chatBox, CollaborationUI.company, CollaborationUI.usersDescription)
+    return if (CollaborationUI.isConfigured) Configuration.Success(CollaborationUI.phoneBox,
+                                                                   CollaborationUI.chatBox,
+                                                                   CollaborationUI.companyName,
+                                                                   CollaborationUI.theme,
+                                                                   CollaborationUI.usersDescription)
     else Configuration.Failure
 }

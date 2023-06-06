@@ -34,13 +34,13 @@ class ScreenShareViewModelTest {
 
     private val meMock = mockk<CallParticipant.Me>(relaxed = true)
 
-    private val screenShareStreamMock = mockk<Stream.Mutable>()
+    private val screenShareStreamMock = mockk<Stream.Mutable>(relaxed = true)
 
     private val context = mockk<FragmentActivity>()
 
     @Before
     fun setUp() {
-        viewModel = spyk(ScreenShareViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk(), mockk()) })
+        viewModel = spyk(ScreenShareViewModel { Configuration.Success(phoneBoxMock, mockk(),  mockk(relaxed = true), mockk(relaxed = true), mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { inputs } returns inputsMock

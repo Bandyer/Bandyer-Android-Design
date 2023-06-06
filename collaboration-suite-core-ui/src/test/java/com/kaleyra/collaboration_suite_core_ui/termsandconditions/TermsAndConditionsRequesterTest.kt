@@ -8,8 +8,10 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkConstructor
 import io.mockk.mockkObject
+import io.mockk.mockkStatic
 import io.mockk.spyk
 import io.mockk.unmockkAll
+import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancelChildren
@@ -75,6 +77,10 @@ class TermsAndConditionsRequesterTest {
         val requester = TermsAndConditionsRequester(this@TermsAndConditionsRequesterTest::class.java, {}, {}, this)
         val sessionMock = mockk<Collaboration.Session>()
 
+        mockkStatic(ContextRetainer::context){
+            every { ContextRetainer.context.getString(any()) } returns "request terms"
+        }
+
         mockkConstructor(TermsAndConditionsUI::class)
         every { anyConstructed<TermsAndConditionsUI>().show() } returns Unit
         every { sessionMock.state } returns MutableStateFlow(Session.State.Authenticating.TermsAgreementRequired(1, arrayOf(mockk(relaxed = true))))
@@ -84,5 +90,6 @@ class TermsAndConditionsRequesterTest {
         advanceUntilIdle()
         verify { anyConstructed<TermsAndConditionsUI>().show() }
         coroutineContext.cancelChildren()
+        unmockkStatic(ContextRetainer::context)
     }
 }

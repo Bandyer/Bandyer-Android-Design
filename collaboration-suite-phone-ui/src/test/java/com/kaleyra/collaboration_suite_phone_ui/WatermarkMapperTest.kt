@@ -2,6 +2,8 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.Company
+import com.kaleyra.collaboration_suite_core_ui.CollaborationUI.theme
+import com.kaleyra.collaboration_suite_core_ui.Theme
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper.toWatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
@@ -19,9 +21,7 @@ import org.junit.Test
 
 class WatermarkMapperTest {
 
-    private val companyMock = mockk<Company>()
-
-    private val themeMock = mockk<Company.Theme>()
+    private val themeMock = mockk<Theme>()
 
     private val dayLogo = mockk<Uri>()
 
@@ -37,10 +37,6 @@ class WatermarkMapperTest {
                 every { logo } returns nightLogo
             }
         }
-        with(companyMock) {
-            every { name } returns MutableStateFlow("companyName")
-            every { theme } returns MutableStateFlow(themeMock)
-        }
     }
 
     @After
@@ -50,7 +46,7 @@ class WatermarkMapperTest {
 
     @Test
     fun companyTheme_toWatermarkInfo_watermarkInfo() = runTest {
-        val result = flowOf(companyMock).toWatermarkInfo()
+        val result = flowOf(themeMock).toWatermarkInfo(MutableStateFlow("companyName"))
         val actual = result.first()
         val expected = WatermarkInfo(text = "companyName", logo = Logo(dayLogo, nightLogo))
         assertEquals(expected, actual)

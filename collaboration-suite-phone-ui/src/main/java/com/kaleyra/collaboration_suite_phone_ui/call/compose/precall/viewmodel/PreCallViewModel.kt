@@ -19,8 +19,8 @@ internal class PreCallViewModel(configure: suspend () -> Configuration) : BaseVi
     override fun initialState() = PreCallUiState()
 
     init {
-        company
-            .toWatermarkInfo()
+        theme
+            .toWatermarkInfo(companyName)
             .onEach { watermarkInfo -> _uiState.update { it.copy(watermarkInfo = watermarkInfo) } }
             .launchIn(viewModelScope)
 

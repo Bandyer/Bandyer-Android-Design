@@ -40,7 +40,7 @@ class PhoneChatViewModelTest {
         mockkConstructor(CallUserMessagesProvider::class)
         every { anyConstructed<CallUserMessagesProvider>().recordingUserMessage() } returns MutableStateFlow(RecordingMessage.Started())
         every { anyConstructed<CallUserMessagesProvider>().mutedUserMessage() } returns MutableStateFlow(MutedMessage(null))
-        viewModel = spyk(PhoneChatViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk(), usersDescriptionMock) })
+        viewModel = spyk(PhoneChatViewModel { Configuration.Success(phoneBoxMock, chatBoxMock,  mockk(relaxed = true), mockk(relaxed = true), usersDescriptionMock) })
         every { viewModel.chat } returns MutableStateFlow(chatMock)
         every { viewModel.messages } returns MutableStateFlow(messagesUIMock)
         every { messagesUIMock.other } returns listOf(otherUnreadMessageMock2, otherUnreadMessageMock1, otherReadMessageMock)

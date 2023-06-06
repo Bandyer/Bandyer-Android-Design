@@ -63,7 +63,7 @@ class CallActionsViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = spyk(CallActionsViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk(), mockk()) })
+        viewModel = spyk(CallActionsViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk(relaxed = true), mockk(relaxed = true), mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { inputs } returns inputsMock

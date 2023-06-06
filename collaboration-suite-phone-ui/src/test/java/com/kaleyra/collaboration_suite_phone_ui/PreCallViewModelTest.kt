@@ -7,6 +7,7 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.Theme
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
@@ -19,6 +20,7 @@ import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -70,9 +72,9 @@ class PreCallViewModelTest {
 
     private val recordingMock = mockk<Call.Recording>()
 
-    private val companyMock = mockk<Company>()
+    private val companyNameMock = "Kaleyra"
 
-    private val themeMock = mockk<Company.Theme>()
+    private val themeMock = mockk<Theme>()
 
     private val dayLogo = mockk<Uri>()
 
@@ -80,7 +82,7 @@ class PreCallViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = spyk(PreCallViewModel { Configuration.Success(phoneBoxMock, mockk(), companyMock, mockk()) })
+        viewModel = spyk(PreCallViewModel { Configuration.Success(phoneBoxMock, mockk(), MutableStateFlow(companyNameMock), MutableStateFlow(themeMock), mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { recordingMock.type } returns Call.Recording.Type.OnConnect
         with(callMock) {
@@ -143,10 +145,6 @@ class PreCallViewModelTest {
                 every { logo } returns nightLogo
             }
         }
-        with(companyMock) {
-            every { name } returns MutableStateFlow("companyName")
-            every { theme } returns MutableStateFlow(themeMock)
-        }
     }
 
     @After
@@ -202,7 +200,7 @@ class PreCallViewModelTest {
     fun testCallUiState_watermarkInfoUpdated() = runTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().watermarkInfo
-        assertEquals(WatermarkInfo(text = "companyName", logo = Logo(dayLogo, nightLogo)), actual)
+        assertEquals(WatermarkInfo(text = "Kaleyra", logo = Logo(dayLogo, nightLogo)), actual)
     }
 
     @Test
