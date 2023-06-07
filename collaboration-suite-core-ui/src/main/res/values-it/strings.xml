@@ -64,4 +64,11 @@
     <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_call">Chiamata in entrata</string>
     <string name="kaleyra_user_data_consent_agreement_notification_message">Accetta i termini e le condizioni per procedere</string>
 
+    <!-- RECORDING UTTERANCE -->
+    <string name="kaleyra_utterance_recording_call_may_be_recorded">Questa chiamata potrebbe essere registrata</string>
+    <string name="kaleyra_utterance_recording_call_will_be_recorded">Questa chiamata verrà registrata</string>
+    <string name="kaleyra_utterance_recording_failed">Registrazione fallita. Chiudi la chiamata e riprova</string>
+    <string name="kaleyra_utterance_recording_started">Registrazione avviata</string>
+    <string name="kaleyra_utterance_recording_stopped">Registrazione interrotta</string>
+
 </resources>
