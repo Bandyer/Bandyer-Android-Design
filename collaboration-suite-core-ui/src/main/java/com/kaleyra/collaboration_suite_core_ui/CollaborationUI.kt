@@ -18,7 +18,6 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
-import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
 import com.kaleyra.collaboration_suite_utils.cached
@@ -28,6 +27,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
@@ -61,6 +63,8 @@ object CollaborationUI {
     private var _phoneBox: PhoneBoxUI? by cached { PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz, collaboration!!.configuration.logger) }
     private var _chatBox: ChatBoxUI? by cached { ChatBoxUI(collaboration!!.chatBox, chatActivityClazz, chatNotificationActivityClazz) }
 
+    private val _company by lazy { CompanyUI(collaboration?.company, mainScope) }
+
     /**
      * Users description to be used for the UI
      */
@@ -90,11 +94,11 @@ object CollaborationUI {
             return _chatBox!!
         }
 
-    val company: Company
-        get() {
-            require(collaboration != null) { "configure the CollaborationUI to access the company" }
-            return collaboration!!.company
-        }
+    val companyName: SharedFlow<String> by lazy { _company.name }
+
+    val theme: SharedFlow<Theme> by lazy { _company.theme }
+
+    fun setTheme(theme: Theme) = _company.setTheme(theme)
 
     /**
      * Configure

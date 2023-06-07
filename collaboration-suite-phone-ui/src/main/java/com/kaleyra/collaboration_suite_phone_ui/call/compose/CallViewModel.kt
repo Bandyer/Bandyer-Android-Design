@@ -66,8 +66,8 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
             _uiState.update { it.copy(fullscreenStream = stream) }
         }.launchIn(viewModelScope)
 
-        company
-            .toWatermarkInfo()
+        theme
+            .toWatermarkInfo(companyName)
             .onEach { watermarkInfo -> _uiState.update { it.copy(watermarkInfo = watermarkInfo) } }
             .launchIn(viewModelScope)
 

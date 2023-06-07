@@ -27,7 +27,7 @@ class BaseViewModelTest {
 
     private class UiStateImpl(override val userMessages: UserMessages) : UiState
 
-    private class BaseViewModelImpl(configure: suspend () -> Configuration): BaseViewModel<UiStateImpl>(configure) {
+    private class BaseViewModelImpl(configure: suspend () -> Configuration) : BaseViewModel<UiStateImpl>(configure) {
         override fun initialState() = UiStateImpl(UserMessages())
         fun getCall(): Flow<Call> {
             return super.call
@@ -41,7 +41,7 @@ class BaseViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = BaseViewModelImpl { Configuration.Success(phoneBoxMock, mockk(), mockk(), mockk()) }
+        viewModel = BaseViewModelImpl { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true), mockk()) }
     }
 
     @Test

@@ -7,12 +7,15 @@ import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.Configuration.Success
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.Theme
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
@@ -42,19 +45,19 @@ class CallViewModelTest {
     
     private val callMock = mockk<CallUI>(relaxed = true)
 
-    private val inputsMock = mockk<Inputs>()
+    private val inputsMock = mockk<Inputs>(relaxed = true)
 
     private val uriMock = mockk<Uri>()
 
-    private val viewMock = mockk<VideoStreamView>()
+    private val viewMock = mockk<VideoStreamView>(relaxed = true)
 
     private val videoMock = mockk<Input.Video.Camera>(relaxed = true)
 
     private val myVideoMock = mockk<Input.Video.Camera.Internal>(relaxed = true)
 
-    private val streamMock1 = mockk<Stream>()
+    private val streamMock1 = mockk<Stream>(relaxed = true)
 
-    private val streamMock2 = mockk<Stream>()
+    private val streamMock2 = mockk<Stream>(relaxed = true)
 
     private val streamMock3 = mockk<Stream>()
 
@@ -70,9 +73,9 @@ class CallViewModelTest {
 
     private val participantMock2 = mockk<CallParticipant>()
 
-    private val companyMock = mockk<Company>()
+    private val companyNameMock = "Kaleyra"
 
-    private val themeMock = mockk<Company.Theme>()
+    private val themeMock = mockk<Theme>()
 
     private val dayLogo = mockk<Uri>()
 
@@ -157,11 +160,7 @@ class CallViewModelTest {
                 every { logo } returns nightLogo
             }
         }
-        with(companyMock) {
-            every { name } returns MutableStateFlow("companyName")
-            every { theme } returns MutableStateFlow(themeMock)
-        }
-        viewModel = spyk(CallViewModel { Configuration.Success(phoneBoxMock, mockk(), companyMock, mockk()) })
+        viewModel = spyk(CallViewModel { Success(phoneBoxMock, mockk(), MutableStateFlow(companyNameMock), MutableStateFlow(themeMock), mockk()) })
     }
 
     @After
@@ -247,7 +246,7 @@ class CallViewModelTest {
     fun testCallUiState_watermarkInfoUpdated() = runTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().watermarkInfo
-        assertEquals(WatermarkInfo(text = "companyName", logo = Logo(dayLogo, nightLogo)), actual)
+        assertEquals(WatermarkInfo(text = "Kaleyra", logo = Logo(dayLogo, nightLogo)), actual)
     }
 
     @Test
@@ -270,10 +269,11 @@ class CallViewModelTest {
 
     @Test
     fun testStartMicrophone() = runTest {
-        val audioMock = mockk<Input.Audio>()
-        val myStreamMock = mockk<Stream.Mutable> {
+        val audioMock = mockk<Input.Audio>(relaxed = true)
+        val myStreamMock = mockk<Stream.Mutable>(relaxed = true) {
             every { id } returns CAMERA_STREAM_ID
             every { audio } returns MutableStateFlow(null)
+            every { video } returns MutableStateFlow(null)
         }
         every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
         val contextMock = mockk<FragmentActivity>()
@@ -289,11 +289,12 @@ class CallViewModelTest {
 
     @Test
     fun testStartMicrophone_audioIsAlreadyInitialized_audioIsNotStarted() = runTest {
-        val audioMock = mockk<Input.Audio>()
-        val newAudioMock = mockk<Input.Audio>()
-        val myStreamMock = mockk<Stream.Mutable> {
+        val audioMock = mockk<Input.Audio>(relaxed = true)
+        val newAudioMock = mockk<Input.Audio>(relaxed = true)
+        val myStreamMock = mockk<Stream.Mutable>(relaxed = true) {
             every { id } returns CAMERA_STREAM_ID
             every { audio } returns MutableStateFlow(audioMock)
+            every { video } returns MutableStateFlow(null)
         }
         every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
         val contextMock = mockk<FragmentActivity>()
@@ -309,10 +310,14 @@ class CallViewModelTest {
 
     @Test
     fun testStartCamera() = runTest {
-        val cameraMock = mockk<Input.Video.Camera.Internal>()
-        val myStreamMock = mockk<Stream.Mutable> {
+        val cameraMock = mockk<Input.Video.Camera.Internal>(relaxed = true){
+            every { enabled } returns MutableStateFlow(true)
+            every { view } returns MutableStateFlow(null)
+        }
+        val myStreamMock = mockk<Stream.Mutable>(relaxed = true) {
             every { id } returns CAMERA_STREAM_ID
             every { video } returns MutableStateFlow(null)
+            every { audio } returns MutableStateFlow(null)
         }
         every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
         val contextMock = mockk<FragmentActivity>()
@@ -328,11 +333,18 @@ class CallViewModelTest {
 
     @Test
     fun testStartCamera_videoIsAlreadyInitialized_cameraIsNotStarted() = runTest {
-        val cameraMock = mockk<Input.Video.Camera.Internal>()
-        val newCameraMock = mockk<Input.Video.Camera.Internal>()
-        val myStreamMock = mockk<Stream.Mutable> {
+        val cameraMock = mockk<Input.Video.Camera.Internal>(relaxed = true){
+            every { view } returns MutableStateFlow(null)
+            every { enabled } returns MutableStateFlow(true)
+        }
+        val newCameraMock = mockk<Input.Video.Camera.Internal>(relaxed = true){
+            every { view } returns MutableStateFlow(null)
+            every { enabled } returns MutableStateFlow(true)
+        }
+        val myStreamMock = mockk<Stream.Mutable>(relaxed = true) {
             every { id } returns CAMERA_STREAM_ID
             every { video } returns MutableStateFlow(cameraMock)
+            every { audio } returns MutableStateFlow(null)
         }
         every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
         val contextMock = mockk<FragmentActivity>()

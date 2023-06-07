@@ -42,7 +42,7 @@ class AudioOutputViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = AudioOutputViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk(), mockk())}
+        viewModel = AudioOutputViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true), mockk())}
         mockkObject(CollaborationAudioExtensions)
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.audioOutputDevicesList } returns MutableStateFlow(listOf(AudioOutputDevice.Loudspeaker(), AudioOutputDevice.WiredHeadset(), AudioOutputDevice.Earpiece(), AudioOutputDevice.Bluetooth("bluetoothId1"), AudioOutputDevice.Bluetooth("bluetoothId2"), AudioOutputDevice.None()))
