@@ -342,6 +342,53 @@ internal fun CallScreen(
     onFileShareVisibility: (Boolean) -> Unit,
     onWhiteboardVisibility: (Boolean) -> Unit
 ) {
+    FileShareVisibilityObserver(callScreenState, onFileShareVisibility)
+
+    WhiteboardVisibilityObserver(callScreenState, onWhiteboardVisibility)
+
+    LaunchedEffect(callScreenState) {
+        combine(
+            snapshotFlow { callScreenState.isSheetNotDraggableDown },
+            snapshotFlow { callScreenState.isSheetCollapsed }
+        ) { isSheetNotDraggableDown, isSheetCollapsed ->
+            with(callScreenState.sheetContentState) {
+                if (isSheetNotDraggableDown) collapseLine(color = if (isSheetCollapsed) androidx.compose.ui.graphics.Color.White else null) else expandLine()
+            }
+        }.launchIn(this)
+    }
+
+    LaunchedEffect(callScreenState) {
+        snapshotFlow { callScreenState.statusBarIconsShouldUseSystemMode }
+            .onEach { callScreenState.updateStatusBarIcons(useSystemMode = it) }
+            .launchIn(this)
+    }
+
+    LaunchedEffect(callScreenState) {
+        snapshotFlow { callScreenState.shouldShowCallActionsComponent }
+            .filter { it }
+            .onEach { callScreenState.navigateToCallActionsComponent() }
+            .launchIn(this)
+    }
+
+    if (callScreenState.shouldShowFileShareComponent) {
+        LaunchedEffect(Unit) {
+            callScreenState.navigateToFileShareComponent()
+        }
+    }
+
+    LaunchedEffect(callUiState) {
+        when {
+            callUiState.callState != CallStateUi.Dialing && callUiState.callState != CallStateUi.Connected && callUiState.callState != CallStateUi.Reconnecting -> callScreenState.hideSheet()
+            callScreenState.isSheetHidden -> callScreenState.halfExpandSheet()
+        }
+    }
+
+    when {
+        callScreenState.sheetState.isHidden && callUiState.callState is CallStateUi.Disconnected.Ended -> BackHandler(onBack = onBackPressed)
+        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackHandler(onBack = callScreenState::navigateToCallActionsComponent)
+        !callScreenState.isSheetNotDraggableDown -> BackHandler(onBack = callScreenState::collapseSheet)
+    }
+
     if (isInPipMode) {
         PipScreen(
             stream = callUiState.featuredStreams.value.firstOrNull(),
@@ -359,9 +406,7 @@ internal fun CallScreen(
             onThumbnailStreamClick = onThumbnailStreamClick,
             onFullscreenStreamClick = onFullscreenStreamClick,
             onUserFeedback = onUserFeedback,
-            onFeedbackDismiss = onFeedbackDismiss,
-            onFileShareVisibility = onFileShareVisibility,
-            onWhiteboardVisibility = onWhiteboardVisibility
+            onFeedbackDismiss = onFeedbackDismiss
         )
     }
 }
@@ -443,59 +488,10 @@ internal fun DefaultCallScreen(
     onThumbnailStreamClick: (StreamUi) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
-    onFeedbackDismiss: () -> Unit,
-    onFileShareVisibility: (Boolean) -> Unit,
-    onWhiteboardVisibility: (Boolean) -> Unit
+    onFeedbackDismiss: () -> Unit
 ) {
     val configuration = LocalConfiguration.current
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
-
-    FileShareVisibilityObserver(callScreenState, onFileShareVisibility)
-
-    WhiteboardVisibilityObserver(callScreenState, onWhiteboardVisibility)
-
-    LaunchedEffect(callScreenState) {
-        combine(
-            snapshotFlow { callScreenState.isSheetNotDraggableDown },
-            snapshotFlow { callScreenState.isSheetCollapsed }
-        ) { isSheetNotDraggableDown, isSheetCollapsed ->
-            with(callScreenState.sheetContentState) {
-                if (isSheetNotDraggableDown) collapseLine(color = if (isSheetCollapsed) androidx.compose.ui.graphics.Color.White else null) else expandLine()
-            }
-        }.launchIn(this)
-    }
-
-    LaunchedEffect(callScreenState) {
-        snapshotFlow { callScreenState.statusBarIconsShouldUseSystemMode }
-            .onEach { callScreenState.updateStatusBarIcons(useSystemMode = it) }
-            .launchIn(this)
-    }
-
-    LaunchedEffect(callScreenState) {
-        snapshotFlow { callScreenState.shouldShowCallActionsComponent }
-            .filter { it }
-            .onEach { callScreenState.navigateToCallActionsComponent() }
-            .launchIn(this)
-    }
-
-    if (callScreenState.shouldShowFileShareComponent) {
-        LaunchedEffect(Unit) {
-            callScreenState.navigateToFileShareComponent()
-        }
-    }
-
-    LaunchedEffect(callUiState) {
-        when {
-            callUiState.callState != CallStateUi.Dialing && callUiState.callState != CallStateUi.Connected && callUiState.callState != CallStateUi.Reconnecting -> callScreenState.hideSheet()
-            callScreenState.isSheetHidden -> callScreenState.halfExpandSheet()
-        }
-    }
-
-    when {
-        callScreenState.sheetState.isHidden && callUiState.callState is CallStateUi.Disconnected.Ended -> BackHandler(onBack = onBackPressed)
-        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackHandler(onBack = callScreenState::navigateToCallActionsComponent)
-        !callScreenState.isSheetNotDraggableDown -> BackHandler(onBack = callScreenState::collapseSheet)
-    }
 
     BoxWithConstraints(modifier = Modifier.horizontalSystemBarsPadding()) {
 
