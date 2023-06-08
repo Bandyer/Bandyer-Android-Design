@@ -33,50 +33,26 @@ interface WakeLockProximityDelegate {
 internal class WakeLockProximityDelegateImpl(
     override val application: Application,
     override val call: CallUI,
-) : WakeLockProximityDelegate, Application.ActivityLifecycleCallbacks  {
+) : WakeLockProximityDelegate  {
 
     private var proximityWakeLock: PowerManager.WakeLock? = null
-
-    private var proximityCallActivity: ProximityCallActivity? = null
 
     override var isScreenTurnedOff: Boolean = false
         private set
 
-    init {
+    override fun bind() {
         val powerManager = application.getSystemService(Context.POWER_SERVICE) as PowerManager
         proximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, javaClass.simpleName)
         proximityWakeLock!!.setReferenceCounted(false)
     }
 
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        if (activity !is ProximityCallActivity) return
-        proximityCallActivity = activity
-    }
-
-    override fun onActivityStarted(activity: Activity) = Unit
-
-    override fun onActivityResumed(activity: Activity) = Unit
-
-    override fun onActivityPaused(activity: Activity) = Unit
-
-    override fun onActivityStopped(activity: Activity) = Unit
-
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
-
-    override fun onActivityDestroyed(activity: Activity) {
-        proximityCallActivity = null
-    }
-
-    override fun bind() {
-        application.registerActivityLifecycleCallbacks(this)
-    }
-
     override fun destroy() {
-        application.unregisterActivityLifecycleCallbacks(this)
+        proximityWakeLock?.release()
+        proximityWakeLock = null
+        isScreenTurnedOff = false
     }
 
     override fun tryTurnScreenOff() {
-        proximityCallActivity?.disableWindowTouch()
         val shouldAcquireProximityLock = shouldAcquireProximityLock()
         if (shouldAcquireProximityLock) {
             proximityWakeLock?.acquire(WakeLockTimeout)
@@ -85,7 +61,6 @@ internal class WakeLockProximityDelegateImpl(
     }
 
     override fun restoreScreenOn() {
-        proximityCallActivity?.enableWindowTouch()
         proximityWakeLock?.release()
         isScreenTurnedOff = false
     }
@@ -94,7 +69,6 @@ internal class WakeLockProximityDelegateImpl(
         val isDeviceInLandscape = application.isOrientationLandscape()
         return when {
             call.disableProximitySensor -> false
-            proximityCallActivity == null || proximityCallActivity?.disableProximity == true -> false
             isDeviceInLandscape && call.isNotConnected() && call.isMyInternalCameraEnabled() -> false
             isDeviceInLandscape && call.hasUsersWithCameraEnabled() -> false
             call.isMyScreenShareEnabled() -> false

@@ -1,10 +1,8 @@
 package com.kaleyra.collaboration_suite_core_ui
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.PowerManager
-import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityCallActivity
 import com.kaleyra.collaboration_suite_core_ui.proximity.WakeLockProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.WakeLockProximityDelegateImpl
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions
@@ -18,7 +16,6 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtension
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
-import io.mockk.spyk
 import io.mockk.unmockkAll
 import io.mockk.verify
 import org.junit.After
@@ -28,12 +25,6 @@ import org.junit.Test
 internal class WakeLockProximityDelegateTest {
 
     private val applicationMock = mockk<Application>(relaxed = true)
-
-    private val proximityCallActivityMock = spyk(object : Activity(), ProximityCallActivity {
-        override val disableProximity: Boolean = false
-        override fun disableWindowTouch() = Unit
-        override fun enableWindowTouch() = Unit
-    })
 
     private val powerManager = mockk<PowerManager>()
 
@@ -60,9 +51,7 @@ internal class WakeLockProximityDelegateTest {
         }
         every { applicationMock.getSystemService(Context.POWER_SERVICE) } returns powerManager
         every { powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, any()) } returns proximityWakeLock
-        wakeLockProximityDelegate = WakeLockProximityDelegateImpl(applicationMock, callMock).apply {
-            onActivityCreated(proximityCallActivityMock, null)
-        }
+        wakeLockProximityDelegate = WakeLockProximityDelegateImpl(applicationMock, callMock)
     }
 
     @After
@@ -72,46 +61,32 @@ internal class WakeLockProximityDelegateTest {
 
     @Test
     fun `set proximity wake lock to not reference counted`() {
-        verify(exactly = 1) { proximityWakeLock.setReferenceCounted(false) }
+
     }
 
     @Test
     fun testBind() {
         wakeLockProximityDelegate!!.bind()
-        verify(exactly = 1) {
-            applicationMock.registerActivityLifecycleCallbacks(withArg {
-                assert(it is WakeLockProximityDelegate)
-            })
-        }
+        verify(exactly = 1) { proximityWakeLock.setReferenceCounted(false) }
     }
 
     @Test
     fun testDestroy() {
+        wakeLockProximityDelegate!!.bind()
         wakeLockProximityDelegate!!.destroy()
-        verify(exactly = 1) {
-            applicationMock.unregisterActivityLifecycleCallbacks(withArg {
-                assert(it is WakeLockProximityDelegate)
-            })
-        }
+        verify(exactly = 1) { proximityWakeLock.release() }
     }
 
     @Test
     fun testTryScreenOff() {
+        wakeLockProximityDelegate!!.bind()
         wakeLockProximityDelegate!!.tryTurnScreenOff()
-        verify(exactly = 1) { proximityCallActivityMock.disableWindowTouch() }
         verify(exactly = 1) { proximityWakeLock.acquire(any()) }
     }
 
     @Test
     fun `call disable proximity sensor flag is true, screen is not turned off`() {
         every { callMock.disableProximitySensor } returns true
-        wakeLockProximityDelegate!!.tryTurnScreenOff()
-        verify(exactly = 0) { proximityWakeLock.acquire(any()) }
-    }
-
-    @Test
-    fun `proximity call disable proximity flag is true, screen is not turned off`() {
-        every { proximityCallActivityMock.disableProximity } returns true
         wakeLockProximityDelegate!!.tryTurnScreenOff()
         verify(exactly = 0) { proximityWakeLock.acquire(any()) }
     }
@@ -149,8 +124,8 @@ internal class WakeLockProximityDelegateTest {
 
     @Test
     fun testRestoreScreenOn() {
+        wakeLockProximityDelegate!!.bind()
         wakeLockProximityDelegate!!.restoreScreenOn()
-        verify(exactly = 1) { proximityCallActivityMock.enableWindowTouch() }
         verify(exactly = 1) { proximityWakeLock.release() }
     }
 }
