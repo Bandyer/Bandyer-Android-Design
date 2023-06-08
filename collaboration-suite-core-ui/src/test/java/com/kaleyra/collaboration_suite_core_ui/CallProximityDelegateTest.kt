@@ -4,9 +4,9 @@ import androidx.lifecycle.LifecycleService
 import com.kaleyra.collaboration_suite_core_ui.proximity.AudioProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.CallProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.CameraProximityDelegate
+import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityCallActivity
 import com.kaleyra.collaboration_suite_core_ui.proximity.WakeLockProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions
-import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isIncoming
 import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
 import io.mockk.every
 import io.mockk.mockk
@@ -30,6 +30,8 @@ internal class CallProximityDelegateTest {
 
     private val audioProximityDelegateMock = mockk<AudioProximityDelegate>(relaxed = true)
 
+    private val proximityCallActivityMock = mockk<ProximityCallActivity>(relaxed = true)
+
     private val callMock = mockk<CallUI>()
 
     @Before
@@ -44,6 +46,7 @@ internal class CallProximityDelegateTest {
             CallProximityDelegate(
                 lifecycleContext = serviceMock,
                 call = callMock,
+                proximityCallActivity = proximityCallActivityMock,
                 wakeLockProximityDelegate = wakeLockProximityDelegateMock,
                 cameraProximityDelegate = cameraProximityDelegateMock,
                 audioProximityDelegate = audioProximityDelegateMock,
@@ -67,21 +70,11 @@ internal class CallProximityDelegateTest {
     }
 
     @Test
-    fun `incoming call, nothing is performed on proximity`() {
-        every { callMock.isIncoming() } returns true
-        proximityDelegate?.onProximitySensorChanged(true)
-        verify(exactly = 0) { wakeLockProximityDelegateMock.tryTurnScreenOff() }
-        verify(exactly = 0) { cameraProximityDelegateMock.tryDisableCamera() }
-        verify(exactly = 0) { audioProximityDelegateMock.trySwitchToEarpiece() }
-        verify(exactly = 0) { wakeLockProximityDelegateMock.restoreScreenOn() }
-        verify(exactly = 0) { cameraProximityDelegateMock.restoreCamera() }
-        verify(exactly = 0) { audioProximityDelegateMock.tryRestoreToLoudspeaker() }
-    }
-
-    @Test
     fun `test proximity on when the screen is not turned off`() {
+        every { proximityCallActivityMock.disableProximity } returns false
         every { wakeLockProximityDelegateMock.isScreenTurnedOff } returns false
         proximityDelegate?.onProximitySensorChanged(true)
+        verify(exactly = 1) { proximityCallActivityMock.disableWindowTouch() }
         verify(exactly = 1) { wakeLockProximityDelegateMock.tryTurnScreenOff() }
         verify(exactly = 1) { cameraProximityDelegateMock.tryDisableCamera() }
         verify(exactly = 1) { audioProximityDelegateMock.trySwitchToEarpiece() }
@@ -89,16 +82,29 @@ internal class CallProximityDelegateTest {
 
     @Test
     fun `test proximity on when the screen is turned off, the camera is forced to be disabled`() {
+        every { proximityCallActivityMock.disableProximity } returns false
         every { wakeLockProximityDelegateMock.isScreenTurnedOff } returns true
         proximityDelegate?.onProximitySensorChanged(true)
+        verify(exactly = 1) { proximityCallActivityMock.disableWindowTouch() }
         verify(exactly = 1) { wakeLockProximityDelegateMock.tryTurnScreenOff() }
         verify(exactly = 1) { cameraProximityDelegateMock.tryDisableCamera(true) }
         verify(exactly = 1) { audioProximityDelegateMock.trySwitchToEarpiece() }
     }
 
     @Test
+    fun `test call proximity activity disable proximity true`() {
+        every { proximityCallActivityMock.disableProximity } returns true
+        proximityDelegate?.onProximitySensorChanged(true)
+        verify(exactly = 1) { proximityCallActivityMock.disableWindowTouch() }
+        verify(exactly = 0) { wakeLockProximityDelegateMock.tryTurnScreenOff() }
+        verify(exactly = 0) { cameraProximityDelegateMock.tryDisableCamera() }
+        verify(exactly = 1) { audioProximityDelegateMock.trySwitchToEarpiece() }
+    }
+
+    @Test
     fun `test proximity off`() {
         proximityDelegate?.onProximitySensorChanged(false)
+        verify(exactly = 1) { proximityCallActivityMock.enableWindowTouch() }
         verify(exactly = 1) { wakeLockProximityDelegateMock.restoreScreenOn() }
         verify(exactly = 1) { cameraProximityDelegateMock.restoreCamera() }
         verify(exactly = 1) { audioProximityDelegateMock.tryRestoreToLoudspeaker() }
