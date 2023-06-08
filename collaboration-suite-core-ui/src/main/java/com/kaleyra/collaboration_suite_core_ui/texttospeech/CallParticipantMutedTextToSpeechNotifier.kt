@@ -2,18 +2,25 @@ package com.kaleyra.collaboration_suite_core_ui.texttospeech
 
 import android.content.Context
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 
-internal class CallRecordingTextToSpeechNotifier(
+internal class CallParticipantMutedTextToSpeechNotifier(
     override val call: CallUI,
     override val proximitySensor: ProximitySensor
 ) : TextToSpeechNotifier {
@@ -27,22 +34,10 @@ internal class CallRecordingTextToSpeechNotifier(
         dispose()
 
         val textToSpeech = CallTextToSpeech()
-        val recording = call.extras.recording
-        if (recording is Call.Recording.OnDemand) {
-            val text = context.getString(R.string.kaleyra_utterance_recording_call_may_be_recorded)
-            if (!shouldNotify()) return
-            textToSpeech.speak(text)
-        }
-
-        currentJob = recording.state
-            .dropWhile { it is Call.Recording.State.Stopped }
-            .onEach { state ->
+        currentJob = call.toMuteEvents()
+            .onEach {
                 if (!shouldNotify()) return@onEach
-                val text = when (state) {
-                    is Call.Recording.State.Started -> context.getString(R.string.kaleyra_utterance_recording_started)
-                    is Call.Recording.State.Stopped.Error -> context.getString(R.string.kaleyra_utterance_recording_failed)
-                    is Call.Recording.State.Stopped -> context.getString(R.string.kaleyra_utterance_recording_stopped)
-                }
+                val text = context.getString(R.string.kaleyra_call_participant_utterance_muted_by_admin)
                 textToSpeech.speak(text)
             }
             .onCompletion { textToSpeech.dispose(instantly = false) }
@@ -52,6 +47,22 @@ internal class CallRecordingTextToSpeechNotifier(
     override fun dispose() {
         currentJob?.cancel()
         currentJob = null
+    }
+
+    private fun Call.toMuteEvents(): Flow<Input.Audio.Event.Request.Mute> {
+        return participants
+            .map { it.me }
+            .flatMapLatest { it.streams }
+            .map { streams ->
+                streams.firstOrNull { stream ->
+                    stream.audio.firstOrNull { it != null } != null
+                }
+            }
+            .filterNotNull()
+            .flatMapLatest { it.audio }
+            .filterNotNull()
+            .flatMapLatest { it.events }
+            .filterIsInstance()
     }
 
 }

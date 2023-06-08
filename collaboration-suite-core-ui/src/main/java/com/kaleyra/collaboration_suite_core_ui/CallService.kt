@@ -31,6 +31,9 @@ import com.kaleyra.collaboration_suite_core_ui.call.StreamsOpeningDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsVideoViewDelegate
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.CallProximityDelegate
+import com.kaleyra.collaboration_suite_core_ui.texttospeech.CallParticipantMutedTextToSpeechNotifier
+import com.kaleyra.collaboration_suite_core_ui.texttospeech.CallRecordingTextToSpeechNotifier
+import com.kaleyra.collaboration_suite_core_ui.texttospeech.TextToSpeechNotifier
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import kotlinx.coroutines.CoroutineName
@@ -62,6 +65,10 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
     private var proximityDelegate: CallProximityDelegate<LifecycleService>? = null
 
+    private var recordingTextToSpeechNotifier: TextToSpeechNotifier? = null
+
+    private var mutedTextToSpeechNotifier: TextToSpeechNotifier? = null
+
     /**
      * @suppress
      */
@@ -83,7 +90,12 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
     override fun onDestroy() {
         super.onDestroy()
         clearNotification()
-        clearProximity()
+        recordingTextToSpeechNotifier?.dispose()
+        mutedTextToSpeechNotifier?.dispose()
+        proximityDelegate?.destroy()
+        recordingTextToSpeechNotifier = null
+        mutedTextToSpeechNotifier = null
+        proximityDelegate = null
     }
 
     /**
@@ -113,7 +125,10 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
             if (!DeviceUtils.isSmartGlass) {
                 syncFileShareNotification(this, call, callActivityClazz, callScope)
-                bindProximity(call)
+                proximityDelegate = CallProximityDelegate<LifecycleService>(lifecycleContext = this, call = call).apply { bind() }
+                val proximitySensor = proximityDelegate!!.sensor ?: return@onCallReady
+                recordingTextToSpeechNotifier = CallRecordingTextToSpeechNotifier(call, proximitySensor).apply { start(lifecycleScope) }
+                mutedTextToSpeechNotifier = CallParticipantMutedTextToSpeechNotifier(call, proximitySensor).apply { start(lifecycleScope) }
             }
         }
     }
@@ -154,15 +169,5 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                 }
             }
             .launchIn(lifecycleScope)
-    }
-
-    private fun bindProximity(call: CallUI) {
-        proximityDelegate = CallProximityDelegate(lifecycleContext = this, call = call)
-        proximityDelegate!!.bind()
-    }
-
-    private fun clearProximity() {
-        proximityDelegate?.destroy()
-        proximityDelegate = null
     }
 }
