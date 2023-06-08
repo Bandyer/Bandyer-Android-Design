@@ -1,6 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import com.bandyer.android_audiosession.model.AudioOutputDevice
+import com.kaleyra.collaboration_suite.phonebox.CallParticipant
+import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
@@ -40,12 +43,31 @@ class AudioOutputViewModelTest {
 
     private val callMock = mockk<CallUI>(relaxed = true)
 
+    private val audioMock1 = mockk<Input.Audio>(relaxed = true)
+
+    private val audioMock2 = mockk<Input.Audio>(relaxed = true)
+
+    private val streamMock1 = mockk<Stream.Mutable>()
+
+    private val streamMock2 = mockk<Stream.Mutable>()
+
+    private val participantMock1 = mockk<CallParticipant>()
+
+    private val participantMock2 = mockk<CallParticipant>()
+
     @Before
     fun setUp() {
         viewModel = AudioOutputViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true), mockk())}
         mockkObject(CollaborationAudioExtensions)
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.audioOutputDevicesList } returns MutableStateFlow(listOf(AudioOutputDevice.Loudspeaker(), AudioOutputDevice.WiredHeadset(), AudioOutputDevice.Earpiece(), AudioOutputDevice.Bluetooth("bluetoothId1"), AudioOutputDevice.Bluetooth("bluetoothId2"), AudioOutputDevice.None()))
+        every { callMock.participants } returns MutableStateFlow(mockk {
+            every { others } returns listOf(participantMock1, participantMock2)
+        })
+        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1))
+        every { participantMock2.streams } returns MutableStateFlow(listOf(streamMock2))
+        every { streamMock1.audio } returns MutableStateFlow(audioMock1)
+        every { streamMock2.audio } returns MutableStateFlow(audioMock2)
     }
 
     @After
@@ -107,6 +129,9 @@ class AudioOutputViewModelTest {
         advanceUntilIdle()
         viewModel.setDevice(AudioDeviceUi.Muted)
         verify(exactly = 1) { callMock.setAudioOutputDevice(AudioOutputDevice.None()) }
+        verify(exactly = 1) { callMock.setAudioOutputDevice(AudioOutputDevice.None()) }
+        verify(exactly = 1) { audioMock1.tryDisable() }
+        verify(exactly = 1) { audioMock2.tryDisable() }
     }
 
     @Test
@@ -116,5 +141,13 @@ class AudioOutputViewModelTest {
         verify(exactly = 1) { callMock.setAudioOutputDevice(AudioOutputDevice.Bluetooth("bluetoothId2")) }
     }
 
+    @Test
+    fun `restore participants audio if previous device was none`() = runTest {
+        advanceUntilIdle()
+        viewModel.setDevice(AudioDeviceUi.Muted)
+        viewModel.setDevice(AudioDeviceUi.LoudSpeaker)
+        verify(exactly = 1) { audioMock1.tryEnable() }
+        verify(exactly = 1) { audioMock2.tryEnable() }
+    }
 
 }

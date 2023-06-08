@@ -44,8 +44,26 @@ internal class AudioOutputViewModel(configure: suspend () -> Configuration) : Ba
             AudioDeviceUi.Muted -> AudioOutputDevice.None()
             AudioDeviceUi.WiredHeadset -> AudioOutputDevice.WiredHeadset()
         }
+        when {
+            shouldRestoreParticipantsAudio(device) -> disableParticipantsAudio(disable = false)
+            shouldMuteParticipantsAudio(device) -> disableParticipantsAudio(disable = true)
+        }
         call.setAudioOutputDevice(outputDevice)
         _uiState.update { it.copy(playingDeviceId = device.id) }
+    }
+
+    private fun shouldRestoreParticipantsAudio(selectedDevice: AudioDeviceUi) = uiState.value.playingDeviceId == AudioDeviceUi.Muted.id && selectedDevice.id != AudioDeviceUi.Muted.id
+
+    private fun shouldMuteParticipantsAudio(selectedDevice: AudioDeviceUi) = uiState.value.playingDeviceId != AudioDeviceUi.Muted.id && selectedDevice.id == AudioDeviceUi.Muted.id
+
+    private fun disableParticipantsAudio(disable: Boolean) {
+        val call = call.getValue() ?: return
+        val participants = call.participants
+        val others = participants.value.others
+        val streams = others.map { it.streams.value }.flatten()
+        val audio = streams.map { it.audio.value }
+        if (disable) audio.forEach { it?.tryDisable() }
+        else audio.forEach { it?.tryEnable() }
     }
 
     companion object {
