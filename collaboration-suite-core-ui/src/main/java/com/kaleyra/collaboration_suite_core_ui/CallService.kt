@@ -135,7 +135,8 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
             val callScope = MainScope() + CoroutineName("CallScope(callId = ${call.id})")
 
             addCameraStream(call)
-            updateCameraStreamOnInputs(call, callScope)
+            handleCameraStreamAudio(call, callScope)
+            handleCameraStreamVideo(call, callScope)
             openParticipantsStreams(call.participants, callScope)
             setStreamsVideoView(this@CallService, call.participants, callScope)
             syncCallNotification(
