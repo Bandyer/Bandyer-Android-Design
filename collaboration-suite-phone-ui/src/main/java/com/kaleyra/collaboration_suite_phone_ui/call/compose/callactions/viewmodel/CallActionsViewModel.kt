@@ -7,16 +7,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.phonebox.Inputs
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.utils.FlowUtils.combine
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startCamera
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startMicrophone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.AudioOutputMapper.toCurrentAudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallActionsMapper.toCallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasUsbCamera
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isSharingScreen
@@ -50,6 +50,10 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         .isSharingScreen()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
+    private val hasUsbCamera = call
+        .hasUsbCamera()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
     private val currentAudioOutput = call
         .toCurrentAudioDeviceUi()
         .filterNotNull()
@@ -73,8 +77,9 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
             isMyMicEnabled,
             isSharingScreen,
             currentAudioOutput,
-            isVirtualBackgroundEnabled
-        ) { callActions, isCallConnected, isMyCameraEnabled, isMyMicEnabled, isSharingScreen, currentAudioOutput, isVirtualBackgroundEnabled ->
+            isVirtualBackgroundEnabled,
+            hasUsbCamera
+        ) { callActions, isCallConnected, isMyCameraEnabled, isMyMicEnabled, isSharingScreen, currentAudioOutput, isVirtualBackgroundEnabled, hasUsbCamera ->
             val newActions = callActions
                 .updateActionIfExists(CallAction.Microphone(isToggled = !isMyMicEnabled))
                 .updateActionIfExists(CallAction.Camera(isToggled = !isMyCameraEnabled))
@@ -83,6 +88,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
                 .updateActionIfExists(CallAction.ScreenShare(isToggled = isSharingScreen, isEnabled = isCallConnected))
                 .updateActionIfExists(CallAction.VirtualBackground(isToggled = isVirtualBackgroundEnabled))
                 .updateActionIfExists(CallAction.Whiteboard(isEnabled = isCallConnected))
+                .updateActionIfExists(CallAction.SwitchCamera(isEnabled = !hasUsbCamera))
             _uiState.update { it.copy(actionList = ImmutableList(newActions)) }
         }.launchIn(viewModelScope)
     }
@@ -105,7 +111,9 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
     }
 
     fun toggleCamera() {
-        val input = availableInputs?.firstOrNull { it is Input.Video.Camera.Internal }
+        val input = availableInputs?.let { inputs ->
+            inputs.firstOrNull { it is Input.Video.Camera.Usb } ?: inputs.firstOrNull { it is Input.Video.Camera.Internal }
+        }
         if (!isMyCameraEnabled.value) input?.tryEnable() else input?.tryDisable()
     }
 
