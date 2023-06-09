@@ -6,6 +6,7 @@ import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasAudio
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasBeenMutedBy
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasUsbCamera
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
@@ -160,5 +161,21 @@ class InputMapperTest {
         val actual = result.first()
         val expected = "username"
         Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun usbCameraNotInAvailableInputs_hasUsbCamera_false() = runTest {
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Internal>()))
+        val call = MutableStateFlow(callMock)
+        val actual = call.hasUsbCamera().first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun usbCameraInAvailableInputs_hasUsbCamera_true() = runTest {
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Usb>()))
+        val call = MutableStateFlow(callMock)
+        val actual = call.hasUsbCamera().first()
+        Assert.assertEquals(false, actual)
     }
 }

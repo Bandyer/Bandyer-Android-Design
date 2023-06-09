@@ -43,6 +43,11 @@ internal object InputMapper {
             .flatMapLatest { it.streams }
             .map { streams -> streams.any { stream -> stream.id == SCREEN_SHARE_STREAM_ID } }
 
+    fun Flow<Call>.hasUsbCamera(): Flow<Boolean> {
+        return this.flatMapLatest { it.inputs.availableInputs }
+            .map { inputs -> inputs.firstOrNull { it is Input.Video.Camera.Usb } != null }
+    }
+
     private fun Flow<Call>.toMe(): Flow<CallParticipant.Me> =
         flatMapLatest { it.participants }.map { it.me }
 
