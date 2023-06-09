@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startCamera
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startMicrophone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.toMyCameraStream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.isConnected
@@ -131,7 +129,7 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
         viewModelScope.launch {
             val call = call.getValue()
             if (call?.toMyCameraStream()?.audio?.value != null) return@launch
-            call?.startMicrophone(context)
+            call?.inputs?.request(context, Inputs.Type.Microphone)
         }
     }
 
@@ -139,7 +137,8 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
         viewModelScope.launch {
             val call = call.getValue()
             if (call?.toMyCameraStream()?.video?.value != null) return@launch
-            call?.startCamera(context)
+            call?.inputs?.request(context, Inputs.Type.Camera.Internal)
+            call?.inputs?.request(context, Inputs.Type.Camera.External)
         }
     }
 

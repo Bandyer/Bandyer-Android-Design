@@ -89,13 +89,13 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
 
     fun startMicrophone(context: FragmentActivity) {
         viewModelScope.launch {
-            call.getValue()?.startMicrophone(context)
+            call.getValue()?.inputs?.request(context, Inputs.Type.Microphone)
         }
     }
 
     fun startCamera(context: FragmentActivity) {
         viewModelScope.launch {
-            call.getValue()?.startCamera(context)
+            call.getValue()?.inputs?.request(context, Inputs.Type.Camera.Internal)
         }
     }
 
