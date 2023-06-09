@@ -34,7 +34,7 @@ internal fun Stream(
             AndroidView(
                 factory = {
                     streamView.value.also {
-                        val parentView = streamView.value.parent as? ViewGroup
+                        val parentView = it.parent as? ViewGroup
                         parentView?.removeView(it)
                     }
                 },
