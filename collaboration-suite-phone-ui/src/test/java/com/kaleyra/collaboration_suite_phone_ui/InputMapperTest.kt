@@ -176,6 +176,6 @@ class InputMapperTest {
         every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Usb>()))
         val call = MutableStateFlow(callMock)
         val actual = call.hasUsbCamera().first()
-        Assert.assertEquals(false, actual)
+        Assert.assertEquals(true, actual)
     }
 }
