@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_core_ui.utils
 import kotlinx.coroutines.flow.Flow
 
 object FlowUtils {
-    inline fun <T1, T2, T3, T4, T5, T6, T7, R> combine(
+    inline fun <T1, T2, T3, T4, T5, T6, T7, T8, R> combine(
         flow: Flow<T1>,
         flow2: Flow<T2>,
         flow3: Flow<T3>,
@@ -11,7 +11,8 @@ object FlowUtils {
         flow5: Flow<T5>,
         flow6: Flow<T6>,
         flow7: Flow<T7>,
-        crossinline transform: suspend (T1, T2, T3, T4, T5, T6, T7) -> R
+        flow8: Flow<T8>,
+        crossinline transform: suspend (T1, T2, T3, T4, T5, T6, T7, T8) -> R
     ): Flow<R> {
         return kotlinx.coroutines.flow.combine(
             flow,
@@ -20,7 +21,8 @@ object FlowUtils {
             flow4,
             flow5,
             flow6,
-            flow7
+            flow7,
+            flow8
         ) { args: Array<*> ->
             @Suppress("UNCHECKED_CAST")
             transform(
@@ -30,7 +32,8 @@ object FlowUtils {
                 args[3] as T4,
                 args[4] as T5,
                 args[5] as T6,
-                args[6] as T7
+                args[6] as T7,
+                args[7] as T8
             )
         }
     }
