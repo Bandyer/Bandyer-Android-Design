@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.toMyCameraStream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.isConnected
@@ -17,11 +18,12 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantM
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper.toWatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallUiState>(configure) {
+internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallUiState>(configure) {
 
     override fun initialState() = CallUiState()
 
@@ -33,7 +35,7 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
     private val maxNumberOfFeaturedStreams = MutableStateFlow(DEFAULT_FEATURED_STREAMS_COUNT)
 
     private val streamsHandler = StreamsHandler(
-        streams = streams,
+        streams = streams.map { streams -> streams.filterNot { it.id == ScreenShareViewModel.SCREEN_SHARE_STREAM_ID } },
         nOfMaxFeatured = maxNumberOfFeaturedStreams,
         coroutineScope = viewModelScope
     )
@@ -47,10 +49,12 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
     init {
         streamsHandler.streamsArrangement
             .onEach { (featuredStreams, thumbnailsStreams) ->
+                val feat = featuredStreams
+                val thumb = thumbnailsStreams.filterNot { it.id == ScreenShareViewModel.SCREEN_SHARE_STREAM_ID }
                 _uiState.update {
                     it.copy(
-                        featuredStreams = ImmutableList(featuredStreams),
-                        thumbnailStreams = ImmutableList(thumbnailsStreams)
+                        featuredStreams = ImmutableList(feat),
+                        thumbnailStreams = ImmutableList(thumb)
                     )
                 }
             }

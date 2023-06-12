@@ -18,6 +18,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
@@ -196,6 +197,22 @@ class CallViewModelTest {
         val new = viewModel.uiState.first().thumbnailStreams
         val thumbnailStreamsIds = new.value.map { it.id }
         assertEquals(listOf(streamMock3.id, myStreamMock.id), thumbnailStreamsIds)
+    }
+
+    @Test
+    fun testCallUiState_streamsDoNotContainsMyScreenShare() = runTest {
+        with(callParticipantsMock) {
+            every { others } returns listOf()
+            every { me } returns participantMeMock
+            every { list } returns others + me
+        }
+        every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
+        every { myStreamMock.id } returns ScreenShareViewModel.SCREEN_SHARE_STREAM_ID
+        advanceUntilIdle()
+        val featured = viewModel.uiState.first().featuredStreams
+        val thumbnails = viewModel.uiState.first().thumbnailStreams
+        val streams = featured.value + thumbnails.value
+        assertEquals(listOf<String>(), streams.map { it.id })
     }
 
     @Test
