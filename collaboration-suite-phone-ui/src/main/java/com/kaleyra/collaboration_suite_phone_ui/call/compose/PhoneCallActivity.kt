@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
+import android.app.PictureInPictureUiState
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -63,7 +64,12 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
                         if (it) shouldShowFileShare.value = false
                     },
                     onWhiteboardVisibility = { isWhiteboardDisplayed = it },
-                    onPipAspectRatio = { pictureInPictureAspectRatio = it },
+                    onPipAspectRatio = { aspectRatio ->
+                        pictureInPictureAspectRatio = aspectRatio
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            updatePipParams()?.let { setPictureInPictureParams(it) }
+                        }
+                    },
                     onActivityFinish = { isActivityFinishing = true },
                 )
             }
