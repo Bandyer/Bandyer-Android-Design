@@ -48,7 +48,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeDevice
@@ -308,6 +307,7 @@ internal fun CallScreen(
         callScreenState = callScreenState,
         permissionsState = permissionsState,
         onThumbnailStreamClick = viewModel::swapThumbnail,
+        onThumbnailStreamDoubleClick = viewModel::fullscreenStream,
         onFullscreenStreamClick = viewModel::fullscreenStream,
         onUserFeedback = viewModel::sendUserFeedback,
         onConfigurationChange = viewModel::updateStreamsArrangement,
@@ -338,7 +338,8 @@ internal fun CallScreen(
     onBackPressed: () -> Unit,
     isInPipMode: Boolean = false,
     onConfigurationChange: (Boolean) -> Unit,
-    onThumbnailStreamClick: (StreamUi) -> Unit,
+    onThumbnailStreamClick: (String) -> Unit,
+    onThumbnailStreamDoubleClick: (String) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
     onFeedbackDismiss: () -> Unit,
@@ -355,7 +356,7 @@ internal fun CallScreen(
             snapshotFlow { callScreenState.isSheetCollapsed }
         ) { isSheetNotDraggableDown, isSheetCollapsed ->
             with(callScreenState.sheetContentState) {
-                if (isSheetNotDraggableDown) collapseLine(color = if (isSheetCollapsed) androidx.compose.ui.graphics.Color.White else null) else expandLine()
+                if (isSheetNotDraggableDown) collapseLine(color = if (isSheetCollapsed) Color.White else null) else expandLine()
             }
         }.launchIn(this)
     }
@@ -407,6 +408,7 @@ internal fun CallScreen(
             onBackPressed = onBackPressed,
             onConfigurationChange = onConfigurationChange,
             onThumbnailStreamClick = onThumbnailStreamClick,
+            onThumbnailStreamDoubleClick = onThumbnailStreamDoubleClick,
             onFullscreenStreamClick = onFullscreenStreamClick,
             onUserFeedback = onUserFeedback,
             onFeedbackDismiss = onFeedbackDismiss
@@ -488,7 +490,8 @@ internal fun DefaultCallScreen(
     permissionsState: MultiplePermissionsState?,
     onBackPressed: () -> Unit,
     onConfigurationChange: (Boolean) -> Unit,
-    onThumbnailStreamClick: (StreamUi) -> Unit,
+    onThumbnailStreamClick: (String) -> Unit,
+    onThumbnailStreamDoubleClick: (String) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
     onFeedbackDismiss: () -> Unit
@@ -511,7 +514,7 @@ internal fun DefaultCallScreen(
             sheetHalfExpandedHeight = HalfExpandedHeight + navBarsBottomPadding,
             sheetElevation = 0.dp,
             anchor = {
-                BottomSheetAnchor(callUiState, callScreenState, onThumbnailStreamClick)
+                BottomSheetAnchor(callUiState, callScreenState, onThumbnailStreamClick, onThumbnailStreamDoubleClick)
             },
             sheetBackgroundColor = MaterialTheme.colors.surface.copy(alpha = backgroundAlpha),
             sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
@@ -559,7 +562,8 @@ internal fun DefaultCallScreen(
 internal fun BottomSheetAnchor(
     callUiState: CallUiState,
     callScreenState: CallScreenState,
-    onThumbnailStreamClick: (StreamUi) -> Unit
+    onThumbnailStreamClick: (String) -> Unit,
+    onThumbnailStreamDoubleClick: (String) -> Unit
 ) {
     val shouldShowThumbnailStreams = !callScreenState.isSheetHidden && callUiState.fullscreenStream == null
     val shouldShowRecordingHint = callUiState.recording != null && callUiState.recording.type != RecordingTypeUi.Never && callUiState.callState == CallStateUi.Dialing
@@ -572,7 +576,8 @@ internal fun BottomSheetAnchor(
         ThumbnailStreams(
             streams = callUiState.thumbnailStreams,
             contentPadding = PaddingValues(16.dp),
-            onStreamClick = onThumbnailStreamClick
+            onStreamClick = onThumbnailStreamClick,
+            onStreamDoubleClick = onThumbnailStreamDoubleClick
         )
     }
 
@@ -642,6 +647,7 @@ fun CallScreenPreview() {
             onBackPressed = {},
             onFullscreenStreamClick = {},
             onThumbnailStreamClick = {},
+            onThumbnailStreamDoubleClick = {},
             onFeedbackDismiss = {},
             onUserFeedback = { _,_ -> }
         )

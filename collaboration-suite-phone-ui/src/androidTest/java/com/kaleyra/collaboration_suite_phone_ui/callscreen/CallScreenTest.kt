@@ -25,6 +25,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.m
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.viewmodel.VirtualBackgroundViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.findBackButton
+import com.kaleyra.collaboration_suite_phone_ui.performDoubleClick
 import com.kaleyra.collaboration_suite_phone_ui.performVerticalSwipe
 import io.mockk.every
 import io.mockk.mockkConstructor
@@ -61,7 +62,9 @@ class CallScreenTest {
 
     private var callScreenState: CallScreenState? = null
 
-    private var thumbnailClickedStream: StreamUi? = null
+    private var thumbnailClickedStreamId: String? = null
+
+    private var thumbnailDoubleClickedStreamId: String? = null
 
     private var backPressed = false
 
@@ -79,7 +82,8 @@ class CallScreenTest {
                 ).also {
                     callScreenState = spyk(it)
                 },
-                onThumbnailStreamClick = { thumbnailClickedStream = it },
+                onThumbnailStreamClick = { thumbnailClickedStreamId = it },
+                onThumbnailStreamDoubleClick = { thumbnailDoubleClickedStreamId = it },
                 onBackPressed = { backPressed = true },
                 permissionsState = null,
                 onConfigurationChange = { },
@@ -102,7 +106,8 @@ class CallScreenTest {
         sheetState = spyk(BottomSheetState(BottomSheetValue.Expanded))
         shouldShowFileShareComponent = false
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded)
-        thumbnailClickedStream = null
+        thumbnailClickedStreamId = null
+        thumbnailDoubleClickedStreamId = null
         backPressed = false
     }
 
@@ -586,7 +591,14 @@ class CallScreenTest {
     fun userClicksThumbnail_onThumbnailStreamClickInvoked() {
         callUiState = CallUiState(callState = CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
         composeTestRule.onNodeWithTag(ThumbnailTag).performClick()
-        assertEquals(streamUiMock, thumbnailClickedStream)
+        assertEquals(streamUiMock.id, thumbnailClickedStreamId)
+    }
+
+    @Test
+    fun userDoubleClicksThumbnail_onThumbnailStreamDoubleClickInvoked() {
+        callUiState = CallUiState(callState = CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
+        composeTestRule.onNodeWithTag(ThumbnailTag).performDoubleClick()
+        assertEquals(streamUiMock.id, thumbnailDoubleClickedStreamId)
     }
 
     @Test

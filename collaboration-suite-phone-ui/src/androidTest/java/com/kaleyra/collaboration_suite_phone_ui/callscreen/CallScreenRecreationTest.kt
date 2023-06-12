@@ -37,6 +37,7 @@ class CallScreenRecreationTest {
                 ),
                 permissionsState = rememberMultiplePermissionsState(listOf()),
                 onThumbnailStreamClick = { },
+                onThumbnailStreamDoubleClick = { },
                 onFullscreenStreamClick = { },
                 onFileShareVisibility = { },
                 onWhiteboardVisibility = { },
