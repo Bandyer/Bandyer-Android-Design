@@ -48,6 +48,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeDevice
@@ -90,7 +91,8 @@ import kotlinx.coroutines.launch
 private val PeekHeight = 48.dp
 private val HalfExpandedHeight = 166.dp
 
-private const val ActivityFinishDelay = 3000L
+private const val ActivityFinishDelay = 500L
+private const val ActivityFinishErrorDelay = 1300L
 
 @Composable
 internal fun rememberCallScreenState(
@@ -285,7 +287,8 @@ internal fun CallScreen(
             when {
                 isInPipMode -> activity.finishAndRemoveTask()
                 !callUiState.showFeedback && activity.isAtLeastResumed() -> {
-                    delay(ActivityFinishDelay)
+                    val delay = if (callUiState.callState is CallStateUi.Disconnected.Ended.Error) ActivityFinishErrorDelay else ActivityFinishDelay
+                    delay(delay)
                     activity.finishAndRemoveTask()
                 }
             }
