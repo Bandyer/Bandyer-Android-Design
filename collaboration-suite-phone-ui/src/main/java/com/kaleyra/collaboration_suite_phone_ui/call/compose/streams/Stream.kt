@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
@@ -31,21 +32,23 @@ internal fun Stream(
 ) {
     Box {
         if (streamView != null && !avatarVisible) {
-            AndroidView(
-                factory = {
-                    streamView.value.also {
-                        val parentView = it.parent as? ViewGroup
-                        parentView?.removeView(it)
-                    }
-                },
-                update = { view ->
-                    val newLayoutParams = view.layoutParams
-                    newLayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-                    newLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-                    view.layoutParams = newLayoutParams
-                },
-                modifier = Modifier.testTag(StreamViewTestTag)
-            )
+            key(streamView) {
+                AndroidView(
+                    factory = {
+                        streamView.value.also {
+                            val parentView = it.parent as? ViewGroup
+                            parentView?.removeView(it)
+                        }
+                    },
+                    update = { view ->
+                        val newLayoutParams = view.layoutParams
+                        newLayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+                        newLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+                        view.layoutParams = newLayoutParams
+                    },
+                    modifier = Modifier.testTag(StreamViewTestTag)
+                )
+            }
         }
 
         if (avatarVisible) {
