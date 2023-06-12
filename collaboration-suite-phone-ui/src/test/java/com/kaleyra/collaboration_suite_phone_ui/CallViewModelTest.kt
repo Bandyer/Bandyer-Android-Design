@@ -431,4 +431,20 @@ class CallViewModelTest {
         val new = viewModel.uiState.first().fullscreenStream
         assertEquals(null, new?.id)
     }
+
+    @Test
+    fun `fullscreen stream is set to null on reconnecting call state`() = runTest {
+        val callState = MutableStateFlow<Call.State>(Call.State.Connected)
+        every { callMock.state } returns callState
+        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+        viewModel.fullscreenStream(streamMock1.id)
+        advanceUntilIdle()
+        val actual = viewModel.uiState.first().fullscreenStream
+        assertEquals(streamMock1.id, actual?.id)
+
+        callState.value = Call.State.Reconnecting
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().fullscreenStream
+        assertEquals(null, new?.id)
+    }
 }

@@ -79,8 +79,11 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .toCallStateUi()
             .onEach { callState ->
                 _uiState.update { it.copy(callState = callState) }
-                if (callState !is CallStateUi.Disconnected.Ended) return@onEach
-                onCallEnded?.invoke()
+                when (callState) {
+                    is CallStateUi.Disconnected.Ended -> onCallEnded?.invoke()
+                    is CallStateUi.Reconnecting -> fullscreenStream(null)
+                    else -> Unit
+                }
             }
             .launchIn(viewModelScope)
 
