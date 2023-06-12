@@ -60,11 +60,8 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             }
             .launchIn(viewModelScope)
 
-        combine(
-            streamsHandler.streamsArrangement.map { it.first },
-            fullscreenStreamId
-        ) { featuredStreams, fullscreenStreamId ->
-            val stream = featuredStreams.find { it.id == fullscreenStreamId }
+        combine(streams, fullscreenStreamId) { streams, fullscreenStreamId ->
+            val stream = streams.find { it.id == fullscreenStreamId }
             _uiState.update { it.copy(fullscreenStream = stream) }
         }.launchIn(viewModelScope)
 
@@ -158,7 +155,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
         maxNumberOfFeaturedStreams.value = count
     }
 
-    fun swapThumbnail(stream: StreamUi) = streamsHandler.swapThumbnail(stream)
+    fun swapThumbnail(streamId: String) = streamsHandler.swapThumbnail(streamId)
 
     fun fullscreenStream(streamId: String?) {
         fullscreenStreamId.value = streamId

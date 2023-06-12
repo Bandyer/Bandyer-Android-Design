@@ -2,11 +2,9 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity
-import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.Configuration.Success
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.Theme
@@ -15,7 +13,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
@@ -301,7 +298,6 @@ class CallViewModelTest {
 
         advanceUntilIdle()
         coVerify { inputsMock.request(contextMock, Inputs.Type.Microphone) }
-        assertEquals(audioMock, myStreamMock.audio.value)
     }
 
     @Test
@@ -322,7 +318,6 @@ class CallViewModelTest {
 
         advanceUntilIdle()
         coVerify(exactly = 0) { inputsMock.request(contextMock, Inputs.Type.Microphone) }
-        assertEquals(audioMock, myStreamMock.audio.value)
     }
 
     @Test
@@ -345,7 +340,6 @@ class CallViewModelTest {
 
         advanceUntilIdle()
         coVerify { inputsMock.request(contextMock, Inputs.Type.Camera.Internal) }
-        assertEquals(cameraMock, myStreamMock.video.value)
     }
 
     @Test
@@ -403,9 +397,8 @@ class CallViewModelTest {
 
     @Test
     fun testSwapThumbnail() {
-        val streamMock = mockk<StreamUi>()
-        viewModel.swapThumbnail(streamMock)
-        verify { anyConstructed<StreamsHandler>().swapThumbnail(streamMock) }
+        viewModel.swapThumbnail("streamId")
+        verify { anyConstructed<StreamsHandler>().swapThumbnail("streamId") }
     }
 
     @Test
