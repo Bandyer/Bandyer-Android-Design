@@ -343,6 +343,45 @@ class CallActionsViewModelTest {
     }
 
     @Test
+    fun usbCameraConnected_callActionsUiState_switchCameraIsDisabled() = runTest {
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Usb>()))
+        every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.SwitchCamera))
+
+        advanceUntilIdle()
+        val result = viewModel.uiState
+        val actual = result.first().actionList.value
+        val expected = listOf(CallAction.SwitchCamera(isEnabled = false))
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun usbCameraNotConnectedAndCameraEnable_callActionsUiState_switchCameraIsEnabled() = runTest {
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Internal>()))
+        every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.SwitchCamera))
+        every { videoMock.enabled } returns MutableStateFlow(true)
+
+        advanceUntilIdle()
+        val result = viewModel.uiState
+        val actual = result.first().actionList.value
+        val expected = listOf(CallAction.SwitchCamera(isEnabled = true))
+        assertEquals(expected, actual)
+    }
+
+
+    @Test
+    fun usbCameraNotConnectedAndCameraDisable_callActionsUiState_switchCameraIsDisabled() = runTest {
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Internal>()))
+        every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.SwitchCamera))
+        every { videoMock.enabled } returns MutableStateFlow(false)
+
+        advanceUntilIdle()
+        val result = viewModel.uiState
+        val actual = result.first().actionList.value
+        val expected = listOf(CallAction.SwitchCamera(isEnabled = false))
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun testToggleMicOn() = runTest {
         every { audioMock.enabled } returns MutableStateFlow(false)
         advanceUntilIdle()

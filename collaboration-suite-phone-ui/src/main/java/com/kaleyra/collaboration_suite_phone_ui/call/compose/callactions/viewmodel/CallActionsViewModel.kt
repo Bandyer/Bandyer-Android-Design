@@ -88,7 +88,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
                 .updateActionIfExists(CallAction.ScreenShare(isToggled = isSharingScreen, isEnabled = isCallConnected))
                 .updateActionIfExists(CallAction.VirtualBackground(isToggled = isVirtualBackgroundEnabled))
                 .updateActionIfExists(CallAction.Whiteboard(isEnabled = isCallConnected))
-                .updateActionIfExists(CallAction.SwitchCamera(isEnabled = !hasUsbCamera))
+                .updateActionIfExists(CallAction.SwitchCamera(isEnabled = !hasUsbCamera && isMyCameraEnabled))
             _uiState.update { it.copy(actionList = ImmutableList(newActions)) }
         }.launchIn(viewModelScope)
     }
