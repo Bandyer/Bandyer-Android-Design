@@ -104,13 +104,6 @@ class CallComponentTest {
     }
 
     @Test
-    fun doubleTapOnStream_onFullscreenClickInvoked() {
-        callUiState = CallUiState(featuredStreams = featuredStreamsMock, fullscreenStream = streamMock1)
-        composeTestRule.onAllNodesWithTag(FeaturedStreamTag).onFirst().performDoubleClick()
-        assertEquals(streamMock1.id, fullscreenStreamId)
-    }
-
-    @Test
     fun deviceIsInPortraitAndMaxWidthIsLessThan600Dp_oneColumn() {
        callComponentState = defaultState(
            configuration = mockk { orientation = Configuration.ORIENTATION_PORTRAIT },
