@@ -15,7 +15,8 @@ const val ThumbnailStreamsTag = "ThumbnailStreamsTag"
 @Composable
 internal fun ThumbnailStreams(
     streams: ImmutableList<StreamUi>,
-    onStreamClick: (StreamUi) -> Unit,
+    onStreamClick: (String) -> Unit,
+    onStreamDoubleClick: (String) -> Unit,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     modifier: Modifier = Modifier
 ) {
@@ -26,7 +27,7 @@ internal fun ThumbnailStreams(
         modifier = modifier.testTag(ThumbnailStreamsTag)
     ) {
         items(items = streams.value, key = { it.id }) {
-            ThumbnailStream(it, onClick = { onStreamClick(it) })
+            ThumbnailStream(it, onClick = { onStreamClick(it.id) }, onDoubleClick = { onStreamDoubleClick(it.id) })
         }
     }
 }

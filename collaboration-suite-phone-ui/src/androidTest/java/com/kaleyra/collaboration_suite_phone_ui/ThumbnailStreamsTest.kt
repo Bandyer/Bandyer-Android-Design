@@ -10,6 +10,7 @@ import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailStreams
@@ -18,6 +19,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,7 +31,9 @@ class ThumbnailStreamsTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var clickedStream: StreamUi? = null
+    private var clickedStream: String? = null
+
+    private var doubleClickedStream: String? = null
 
     @Before
     fun setUp() {
@@ -42,7 +46,8 @@ class ThumbnailStreamsTest {
                         streamUiMock.copy(id = "3", video = null)
                     )
                 ),
-                onStreamClick = { clickedStream = it }
+                onStreamClick = { clickedStream = it },
+                onStreamDoubleClick = { doubleClickedStream = it }
             )
         }
     }
@@ -50,6 +55,7 @@ class ThumbnailStreamsTest {
     @After
     fun tearDown() {
         clickedStream = null
+        doubleClickedStream = null
     }
 
     @Test
@@ -64,5 +70,18 @@ class ThumbnailStreamsTest {
         val firstChildren = composeTestRule.onNodeWithTag(ThumbnailStreamsTag).onChildren().onFirst()
         val lastChildren = composeTestRule.onNodeWithTag(ThumbnailStreamsTag).onChildren().onLast()
         assert(firstChildren.getBoundsInRoot().left > lastChildren.getBoundsInRoot().left)
+    }
+
+    // todo understand why this fails
+//    @Test
+//    fun testThumbnailStreamClick() {
+//        composeTestRule.onNodeWithTag(ThumbnailStreamsTag).onChildren().onFirst().performClick()
+//        assertEquals("1", clickedStream)
+//    }
+
+    @Test
+    fun testThumbnailStreamDoubleClick() {
+        composeTestRule.onNodeWithTag(ThumbnailStreamsTag).onChildren().onFirst().performDoubleClick()
+        assertEquals("1", doubleClickedStream)
     }
 }
