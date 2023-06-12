@@ -1,7 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -53,12 +57,13 @@ internal class StreamsHandler(
         }.launchIn(coroutineScope)
     }
 
-    fun swapThumbnail(stream: StreamUi) {
+    fun swapThumbnail(streamId: String) {
         coroutineScope.launch {
             mutex.withLock {
-                val streamIndex = thumbnailsStreams.indexOf(stream)
+                val streamIndex = thumbnailsStreams.indexOfFirst { it.id == streamId }
                 if (streamIndex == -1) return@launch
 
+                val stream = thumbnailsStreams[streamIndex]
                 val newFeatured = (listOf(stream) + featuredStreams).take(featuredStreams.size)
                 val removedStream = featuredStreams.last()
 

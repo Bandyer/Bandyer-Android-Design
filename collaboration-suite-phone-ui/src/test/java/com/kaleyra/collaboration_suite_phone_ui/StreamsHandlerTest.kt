@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -225,7 +225,7 @@ class StreamsHandlerTest {
         assertEquals(streams.take(DefaultMaxFeatured), featuredStreams)
         assertEquals(streams.takeLast(streams.size - DefaultMaxFeatured), thumbnailsStreams)
 
-        streamsHandler.swapThumbnail(streamMock4)
+        streamsHandler.swapThumbnail(streamMock4.id)
 
         advanceUntilIdle()
         val (newFeaturedStreams, newThumbnailsStreams) = streamsHandler.streamsArrangement.first()
@@ -239,7 +239,7 @@ class StreamsHandlerTest {
         streamsFlow.value = streams
 
         advanceUntilIdle()
-        streamsHandler.swapThumbnail(streamMock4)
+        streamsHandler.swapThumbnail(streamMock4.id)
 
         advanceUntilIdle()
         val (featuredStreams, thumbnailsStreams) = streamsHandler.streamsArrangement.first()
@@ -287,7 +287,7 @@ class StreamsHandlerTest {
         assertEquals(streams.take(DefaultMaxFeatured), featuredStreams)
         assertEquals(streams.takeLast(streams.size - DefaultMaxFeatured), thumbnailsStreams)
 
-        streamsHandler.swapThumbnail(streamMock6)
+        streamsHandler.swapThumbnail(streamMock6.id)
         val (newFeaturedStreams, newThumbnailsStreams) = streamsHandler.streamsArrangement.first()
         assertEquals(streams.take(DefaultMaxFeatured), newFeaturedStreams)
         assertEquals(streams.takeLast(streams.size - DefaultMaxFeatured), newThumbnailsStreams)
