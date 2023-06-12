@@ -1,6 +1,6 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.utility
+package com.kaleyra.collaboration_suite_core_ui.utils
 
-internal object MathUtils {
+object MathUtils {
 
     fun findGreatestCommonDivisor(number1: Int, number2: Int): Int {
         var n1 = number1

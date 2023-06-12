@@ -1,6 +1,6 @@
-package com.kaleyra.collaboration_suite_phone_ui
+package com.kaleyra.collaboration_suite_core_ui
 
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.MathUtils
+import com.kaleyra.collaboration_suite_core_ui.utils.MathUtils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

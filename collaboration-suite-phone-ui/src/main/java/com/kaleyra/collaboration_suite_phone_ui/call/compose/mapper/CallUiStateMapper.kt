@@ -2,8 +2,8 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import android.util.Rational
 import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
+import com.kaleyra.collaboration_suite_core_ui.utils.MathUtils
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.MathUtils.findGreatestCommonDivisor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -21,9 +21,9 @@ object CallUiStateMapper {
             .filterNotNull()
             .flatMapLatest { it.videoSize }
             .map {
-                val gcd = findGreatestCommonDivisor(it.width, it.height)
+                val gcd = MathUtils.findGreatestCommonDivisor(it.width, it.height)
                 if (gcd != 0) Rational(it.width / gcd, it.height / gcd)
-                else Rational(1,1)
+                else Rational.NaN
             }
 
 }

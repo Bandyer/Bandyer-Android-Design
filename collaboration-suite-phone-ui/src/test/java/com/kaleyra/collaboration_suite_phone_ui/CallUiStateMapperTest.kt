@@ -50,4 +50,13 @@ class CallUiStateMapperTest {
         val expected = Rational(234, 433)
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `first featured video have invalid width or height, the aspect ratio is NaN`() = runTest {
+        every { viewMock.videoSize } returns MutableStateFlow(Size(0, 0))
+        val flow = flowOf(callUiState)
+        val actual = flow.toPipAspectRatio().first()
+        val expected = Rational.NaN
+        assertEquals(expected, actual)
+    }
 }
