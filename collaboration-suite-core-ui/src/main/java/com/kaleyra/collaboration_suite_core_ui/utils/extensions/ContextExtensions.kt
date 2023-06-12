@@ -29,12 +29,14 @@ import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import android.util.DisplayMetrics
+import android.util.Rational
 import android.view.Display
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
 import androidx.fragment.app.FragmentActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.MathUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getMimeType
 
 
@@ -84,6 +86,18 @@ object ContextExtensions {
         val size = Point()
         display?.getRealSize(size)
         return size
+    }
+
+    /**
+     * Calculates the screen aspect ratio
+     * @receiver Context
+     * @return Rational
+     */
+    fun Context.getScreenAspectRatio(): Rational {
+        val width = resources.displayMetrics.widthPixels
+        val height = resources.displayMetrics.heightPixels
+        val gcd = MathUtils.findGreatestCommonDivisor(width, height)
+        return Rational(width / gcd, height / gcd)
     }
 
     /**
