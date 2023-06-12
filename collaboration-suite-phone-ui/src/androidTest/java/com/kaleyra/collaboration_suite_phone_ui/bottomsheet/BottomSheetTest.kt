@@ -4,7 +4,6 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.StateRestorationTester
@@ -16,7 +15,7 @@ import androidx.compose.ui.unit.min
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.performSwipe
+import com.kaleyra.collaboration_suite_phone_ui.performVerticalSwipe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -176,7 +175,7 @@ class BottomSheetTest {
     ) {
         val sheetState = BottomSheetState(initialValue = initialState, isCollapsable = collapsable)
         composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
-        composeTestRule.onNodeWithTag(BottomSheetTag).performSwipe(swipeAmount)
+        composeTestRule.onNodeWithTag(BottomSheetTag).performVerticalSwipe(swipeAmount)
         composeTestRule.waitForIdle()
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
@@ -188,7 +187,7 @@ class BottomSheetTest {
     fun sheetGesturesEnabledTrue_userPerformsSwipe_sheetStateChanged() {
         val sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         composeTestRule.setBottomSheetScaffold(sheetState = sheetState, sheetGestureEnabled = true)
-        composeTestRule.onNodeWithTag(BottomSheetTag).performSwipe(-0.5f)
+        composeTestRule.onNodeWithTag(BottomSheetTag).performVerticalSwipe(-0.5f)
         composeTestRule.waitForIdle()
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
@@ -200,7 +199,7 @@ class BottomSheetTest {
     fun sheetGesturesEnabledFalse_userPerformsSwipe_sheetStateNotChanged() {
         val sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         composeTestRule.setBottomSheetScaffold(sheetState = sheetState, sheetGestureEnabled = false)
-        composeTestRule.onNodeWithTag(BottomSheetTag).performSwipe(-0.5f)
+        composeTestRule.onNodeWithTag(BottomSheetTag).performVerticalSwipe(-0.5f)
         composeTestRule.waitForIdle()
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
@@ -438,7 +437,7 @@ class BottomSheetTest {
             )
         }
 
-        composeTestRule.onNodeWithTag(BottomSheetTag).performSwipe(0.5f)
+        composeTestRule.onNodeWithTag(BottomSheetTag).performVerticalSwipe(0.5f)
         composeTestRule.waitForIdle()
 
         restorationTester.emulateSavedInstanceStateRestore()

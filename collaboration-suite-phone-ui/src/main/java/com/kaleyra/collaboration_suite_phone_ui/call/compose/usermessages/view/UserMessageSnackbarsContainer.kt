@@ -26,7 +26,7 @@ internal fun UserMessageSnackbarsContainer(
     recordingSnackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     mutedSnackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
-    Column(modifier = modifier.padding(12.dp)) {
+    Column(modifier) {
         if (userMessages.recordingMessage != null) {
             LaunchedEffect(userMessages.recordingMessage, recordingSnackBarHostState) {
                 recordingSnackBarHostState.showSnackbar("")

@@ -25,7 +25,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.m
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.viewmodel.VirtualBackgroundViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.findBackButton
-import com.kaleyra.collaboration_suite_phone_ui.performSwipe
+import com.kaleyra.collaboration_suite_phone_ui.performVerticalSwipe
 import io.mockk.every
 import io.mockk.mockkConstructor
 import io.mockk.spyk
@@ -599,7 +599,7 @@ class CallScreenTest {
     fun whiteboardComponent_sheetGesturesAreDisabled() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.Whiteboard, LineState.Expanded)
-        composeTestRule.onNodeWithTag(WhiteboardComponentTag).performSwipe(-0.5f)
+        composeTestRule.onNodeWithTag(WhiteboardComponentTag).performVerticalSwipe(-0.5f)
         composeTestRule.waitForIdle()
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
