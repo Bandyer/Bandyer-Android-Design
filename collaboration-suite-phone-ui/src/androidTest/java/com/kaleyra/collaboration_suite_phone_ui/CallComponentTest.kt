@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.content.res.Configuration
 import android.net.Uri
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -408,6 +409,24 @@ class CallComponentTest {
         callUiState = CallUiState(userMessages = UserMessages(mutedMessage = MutedMessage(null)))
         val title = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun callStateReconnecting_youAreAloneIsDisplayed() {
+        callUiState = CallUiState(callState = CallStateUi.Reconnecting, featuredStreams =  ImmutableList(listOf(streamMock1)))
+        val text = composeTestRule.activity.getString(R.string.kaleyra_call_left_alone)
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
+    }
+
+    @Test
+    fun callStateReconnectingAndVideoDisabled_youAreAloneIsDisplayedUnderTheVideoAvatar() {
+        callUiState = CallUiState(callState = CallStateUi.Reconnecting, featuredStreams = ImmutableList(listOf(streamMock1.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false)))))
+        val text = composeTestRule.activity.getString(R.string.kaleyra_call_left_alone)
+        val avatar = composeTestRule.activity.getString(R.string.kaleyra_avatar)
+        val avatarBottom = composeTestRule.onNodeWithContentDescription(avatar).getUnclippedBoundsInRoot().bottom
+        val textTop = composeTestRule.onNodeWithText(text).getUnclippedBoundsInRoot().top
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
+        assert(avatarBottom < textTop)
     }
 
     private fun <T: ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<T>, T>.assertConnectingTitleIsDisplayed() {

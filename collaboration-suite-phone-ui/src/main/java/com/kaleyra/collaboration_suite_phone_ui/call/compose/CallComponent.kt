@@ -2,11 +2,14 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.content.res.Configuration
 import androidx.compose.animation.*
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.LocalContentColor
+import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -30,12 +33,14 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtens
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isOrientationPortrait
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 const val CallComponentTag = "CallComponentTag"
 private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
+val YouAreAloneAvatarPadding = DefaultStreamAvatarSize / 2 + 24.dp
 
 @Composable
 internal fun rememberCallComponentState(
@@ -130,14 +135,15 @@ internal fun CallComponent(
                 repeat(streams.count()) { index ->
                     val stream = streams[index]
                     key(stream.id) {
-                        FeaturedStream(
-                            stream = stream,
-                            isFullscreen = callUiState.fullscreenStream != null,
-                            onBackPressed = if (index == 0 && !shouldShowCallInfo) onBackPressed else null,
-                            // TODO optimize recomposition
-                            onFullscreenClick = remember(onStreamFullscreenClick, callUiState.fullscreenStream) {
-                                { if (callUiState.fullscreenStream != null) onStreamFullscreenClick(null) else onStreamFullscreenClick(stream.id) }
-                            },
+                        Box {
+                            FeaturedStream(
+                                stream = stream,
+                                isFullscreen = callUiState.fullscreenStream != null,
+                                onBackPressed = if (index == 0 && !shouldShowCallInfo) onBackPressed else null,
+                                // TODO optimize recomposition
+                                onFullscreenClick = remember(onStreamFullscreenClick, callUiState.fullscreenStream) {
+                                    { if (callUiState.fullscreenStream != null) onStreamFullscreenClick(null) else onStreamFullscreenClick(stream.id) }
+                                },
 //                        modifier = remember(onStreamFullscreenClick) {
 //                            Modifier.pointerInput(onStreamFullscreenClick) {
 //                                detectTapGestures(onDoubleTap = { onStreamFullscreenClick(stream.id) })
@@ -145,19 +151,34 @@ internal fun CallComponent(
 
 //                        Modifier.streamClickable { resetCountDown = !resetCountDown }
 //                        },
-                            headerModifier = remember(index, callComponentState, streamHeaderOffset) {
-                                Modifier
-                                    .offset {
-                                        IntOffset(
-                                            x = 0,
-                                            y = if (index < callComponentState.columns) streamHeaderOffset else 0
-                                        )
-                                    }
-                                    .statusBarsPadding()
-                                    .onGloballyPositioned { streamHeaderHeight = it.size.height }
+                                headerModifier = remember(index, callComponentState, streamHeaderOffset) {
+                                    Modifier
+                                        .offset {
+                                            IntOffset(
+                                                x = 0,
+                                                y = if (index < callComponentState.columns) streamHeaderOffset else 0
+                                            )
+                                        }
+                                        .statusBarsPadding()
+                                        .onGloballyPositioned { streamHeaderHeight = it.size.height }
 //                                    .graphicsLayer { alpha = streamsHeaderAlpha }
+                                }
+                            )
+
+                            if (callUiState.callState is CallStateUi.Reconnecting) {
+                                val padding by animateDpAsState(targetValue = if (stream.video?.isEnabled == false) YouAreAloneAvatarPadding else 0.dp)
+                                Text(
+                                    text = stringResource(id = R.string.kaleyra_call_left_alone),
+                                    style = LocalTextStyle.current.shadow(),
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                        .offset {
+                                            val offset = padding.toPx().toInt()
+                                            IntOffset(0, offset)
+                                        }
+                                )
                             }
-                        )
+                        }
                     }
                 }
             }
