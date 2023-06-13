@@ -38,7 +38,7 @@ class MovablePointerTest {
                     .fillMaxSize()
                     .onGloballyPositioned { size = it.size }
             ) {
-                MovablePointer(pointer, size)
+                MovablePointer(pointer, size, floatArrayOf(.5f, .5f))
             }
         }
     }
