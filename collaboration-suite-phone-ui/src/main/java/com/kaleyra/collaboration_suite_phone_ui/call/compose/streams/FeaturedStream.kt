@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite.phonebox.StreamView
-import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
@@ -42,26 +41,31 @@ internal fun FeaturedStream(
     Box(
         modifier = modifier.testTag(FeaturedStreamTag)
     ) {
-        StreamContainer {
-            PointerStreamWrapper(streamView = stream.video?.view, pointerList = stream.video?.pointers) {
-                val shouldFit = stream.video?.isScreenShare == true
-                Stream(
-                    streamView = stream.video?.view?.featuredSettings(
-                        if (shouldFit) StreamView.ScaleType.Fit else StreamView.ScaleType.Fill()
-                    ),
-                    avatar = stream.avatar,
-                    avatarVisible = stream.video == null || !stream.video.isEnabled
-                )
+        CompositionLocalProvider(LocalContentColor provides Color.White) {
+            StreamContainer {
+                PointerStreamWrapper(
+                    streamView = stream.video?.view,
+                    pointerList = stream.video?.pointers
+                ) {
+                    val shouldFit = stream.video?.isScreenShare == true
+                    Stream(
+                        streamView = stream.video?.view?.featuredSettings(
+                            if (shouldFit) StreamView.ScaleType.Fit else StreamView.ScaleType.Fill()
+                        ),
+                        avatar = stream.avatar,
+                        avatarVisible = stream.video == null || !stream.video.isEnabled
+                    )
+                }
             }
-        }
 
-        Header(
-            username = stream.username,
-            fullscreen = isFullscreen,
-            onBackPressed = onBackPressed,
-            onFullscreenClick = onFullscreenClick,
-            modifier = headerModifier
-        )
+            Header(
+                username = stream.username,
+                fullscreen = isFullscreen,
+                onBackPressed = onBackPressed,
+                onFullscreenClick = onFullscreenClick,
+                modifier = headerModifier
+            )
+        }
     }
 }
 
@@ -73,34 +77,32 @@ private fun Header(
     onFullscreenClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    CompositionLocalProvider(LocalContentColor provides Color.White) {
-        Row(modifier = modifier.padding(horizontal = 4.dp)) {
-            if (onBackPressed != null) {
-                IconButton(
-                    icon = rememberVectorPainter(image = Icons.Filled.ArrowBack),
-                    iconDescription = stringResource(id = R.string.kaleyra_back),
-                    onClick = onBackPressed
-                )
-            }
-
-            Text(
-                text = username,
-                modifier = Modifier
-                    .padding(vertical = 12.dp, horizontal = 16.dp)
-                    .weight(1f),
-                fontWeight = FontWeight.SemiBold
-            )
-
+    Row(modifier = modifier.padding(horizontal = 4.dp)) {
+        if (onBackPressed != null) {
             IconButton(
-                icon = painterResource(
-                    id = if (fullscreen) R.drawable.ic_kaleyra_exit_fullscreen else R.drawable.ic_kaleyra_enter_fullscreen
-                ),
-                iconDescription = stringResource(
-                    id = if (fullscreen) R.string.kaleyra_exit_fullscreen else R.string.kaleyra_enter_fullscreen
-                ),
-                onClick = onFullscreenClick
+                icon = rememberVectorPainter(image = Icons.Filled.ArrowBack),
+                iconDescription = stringResource(id = R.string.kaleyra_back),
+                onClick = onBackPressed
             )
         }
+
+        Text(
+            text = username,
+            modifier = Modifier
+                .padding(vertical = 12.dp, horizontal = 16.dp)
+                .weight(1f),
+            fontWeight = FontWeight.SemiBold
+        )
+
+        IconButton(
+            icon = painterResource(
+                id = if (fullscreen) R.drawable.ic_kaleyra_exit_fullscreen else R.drawable.ic_kaleyra_enter_fullscreen
+            ),
+            iconDescription = stringResource(
+                id = if (fullscreen) R.string.kaleyra_exit_fullscreen else R.string.kaleyra_enter_fullscreen
+            ),
+            onClick = onFullscreenClick
+        )
     }
 }
 
