@@ -52,7 +52,6 @@ internal fun Watermark(watermarkInfo: WatermarkInfo, modifier: Modifier = Modifi
                     text = watermarkInfo.text,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
                     maxLines = 1
                 )
             }
