@@ -9,6 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.IntOffset
@@ -19,7 +21,7 @@ import java.lang.Integer.max
 const val MovablePointerTag = "MovablePointerTag"
 
 @Composable
-internal fun MovablePointer(pointer: PointerUi, parentSize: IntSize) {
+internal fun MovablePointer(pointer: PointerUi, parentSize: IntSize, scale: FloatArray) {
     val density = LocalDensity.current
 
     val pointerSize = remember { with(density) { PointerSize.toPx() } }
@@ -36,6 +38,11 @@ internal fun MovablePointer(pointer: PointerUi, parentSize: IntSize) {
         onTextWidth = { textWidth = it / 2 },
         modifier = Modifier
             .offset { IntOffset(offsetX.toInt(), offsetY.toInt()) }
+            .graphicsLayer {
+                transformOrigin = TransformOrigin(.5f, .2f)
+                scaleX /= scale[0]
+                scaleY /= scale[1]
+            }
             .testTag(MovablePointerTag)
     )
 }
