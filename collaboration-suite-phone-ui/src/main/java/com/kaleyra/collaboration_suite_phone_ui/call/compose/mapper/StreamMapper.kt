@@ -133,4 +133,16 @@ internal object StreamMapper {
             }
     }
 
+    fun Flow<Call>.amIAlone(): Flow<Boolean> =
+        combine(
+            doOthersHaveStreams(),
+            doAnyOfMyStreamsIsLive()
+        ) { doesOthersHaveStreams, doAnyOfMyStreamsIsLive ->
+            !doesOthersHaveStreams || !doAnyOfMyStreamsIsLive
+        }
+
+    private fun Stream.isMyStreamLive(): Flow<Boolean> {
+        return this.state.map { it is Stream.State.Live }
+    }
+
 }

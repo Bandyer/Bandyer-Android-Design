@@ -7,6 +7,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doAnyOfMyStreamsIsLive
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doOthersHaveStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.mapToStreamsUi
@@ -649,4 +650,44 @@ class StreamMapperTest {
         val actual = callFlow.doOthersHaveStreams().first()
         Assert.assertEquals(true, actual)
     }
+
+    @Test
+    fun `I have live streams and other participants have streams, am i alone is false`() = runTest {
+        val callFlow = flowOf(callMock)
+        mockkObject(StreamMapper)
+        with(StreamMapper) {
+            every { callFlow.doOthersHaveStreams() } returns flowOf(true)
+            every { callFlow.doAnyOfMyStreamsIsLive() } returns flowOf(true)
+        }
+        val result = callFlow.amIAlone()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun `I have no live stream, am I alone is true`() = runTest {
+        val callFlow = flowOf(callMock)
+        mockkObject(StreamMapper)
+        with(StreamMapper) {
+            every { callFlow.doOthersHaveStreams() } returns flowOf(true)
+            every { callFlow.doAnyOfMyStreamsIsLive() } returns flowOf(false)
+        }
+        val result = callFlow.amIAlone()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun `other participants does not have streams, am I alone is true`() = runTest {
+        val callFlow = flowOf(callMock)
+        mockkObject(StreamMapper)
+        with(StreamMapper) {
+            every { callFlow.doOthersHaveStreams() } returns flowOf(false)
+            every { callFlow.doAnyOfMyStreamsIsLive() } returns flowOf(true)
+        }
+        val result = callFlow.amIAlone()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
+    }
+
 }
