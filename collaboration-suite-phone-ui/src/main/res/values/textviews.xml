@@ -158,6 +158,14 @@
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
     </style>
 
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.LeftAlone" parent="KaleyraCollaborationSuiteUI.TextView.Title.UserStatus">
+        <item name="android:text">@string/kaleyra_call_left_alone</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.Waiting" parent="KaleyraCollaborationSuiteUI.TextView.Title.UserStatus">
+        <item name="android:text">@string/kaleyra_call_waiting_for_other_participants</item>
+    </style>
+
     <style name="KaleyraCollaborationSuiteUI.TextView.Title.Reload" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

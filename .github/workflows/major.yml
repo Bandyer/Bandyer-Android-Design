@@ -1,0 +1,76 @@
+name: Release Major
+
+on:
+  workflow_dispatch:
+      
+jobs:
+  major:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        cache: gradle
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Generate next version
+      uses: mathieudutour/github-tag-action@v6.0
+      id: tag_version
+      with:
+        default_bump: major
+        release_branches: develop
+        dry_run: true
+        github_token: ${{ secrets.PAT }}
+        
+    - name: Change versions.gradle version
+      run: sed -i "s/moduleVersion = \"[0-9]*\.[0-9]*\.[0-9]*\"/moduleVersion = \"${{ steps.tag_version.outputs.new_version }}\"/g" ./versions.gradle
+   
+    - name: Create Release PR
+      uses: peter-evans/create-pull-request@v3
+      with:
+          token: ${{ secrets.PAT }}
+          commit-message: Release major version 
+          title: Release v${{ steps.tag_version.outputs.new_version }}
+          body: |
+           This PR is Auto-generated
+          branch: release-v${{ steps.tag_version.outputs.new_version }}
+    
+    - name: Create a GitHub release notes
+      uses: ncipollo/release-action@v1
+      with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+          commit: release-v${{ steps.tag_version.outputs.new_version }}
+    outputs:
+        lversion: ${{ steps.tag_version.outputs.new_version  }}
+  
+  publish:
+    needs: major
+    name: Publish
+    uses: Bandyer/Bandyer-Android-Design/.github/workflows/publish.yml@develop
+    with: 
+      release_version: ${{ needs.major.outputs.lversion }}
+    secrets:
+      MAVEN_ACCESSKEY: ${{ secrets.MAVEN_ACCESSKEY }}
+      MAVEN_SECRETKEY: ${{ secrets.MAVEN_SECRETKEY }}
+      MAVEN_DISTRIBUTIONID: ${{ secrets.MAVEN_DISTRIBUTIONID }}
+  
+  automerge:
+    name: Merge into develop
+    needs: [major, publish]
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: merge
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ secrets.PAT }}
+          source: release-v${{ needs.major.outputs.lversion }}
+          target: 'develop'
