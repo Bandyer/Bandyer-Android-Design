@@ -30,7 +30,6 @@ apply from: '../publish.gradle'
 apply from: '../moveIcons.gradle'
 
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
     coreLibraryDesugaring catalog.desugar
 
     testImplementation catalog.junit
@@ -53,6 +52,6 @@ dependencies {
     api project(':collaboration-suite-core-ui')
 
     /** Kaleyra **/
-    implementation catalog.kaleyraCollaborationSuite
-    implementation catalog.kaleyraCollaborationSuiteExtensionAudio
+    implementation kaleyraCatalog.kaleyraCollaborationSuite
+    implementation kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
 }

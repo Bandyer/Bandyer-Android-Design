@@ -22,13 +22,13 @@ plugins {
 
 android {
 
-    compileSdkVersion catalog.versions.releaseAppSdkVersion.get().toInteger()
-    buildToolsVersion catalog.versions.releaseAppToolsVersion.get()
+    compileSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
+    buildToolsVersion sampleAppCatalog.versions.sampleAppToolsVersion.get()
 
     defaultConfig {
         applicationId "com.kaleyra.demo_collaboration_suite_ui"
-        minSdkVersion catalog.versions.minSdkVersion.get().toInteger()
-        targetSdkVersion catalog.versions.releaseAppSdkVersion.get().toInteger()
+        minSdkVersion sampleAppCatalog.versions.sampleAppMinSdkVersion.get().toInteger()
+        targetSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -58,35 +58,34 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation catalog.kotlinStdLib
+    /*** Platform ***/
+    implementation sampleAppCatalog.kotlinStdLib
+    implementation sampleAppCatalog.androidxMultidex
+    implementation sampleAppCatalog.appcompat
+    implementation sampleAppCatalog.androidxRecyclerview
+    implementation sampleAppCatalog.androidxCoreKtx
+    implementation sampleAppCatalog.material
+    implementation sampleAppCatalog.androidxConstraintLayout
+    implementation sampleAppCatalog.coroutines
+    implementation sampleAppCatalog.androidxFragment
+    implementation sampleAppCatalog.androidxActivity
+    coreLibraryDesugaring sampleAppCatalog.desugar
 
     /*** Test implementation ***/
-    testImplementation catalog.junit
-    androidTestImplementation catalog.junitTestExt
-    androidTestImplementation catalog.androidxTestEspressoCore
+    testImplementation sampleAppCatalog.junit
+    androidTestImplementation sampleAppCatalog.junitTestExt
+    androidTestImplementation sampleAppCatalog.androidxTestEspressoCore
 
-    /*** Platform ***/
-    implementation catalog.androidxMultidex
-    implementation catalog.appcompat
-    implementation catalog.androidxRecyclerview
-    implementation catalog.androidxCoreKtx
-    implementation catalog.material
-    implementation catalog.androidxConstraintLayout
-    implementation catalog.coroutines
-    implementation catalog.androidxFragment
-    implementation catalog.androidxActivity
-    coreLibraryDesugaring catalog.desugar
-
-    implementation catalog.zoomy
+    /*** UI ***/
+    implementation sampleAppCatalog.zoomy
 
     /***  Leak Canary ***/
-    debugImplementation catalog.squareupLeakCanary
+    debugImplementation sampleAppCatalog.squareupLeakCanary
 
     /***  KaleyraCollaborationSuiteUI ***/
     implementation project(':collaboration-suite-phone-ui')
     implementation project(':collaboration-suite-glass-ui')
     implementation project(':collaboration-suite-core-ui')
-    implementation catalog.kaleyraCollaborationSuiteUtils
-    implementation catalog.kaleyraAudioSession
+    implementation kaleyraCatalog.kaleyraCollaborationSuiteUtils
+    implementation kaleyraCatalog.kaleyraAudioSession
 }

@@ -30,7 +30,6 @@ apply from: '../downloadIcons.gradle'
 apply from: '../moveIcons.gradle'
 
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
     implementation catalog.androidxConstraintLayout
     coreLibraryDesugaring catalog.desugar
 
@@ -38,7 +37,7 @@ dependencies {
     testImplementation catalog.mockk
     testImplementation catalog.roboelectric
     testImplementation catalog.coroutines
-    testImplementation catalog.kaleyraCollaborationSuite
+    testImplementation kaleyraCatalog.kaleyraCollaborationSuite
     androidTestImplementation catalog.androidxTestEspressoCore
 
     api catalog.kotlinStdLib
@@ -48,6 +47,6 @@ dependencies {
     api catalog.squareupPicasso
 
     /** Kaleyra **/
-    compileOnly catalog.kaleyraCollaborationSuite
-    compileOnly catalog.kaleyraCollaborationSuiteExtensionAudio
+    compileOnly kaleyraCatalog.kaleyraCollaborationSuite
+    compileOnly kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
 }

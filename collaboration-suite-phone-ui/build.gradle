@@ -64,6 +64,6 @@ dependencies {
     implementation project(':collaboration-suite-core-ui')
 
     /** Kaleyra **/
-    compileOnly catalog.kaleyraCollaborationSuite
-    compileOnly catalog.kaleyraCollaborationSuiteExtensionAudio
+    compileOnly kaleyraCatalog.kaleyraCollaborationSuite
+    compileOnly kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
 }
