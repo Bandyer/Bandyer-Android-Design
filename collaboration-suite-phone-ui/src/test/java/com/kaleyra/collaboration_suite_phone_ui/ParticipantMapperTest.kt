@@ -5,6 +5,7 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayImages
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayNames
 import io.mockk.every
@@ -12,8 +13,13 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.*
+import org.junit.Assert
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class ParticipantMapperTest {
@@ -21,17 +27,17 @@ class ParticipantMapperTest {
     @get:Rule
     var mainDispatcherRule = MainDispatcherRule()
 
-    private val callMock = mockk<Call>()
+    private val callMock = mockk<Call>(relaxed = true)
 
-    private val callParticipantsMock = mockk<CallParticipants>()
+    private val callParticipantsMock = mockk<CallParticipants>(relaxed = true)
 
-    private val participantMock1 = mockk<CallParticipant>()
+    private val participantMock1 = mockk<CallParticipant>(relaxed = true)
 
-    private val participantMock2 = mockk<CallParticipant>()
+    private val participantMock2 = mockk<CallParticipant>(relaxed = true)
 
-    private val uriMock1 = mockk<Uri>()
+    private val uriMock1 = mockk<Uri>(relaxed = true)
 
-    private val uriMock2 = mockk<Uri>()
+    private val uriMock2 = mockk<Uri>(relaxed = true)
 
     @Before
     fun setUp() {
@@ -47,7 +53,7 @@ class ParticipantMapperTest {
             every { displayImage } returns MutableStateFlow(uriMock2)
         }
     }
-    
+
     @Test
     fun emptyOtherParticipants_toOtherDisplayNames_emptyList() = runTest {
         every { callParticipantsMock.others } returns listOf()
@@ -227,4 +233,153 @@ class ParticipantMapperTest {
         Assert.assertEquals(newExpected, newActual)
     }
 
+    @Test
+    fun `there are no other participant, the only participant in call it's me`() = runTest {
+        val meMock = mockk<CallParticipant.Me> {
+            every { userId } returns "myUserId"
+        }
+        with(callParticipantsMock) {
+            every { others } returns listOf()
+            every { me } returns meMock
+        }
+        every { meMock.state } returns MutableStateFlow(CallParticipant.State.NotInCall)
+
+        val result = flowOf(callMock).toInCallParticipants()
+        val actual = result.first()
+        val expected = listOf(meMock)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `other participants not in call and have no streams, the only participant in call it's me`() =
+        runTest {
+            val meMock = mockk<CallParticipant.Me>(relaxed = true) {
+                every { userId } returns "myUserId"
+            }
+            with(callParticipantsMock) {
+                every { others } returns listOf(participantMock1)
+                every { me } returns meMock
+            }
+            with(participantMock1) {
+                every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
+                every { streams } returns MutableStateFlow(listOf())
+            }
+
+            val result = flowOf(callMock).toInCallParticipants()
+            val actual = result.first()
+            val expected = listOf(meMock)
+            assertEquals(expected, actual)
+        }
+
+    @Test
+    fun `other participants in call, they are in the in call participants`() = runTest {
+        val meMock = mockk<CallParticipant.Me>(relaxed = true) {
+            every { userId } returns "myUserId"
+        }
+        with(callParticipantsMock) {
+            every { others } returns listOf(participantMock1)
+            every { me } returns meMock
+        }
+        with(participantMock1) {
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+            every { streams } returns MutableStateFlow(listOf())
+        }
+
+        val result = flowOf(callMock).toInCallParticipants()
+        val actual = result.first()
+        val expected = listOf(meMock, participantMock1)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `other participants does have streams, they are in the in call participants`() =
+        runTest {
+            val meMock = mockk<CallParticipant.Me>(relaxed = true) {
+                every { userId } returns "myUserId"
+            }
+            with(callParticipantsMock) {
+                every { others } returns listOf(participantMock1)
+                every { me } returns meMock
+            }
+            with(participantMock1) {
+                every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
+                every { streams } returns MutableStateFlow(listOf(mockk(relaxed = true)))
+            }
+
+            val result = flowOf(callMock).toInCallParticipants()
+            val actual = result.first()
+            val expected = listOf(meMock, participantMock1)
+            assertEquals(expected, actual)
+        }
+
+    @Test
+    fun `new participant in call added, they are added in the in call participants`() =
+        runTest {
+            val meMock = mockk<CallParticipant.Me>(relaxed = true) {
+                every { userId } returns "myUserId"
+            }
+            with(callParticipantsMock) {
+                every { others } returns listOf()
+                every { me } returns meMock
+            }
+            with(participantMock1) {
+                every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+                every { streams } returns MutableStateFlow(listOf())
+            }
+
+            val participantsFlow = MutableStateFlow(callParticipantsMock)
+            every { callMock.participants } returns participantsFlow
+
+            val result = flowOf(callMock).toInCallParticipants()
+            val actual = result.first()
+            val expected = listOf(meMock)
+            assertEquals(expected, actual)
+
+            val newCallParticipantsMock = mockk<CallParticipants> {
+                every { others } returns listOf(participantMock1)
+                every { me } returns meMock
+            }
+            participantsFlow.value = newCallParticipantsMock
+            val new = result.first()
+            val newExpected = listOf(meMock, participantMock1)
+            assertEquals(newExpected, new)
+        }
+
+    @Test
+    fun `a in call participant is removed, they are removed in the in call participants`() =
+        runTest {
+            val meMock = mockk<CallParticipant.Me>(relaxed = true) {
+                every { userId } returns "myUserId"
+            }
+            with(callParticipantsMock) {
+                every { others } returns listOf(participantMock1)
+                every { me } returns meMock
+            }
+            with(participantMock1) {
+                every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+                every { streams } returns MutableStateFlow(listOf())
+            }
+
+            val participantsFlow = MutableStateFlow(callParticipantsMock)
+            every { callMock.participants } returns participantsFlow
+
+            val result = flowOf(callMock).toInCallParticipants()
+            val actual = result.first()
+            val expected = listOf(meMock, participantMock1)
+            assertEquals(expected, actual)
+
+            val newCallParticipantsMock = mockk<CallParticipants> {
+                every { others } returns listOf()
+                every { me } returns meMock
+            }
+            participantsFlow.value = newCallParticipantsMock
+            val new = result.first()
+            val newExpected = listOf(meMock)
+            assertEquals(newExpected, new)
+        }
+
+    // a new stream arrives
+    // a stream is removed
+    // state goes to in call
+    // state goes to not in call
 }
