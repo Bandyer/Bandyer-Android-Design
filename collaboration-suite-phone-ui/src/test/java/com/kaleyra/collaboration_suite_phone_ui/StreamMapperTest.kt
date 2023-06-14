@@ -8,6 +8,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doAnyOfMyStreamsIsLive
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doOthersHaveStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.mapToStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toMyStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
@@ -621,4 +622,31 @@ class StreamMapperTest {
         Assert.assertEquals(false, new)
     }
 
+    @Test
+    fun noParticipants_doOthersHaveStreams_false() = runTest {
+        every { callParticipantsMock.others } returns listOf()
+        val callFlow = flowOf(callMock)
+        val actual = callFlow.doOthersHaveStreams().first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun otherHaveNoStreams_doOthersHaveStreams_false() = runTest {
+        every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
+        every { participantMock1.streams } returns MutableStateFlow(listOf())
+        every { participantMock2.streams } returns MutableStateFlow(listOf())
+        val callFlow = flowOf(callMock)
+        val actual = callFlow.doOthersHaveStreams().first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun othersHaveStreams_doOthersHaveStreams_true() = runTest {
+        every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
+        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1))
+        every { participantMock2.streams } returns MutableStateFlow(listOf())
+        val callFlow = flowOf(callMock)
+        val actual = callFlow.doOthersHaveStreams().first()
+        Assert.assertEquals(true, actual)
+    }
 }

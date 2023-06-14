@@ -89,7 +89,7 @@ internal object StreamMapper {
                 }
         }
     }
-    
+
     fun Flow<Call>.doAnyOfMyStreamsIsLive(): Flow<Boolean> {
         return this.flatMapLatest { it.participants }
             .map { it.me }
@@ -112,5 +112,25 @@ internal object StreamMapper {
             }
     }
 
+    fun Flow<Call>.doOthersHaveStreams(): Flow<Boolean> {
+        return this.flatMapLatest { it.participants }
+            .map { it.others }
+            .flatMapLatest { participants ->
+                val map = mutableMapOf<String, Boolean>()
+                if (participants.isEmpty()) flowOf(false)
+                else participants
+                    .map { participant ->
+                        participant.streams.map { Pair(participant, it.isNotEmpty()) }
+                    }
+                    .merge()
+                    .transform { (participant, hasStreams) ->
+                        map[participant.userId] = hasStreams
+                        val values = map.values.toList()
+                        if (values.size == participants.size) {
+                            emit(values.any { it })
+                        }
+                    }
+            }
+    }
 
 }
