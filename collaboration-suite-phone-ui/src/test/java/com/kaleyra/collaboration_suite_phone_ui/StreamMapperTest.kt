@@ -4,18 +4,21 @@ import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.mapToStreamsUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doAnyOfMyStreamsIsLive
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.mapToStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toMyStreamsUi
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.*
 
@@ -529,4 +532,93 @@ class StreamMapperTest {
         )
         Assert.assertEquals(newExpected, newActual)
     }
+
+    @Test
+    fun noStreamIsLive_doAnyOfMyStreamsIsLive_false() = runTest {
+        every { myStreamMock1.state } returns MutableStateFlow(Stream.State.Open)
+        every { myStreamMock2.state } returns MutableStateFlow(Stream.State.Closed)
+        val callFlow = flowOf(callMock)
+        val actual = callFlow.doAnyOfMyStreamsIsLive().first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun oneStreamIsLive_doAnyOfMyStreamsIsLive_true() = runTest {
+        every { myStreamMock1.state } returns MutableStateFlow(Stream.State.Closed)
+        every { myStreamMock2.state } returns MutableStateFlow(Stream.State.Live)
+        val callFlow = flowOf(callMock)
+        val actual = callFlow.doAnyOfMyStreamsIsLive().first()
+        Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun newLiveStreamAdded_doAnyOfMyStreamsIsLive_true() = runTest {
+        every { myStreamMock1.state } returns MutableStateFlow(Stream.State.Closed)
+        every { myStreamMock2.state } returns MutableStateFlow(Stream.State.Live)
+
+        val myStreams = MutableStateFlow(listOf(myStreamMock1))
+        every { participantMeMock.streams } returns myStreams
+        val result = flowOf(callMock).doAnyOfMyStreamsIsLive()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+
+        myStreams.value = listOf(myStreamMock1, myStreamMock2)
+        val new = result.first()
+        Assert.assertEquals(true, new)
+    }
+
+    @Test
+    fun newLiveStreamRemoved_doAnyOfMyStreamsIsLive_false() = runTest {
+        every { myStreamMock1.state } returns MutableStateFlow(Stream.State.Closed)
+        every { myStreamMock2.state } returns MutableStateFlow(Stream.State.Live)
+
+        val myStreams = MutableStateFlow(listOf(myStreamMock1, myStreamMock2))
+        every { participantMeMock.streams } returns myStreams
+        val result = flowOf(callMock).doAnyOfMyStreamsIsLive()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
+
+        myStreams.value = listOf(myStreamMock1)
+        val new = result.first()
+        Assert.assertEquals(false, new)
+    }
+
+    @Test
+    fun doNotHaveStreams_doAnyOfMyStreamsIsLive_false() = runTest {
+        every { participantMeMock.streams } returns MutableStateFlow(listOf())
+        val result = flowOf(callMock).doAnyOfMyStreamsIsLive()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun myStreamGoesLive_doAnyOfMyStreamsIsLive_true() = runTest {
+        val state = MutableStateFlow<Stream.State>(Stream.State.Closed)
+        every { myStreamMock1.state } returns MutableStateFlow(Stream.State.Closed)
+        every { myStreamMock2.state } returns state
+
+        val result = flowOf(callMock).doAnyOfMyStreamsIsLive()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+
+        state.value = Stream.State.Live
+        val new = result.first()
+        Assert.assertEquals(true, new)
+    }
+
+    @Test
+    fun myStreamNoMoreLive_doAnyOfMyStreamsIsLive_false() = runTest {
+        val state = MutableStateFlow<Stream.State>(Stream.State.Live)
+        every { myStreamMock1.state } returns MutableStateFlow(Stream.State.Closed)
+        every { myStreamMock2.state } returns state
+
+        val result = flowOf(callMock).doAnyOfMyStreamsIsLive()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
+
+        state.value = Stream.State.Closed
+        val new = result.first()
+        Assert.assertEquals(false, new)
+    }
+
 }
