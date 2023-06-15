@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.toMyCameraStream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.isConnected
@@ -16,6 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallUiStateM
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper.toWatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
@@ -90,6 +90,21 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
         call
             .isGroupCall()
             .onEach { isGroupCall -> _uiState.update { it.copy(isGroupCall = isGroupCall) } }
+            .launchIn(viewModelScope)
+
+//        combine(
+//            call.hasVideo(),
+//            call.isConnected(),
+//            streams
+//                .map { streams -> streams.map { it.video } }
+//                .map { video -> video.any { it?.isEnabled == true } }
+//        ) { isNotAudioOnly, isConnected, hasAtLeastAVideoEnabled ->
+//            isNotAudioOnly
+//        }.launchIn(viewModelScope)
+
+        call.amIAlone()
+            .debounce(3000)
+            .onEach { amIAlone -> _uiState.update { it.copy(amIAlone = amIAlone) } }
             .launchIn(viewModelScope)
 
         call

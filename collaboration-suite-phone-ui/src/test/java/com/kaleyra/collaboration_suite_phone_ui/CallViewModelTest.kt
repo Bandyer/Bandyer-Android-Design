@@ -282,6 +282,16 @@ class CallViewModelTest {
     }
 
     @Test
+    fun testCallUiState_amIAloneUpdated() = runTest {
+        every { myStreamMock.state } returns MutableStateFlow(Stream.State.Open)
+        val current = viewModel.uiState.first().amIAlone
+        assertEquals(false, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().amIAlone
+        assertEquals(true, new)
+    }
+
+    @Test
     fun testStartMicrophone() = runTest {
         val audioMock = mockk<Input.Audio>(relaxed = true)
         val myStreamMock = mockk<Stream.Mutable>(relaxed = true) {
