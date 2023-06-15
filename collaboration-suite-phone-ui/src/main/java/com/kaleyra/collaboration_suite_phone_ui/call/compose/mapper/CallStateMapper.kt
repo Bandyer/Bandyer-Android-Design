@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -13,11 +14,15 @@ internal object CallStateMapper {
         flatMapLatest { it.state }.map { it is Call.State.Connected }
 
     fun Flow<Call>.toCallStateUi(): Flow<CallStateUi> {
+        var current: CallStateUi = CallStateUi.Disconnected
         return combine(
             flatMapLatest { it.state },
-            flatMapLatest { it.participants }
-        ) { state, participants ->
-            when {
+            flatMapLatest { it.participants },
+            amIAlone()
+        ) { state, participants, amIAlone ->
+            current = when {
+                current is CallStateUi.Dialing && amIAlone -> CallStateUi.Dialing
+                current is CallStateUi.Ringing && amIAlone -> CallStateUi.Ringing
                 state is Call.State.Connected -> CallStateUi.Connected
                 state is Call.State.Reconnecting -> CallStateUi.Reconnecting
                 state is Call.State.Connecting && participants.me == participants.creator() -> CallStateUi.Dialing
@@ -33,8 +38,10 @@ internal object CallStateMapper {
                 state == Call.State.Disconnected.Ended.Error -> CallStateUi.Disconnected.Ended.Error
                 state == Call.State.Disconnected.Ended -> CallStateUi.Disconnected.Ended
                 state is Call.State.Disconnected && participants.me != participants.creator() -> CallStateUi.Ringing
-                else -> CallStateUi.Disconnected
+                state == Call.State.Disconnected -> CallStateUi.Disconnected
+                else -> current
             }
+            current
         }
     }
 }
