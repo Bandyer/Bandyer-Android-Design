@@ -16,5 +16,7 @@ data class PreCallUiState(
     val participants: ImmutableList<String> = ImmutableList(listOf()),
     val watermarkInfo: WatermarkInfo? = null,
     val recording: RecordingTypeUi? = null,
+    val isLink: Boolean = false,
+    val isConnecting: Boolean = false,
     override val userMessages: UserMessages = UserMessages()
 ) : UiState

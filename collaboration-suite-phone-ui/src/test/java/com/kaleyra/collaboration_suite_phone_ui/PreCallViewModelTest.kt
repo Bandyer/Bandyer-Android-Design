@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -20,7 +19,6 @@ import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -64,11 +62,11 @@ class PreCallViewModelTest {
 
     private val callParticipantsMock = mockk<CallParticipants>()
 
-    private val participantMeMock = mockk<CallParticipant.Me>()
+    private val participantMeMock = mockk<CallParticipant.Me>(relaxed = true)
 
-    private val participantMock1 = mockk<CallParticipant>()
+    private val participantMock1 = mockk<CallParticipant>(relaxed = true)
 
-    private val participantMock2 = mockk<CallParticipant>()
+    private val participantMock2 = mockk<CallParticipant>(relaxed = true)
 
     private val recordingMock = mockk<Call.Recording>()
 
@@ -120,22 +118,25 @@ class PreCallViewModelTest {
             every { video } returns MutableStateFlow(myVideoMock)
         }
         with(participantMeMock) {
-            every { userId } returns "userId1"
+            every { userId } returns "myUserID"
             every { streams } returns MutableStateFlow(listOf(myStreamMock))
             every { displayName } returns MutableStateFlow("myDisplayName")
             every { displayImage } returns MutableStateFlow(uriMock1)
+            every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
         }
         with(participantMock1) {
             every { userId } returns "userId1"
             every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
             every { displayName } returns MutableStateFlow("displayName1")
             every { displayImage } returns MutableStateFlow(uriMock2)
+            every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
         }
         with(participantMock2) {
             every { userId } returns "userId2"
             every { streams } returns MutableStateFlow(listOf(streamMock3))
             every { displayName } returns MutableStateFlow("displayName2")
             every { displayImage } returns MutableStateFlow(uriMock3)
+            every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
         }
         with(themeMock) {
             every { day } returns mockk {
@@ -184,6 +185,27 @@ class PreCallViewModelTest {
         val new = viewModel.uiState.first().recording
         val expected = RecordingTypeUi.OnConnect
         assertEquals(expected, new)
+    }
+
+    @Test
+    fun testPreCallUiState_isLinkUpdated() = runTest {
+        every { callMock.isLink } returns true
+        val current = viewModel.uiState.first().isConnecting
+        assertEquals(false, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().isConnecting
+        assertEquals(true, new)
+    }
+
+    @Test
+    fun testPreCallUiState_isConnectingUpdated() = runTest {
+        every { callParticipantsMock.others } returns listOf(participantMock1)
+        every { participantMock1.state } returns MutableStateFlow(CallParticipant.State.InCall)
+        val current = viewModel.uiState.first().isConnecting
+        assertEquals(false, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().isConnecting
+        assertEquals(true, new)
     }
 
     @Test

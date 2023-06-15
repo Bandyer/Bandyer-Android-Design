@@ -3,9 +3,11 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayImages
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayNames
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingTypeUi
@@ -16,7 +18,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 
 internal class PreCallViewModel(configure: suspend () -> Configuration) : BaseViewModel<PreCallUiState>(configure) {
-    override fun initialState() = PreCallUiState()
+    override fun initialState() = PreCallUiState(isLink = call.getValue()?.isLink ?: false)
 
     init {
         theme
@@ -45,8 +47,14 @@ internal class PreCallViewModel(configure: suspend () -> Configuration) : BaseVi
         call
             .toOtherDisplayImages()
             .onEach { images ->
-                val avatar = images.firstOrNull()?.let { ImmutableUri(it) }
-                _uiState.update { it.copy(avatar = avatar) } }
+                val avatar = images.firstOrNull()
+                if (avatar == null || uiState.value.avatar?.value == avatar) return@onEach
+                _uiState.update { it.copy(avatar = ImmutableUri(avatar)) } }
+            .launchIn(viewModelScope)
+
+        call
+            .toInCallParticipants()
+            .onEach { participants -> _uiState.update { it.copy(isConnecting = participants.size > 1) } }
             .launchIn(viewModelScope)
     }
 
