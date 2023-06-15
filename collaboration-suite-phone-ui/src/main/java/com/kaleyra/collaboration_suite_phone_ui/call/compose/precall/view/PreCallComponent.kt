@@ -51,11 +51,10 @@ internal fun PreCallComponent(
                 )
             }
 
-            // TODO how to show connecting when user answered on dialing?
             CallInfoWidget(
                 onBackPressed = onBackPressed,
                 title = uiState.participants.value.joinToString(separator = ", "),
-                subtitle = subtitle,
+                subtitle = if (!uiState.isLink && !uiState.isConnecting) subtitle else stringResource(id = R.string.kaleyra_call_status_connecting),
                 watermarkInfo = uiState.watermarkInfo,
                 recording = false,
                 modifier = Modifier.statusBarsPadding()

@@ -6,11 +6,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
 import org.junit.Test
@@ -55,6 +55,20 @@ abstract class PreCallComponentTest {
         uiState.value = PreCallUiState(video = video)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertIsDisplayed()
         composeTestRule.findAvatar().assertDoesNotExist()
+    }
+
+    @Test
+    fun isLinkTrue_connectingIsDisplayed() {
+        uiState.value = PreCallUiState(isLink = true)
+        val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
+        composeTestRule.onNodeWithText(connecting).assertIsDisplayed()
+    }
+
+    @Test
+    fun isConnectingTrue_connectingIsDisplayed() {
+        uiState.value = PreCallUiState(isConnecting = true)
+        val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
+        composeTestRule.onNodeWithText(connecting).assertIsDisplayed()
     }
 
 }
