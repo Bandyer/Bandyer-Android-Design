@@ -412,15 +412,22 @@ class CallComponentTest {
     }
 
     @Test
-    fun callStateReconnecting_youAreAloneIsDisplayed() {
-        callUiState = CallUiState(callState = CallStateUi.Reconnecting, featuredStreams =  ImmutableList(listOf(streamMock1)))
+    fun amIAloneTrue_youAreAloneIsDisplayed() {
+        callUiState = CallUiState(callState = mockk(), amIAlone = true, featuredStreams =  ImmutableList(listOf(streamMock1)))
         val text = composeTestRule.activity.getString(R.string.kaleyra_call_left_alone)
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
     @Test
-    fun callStateReconnectingAndVideoDisabled_youAreAloneIsDisplayedUnderTheVideoAvatar() {
-        callUiState = CallUiState(callState = CallStateUi.Reconnecting, featuredStreams = ImmutableList(listOf(streamMock1.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false)))))
+    fun callStateEndedAndAmIAloneTrue_youAreAloneDoesNotExists() {
+        callUiState = CallUiState(callState = CallStateUi.Disconnected.Ended, amIAlone = true, featuredStreams =  ImmutableList(listOf(streamMock1)))
+        val text = composeTestRule.activity.getString(R.string.kaleyra_call_left_alone)
+        composeTestRule.onNodeWithText(text).assertDoesNotExist()
+    }
+
+    @Test
+    fun amIAloneTrueAndVideoDisabled_youAreAloneIsDisplayedUnderTheVideoAvatar() {
+        callUiState = CallUiState(callState = mockk(), amIAlone = true, featuredStreams = ImmutableList(listOf(streamMock1.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false)))))
         val text = composeTestRule.activity.getString(R.string.kaleyra_call_left_alone)
         val avatar = composeTestRule.activity.getString(R.string.kaleyra_avatar)
         val avatarBottom = composeTestRule.onNodeWithContentDescription(avatar).getUnclippedBoundsInRoot().bottom

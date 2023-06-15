@@ -165,7 +165,7 @@ internal fun CallComponent(
                                 }
                             )
 
-                            if (callUiState.callState is CallStateUi.Reconnecting) {
+                            if (callUiState.amIAlone && callUiState.callState !is CallStateUi.Disconnected.Ended) {
                                 val padding by animateDpAsState(targetValue = if (stream.video?.isEnabled == false) YouAreAloneAvatarPadding else 0.dp)
                                 Text(
                                     text = stringResource(id = R.string.kaleyra_call_left_alone),
