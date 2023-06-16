@@ -2,9 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.*
-import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.Theme
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
@@ -14,7 +12,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCa
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,60 +19,26 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class PreCallViewModelTest {
+internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCallUiState<T>> {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     var mainDispatcherRule = MainDispatcherRule()
 
-    private data class PreCallUiStateImpl(
-        override val video: VideoUi? = null,
-        override val avatar: ImmutableUri? = null,
-        override val participants: ImmutableList<String> = ImmutableList(listOf()),
-        override val watermarkInfo: WatermarkInfo? = null,
-        override val isLink: Boolean = false,
-        override val isConnecting: Boolean = false,
-        override val userMessages: UserMessages = UserMessages()
-    ) : PreCallUiState<PreCallUiStateImpl> {
-        override fun clone(
-            video: VideoUi?,
-            avatar: ImmutableUri?,
-            participants: ImmutableList<String>,
-            watermarkInfo: WatermarkInfo?,
-            isLink: Boolean,
-            isConnecting: Boolean,
-            userMessages: UserMessages
-        ): PreCallUiStateImpl {
-            return copy(
-                video = video,
-                avatar = avatar,
-                participants = participants,
-                watermarkInfo = watermarkInfo,
-                isLink = isLink,
-                isConnecting = isConnecting,
-                userMessages = userMessages
-            )
-        }
+    protected lateinit var viewModel: VM
 
-    }
+    protected val phoneBoxMock = mockk<PhoneBoxUI>()
 
-    private class PreCallViewModelImpl(configure: suspend () -> Configuration): PreCallViewModel<PreCallUiStateImpl>(configure) {
-        override fun initialState() = PreCallUiStateImpl()
+    protected val companyNameMock = "Kaleyra"
 
-    }
+    protected val themeMock = mockk<Theme>()
 
-    private lateinit var viewModel: PreCallViewModel<PreCallUiStateImpl>
-
-    private val phoneBoxMock = mockk<PhoneBoxUI>()
-
-    private val callMock = mockk<CallUI>(relaxed = true)
+    protected val callMock = mockk<CallUI>(relaxed = true)
 
     private val uriMock1 = mockk<Uri>()
 
@@ -105,25 +68,13 @@ class PreCallViewModelTest {
 
     private val participantMock2 = mockk<CallParticipant>(relaxed = true)
 
-    private val recordingMock = mockk<Call.Recording>()
-
-    private val companyNameMock = "Kaleyra"
-
-    private val themeMock = mockk<Theme>()
-
     private val dayLogo = mockk<Uri>()
 
     private val nightLogo = mockk<Uri>()
 
-    @Before
-    fun setUp() {
-        viewModel = spyk(PreCallViewModelImpl { Configuration.Success(phoneBoxMock, mockk(), MutableStateFlow(companyNameMock), MutableStateFlow(themeMock), mockk()) })
+    open fun setUp() {
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
-        every { recordingMock.type } returns Call.Recording.Type.OnConnect
-        with(callMock) {
-            every { participants } returns MutableStateFlow(callParticipantsMock)
-            every { extras.recording } returns recordingMock
-        }
+        every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
         with(callParticipantsMock) {
             every { others } returns listOf(participantMock1, participantMock2)
             every { me } returns participantMeMock
@@ -185,8 +136,7 @@ class PreCallViewModelTest {
         }
     }
 
-    @After
-    fun tearDown() {
+    open fun tearDown() {
         unmockkAll()
     }
 
@@ -213,16 +163,6 @@ class PreCallViewModelTest {
         val expected = ImmutableList(listOf("displayName1", "displayName2"))
         assertEquals(expected, new)
     }
-
-//    @Test
-//    fun testPreCallUiState_recordingUpdated() = runTest {
-//        val current = viewModel.uiState.first().recording
-//        assertEquals(null, current)
-//        advanceUntilIdle()
-//        val new = viewModel.uiState.first().recording
-//        val expected = RecordingTypeUi.OnConnect
-//        assertEquals(expected, new)
-//    }
 
     @Test
     fun testPreCallUiState_isLinkUpdated() = runTest {
@@ -262,17 +202,4 @@ class PreCallViewModelTest {
         assertEquals(WatermarkInfo(text = "Kaleyra", logo = Logo(dayLogo, nightLogo)), actual)
     }
 
-//    @Test
-//    fun testCallAnswer() = runTest {
-//        advanceUntilIdle()
-//        viewModel.answer()
-//        verify(exactly = 1) { callMock.connect() }
-//    }
-//
-//    @Test
-//    fun testCallDecline() = runTest {
-//        advanceUntilIdle()
-//        viewModel.decline()
-//        verify(exactly = 1) { callMock.end() }
-//    }
 }
