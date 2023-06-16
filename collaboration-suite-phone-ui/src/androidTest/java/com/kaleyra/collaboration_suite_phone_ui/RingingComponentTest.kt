@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,10 +9,13 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.ringing.RingingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.RingingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
 import org.junit.Before
@@ -20,12 +24,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class RingingComponentTest: PreCallComponentTest() {
+class RingingComponentTes {
 
     @get:Rule
-    override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    override var uiState = mutableStateOf(PreCallUiState(video = streamUiMock.video))
+    var uiState by mutableStateOf(RingingUiState(video = streamUiMock.video))
 
     private var timerMillis by mutableStateOf(0L)
 
@@ -39,7 +43,7 @@ class RingingComponentTest: PreCallComponentTest() {
     fun setUp() {
         composeTestRule.setContent {
             RingingComponent(
-                uiState = uiState.value,
+                uiState = uiState,
                 tapToAnswerTimerMillis = timerMillis,
                 onBackPressed = { backPressed = true },
                 onAnswerClick = { answerClicked = true },
@@ -50,11 +54,56 @@ class RingingComponentTest: PreCallComponentTest() {
 
     @After
     fun tearDown() {
-        uiState.value = PreCallUiState(video = streamUiMock.video)
+        uiState = RingingUiState(video = streamUiMock.video)
         timerMillis = 0L
         backPressed = false
         answerClicked = false
         declineClicked = false
+    }
+
+    @Test
+    fun videoNull_avatarDisplayed() {
+        uiState = RingingUiState(video = null)
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun videoViewNull_avatarDisplayed() {
+        val video = VideoUi(id = "videoId", view = null, isEnabled = false)
+        uiState = RingingUiState(video = video)
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun videoViewNotNullAndDisabled_avatarIsDisplayed() {
+        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false)
+        uiState = RingingUiState(video = video)
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun videoViewNotNullAndEnabled_streamIsDisplayed() {
+        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
+        uiState = RingingUiState(video = video)
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertIsDisplayed()
+        composeTestRule.findAvatar().assertDoesNotExist()
+    }
+
+    @Test
+    fun isLinkTrue_connectingIsDisplayed() {
+        uiState = RingingUiState(isLink = true)
+        val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
+        composeTestRule.onNodeWithText(connecting).assertIsDisplayed()
+    }
+
+    @Test
+    fun isConnectingTrue_connectingIsDisplayed() {
+        uiState = RingingUiState(isConnecting = true)
+        val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
+        composeTestRule.onNodeWithText(connecting).assertIsDisplayed()
     }
 
     @Test
@@ -119,7 +168,7 @@ class RingingComponentTest: PreCallComponentTest() {
 
     @Test
     fun callStateRinging_otherParticipantsUsernamesAreDisplayed() {
-        uiState.value = PreCallUiState(participants = ImmutableList(listOf("user1", "user2")))
+        uiState = RingingUiState(participants = ImmutableList(listOf("user1", "user2")))
         composeTestRule.onNodeWithContentDescription("user1, user2").assertIsDisplayed()
     }
 
@@ -128,9 +177,9 @@ class RingingComponentTest: PreCallComponentTest() {
         val resources = composeTestRule.activity.resources
         val ringingQuantityOne = resources.getQuantityString(R.plurals.kaleyra_call_incoming_status_ringing, 1)
         val ringingQuantityOther = resources.getQuantityString(R.plurals.kaleyra_call_incoming_status_ringing, 2)
-        uiState.value = PreCallUiState(participants = ImmutableList(listOf("user1")))
+        uiState = RingingUiState(participants = ImmutableList(listOf("user1")))
         composeTestRule.onNodeWithText(ringingQuantityOne).assertIsDisplayed()
-        uiState.value = PreCallUiState(participants = ImmutableList(listOf("user1", "user2")))
+        uiState = RingingUiState(participants = ImmutableList(listOf("user1", "user2")))
         composeTestRule.onNodeWithText(ringingQuantityOther).assertIsDisplayed()
     }
 
@@ -144,9 +193,9 @@ class RingingComponentTest: PreCallComponentTest() {
         recordingValue: RecordingTypeUi,
         expectedText: String
     ) {
-        uiState.value = PreCallUiState(recording = null)
+        uiState = RingingUiState(recording = null)
         onNodeWithText(expectedText).assertDoesNotExist()
-        uiState.value = PreCallUiState(recording = recordingValue)
+        uiState = RingingUiState(recording = recordingValue)
         onNodeWithText(expectedText).assertIsDisplayed()
     }
 
