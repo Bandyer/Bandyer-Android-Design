@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
 import kotlinx.coroutines.flow.Flow
@@ -14,19 +15,16 @@ internal object CallStateMapper {
         flatMapLatest { it.state }.map { it is Call.State.Connected }
 
     fun Flow<Call>.toCallStateUi(): Flow<CallStateUi> {
-        var current: CallStateUi = CallStateUi.Disconnected
         return combine(
             flatMapLatest { it.state },
             flatMapLatest { it.participants },
             amIAlone()
         ) { state, participants, amIAlone ->
-            current = when {
-                current is CallStateUi.Dialing && amIAlone -> CallStateUi.Dialing
-                current is CallStateUi.Ringing && amIAlone -> CallStateUi.Ringing
+            when {
+                isDialing(state, participants, amIAlone) -> CallStateUi.Dialing
+                isRinging(state, participants, amIAlone) -> CallStateUi.Ringing(isConnecting = state != Call.State.Disconnected)
                 state is Call.State.Connected -> CallStateUi.Connected
                 state is Call.State.Reconnecting -> CallStateUi.Reconnecting
-                state is Call.State.Connecting && participants.me == participants.creator() -> CallStateUi.Dialing
-                state is Call.State.Connecting -> CallStateUi.Connecting
                 state is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> CallStateUi.Disconnected.Ended.AnsweredOnAnotherDevice
                 state is Call.State.Disconnected.Ended.Declined -> CallStateUi.Disconnected.Ended.Declined
                 state is Call.State.Disconnected.Ended.LineBusy -> CallStateUi.Disconnected.Ended.LineBusy
@@ -37,11 +35,15 @@ internal object CallStateMapper {
                 state is Call.State.Disconnected.Ended.Kicked -> CallStateUi.Disconnected.Ended.Kicked(state.userId)
                 state == Call.State.Disconnected.Ended.Error -> CallStateUi.Disconnected.Ended.Error
                 state == Call.State.Disconnected.Ended -> CallStateUi.Disconnected.Ended
-                state is Call.State.Disconnected && participants.me != participants.creator() -> CallStateUi.Ringing
-                state == Call.State.Disconnected -> CallStateUi.Disconnected
-                else -> current
+                else -> CallStateUi.Disconnected
             }
-            current
         }
     }
+
+    private fun isDialing(state: Call.State, participants: CallParticipants, amIAlone: Boolean): Boolean =
+        ((state is Call.State.Connected && amIAlone) || state is Call.State.Connecting) && participants.me == participants.creator()
+
+    private fun isRinging(state: Call.State, participants: CallParticipants, amIAlone: Boolean): Boolean =
+        ((state is Call.State.Connected && amIAlone) || state is Call.State.Connecting || state == Call.State.Disconnected) && participants.me != participants.creator()
+
 }

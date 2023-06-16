@@ -84,7 +84,7 @@ class PipScreenTest {
 
     @Test
     fun callStateRinging_ringingTextIsDisplayed() {
-        callState = CallStateUi.Ringing
+        callState = CallStateUi.Ringing()
         val text = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_incoming_status_ringing, 1)
         composeTestRule.onNodeWithContentDescription(text).assertIsDisplayed()
     }

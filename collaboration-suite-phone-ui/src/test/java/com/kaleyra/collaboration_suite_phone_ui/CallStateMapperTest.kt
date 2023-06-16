@@ -88,11 +88,11 @@ class CallStateMapperTest {
     }
 
     @Test
-    fun stateConnectingAndIAmNotCallCreator_toCallStateUi_callStateConnecting() = runTest {
+    fun stateConnectingAndIAmNotCallCreator_toCallStateUi_callStateRinging() = runTest {
         every { callMock.state } returns MutableStateFlow(Call.State.Connecting)
         every { callParticipantsMock.creator() } returns mockk()
         val result = callFlow.toCallStateUi()
-        Assert.assertEquals(CallStateUi.Connecting, result.first())
+        Assert.assertEquals(CallStateUi.Ringing(true), result.first())
     }
 
     @Test
@@ -163,21 +163,37 @@ class CallStateMapperTest {
         every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
         every { callParticipantsMock.creator() } returns mockk()
         val result = callFlow.toCallStateUi()
-        Assert.assertEquals(CallStateUi.Ringing, result.first())
+        Assert.assertEquals(CallStateUi.Ringing(false), result.first())
     }
 
     @Test
-    fun `keep ringing state if I am alone`() = runTest {
-        val stateFlow = MutableStateFlow<Call.State>(Call.State.Disconnected)
-        every { callMock.state } returns stateFlow
+    fun stateDisconnectedEndedAndIAmNotCallCreator_toCallStateUi_callStateEnded() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended)
+        every { callParticipantsMock.creator() } returns mockk()
+        val result = callFlow.toCallStateUi()
+        Assert.assertEquals(CallStateUi.Disconnected.Ended, result.first())
+    }
+
+    @Test
+    fun stateConnectedAndIAmNotCallCreatorAndIAmAlone_toCallStateUi_callStateRinging() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
         every { callParticipantsMock.creator() } returns mockk()
         with(StreamMapper) {
             every { callFlow.amIAlone() } returns flowOf(true)
         }
         val result = callFlow.toCallStateUi()
-        Assert.assertEquals(CallStateUi.Ringing, result.first())
-        stateFlow.value = Call.State.Connecting
-        Assert.assertEquals(CallStateUi.Ringing, result.first())
+        Assert.assertEquals(CallStateUi.Ringing(true), result.first())
+    }
+
+    @Test
+    fun stateConnectedAndIAmCallCreatorAndIAmAlone_toCallStateUi_callStateDialing() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
+        every { callParticipantsMock.creator() } returns participantMeMock
+        with(StreamMapper) {
+            every { callFlow.amIAlone() } returns flowOf(true)
+        }
+        val result = callFlow.toCallStateUi()
+        Assert.assertEquals(CallStateUi.Dialing, result.first())
     }
 
     @Test

@@ -215,7 +215,7 @@ internal fun CallComponent(
 
 private fun CallUiState.shouldShowCallInfo(): State<Boolean> {
     return derivedStateOf {
-        callState is CallStateUi.Reconnecting || callState is CallStateUi.Connecting || callState is CallStateUi.Disconnected || recording?.isRecording() ?: false
+        callState is CallStateUi.Reconnecting || callState is CallStateUi.Disconnected || recording?.isRecording() ?: false
     }
 }
 
@@ -228,7 +228,7 @@ private fun CallUiState.shouldHideWatermark(): State<Boolean> {
 @Composable
 private fun titleFor(callState: CallStateUi) =
     when (callState) {
-        CallStateUi.Connecting, CallStateUi.Reconnecting -> stringResource(id = R.string.kaleyra_call_status_connecting)
+        CallStateUi.Reconnecting -> stringResource(id = R.string.kaleyra_call_status_connecting)
         is CallStateUi.Disconnected -> stringResource(id = R.string.kaleyra_call_status_ended)
         else -> ""
     }

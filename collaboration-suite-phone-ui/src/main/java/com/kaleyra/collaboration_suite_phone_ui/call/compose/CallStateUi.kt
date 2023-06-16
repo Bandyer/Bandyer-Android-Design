@@ -2,11 +2,9 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 sealed class CallStateUi {
 
-    object Ringing : CallStateUi()
+    data class Ringing(val isConnecting: Boolean = false) : CallStateUi()
 
     object Dialing : CallStateUi()
-
-    object Connecting : CallStateUi()
 
     object Connected : CallStateUi()
 

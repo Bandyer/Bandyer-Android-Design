@@ -78,7 +78,7 @@ class CallComponentTest {
 
     @Test
     fun userClicksCallInfoWidgetBackButton_onBackPressedInvoked() {
-        callUiState = CallUiState(callState = CallStateUi.Connecting)
+        callUiState = CallUiState(callState = CallStateUi.Reconnecting)
         composeTestRule.onNodeWithContentDescription(getBackText()).performClick()
         assert(isBackPressed)
     }
@@ -156,7 +156,7 @@ class CallComponentTest {
         )
         val streamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
         val streamTwoTextTop = composeTestRule.onNodeWithText("user2", useUnmergedTree = true).getBoundsInRoot().top
-        callUiState = CallUiState(callState = CallStateUi.Connecting, featuredStreams = featuredStreamsMock)
+        callUiState = CallUiState(callState = CallStateUi.Reconnecting, featuredStreams = featuredStreamsMock)
         callComponentState = defaultState(
             featuredStreamsCount = featuredStreamsMock.count(),
             configuration = configurationMock,
@@ -181,7 +181,7 @@ class CallComponentTest {
         )
         val streamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
         val streamTwoTextTop = composeTestRule.onNodeWithText("user2", useUnmergedTree = true).getBoundsInRoot().top
-        callUiState = CallUiState(callState = CallStateUi.Connecting, featuredStreams = featuredStreamsMock)
+        callUiState = CallUiState(callState = CallStateUi.Reconnecting, featuredStreams = featuredStreamsMock)
         callComponentState = defaultState(
             featuredStreamsCount = featuredStreamsMock.count(),
             configuration = configurationMock,
@@ -199,7 +199,7 @@ class CallComponentTest {
         callUiState = CallUiState(callState = CallStateUi.Connected, featuredStreams = featuredStreamsMock, fullscreenStream = streamMock1)
         val streamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
         callUiState = CallUiState(
-            callState = CallStateUi.Connecting,
+            callState = CallStateUi.Reconnecting,
             featuredStreams = featuredStreamsMock,
             fullscreenStream = streamMock1
         )
@@ -216,7 +216,7 @@ class CallComponentTest {
     fun watermarkInfoNotNull_titleIsDisplayedBelowWatermark() {
         val uri = Uri.parse("com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo")
         callUiState = CallUiState(
-            callState = CallStateUi.Connecting,
+            callState = CallStateUi.Reconnecting,
             watermarkInfo = WatermarkInfo(logo = Logo(uri, uri), text = "watermark")
         )
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
@@ -229,7 +229,7 @@ class CallComponentTest {
 
     @Test
     fun watermarkInfoNull_titleIsDisplayedToEndOfBackButton() {
-        callUiState = CallUiState(callState = CallStateUi.Connecting, watermarkInfo = null)
+        callUiState = CallUiState(callState = CallStateUi.Reconnecting, watermarkInfo = null)
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
         val subtitleLeft = composeTestRule.onNodeWithContentDescription(connecting).getBoundsInRoot().left
         val backRight = composeTestRule.findBackButton().getBoundsInRoot().right
@@ -237,13 +237,7 @@ class CallComponentTest {
     }
 
     // NB: The title is actually an AndroidView, because there is not text ellipsize in compose
-    // It is findable by using the content description because it is added in the AndroidView's semantics
-    @Test
-    fun callStateConnecting_connectingTitleIsDisplayed() {
-        callUiState = CallUiState(callState = CallStateUi.Connecting)
-        composeTestRule.assertConnectingTitleIsDisplayed()
-    }
-
+    // It is findable by using the content description because it is added in the AndroidView's semantic
     @Test
     fun callStateReconnecting_connectingTitleIsDisplayed() {
         callUiState = CallUiState(CallStateUi.Reconnecting)
@@ -365,7 +359,7 @@ class CallComponentTest {
 
     @Test
     fun callStateConnecting_callInfoWidgetIsDisplayed() {
-        callUiState = CallUiState(callState = CallStateUi.Connecting)
+        callUiState = CallUiState(callState = CallStateUi.Reconnecting)
         composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
     }
 
