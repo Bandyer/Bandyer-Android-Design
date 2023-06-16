@@ -33,7 +33,7 @@ internal fun CallScreenContent(
             }
         ) { target ->
             when(target) {
-                CallStateUi.Ringing -> RingingComponent(onBackPressed = onBackPressed)
+                is CallStateUi.Ringing -> RingingComponent(onBackPressed = onBackPressed)
                 CallStateUi.Dialing -> DialingComponent(onBackPressed = onBackPressed)
                 else -> CallComponent(maxWidth = maxWidth, onBackPressed = onBackPressed, onStreamFullscreenClick = onStreamFullscreenClick)
             }

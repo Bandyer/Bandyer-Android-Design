@@ -51,7 +51,7 @@ class CallScreenContentTest {
 
     @Test
     fun callStateRinging_ringingContentIsDisplayed() {
-        callState = CallStateUi.Ringing
+        callState = CallStateUi.Ringing()
         composeTestRule.onNodeWithTag(RingingContentTag).assertIsDisplayed()
     }
 
@@ -59,12 +59,6 @@ class CallScreenContentTest {
     fun callStateDialing_dialingContentIsDisplayed() {
         callState = CallStateUi.Dialing
         composeTestRule.onNodeWithTag(DialingContentTag).assertIsDisplayed()
-    }
-
-    @Test
-    fun callStateConnecting_callContentIsDisplayed() {
-        callState = CallStateUi.Connecting
-        composeTestRule.onNodeWithTag(CallComponentTag).assertIsDisplayed()
     }
 
     @Test
@@ -147,7 +141,7 @@ class CallScreenContentTest {
 
     @Test
     fun callStateRinging_callInfoWidgetIsDisplayed() {
-        callState = CallStateUi.Ringing
+        callState = CallStateUi.Ringing()
         composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
     }
 
@@ -160,12 +154,6 @@ class CallScreenContentTest {
     @Test
     fun callStateReconnecting_callInfoWidgetIsDisplayed() {
         callState = CallStateUi.Reconnecting
-        composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
-    }
-
-    @Test
-    fun callStateConnecting_callInfoWidgetIsDisplayed() {
-        callState = CallStateUi.Connecting
         composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
     }
 
@@ -245,13 +233,6 @@ class CallScreenContentTest {
     }
 
     @Test
-    fun callStateConnecting_userClicksInfoWidgetBackButton_onBackPressedInvoked() {
-        callState = CallStateUi.Connecting
-        composeTestRule.findBackButton().performClick()
-        assert(backPressed)
-    }
-
-    @Test
     fun callStateDialing_userClicksInfoWidgetBackButton_onBackPressedInvoked() {
         callState = CallStateUi.Dialing
         composeTestRule.findBackButton().performClick()
@@ -260,7 +241,7 @@ class CallScreenContentTest {
 
     @Test
     fun callStateRinging_userClicksInfoWidgetBackButton_onBackPressedInvoked() {
-        callState = CallStateUi.Ringing
+        callState = CallStateUi.Ringing()
         composeTestRule.findBackButton().performClick()
         assert(backPressed)
     }
