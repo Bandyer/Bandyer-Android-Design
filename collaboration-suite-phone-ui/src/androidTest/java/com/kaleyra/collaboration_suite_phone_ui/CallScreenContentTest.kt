@@ -9,8 +9,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.dialing.DialingContentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.ringing.RingingContentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.DialingContentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.RingingContentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.every

@@ -8,8 +8,12 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.viewmod
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.mockCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel.CallActionsViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.view.DialingUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.viewmodel.DialingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.viewmodel.RingingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
@@ -30,7 +34,8 @@ import org.junit.runner.Description
 class MockCallViewModelsStatesRule : TestWatcher() {
     override fun starting(description: Description) {
         mockkObject(CallViewModel)
-        mockkObject(PreCallViewModel)
+        mockkObject(DialingViewModel)
+        mockkObject(RingingViewModel)
         mockkObject(ScreenShareViewModel)
         mockkObject(AudioOutputViewModel)
         mockkObject(CallActionsViewModel)
@@ -41,9 +46,14 @@ class MockCallViewModelsStatesRule : TestWatcher() {
                 every { uiState } returns MutableStateFlow(CallUiState())
             }
         }
-        every { PreCallViewModel.provideFactory(any()) } returns mockk {
-            every { create<PreCallViewModel>(any(), any()) } returns mockk(relaxed = true) {
-                every { uiState } returns MutableStateFlow(PreCallUiState())
+        every { DialingViewModel.provideFactory(any()) } returns mockk {
+            every { create<DialingViewModel>(any(), any()) } returns mockk(relaxed = true) {
+                every { uiState } returns MutableStateFlow(DialingUiState())
+            }
+        }
+        every { RingingViewModel.provideFactory(any()) } returns mockk {
+            every { create<RingingViewModel>(any(), any()) } returns mockk(relaxed = true) {
+                every { uiState } returns MutableStateFlow(RingingUiState())
             }
         }
         every { ScreenShareViewModel.provideFactory(any()) } returns mockk {

@@ -9,8 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.dialing.DialingComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.ringing.RingingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.DialingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.RingingComponent
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
