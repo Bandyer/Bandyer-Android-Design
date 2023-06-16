@@ -1,47 +1,41 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayImages
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayNames
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toMyStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper.toWatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 
-internal class PreCallViewModel(configure: suspend () -> Configuration) : BaseViewModel<PreCallUiState>(configure) {
-    override fun initialState() = PreCallUiState(isLink = call.getValue()?.isLink ?: false)
+internal abstract class PreCallViewModel<T : PreCallUiState<T>>(configure: suspend () -> Configuration) : BaseViewModel<T>(configure) {
+
+    abstract override fun initialState(): T
 
     init {
         theme
             .toWatermarkInfo(companyName)
-            .onEach { watermarkInfo -> _uiState.update { it.copy(watermarkInfo = watermarkInfo) } }
+            .onEach { watermarkInfo -> _uiState.update { it.clone(watermarkInfo = watermarkInfo) } }
             .launchIn(viewModelScope)
 
         call
             .toMyStreamsUi()
-            .onEach { streams -> _uiState.update { it.copy(video = streams.firstOrNull()?.video) } }
+            .onEach { streams -> _uiState.update { it.clone(video = streams.firstOrNull()?.video) } }
             .launchIn(viewModelScope)
 
         call
             .toOtherDisplayNames()
             .onEach { names ->
                 if (uiState.value.participants.value == names) return@onEach
-                _uiState.update { it.copy(participants = ImmutableList(names)) }
+                _uiState.update { it.clone(participants = ImmutableList(names)) }
             }
-            .launchIn(viewModelScope)
-
-        call
-            .toRecordingTypeUi()
-            .onEach { rec -> _uiState.update { it.copy(recording = rec) } }
             .launchIn(viewModelScope)
 
         call
@@ -49,29 +43,13 @@ internal class PreCallViewModel(configure: suspend () -> Configuration) : BaseVi
             .onEach { images ->
                 val avatar = images.firstOrNull()
                 if (avatar == null || uiState.value.avatar?.value == avatar) return@onEach
-                _uiState.update { it.copy(avatar = ImmutableUri(avatar)) } }
+                _uiState.update { it.clone(avatar = ImmutableUri(avatar)) }
+            }
             .launchIn(viewModelScope)
 
         call
             .toInCallParticipants()
-            .onEach { participants -> _uiState.update { it.copy(isConnecting = participants.size > 1) } }
+            .onEach { participants -> _uiState.update { it.clone(isConnecting = participants.size > 1) } }
             .launchIn(viewModelScope)
-    }
-
-    fun answer() {
-        call.getValue()?.connect()
-    }
-
-    fun decline() {
-        call.getValue()?.end()
-    }
-
-    companion object {
-        fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return PreCallViewModel(configure) as T
-            }
-        }
     }
 }
