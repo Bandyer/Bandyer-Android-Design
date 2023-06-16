@@ -1,16 +1,25 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import android.view.View
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.dialing.DialingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.DialingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.view.DialingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
 import org.junit.Before
@@ -19,12 +28,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class DialingComponentTest: PreCallComponentTest() {
+class DialingComponentTest {
 
     @get:Rule
-    override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    override var uiState = mutableStateOf(PreCallUiState(video = streamUiMock.video))
+    private var uiState by mutableStateOf(DialingUiState(video = streamUiMock.video))
 
     private var backPressed = false
 
@@ -32,7 +41,7 @@ class DialingComponentTest: PreCallComponentTest() {
     fun setUp() {
         composeTestRule.setContent {
             DialingComponent(
-                uiState = uiState.value,
+                uiState = uiState,
                 onBackPressed = { backPressed = true }
             )
         }
@@ -40,8 +49,58 @@ class DialingComponentTest: PreCallComponentTest() {
 
     @After
     fun tearDown() {
-        uiState.value = PreCallUiState(video = streamUiMock.video)
+        uiState = DialingUiState(video = streamUiMock.video)
         backPressed = false
+    }
+
+    @Test
+    fun callInfoWidgetIsDisplayed() {
+        composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
+    }
+
+    @Test
+    fun videoNull_avatarDisplayed() {
+        uiState = DialingUiState(video = null)
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun videoViewNull_avatarDisplayed() {
+        val video = VideoUi(id = "videoId", view = null, isEnabled = false)
+        uiState = DialingUiState(video = video)
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun videoViewNotNullAndDisabled_avatarIsDisplayed() {
+        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false)
+        uiState = DialingUiState(video = video)
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun videoViewNotNullAndEnabled_streamIsDisplayed() {
+        val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
+        uiState = DialingUiState(video = video)
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertIsDisplayed()
+        composeTestRule.findAvatar().assertDoesNotExist()
+    }
+
+    @Test
+    fun isLinkTrue_connectingIsDisplayed() {
+        uiState = DialingUiState(isLink = true)
+        val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
+        composeTestRule.onNodeWithText(connecting).assertIsDisplayed()
+    }
+
+    @Test
+    fun isConnectingTrue_connectingIsDisplayed() {
+        uiState = DialingUiState(isConnecting = true)
+        val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
+        composeTestRule.onNodeWithText(connecting).assertIsDisplayed()
     }
 
     @Test
@@ -52,7 +111,7 @@ class DialingComponentTest: PreCallComponentTest() {
 
     @Test
     fun callStateDialing_otherParticipantsUsernamesAreDisplayed() {
-        uiState.value = PreCallUiState(participants = ImmutableList(listOf("user1", "user2")))
+        uiState = DialingUiState(participants = ImmutableList(listOf("user1", "user2")))
         composeTestRule.onNodeWithContentDescription("user1, user2").assertIsDisplayed()
     }
 

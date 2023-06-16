@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Box
@@ -24,8 +24,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
 
 @Composable
-internal fun PreCallComponent(
-    uiState: PreCallUiState,
+internal fun <T: PreCallUiState<T>> PreCallComponent(
+    uiState: T,
     subtitle: String,
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
@@ -33,9 +33,9 @@ internal fun PreCallComponent(
 ) {
     CompositionLocalProvider(LocalContentColor provides Color.White) {
         Box(modifier = modifier.fillMaxSize()) {
-            if (uiState.video?.view != null && uiState.video.isEnabled) {
+            if (uiState.video?.view != null && uiState.video?.isEnabled == true) {
                 StreamContainer {
-                    Stream(streamView = uiState.video.view.featuredSettings(), avatar = null, avatarVisible = false)
+                    Stream(streamView = uiState.video?.view?.featuredSettings(), avatar = null, avatarVisible = false)
                 }
             } else {
                 val isGroupCall = uiState.participants.count() > 1

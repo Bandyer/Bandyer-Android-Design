@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.dialing
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,9 +9,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.PreCallComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.view.DialingUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.viewmodel.DialingViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.PreCallComponent
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
@@ -21,8 +21,8 @@ const val DialingContentTag = "DialingContentTag"
 @Composable
 internal fun DialingComponent(
     modifier: Modifier = Modifier,
-    viewModel: PreCallViewModel = viewModel(
-        factory = PreCallViewModel.provideFactory(::requestConfiguration)
+    viewModel: DialingViewModel = viewModel(
+        factory = DialingViewModel.provideFactory(::requestConfiguration)
     ),
     onBackPressed: () -> Unit
 ) {
@@ -36,7 +36,7 @@ internal fun DialingComponent(
 
 @Composable
 internal fun DialingComponent(
-    uiState: PreCallUiState,
+    uiState: DialingUiState,
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = { }
 ) {
@@ -53,7 +53,7 @@ internal fun DialingComponent(
 fun DialingComponentPreview() {
     KaleyraTheme {
         DialingComponent(
-            uiState = PreCallUiState(participants = ImmutableList(listOf("user1", "user2"))),
+            uiState = DialingUiState(participants = ImmutableList(listOf("user1", "user2"))),
             onBackPressed = { }
         )
     }
