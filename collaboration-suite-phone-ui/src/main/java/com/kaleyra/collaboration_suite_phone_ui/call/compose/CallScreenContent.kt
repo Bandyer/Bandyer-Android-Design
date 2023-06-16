@@ -26,15 +26,24 @@ internal fun CallScreenContent(
             .fillMaxSize()
             .background(color = Color.Black)
     ) {
+        val targetState by remember(callState) {
+            derivedStateOf {
+                when(callState) {
+                    is CallStateUi.Ringing -> 0
+                    CallStateUi.Dialing -> 1
+                    else -> 2
+                }
+            }
+        }
         AnimatedContent(
-            targetState = callState,
+            targetState = targetState,
             transitionSpec = {
                 fadeIn(animationSpec = tween(220, delayMillis = 90)) with fadeOut(animationSpec = tween(90))
             }
         ) { target ->
-            when(target) {
-                is CallStateUi.Ringing -> RingingComponent(onBackPressed = onBackPressed)
-                CallStateUi.Dialing -> DialingComponent(onBackPressed = onBackPressed)
+            when (target) {
+                0 -> RingingComponent(onBackPressed = onBackPressed)
+                1 -> DialingComponent(onBackPressed = onBackPressed)
                 else -> CallComponent(maxWidth = maxWidth, onBackPressed = onBackPressed, onStreamFullscreenClick = onStreamFullscreenClick)
             }
         }
