@@ -1,22 +1,35 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model
 
-import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.model.UiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
-@Immutable
-data class PreCallUiState(
-    val video: VideoUi? = null,
-    val avatar: ImmutableUri? = null,
-    val participants: ImmutableList<String> = ImmutableList(listOf()),
-    val watermarkInfo: WatermarkInfo? = null,
-    val recording: RecordingTypeUi? = null,
-    val isLink: Boolean = false,
-    val isConnecting: Boolean = false,
-    override val userMessages: UserMessages = UserMessages()
-) : UiState
+interface PreCallUiState<out T> : UiState where T: PreCallUiState<T> {
+
+    val video: VideoUi?
+
+    val avatar: ImmutableUri?
+
+    val participants: ImmutableList<String>
+
+    val watermarkInfo: WatermarkInfo?
+
+    val isLink: Boolean
+
+    val isConnecting: Boolean
+
+    override val userMessages: UserMessages
+
+    fun clone(
+        video: VideoUi? = this@PreCallUiState.video,
+        avatar: ImmutableUri? = this@PreCallUiState.avatar,
+        participants: ImmutableList<String> = this@PreCallUiState.participants,
+        watermarkInfo: WatermarkInfo? = this@PreCallUiState.watermarkInfo,
+        isLink: Boolean = this@PreCallUiState.isLink,
+        isConnecting: Boolean = this@PreCallUiState.isConnecting,
+        userMessages: UserMessages = this@PreCallUiState.userMessages
+    ): T
+}
