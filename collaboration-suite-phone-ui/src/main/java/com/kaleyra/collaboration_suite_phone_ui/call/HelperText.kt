@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.view
+package com.kaleyra.collaboration_suite_phone_ui.call
 
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text

@@ -31,7 +31,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.PreCallComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.view.HelperText
+import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.viewmodel.RingingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme

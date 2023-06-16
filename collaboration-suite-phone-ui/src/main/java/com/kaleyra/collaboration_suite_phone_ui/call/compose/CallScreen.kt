@@ -68,8 +68,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.Multiple
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.RecordAudioPermission
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.rememberMultiplePermissionsState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.common.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.RecordingDot
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
