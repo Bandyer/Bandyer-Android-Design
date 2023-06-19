@@ -52,19 +52,19 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
 
     private val myVideoMock = mockk<Input.Video.Camera.Internal>(relaxed = true)
 
-    private val streamMock1 = mockk<Stream>()
+    protected val streamMock1 = mockk<Stream>()
 
     private val streamMock2 = mockk<Stream>()
 
     private val streamMock3 = mockk<Stream>()
 
-    private val myStreamMock = mockk<Stream.Mutable>()
+    protected val myStreamMock = mockk<Stream.Mutable>(relaxed = true)
 
-    private val callParticipantsMock = mockk<CallParticipants>()
+    protected val callParticipantsMock = mockk<CallParticipants>()
 
-    private val participantMeMock = mockk<CallParticipant.Me>(relaxed = true)
+    protected val participantMeMock = mockk<CallParticipant.Me>(relaxed = true)
 
-    private val participantMock1 = mockk<CallParticipant>(relaxed = true)
+    protected val participantMock1 = mockk<CallParticipant>(relaxed = true)
 
     private val participantMock2 = mockk<CallParticipant>(relaxed = true)
 
@@ -104,6 +104,7 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
         with(myStreamMock) {
             every { id } returns "myStreamId"
             every { video } returns MutableStateFlow(myVideoMock)
+            every { state } returns MutableStateFlow(Stream.State.Live)
         }
         with(participantMeMock) {
             every { userId } returns "myUserID"

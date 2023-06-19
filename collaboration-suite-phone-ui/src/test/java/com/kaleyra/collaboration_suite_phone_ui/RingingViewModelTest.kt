@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
@@ -20,16 +21,22 @@ import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class RingingViewModelTest: PreCallViewModelTest<RingingViewModel, RingingUiState>() {
+internal class RingingViewModelTest : PreCallViewModelTest<RingingViewModel, RingingUiState>() {
 
     private val recordingMock = mockk<Call.Recording>()
 
     @Before
     override fun setUp() {
         super.setUp()
-        every { callMock.extras.recording } returns recordingMock
-        every { recordingMock.type } returns Call.Recording.Type.OnConnect
-        viewModel = spyk(RingingViewModel { Configuration.Success(phoneBoxMock, mockk(), MutableStateFlow(companyNameMock), MutableStateFlow(themeMock), mockk()) })
+        viewModel = spyk(RingingViewModel {
+            Configuration.Success(
+                phoneBoxMock,
+                mockk(),
+                MutableStateFlow(companyNameMock),
+                MutableStateFlow(themeMock),
+                mockk()
+            )
+        })
     }
 
     @After
@@ -37,8 +44,10 @@ internal class RingingViewModelTest: PreCallViewModelTest<RingingViewModel, Ring
         super.tearDown()
     }
 
-        @Test
+    @Test
     fun testPreCallUiState_recordingUpdated() = runTest {
+        every { callMock.extras.recording } returns recordingMock
+        every { recordingMock.type } returns Call.Recording.Type.OnConnect
         val current = viewModel.uiState.first().recording
         assertEquals(null, current)
         advanceUntilIdle()
@@ -48,11 +57,31 @@ internal class RingingViewModelTest: PreCallViewModelTest<RingingViewModel, Ring
     }
 
     @Test
+    fun testPreCallUiState_answeredUpdated() = runTest {
+        with(callMock) {
+            every { state } returns MutableStateFlow(Call.State.Connecting)
+            every { participants } returns MutableStateFlow(callParticipantsMock)
+        }
+        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1))
+        every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
+        every { myStreamMock.state } returns MutableStateFlow(Stream.State.Live)
+        every { streamMock1.id } returns "streamId"
+        with(callParticipantsMock) {
+            every { me } returns participantMeMock
+            every { others } returns listOf(participantMock1)
+            every { creator() } returns mockk()
+        }
+        val current = viewModel.uiState.first().answered
+        assertEquals(false, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().answered
+        assertEquals(true, new)
+    }
+
+    @Test
     fun testCallAnswer() = runTest {
         advanceUntilIdle()
         viewModel.accept()
-        val actual = viewModel.uiState.first().answered
-        assertEquals(true, actual)
         verify(exactly = 1) { callMock.connect() }
     }
 
@@ -60,8 +89,6 @@ internal class RingingViewModelTest: PreCallViewModelTest<RingingViewModel, Ring
     fun testCallDecline() = runTest {
         advanceUntilIdle()
         viewModel.decline()
-        val actual = viewModel.uiState.first().answered
-        assertEquals(true, actual)
         verify(exactly = 1) { callMock.end() }
     }
 }
