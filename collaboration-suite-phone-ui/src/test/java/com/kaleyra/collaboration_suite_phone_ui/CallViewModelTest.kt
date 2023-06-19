@@ -130,6 +130,7 @@ class CallViewModelTest {
         with(myStreamMock) {
             every { id } returns "myStreamId"
             every { video } returns MutableStateFlow(myVideoMock)
+            every { state } returns MutableStateFlow(Stream.State.Live)
         }
         with(participantMeMock) {
             every { userId } returns "myUserId"
