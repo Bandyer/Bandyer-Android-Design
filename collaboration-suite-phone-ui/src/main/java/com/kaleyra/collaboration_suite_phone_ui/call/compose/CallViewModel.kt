@@ -103,6 +103,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 //        }.launchIn(viewModelScope)
 
         call.amIAlone()
+            .debounce { if (it) 5000L else 0L }
             .onEach { amIAlone -> _uiState.update { it.copy(amIAlone = amIAlone) } }
             .launchIn(viewModelScope)
 
