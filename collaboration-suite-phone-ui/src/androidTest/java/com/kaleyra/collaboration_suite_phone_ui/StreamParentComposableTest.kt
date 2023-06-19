@@ -56,7 +56,7 @@ abstract class StreamParentComposableTest {
 
     @Test
     fun streamVideoIsEnabled_avatarDoesNotExists() {
-        val video =  VideoUi(id = "videoId", view = null, isEnabled = true)
+        val video =  VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
         stream.value = streamUiMock.copy(video = video)
         composeTestRule.findAvatar().assertDoesNotExist()
     }
@@ -64,6 +64,12 @@ abstract class StreamParentComposableTest {
     @Test
     fun streamVideoIsNull_avatarIsDisplayed() {
         stream.value = streamUiMock.copy(video = null)
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun streamVideoViewIsNull_avatarIsDisplayed() {
+        stream.value = streamUiMock.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity))))
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 

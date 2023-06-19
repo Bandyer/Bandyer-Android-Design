@@ -33,7 +33,8 @@ class ThumbnailStreamTest: StreamParentComposableTest() {
             ThumbnailStream(
                 stream = stream.value,
                 onClick = { isClicked = true },
-                onDoubleClick = { isDoubleClicked = true }
+                onDoubleClick = { isDoubleClicked = true },
+                isTesting = true
             )
         }
     }

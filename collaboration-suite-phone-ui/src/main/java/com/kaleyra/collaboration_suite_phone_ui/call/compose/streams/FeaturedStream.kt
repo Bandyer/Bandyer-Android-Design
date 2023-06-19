@@ -36,7 +36,8 @@ internal fun FeaturedStream(
     onFullscreenClick: () -> Unit,
     onBackPressed: (() -> Unit)? = null,
     headerModifier: Modifier = Modifier,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isTesting: Boolean = false
 ) {
     Box(
         modifier = modifier.testTag(FeaturedStreamTag)
@@ -45,7 +46,8 @@ internal fun FeaturedStream(
             StreamContainer {
                 PointerStreamWrapper(
                     streamView = stream.video?.view,
-                    pointerList = stream.video?.pointers
+                    pointerList = stream.video?.pointers,
+                    isTesting = isTesting
                 ) {
                     val shouldFit = stream.video?.isScreenShare == true
                     Stream(
@@ -53,7 +55,7 @@ internal fun FeaturedStream(
                             if (shouldFit) StreamView.ScaleType.Fit else StreamView.ScaleType.Fill()
                         ),
                         avatar = stream.avatar,
-                        avatarVisible = stream.video == null || !stream.video.isEnabled
+                        avatarVisible = stream.video?.view == null || !stream.video.isEnabled
                     )
                 }
             }

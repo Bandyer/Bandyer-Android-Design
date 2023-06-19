@@ -23,7 +23,8 @@ internal fun ThumbnailStream(
     stream: StreamUi,
     onClick: () -> Unit,
     onDoubleClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isTesting: Boolean = false
 ) {
     Thumbnail(
         modifier = modifier.combinedClickable(
@@ -41,7 +42,8 @@ internal fun ThumbnailStream(
         ) {
             PointerStreamWrapper(
                 streamView = stream.video?.view,
-                pointerList = stream.video?.pointers
+                pointerList = stream.video?.pointers,
+                isTesting = isTesting
             ) { hasPointers ->
                 val shouldFit = stream.video?.isScreenShare == true || hasPointers
                 Stream(
@@ -49,7 +51,7 @@ internal fun ThumbnailStream(
                         scaleType = if (shouldFit) StreamView.ScaleType.Fit else StreamView.ScaleType.Fill(1f)
                     ),
                     avatar = stream.avatar,
-                    avatarVisible = stream.video == null || !stream.video.isEnabled,
+                    avatarVisible = stream.video?.view == null || !stream.video.isEnabled,
                     avatarSize = 64.dp
                 )
             }
