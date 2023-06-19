@@ -175,18 +175,21 @@ internal class CallScreenState(
     }
 
     fun collapseSheet() {
+        if (sheetState.isCollapsed) return
         scope.launch {
             sheetState.collapse()
         }
     }
 
     fun hideSheet() {
+        if (sheetState.isHidden) return
         scope.launch {
             sheetState.hide()
         }
     }
 
     fun halfExpandSheet() {
+        if (sheetState.isHalfExpanded) return
         scope.launch {
             sheetState.halfExpand()
         }
