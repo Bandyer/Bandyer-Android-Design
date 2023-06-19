@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,10 +10,13 @@ import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.rememberCountdownTimerState
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 
 val PointerSize = 16.dp
@@ -24,12 +28,18 @@ internal fun TextPointer(
     modifier: Modifier = Modifier
 ) {
     val textStyle = LocalTextStyle.current
+    val countDown by rememberCountdownTimerState(initialMillis = 3000L)
+    val textAlpha by animateFloatAsState(targetValue =  if (countDown > 0L) 1f else 0f)
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
         Pointer()
         Text(
             text = username,
             color = MaterialTheme.colors.secondary,
-            modifier = Modifier.onGloballyPositioned { onTextWidth(it.size.width) },
+            modifier = Modifier
+                .onGloballyPositioned { onTextWidth(it.size.width) }
+                .graphicsLayer {
+                    alpha = textAlpha
+                },
             style = textStyle.shadow()
         )
     }
