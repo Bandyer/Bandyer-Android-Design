@@ -50,6 +50,7 @@ import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeDevice
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamViewSettings.pipSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
@@ -69,8 +70,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.RecordAu
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.rememberMultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
-import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.RecordingDot
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.RecordingLabel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
@@ -477,7 +477,7 @@ internal fun PipScreen(
         }
 
         if (isRecording) {
-            RecordingDot(
+            RecordingLabel(
                 modifier = Modifier
                     .padding(12.dp)
                     .align(Alignment.TopEnd)
