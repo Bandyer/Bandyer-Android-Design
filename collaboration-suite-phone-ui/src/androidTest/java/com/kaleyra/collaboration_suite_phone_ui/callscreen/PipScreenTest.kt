@@ -9,6 +9,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
@@ -70,9 +71,11 @@ class PipScreenTest {
     }
 
     @Test
-    fun isRecordingTrue_isRecordingDotIsDisplayed() {
+    fun isRecordingTrue_isRecordingLabelIsDisplayed() {
         isRecording = true
+        val text = composeTestRule.activity.getString(R.string.kaleyra_call_info_rec)
         composeTestRule.onNodeWithTag(RecordingDotTestTag).assertIsDisplayed()
+        composeTestRule.onNodeWithText(text, ignoreCase = true).assertIsDisplayed()
     }
 
     @Test
