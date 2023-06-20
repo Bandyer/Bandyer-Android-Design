@@ -97,9 +97,11 @@ internal fun FeaturedStream(
                 username = stream.username,
                 fullscreen = isFullscreen,
                 onBackPressed = remember(resetCountDown, disableHeaderButtons, onBackPressed) {
-                    {
-                        resetCountDown = !resetCountDown
-                        if (disableHeaderButtons) onBackPressed?.invoke()
+                    onBackPressed?.let {
+                        {
+                            resetCountDown = !resetCountDown
+                            if (disableHeaderButtons) it()
+                        }
                     }
                 },
                 onFullscreenClick = remember(resetCountDown, disableHeaderButtons, onFullscreenClick) {
