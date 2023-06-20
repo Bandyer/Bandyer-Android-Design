@@ -35,13 +35,13 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("kaleyraCatalog") {
-            from("com.kaleyra:kaleyra-libs-version-catalog:20230614")
+            from("com.kaleyra:kaleyra-libs-version-catalog:20230620")
         }
         create("catalog") {
-            from("com.kaleyra:video-sdk-version-catalog:20230614")
+            from("com.kaleyra:video-sdk-version-catalog:20230620")
         }
         create("sampleAppCatalog") {
-            from("com.kaleyra:video-app-version-catalog:20230614")
+            from("com.kaleyra:video-app-version-catalog:20230620")
         }
     }
 }

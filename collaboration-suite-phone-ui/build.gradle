@@ -19,7 +19,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version "$dokkaPluginVersion"
+    alias(catalog.plugins.dokka)
 }
 
 apply from: '../versions.gradle'

@@ -19,8 +19,8 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version "$dokkaPluginVersion"
     id 'androidx.navigation.safeargs.kotlin'
+    alias(catalog.plugins.dokka)
 }
 
 apply from: '../versions.gradle'
