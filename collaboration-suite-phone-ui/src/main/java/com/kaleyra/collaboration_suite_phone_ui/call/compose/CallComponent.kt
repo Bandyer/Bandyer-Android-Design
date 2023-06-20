@@ -119,13 +119,6 @@ internal fun CallComponent(
     val streamHeaderOffset by animateIntAsState(targetValue = if (shouldShowCallInfo) callInfoWidgetHeight else 0)
     val snackbarOffset by animateIntAsState(targetValue = snackbarOffsetValue.toInt())
 
-//    var resetCountDown by remember { mutableStateOf(false) }
-//    val countDown by rememberCountdownTimerState(initialMillis = 5000L, resetFlag = resetCountDown)
-//    val streamsHeaderAlpha by animateFloatAsState(
-//        targetValue = if (countDown > 0L) 1f else 0f,
-//        animationSpec = tween()
-//    )
-
     CompositionLocalProvider(LocalContentColor provides Color.White) {
         Box(modifier.testTag(CallComponentTag)) {
             AdaptiveGrid(
@@ -144,13 +137,6 @@ internal fun CallComponent(
                                 onFullscreenClick = remember(onStreamFullscreenClick, callUiState.fullscreenStream) {
                                     { if (callUiState.fullscreenStream != null) onStreamFullscreenClick(null) else onStreamFullscreenClick(stream.id) }
                                 },
-//                        modifier = remember(onStreamFullscreenClick) {
-//                            Modifier.pointerInput(onStreamFullscreenClick) {
-//                                detectTapGestures(onDoubleTap = { onStreamFullscreenClick(stream.id) })
-//                            }
-
-//                        Modifier.streamClickable { resetCountDown = !resetCountDown }
-//                        },
                                 headerModifier = remember(index, callComponentState, streamHeaderOffset) {
                                     Modifier
                                         .offset {
@@ -161,7 +147,6 @@ internal fun CallComponent(
                                         }
                                         .statusBarsPadding()
                                         .onGloballyPositioned { streamHeaderHeight = it.size.height }
-//                                    .graphicsLayer { alpha = streamsHeaderAlpha }
                                 }
                             )
 
