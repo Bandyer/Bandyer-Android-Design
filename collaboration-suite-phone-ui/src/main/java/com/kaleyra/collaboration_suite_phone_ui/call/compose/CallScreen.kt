@@ -288,14 +288,14 @@ internal fun CallScreen(
         }
     }
 
-    LaunchedEffect(onActivityFinish) {
-        viewModel.setOnCallEnded {
+    LaunchedEffect(isInPipMode, onActivityFinish) {
+        viewModel.setOnCallEnded { hasFeedback, hasErrorOccurred, hasBeenKicked ->
             onActivityFinish()
             when {
-                isInPipMode -> activity.finishAndRemoveTask()
-                !callUiState.showFeedback && activity.isAtLeastResumed() -> {
-                    val delay = if (callUiState.callState is CallStateUi.Disconnected.Ended.Error) ActivityFinishErrorDelay else ActivityFinishDelay
-                    delay(delay)
+                isInPipMode || !activity.isAtLeastResumed() -> activity.finishAndRemoveTask()
+                !hasFeedback && !hasBeenKicked -> {
+                    val delayMs = if (hasErrorOccurred) ActivityFinishErrorDelay else ActivityFinishDelay
+                    delay(delayMs)
                     activity.finishAndRemoveTask()
                 }
             }

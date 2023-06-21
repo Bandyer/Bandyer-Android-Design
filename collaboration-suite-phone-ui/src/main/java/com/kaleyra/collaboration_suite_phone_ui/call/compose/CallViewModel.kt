@@ -51,7 +51,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
     private var fullscreenStreamId = MutableStateFlow<String?>(null)
 
-    private var onCallEnded: (suspend () -> Unit)? = null
+    private var onCallEnded: (suspend (Boolean, Boolean, Boolean) -> Unit)? = null
 
     private var onPipAspectRatio: ((Rational) -> Unit)? = null
 
@@ -88,7 +88,11 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .onEach { callState ->
                 _uiState.update { it.copy(callState = callState) }
                 when (callState) {
-                    is CallStateUi.Disconnected.Ended -> onCallEnded?.invoke()
+                    is CallStateUi.Disconnected.Ended -> onCallEnded?.invoke(
+                        call.getValue()?.withFeedback == true,
+                        callState is CallStateUi.Disconnected.Ended.Error,
+                        callState is CallStateUi.Disconnected.Ended.Kicked
+                    )
                     is CallStateUi.Reconnecting -> fullscreenStream(null)
                     else -> Unit
                 }
@@ -193,7 +197,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
         me.feedback.value = CallParticipant.Me.Feedback(rating.toInt(), comment)
     }
 
-    fun setOnCallEnded(block: suspend () -> Unit) {
+    fun setOnCallEnded(block: suspend (hasFeedback: Boolean, hasErrorOccurred: Boolean, hasBeenKicked: Boolean) -> Unit) {
         onCallEnded = block
     }
 
