@@ -80,7 +80,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
             isVirtualBackgroundEnabled,
             hasUsbCamera
         ) { callActions, isCallConnected, isMyCameraEnabled, isMyMicEnabled, isSharingScreen, currentAudioOutput, isVirtualBackgroundEnabled, hasUsbCamera ->
-            val newActions = callActions
+            callActions
                 .updateActionIfExists(CallAction.Microphone(isToggled = !isMyMicEnabled))
                 .updateActionIfExists(CallAction.Camera(isToggled = !isMyCameraEnabled))
                 .updateActionIfExists(CallAction.Audio(device = currentAudioOutput))
@@ -89,8 +89,10 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
                 .updateActionIfExists(CallAction.VirtualBackground(isToggled = isVirtualBackgroundEnabled))
                 .updateActionIfExists(CallAction.Whiteboard(isEnabled = isCallConnected))
                 .updateActionIfExists(CallAction.SwitchCamera(isEnabled = !hasUsbCamera && isMyCameraEnabled))
-            _uiState.update { it.copy(actionList = ImmutableList(newActions)) }
-        }.launchIn(viewModelScope)
+        }
+            .distinctUntilChanged()
+            .onEach { actions -> _uiState.update { it.copy(actionList = ImmutableList(actions)) } }
+            .launchIn(viewModelScope)
     }
 
     fun startMicrophone(context: FragmentActivity) {
@@ -158,6 +160,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
     }
 
     companion object {
+
         fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
