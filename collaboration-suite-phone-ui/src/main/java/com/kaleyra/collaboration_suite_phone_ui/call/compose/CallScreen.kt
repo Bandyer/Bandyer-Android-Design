@@ -66,6 +66,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomshe
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.LineState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.rememberBottomSheetContentState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.rememberBottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.KickedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.UserFeedback
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.CameraPermission
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.MultiplePermissionsState
@@ -281,7 +282,7 @@ internal fun CallScreen(
         }
     }
 
-    val onFeedbackDismiss = remember(activity) {
+    val onEndCallMessageDismiss = remember(activity) {
         {
             onActivityFinish()
             activity.finishAndRemoveTask()
@@ -320,7 +321,7 @@ internal fun CallScreen(
         onUserFeedback = viewModel::sendUserFeedback,
         onConfigurationChange = viewModel::updateStreamsArrangement,
         onBackPressed = onBackPressedInternal,
-        onFeedbackDismiss = onFeedbackDismiss,
+        onEndCallMessageDismiss = onEndCallMessageDismiss,
         isInPipMode = isInPipMode,
         onFileShareVisibility = onFileShareVisibility,
         onWhiteboardVisibility = onWhiteboardVisibility
@@ -351,7 +352,7 @@ internal fun CallScreen(
     onThumbnailStreamDoubleClick: (String) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
-    onFeedbackDismiss: () -> Unit,
+    onEndCallMessageDismiss: () -> Unit,
     onFileShareVisibility: (Boolean) -> Unit,
     onWhiteboardVisibility: (Boolean) -> Unit
 ) {
@@ -441,7 +442,7 @@ internal fun CallScreen(
             onThumbnailStreamDoubleClick = onThumbnailStreamDoubleClick,
             onFullscreenStreamClick = onFullscreenStreamClick,
             onUserFeedback = onUserFeedback,
-            onFeedbackDismiss = onFeedbackDismiss
+            onEndCallMessageDismiss = onEndCallMessageDismiss
         )
     }
 }
@@ -524,7 +525,7 @@ internal fun DefaultCallScreen(
     onThumbnailStreamDoubleClick: (String) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
-    onFeedbackDismiss: () -> Unit
+    onEndCallMessageDismiss: () -> Unit
 ) {
     val configuration = LocalConfiguration.current
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
@@ -585,6 +586,12 @@ internal fun DefaultCallScreen(
             if (activity.isAtLeastResumed()) {
                 UserFeedback(onUserFeedback = onUserFeedback, onDismiss = onEndCallMessageDismiss)
             }
+        }
+
+        if (callState is CallStateUi.Disconnected.Ended.Kicked) {
+            val activity = LocalContext.current.findActivity() as ComponentActivity
+            if (activity.isAtLeastResumed()) {
+                KickedMessage(callState.adminName, onEndCallMessageDismiss)
             }
         }
     }
@@ -680,7 +687,7 @@ fun CallScreenPreview() {
             onFullscreenStreamClick = {},
             onThumbnailStreamClick = {},
             onThumbnailStreamDoubleClick = {},
-            onFeedbackDismiss = {},
+            onEndCallMessageDismiss = {},
             onUserFeedback = { _,_ -> }
         )
     }
