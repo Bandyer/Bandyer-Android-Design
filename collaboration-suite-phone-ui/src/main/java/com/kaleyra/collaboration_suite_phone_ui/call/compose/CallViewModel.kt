@@ -30,8 +30,11 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     override fun initialState() = CallUiState()
 
     private val streams = call
-        .debounce(300)
         .toStreamsUi()
+        .debounce {
+            if (it.size == 1) SINGLE_STREAM_DEBOUNCE_MILLIS
+            else STREAMS_DEBOUNCE_MILLIS
+        }
         .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
     private val callState = call
@@ -201,6 +204,8 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     companion object {
 
         const val DEFAULT_FEATURED_STREAMS_COUNT = 2
+        const val STREAMS_DEBOUNCE_MILLIS = 300L
+        const val SINGLE_STREAM_DEBOUNCE_MILLIS = 5000L
 
         fun provideFactory(configure: suspend () -> Configuration) =
             object : ViewModelProvider.Factory {
