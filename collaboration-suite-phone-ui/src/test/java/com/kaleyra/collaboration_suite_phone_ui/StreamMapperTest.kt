@@ -10,6 +10,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doAnyOfMyStreamsIsLive
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doOthersHaveStreams
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.hasAtLeastAVideoEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.mapToStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toMyStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
@@ -688,6 +689,30 @@ class StreamMapperTest {
         val result = callFlow.amIAlone()
         val actual = result.first()
         Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun emptyList_hasAtLeastAVideoEnabled_false() = runTest {
+        val flow = flowOf(listOf<StreamUi>())
+        val result = flow.hasAtLeastAVideoEnabled()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun participantHasVideoEnabled_hasAtLeastAVideoEnabled_true() = runTest {
+        val flow = flowOf(listOf(StreamUi(id = "streamId", username = "username", video = VideoUi(id = "videoId", isEnabled = true))))
+        val result = flow.hasAtLeastAVideoEnabled()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun participantHasVideoDisabled_hasAtLeastAVideoEnabled_false() = runTest {
+        val flow = flowOf(listOf(StreamUi(id = "streamId", username = "username", video = VideoUi(id = "videoId", isEnabled = false))))
+        val result = flow.hasAtLeastAVideoEnabled()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
     }
 
 }

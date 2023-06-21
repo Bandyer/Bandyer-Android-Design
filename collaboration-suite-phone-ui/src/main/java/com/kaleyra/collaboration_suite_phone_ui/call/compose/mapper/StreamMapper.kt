@@ -140,8 +140,12 @@ internal object StreamMapper {
             !doesOthersHaveStreams || !doAnyOfMyStreamsIsLive
         }.distinctUntilChanged()
 
-    private fun Stream.isMyStreamLive(): Flow<Boolean> {
-        return this.state.map { it is Stream.State.Live }
-    }
+    private fun Stream.isMyStreamLive(): Flow<Boolean> =
+        this.state.map { it is Stream.State.Live }
+
+    fun Flow<List<StreamUi>>.hasAtLeastAVideoEnabled(): Flow<Boolean> =
+        this.map { streams -> streams.map { it.video } }
+            .map { video -> video.any { it?.isEnabled == true } }
+            .distinctUntilChanged()
 
 }
