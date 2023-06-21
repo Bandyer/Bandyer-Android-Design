@@ -21,5 +21,6 @@ data class CallUiState(
     val isCameraPermissionRequired: Boolean = true,
     val isMicPermissionRequired: Boolean = true,
     val showFeedback: Boolean = false,
+    val doAVideoHasBeenEnabled: Boolean = false,
     override val userMessages: UserMessages = UserMessages()
 ) : UiState
