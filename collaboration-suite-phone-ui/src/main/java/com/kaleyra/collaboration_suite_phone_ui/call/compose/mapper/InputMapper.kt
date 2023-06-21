@@ -15,9 +15,11 @@ internal object InputMapper {
             .map { event -> event.producer.displayName.first() }
             .distinctUntilChanged()
 
-    fun Flow<Call>.hasVideo(): Flow<Boolean> =
+    fun Flow<Call>.isAudioOnly(): Flow<Boolean> =
         this.map { it.extras }
-            .map { it.preferredType.hasVideo() }
+            .map { !it.preferredType.hasVideo() }
+            .distinctUntilChanged()
+
             .distinctUntilChanged()
 
     fun Flow<Call>.hasAudio(): Flow<Boolean> =
