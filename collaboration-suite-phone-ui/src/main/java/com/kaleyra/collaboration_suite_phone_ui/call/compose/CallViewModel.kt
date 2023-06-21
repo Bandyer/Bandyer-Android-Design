@@ -101,7 +101,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             streams.hasAtLeastAVideoEnabled()
         ) { callState, isAudioVideo, hasAtLeastAVideoEnabled ->
             val enable = callState == CallStateUi.Connected && (isAudioVideo || hasAtLeastAVideoEnabled)
-            _uiState.update { it.copy(doAVideoHasBeenEnabled = enable) }
+            _uiState.update { it.copy(shouldAutoHideSheet = enable) }
             enable
         }.takeWhile { !it }.launchIn(viewModelScope)
 

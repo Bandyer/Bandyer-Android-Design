@@ -43,7 +43,7 @@ class CallScreenRecreationTest {
                 onWhiteboardVisibility = { },
                 onConfigurationChange = { },
                 onBackPressed = { },
-                onFeedbackDismiss = {},
+                onEndCallMessageDismiss = {},
                 onUserFeedback = {_,_ ->}
             )
         }
