@@ -13,9 +13,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMap
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.toCallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallUiStateMapper.toPipAspectRatio
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioOnly
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.hasAtLeastAVideoEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper.toWatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
@@ -30,7 +32,11 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     private val streams = call
         .debounce(300)
         .toStreamsUi()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
+        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+
+    private val callState = call
+        .toCallStateUi()
+        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
     private val maxNumberOfFeaturedStreams = MutableStateFlow(DEFAULT_FEATURED_STREAMS_COUNT)
 
@@ -75,8 +81,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .onEach { isAudioOnly -> _uiState.update { it.copy(isAudioOnly = isAudioOnly) } }
             .launchIn(viewModelScope)
 
-        call
-            .toCallStateUi()
+        callState
             .onEach { callState ->
                 _uiState.update { it.copy(callState = callState) }
                 when (callState) {
@@ -86,6 +91,16 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
                 }
             }
             .launchIn(viewModelScope)
+
+        combine(
+            callState,
+            call.isAudioVideo(),
+            streams.hasAtLeastAVideoEnabled()
+        ) { callState, isAudioVideo, hasAtLeastAVideoEnabled ->
+            val enable = callState == CallStateUi.Connected && (isAudioVideo || hasAtLeastAVideoEnabled)
+            _uiState.update { it.copy(doAVideoHasBeenEnabled = enable) }
+            enable
+        }.takeWhile { !it }.launchIn(viewModelScope)
 
         call
             .isGroupCall()

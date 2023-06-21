@@ -251,6 +251,32 @@ class CallViewModelTest {
     }
 
     @Test
+    fun testCallUiState_callIsConnectedAndItsAudioVideo_doAVideoHasBeenEnabledUpdated() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
+        every { callMock.extras.preferredType } returns Call.PreferredType(video = Call.Video.Enabled)
+        every { videoMock.enabled } returns MutableStateFlow(false)
+        every { myVideoMock.enabled } returns MutableStateFlow(false)
+        val current = viewModel.uiState.first().doAVideoHasBeenEnabled
+        assertEquals(false, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().doAVideoHasBeenEnabled
+        assertEquals(true, new)
+    }
+
+    @Test
+    fun testCallUiState_callIsConnectedAndAParticipantHasVideoEnabled_doAVideoHasBeenEnabledUpdated() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
+        every { callMock.extras.preferredType } returns Call.PreferredType(video = Call.Video.Disabled)
+        every { videoMock.enabled } returns MutableStateFlow(true)
+        every { myVideoMock.enabled } returns MutableStateFlow(false)
+        val current = viewModel.uiState.first().doAVideoHasBeenEnabled
+        assertEquals(false, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().doAVideoHasBeenEnabled
+        assertEquals(true, new)
+    }
+
+    @Test
     fun testRecordingUserMessageReceived_userMessagesUpdated() = runTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().userMessages.recordingMessage
