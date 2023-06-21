@@ -13,14 +13,17 @@ internal object InputMapper {
             .flatMapLatest { it.events }
             .filterIsInstance<Input.Audio.Event.Request.Mute>()
             .map { event -> event.producer.displayName.first() }
+            .distinctUntilChanged()
 
     fun Flow<Call>.hasVideo(): Flow<Boolean> =
         this.map { it.extras }
             .map { it.preferredType.hasVideo() }
+            .distinctUntilChanged()
 
     fun Flow<Call>.hasAudio(): Flow<Boolean> =
         this.map { it.extras }
             .map { it.preferredType.hasAudio() }
+            .distinctUntilChanged()
 
     fun Flow<Call>.isMyCameraEnabled(): Flow<Boolean> =
         this.toMe()
@@ -34,22 +37,28 @@ internal object InputMapper {
             .flatMapLatest { it.video }
             .filterNotNull()
             .flatMapLatest { it.enabled }
+            .distinctUntilChanged()
 
     fun Flow<Call>.isMyMicEnabled(): Flow<Boolean> =
-        this.toAudio().flatMapLatest { it.enabled }
+        this.toAudio()
+            .flatMapLatest { it.enabled }
+            .distinctUntilChanged()
 
     fun Flow<Call>.isSharingScreen(): Flow<Boolean> =
         this.toMe()
             .flatMapLatest { it.streams }
             .map { streams -> streams.any { stream -> stream.id == SCREEN_SHARE_STREAM_ID } }
+            .distinctUntilChanged()
 
-    fun Flow<Call>.hasUsbCamera(): Flow<Boolean> {
-        return this.flatMapLatest { it.inputs.availableInputs }
+    fun Flow<Call>.hasUsbCamera(): Flow<Boolean> =
+        this.flatMapLatest { it.inputs.availableInputs }
             .map { inputs -> inputs.firstOrNull { it is Input.Video.Camera.Usb } != null }
-    }
+            .distinctUntilChanged()
 
     private fun Flow<Call>.toMe(): Flow<CallParticipant.Me> =
-        flatMapLatest { it.participants }.map { it.me }
+        this.flatMapLatest { it.participants }
+            .map { it.me }
+            .distinctUntilChanged()
 
     private fun Flow<Call>.toAudio(): Flow<Input.Audio> =
         this.toMe()
@@ -62,4 +71,5 @@ internal object InputMapper {
             .filterNotNull()
             .flatMapLatest { it.audio }
             .filterNotNull()
+            .distinctUntilChanged()
 }

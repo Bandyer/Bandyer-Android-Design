@@ -7,12 +7,13 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.hasVirtualBackground
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 
 internal object CallActionsMapper {
 
-    fun Flow<CallUI>.toCallActions(): Flow<List<CallAction>> {
-        return combine(
+    fun Flow<CallUI>.toCallActions(): Flow<List<CallAction>> =
+        combine(
             flatMapLatest { it.actions },
             hasVirtualBackground(),
             hasVideo(),
@@ -46,7 +47,5 @@ internal object CallActionsMapper {
             }
 
             result
-        }
-
-    }
+        }.distinctUntilChanged()
 }

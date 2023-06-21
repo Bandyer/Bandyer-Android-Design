@@ -10,14 +10,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 internal object VideoMapper {
-    fun StateFlow<Input.Video?>.mapToVideoUi(): Flow<VideoUi?> {
-        return flow {
+    fun StateFlow<Input.Video?>.mapToVideoUi(): Flow<VideoUi?> =
+        flow {
             val initialValue = value?.let { video ->
                 VideoUi(
                     video.id,
@@ -42,8 +43,7 @@ internal object VideoMapper {
             }.collect {
                 emit(it)
             }
-        }
-    }
+        }.distinctUntilChanged()
 
     fun Flow<Input.Video>.mapToPointersUi(): Flow<List<PointerUi>> {
         val list = mutableMapOf<String, PointerUi>()
@@ -57,7 +57,7 @@ internal object VideoMapper {
                 else list[event.producer.userId] = event.mapToPointerUi(mirror)
                 emit(list.values.toList())
             }.collect()
-        }
+        }.distinctUntilChanged()
     }
 
     fun Input.Video.Event.Pointer.mapToPointerUi(mirror: Boolean = false): PointerUi {

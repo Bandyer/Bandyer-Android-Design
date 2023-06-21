@@ -25,5 +25,6 @@ object CallUiStateMapper {
                 if (gcd != 0) Rational(it.width / gcd, it.height / gcd)
                 else Rational.NaN
             }
+            .distinctUntilChanged()
 
 }

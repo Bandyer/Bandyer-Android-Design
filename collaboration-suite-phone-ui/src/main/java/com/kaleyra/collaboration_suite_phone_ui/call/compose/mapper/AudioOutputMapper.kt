@@ -7,17 +7,20 @@ import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationA
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
 internal object AudioOutputMapper {
     fun Flow<CallUI>.toCurrentAudioDeviceUi(): Flow<AudioDeviceUi?> =
-        flatMapLatest { it.currentAudioOutputDevice }.map { it?.mapToAudioDeviceUi() }
+        this.flatMapLatest { it.currentAudioOutputDevice }
+            .map { it?.mapToAudioDeviceUi() }
+            .distinctUntilChanged()
 
-    fun Flow<CallUI>.toAudioDevicesUi(): Flow<List<AudioDeviceUi>> {
-        return this.flatMapLatest { it.audioOutputDevicesList }
+    fun Flow<CallUI>.toAudioDevicesUi(): Flow<List<AudioDeviceUi>> =
+        this.flatMapLatest { it.audioOutputDevicesList }
             .map { list -> list.map { it.mapToAudioDeviceUi() } }
-    }
+            .distinctUntilChanged()
 
     fun AudioOutputDevice.mapToAudioDeviceUi(): AudioDeviceUi =
         when (this) {
@@ -34,7 +37,7 @@ internal object AudioOutputMapper {
         }
 
     fun AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.mapToBluetoothDeviceState(): BluetoothDeviceState =
-        when(this) {
+        when (this) {
             AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.ACTIVE -> BluetoothDeviceState.Active
             AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.DISCONNECTED -> BluetoothDeviceState.Disconnected
             AudioOutputDevice.Bluetooth.BluetoothConnectionStatus.AVAILABLE -> BluetoothDeviceState.Available

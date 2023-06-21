@@ -5,23 +5,24 @@ import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
 internal object WhiteboardMapper {
 
-    fun Flow<CallUI>.isWhiteboardLoading(): Flow<Boolean> {
-        return this.map { it.whiteboard }
+    fun Flow<CallUI>.isWhiteboardLoading(): Flow<Boolean> =
+        this.map { it.whiteboard }
             .flatMapLatest { it.state }
             .map { it is Whiteboard.State.Loading }
-    }
+            .distinctUntilChanged()
 
-    fun Flow<CallUI>.getWhiteboardTextEvents(): Flow<Whiteboard.Event.Text> {
-        return this.map { it.whiteboard }
+    fun Flow<CallUI>.getWhiteboardTextEvents(): Flow<Whiteboard.Event.Text> =
+        this.map { it.whiteboard }
             .flatMapLatest { it.events }
-            .filterIsInstance()
-    }
+            .filterIsInstance<Whiteboard.Event.Text>()
+            .distinctUntilChanged()
 
     fun SharedFile.toWhiteboardUploadUi(): Flow<WhiteboardUploadUi?> {
         return state.map { state ->
@@ -36,6 +37,6 @@ internal object WhiteboardMapper {
                 else -> WhiteboardUploadUi.Uploading(progress)
             }
             upload
-        }
+        }.distinctUntilChanged()
     }
 }

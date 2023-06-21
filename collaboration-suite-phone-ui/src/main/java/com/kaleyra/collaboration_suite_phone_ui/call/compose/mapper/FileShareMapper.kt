@@ -8,6 +8,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -39,17 +40,21 @@ internal object FileShareMapper {
                            emit(values.toSet())
                        }
                    }
-            }
+            }.distinctUntilChanged()
     }
 
     private fun SharedFileUi.isCancelledUpload(): Boolean =
         isMine && state == SharedFileUi.State.Cancelled
 
     private fun Flow<Call>.toFiles(): Flow<Set<SharedFile>> =
-        map { it.sharedFolder }.flatMapLatest { it.files }
+        this.map { it.sharedFolder }
+            .flatMapLatest { it.files }
+            .distinctUntilChanged()
 
     private fun Flow<Call>.toMe(): Flow<CallParticipant.Me> =
-        flatMapLatest { it.participants }.map { it.me }
+        this.flatMapLatest { it.participants }
+            .map { it.me }
+            .distinctUntilChanged()
 
     fun SharedFile.mapToSharedFileUi(myUserId: String): Flow<SharedFileUi> {
         val sharedFile = this@mapToSharedFileUi
@@ -68,7 +73,7 @@ internal object FileShareMapper {
                 state = state,
                 isMine = sharedFile.sender.userId == myUserId
             )
-        }
+        }.distinctUntilChanged()
     }
 
     fun SharedFile.State.mapToSharedFileUiState(fileSize: Long): SharedFileUi.State {

@@ -13,10 +13,12 @@ import kotlinx.coroutines.flow.map
 internal object CallStateMapper {
 
     fun Flow<Call>.isConnected(): Flow<Boolean> =
-        flatMapLatest { it.state }.map { it is Call.State.Connected }
+        this.flatMapLatest { it.state }
+            .map { it is Call.State.Connected }
+            .distinctUntilChanged()
 
-    fun Flow<Call>.toCallStateUi(): Flow<CallStateUi> {
-        return combine(
+    fun Flow<Call>.toCallStateUi(): Flow<CallStateUi> =
+        combine(
             flatMapLatest { it.state },
             flatMapLatest { it.participants },
             amIAlone()
@@ -41,7 +43,6 @@ internal object CallStateMapper {
                 else -> CallStateUi.Disconnected
             }
         }.distinctUntilChanged()
-    }
 
     private fun isDialing(state: Call.State, participants: CallParticipants) =
         state is Call.State.Connecting && participants.me == participants.creator()

@@ -5,6 +5,7 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -14,10 +15,12 @@ import kotlinx.coroutines.flow.transform
 internal object ParticipantMapper {
 
     fun Flow<Call>.isGroupCall(): Flow<Boolean> =
-        flatMapLatest { it.participants }.map { it.others.size > 1 }
+        this.flatMapLatest { it.participants }
+            .map { it.others.size > 1 }
+            .distinctUntilChanged()
 
-    fun Flow<Call>.toOtherDisplayNames(): Flow<List<String>> {
-        return flatMapLatest { it.participants }
+    fun Flow<Call>.toOtherDisplayNames(): Flow<List<String>> =
+        this.flatMapLatest { it.participants }
             .flatMapLatest { participants ->
                 val others = participants.others
                 val map = mutableMapOf<String, String?>()
@@ -38,10 +41,10 @@ internal object ParticipantMapper {
                         }
                     }
             }
-    }
+            .distinctUntilChanged()
 
-    fun Flow<Call>.toOtherDisplayImages(): Flow<List<Uri>> {
-        return flatMapLatest { it.participants }
+    fun Flow<Call>.toOtherDisplayImages(): Flow<List<Uri>> =
+        this.flatMapLatest { it.participants }
             .flatMapLatest { participants ->
                 val others = participants.others
                 val map = mutableMapOf<String, Uri?>()
@@ -62,10 +65,10 @@ internal object ParticipantMapper {
                         }
                     }
             }
-    }
+            .distinctUntilChanged()
 
-    fun Flow<Call>.toInCallParticipants(): Flow<List<CallParticipant>> {
-        return flatMapLatest { it.participants }
+    fun Flow<Call>.toInCallParticipants(): Flow<List<CallParticipant>> =
+        this.flatMapLatest { it.participants }
             .map { Pair(it.me, it.others) }
             .flatMapLatest { (me, others) ->
                 val inCallMap = mutableMapOf<String, CallParticipant>(me.userId to me)
@@ -94,5 +97,5 @@ internal object ParticipantMapper {
                         }
                     }
             }
-    }
+            .distinctUntilChanged()
 }
