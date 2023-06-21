@@ -3,6 +3,11 @@ package com.kaleyra.collaboration_suite_core_ui.utils
 import kotlinx.coroutines.flow.Flow
 
 object FlowUtils {
+
+    fun <T1, T2, T3, R> Flow<T1>.combine(flow1: Flow<T2>, flow2: Flow<T3>, transform: suspend (a: T1, b: T2, c: T3) -> R): Flow<R> {
+        return kotlinx.coroutines.flow.combine(this, flow1, flow2, transform)
+    }
+
     inline fun <T1, T2, T3, T4, T5, T6, T7, T8, R> combine(
         flow: Flow<T1>,
         flow2: Flow<T2>,
