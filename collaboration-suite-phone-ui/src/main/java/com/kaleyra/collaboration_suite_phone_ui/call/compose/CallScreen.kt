@@ -396,7 +396,7 @@ internal fun CallScreen(
         }
     }
 
-    if (callUiState.doAVideoHasBeenEnabled) {
+    if (callUiState.shouldAutoHideSheet) {
         var resetCountDown by remember { mutableStateOf(false) }
         val timer by rememberCountdownTimerState(initialMillis = BottomSheetAutoHideMs, resetFlag = resetCountDown)
         LaunchedEffect(Unit) {
