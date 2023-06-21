@@ -8,6 +8,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasBeenMutedBy
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasUsbCamera
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioOnly
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isSharingScreen
@@ -126,8 +127,27 @@ class InputMapperTest {
         val actual = result.first()
         Assert.assertEquals(false, actual)
     }
+
+    @Test
+    fun preferredTypeHasVideoEnabled_isAudioVideo_true() = runTest {
+        every { callMock.extras } returns mockk {
+            every { preferredType } returns Call.PreferredType(video = Call.Video.Enabled)
+        }
+        val call = MutableStateFlow(callMock)
+        val result = call.isAudioVideo()
         val actual = result.first()
         Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun preferredTypeHasVideoDisabled_isAudioVideo_false() = runTest {
+        every { callMock.extras } returns mockk {
+            every { preferredType } returns Call.PreferredType(video = Call.Video.Disabled)
+        }
+        val call = MutableStateFlow(callMock)
+        val result = call.isAudioVideo()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
     }
 
     @Test
