@@ -319,4 +319,20 @@ class CallStateMapperTest {
         val actual = callFlow.isConnected().first()
         Assert.assertEquals(false, actual)
     }
+
+    @Test
+    fun `if previous state was connected and I am back alone, the state remains connected`() = runTest {
+        val amIAloneFlow = MutableStateFlow(false)
+        with(StreamMapper) {
+            every { callFlow.amIAlone() } returns amIAloneFlow
+        }
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Connected)
+        every { callParticipantsMock.creator() } returns mockk()
+        val result = callFlow.toCallStateUi()
+        val actual = result.first()
+        Assert.assertEquals(CallStateUi.Connected, actual)
+        amIAloneFlow.value = true
+        val new = result.first()
+        Assert.assertEquals(CallStateUi.Connected, new)
+    }
 }
