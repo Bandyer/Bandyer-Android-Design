@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -26,8 +27,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -92,6 +95,8 @@ private val HalfExpandedHeight = 166.dp
 
 private const val ActivityFinishDelay = 500L
 private const val ActivityFinishErrorDelay = 1300L
+
+const val BottomSheetAutoHideMs = 9000L
 
 @Composable
 internal fun rememberCallScreenState(
@@ -333,6 +338,7 @@ private fun getPermissions(callUiState: CallUiState): State<List<String>> {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun CallScreen(
     callUiState: CallUiState,
@@ -387,6 +393,27 @@ internal fun CallScreen(
         when {
             callUiState.callState != CallStateUi.Dialing && callUiState.callState != CallStateUi.Connected && callUiState.callState != CallStateUi.Reconnecting && callUiState.callState != CallStateUi.Ringing(true) -> callScreenState.hideSheet()
             callScreenState.isSheetHidden -> callScreenState.halfExpandSheet()
+        }
+    }
+
+    if (callUiState.doAVideoHasBeenEnabled) {
+        var resetCountDown by remember { mutableStateOf(false) }
+        val timer by rememberCountdownTimerState(initialMillis = BottomSheetAutoHideMs, resetFlag = resetCountDown)
+        LaunchedEffect(Unit) {
+            snapshotFlow { timer }
+                .onEach { timer ->
+                    val currentComponent = callScreenState.sheetContentState.currentComponent
+                    if (timer != 0L || currentComponent != BottomSheetComponent.CallActions) return@onEach
+                    callScreenState.collapseSheet()
+                }.launchIn(this)
+
+            combine(
+                snapshotFlow { callScreenState.sheetState.progress.fraction },
+                snapshotFlow { callScreenState.sheetState.targetValue }
+            ) { fraction, targetValue ->
+                if (fraction == 1f && (targetValue == BottomSheetValue.HalfExpanded || targetValue == BottomSheetValue.Expanded)) return@combine
+                resetCountDown = !resetCountDown
+            }.launchIn(this)
         }
     }
 
