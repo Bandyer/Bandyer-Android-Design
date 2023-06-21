@@ -204,7 +204,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     companion object {
 
         const val DEFAULT_FEATURED_STREAMS_COUNT = 2
-        const val STREAMS_DEBOUNCE_MILLIS = 300L
+        const val STREAMS_DEBOUNCE_MILLIS = 1000L
         const val SINGLE_STREAM_DEBOUNCE_MILLIS = 5000L
 
         fun provideFactory(configure: suspend () -> Configuration) =
