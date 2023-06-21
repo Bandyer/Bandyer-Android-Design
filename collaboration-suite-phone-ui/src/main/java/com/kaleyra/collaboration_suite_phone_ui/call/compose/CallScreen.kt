@@ -579,10 +579,12 @@ internal fun DefaultCallScreen(
             onBackPressed = callScreenState::navigateToCallActionsComponent,
         )
 
-        if (callUiState.showFeedback && callUiState.callState is CallStateUi.Disconnected.Ended) {
+        val callState = callUiState.callState
+        if (callUiState.showFeedback && (callState is CallStateUi.Disconnected.Ended.HungUp || callState is CallStateUi.Disconnected.Ended.Error)) {
             val activity = LocalContext.current.findActivity() as ComponentActivity
             if (activity.isAtLeastResumed()) {
-                UserFeedback(onUserFeedback = onUserFeedback, onDismiss = onFeedbackDismiss)
+                UserFeedback(onUserFeedback = onUserFeedback, onDismiss = onEndCallMessageDismiss)
+            }
             }
         }
     }
