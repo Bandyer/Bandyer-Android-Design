@@ -38,6 +38,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 const val FeaturedStreamTag = "FeaturedStreamTag"
+const val HeaderAutoHideMs = 5000L
 
 @Composable
 internal fun FeaturedStream(
@@ -51,7 +52,7 @@ internal fun FeaturedStream(
 ) {
     var resetCountDown by remember { mutableStateOf(false) }
     val countDown = if (stream.video?.view != null && stream.video.isEnabled) {
-        rememberCountdownTimerState(initialMillis = 5000L, resetFlag = resetCountDown)
+        rememberCountdownTimerState(initialMillis = HeaderAutoHideMs, resetFlag = resetCountDown)
     } else {
         remember(stream) { mutableStateOf(1L) }
     }

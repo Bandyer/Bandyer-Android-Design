@@ -20,6 +20,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.rememberCountdownTi
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 
 val PointerSize = 16.dp
+const val PointerAutoHideMs = 3000L
 
 @Composable
 internal fun TextPointer(
@@ -28,7 +29,7 @@ internal fun TextPointer(
     modifier: Modifier = Modifier
 ) {
     val textStyle = LocalTextStyle.current
-    val countDown by rememberCountdownTimerState(initialMillis = 3000L)
+    val countDown by rememberCountdownTimerState(initialMillis = PointerAutoHideMs)
     val textAlpha by animateFloatAsState(targetValue =  if (countDown > 0L) 1f else 0f)
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
         Pointer()
