@@ -28,7 +28,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtension
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.buttons.KaleyraLineButton
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraBottomSheetWidgetLayoutBinding
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutOffsetListener
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textview.MaterialTextView
 

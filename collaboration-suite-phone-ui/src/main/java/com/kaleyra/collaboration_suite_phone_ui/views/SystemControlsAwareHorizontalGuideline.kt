@@ -23,9 +23,9 @@ import android.view.View.OnLayoutChangeListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
-import com.kaleyra.collaboration_suite_phone_ui.extensions.scanForFragmentActivity
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutObserver
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutOffsetListener
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.scanForFragmentActivity
 import kotlin.math.max
 import kotlin.math.min
 

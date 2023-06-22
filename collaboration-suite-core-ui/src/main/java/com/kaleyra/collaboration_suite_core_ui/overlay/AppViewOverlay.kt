@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.screensharing
+package com.kaleyra.collaboration_suite_core_ui.overlay
 
 import android.app.Activity
 import android.app.AppOpsManager
@@ -23,10 +23,9 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import com.kaleyra.collaboration_suite_phone_ui.extensions.canDrawOverlays
-import com.kaleyra.collaboration_suite_phone_ui.extensions.startAppOpsWatch
-import com.kaleyra.collaboration_suite_phone_ui.extensions.stopAppOpsWatch
-import com.kaleyra.collaboration_suite_phone_ui.views.ViewOverlayAttacher
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.canDrawOverlays
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.startAppOpsWatch
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.stopAppOpsWatch
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 

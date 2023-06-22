@@ -22,7 +22,6 @@
 
     <item name="kaleyra_id_home_button" type="id" />
     <item name="kaleyra_id_fading_view" type="id" />
-    <item name="kaleyra_id_screen_share_overlay" type="id" />
     <item name="kaleyra_id_call_user_status" type="id" />
 
     <item name="kaleyra_id_decline" type="id" />
@@ -52,7 +51,5 @@
     <item name="kaleyra_id_upload_item" type="id" />
     <item name="kaleyra_id_download_item" type="id" />
     <item name="kaleyra_id_download_available_item" type="id" />
-
-    <item name="kaleyra_id_status_bar_overlay_tag" type="id" />
 
 </resources>

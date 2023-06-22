@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.views
+package com.kaleyra.collaboration_suite_core_ui.overlay
 
 import android.app.Activity
 import android.content.Context
@@ -24,8 +24,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
-import com.kaleyra.collaboration_suite_phone_ui.R
 import java.lang.Integer.max
 
 /**
@@ -102,7 +102,9 @@ class ViewOverlayAttacher(val view: View) : View.OnLayoutChangeListener {
     fun detach(context: Context) {
         removeGlobalOverlay()
         val contextIdentifier = getContextIdentifier(context, OverlayType.CURRENT_APPLICATION)
-        inAppOverlays.firstOrNull { getContextIdentifier(it.context, OverlayType.CURRENT_APPLICATION) == contextIdentifier }?.let { overlay ->
+        inAppOverlays.firstOrNull { getContextIdentifier(it.context,
+            OverlayType.CURRENT_APPLICATION
+        ) == contextIdentifier }?.let { overlay ->
             removeApplicationOverlay(overlay)
             inAppOverlays.remove(overlay)
         }

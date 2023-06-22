@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.utils.systemviews
+package com.kaleyra.collaboration_suite_core_ui.systemviews
 
 import androidx.annotation.Px
 

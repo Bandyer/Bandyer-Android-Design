@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.implementation
+package com.kaleyra.collaboration_suite_core_ui.systemviews.implementation
 
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutObserver
+import com.kaleyra.collaboration_suite_core_ui.systemviews.implementation.SystemViewControlsAware
 
 /**
  * @suppress

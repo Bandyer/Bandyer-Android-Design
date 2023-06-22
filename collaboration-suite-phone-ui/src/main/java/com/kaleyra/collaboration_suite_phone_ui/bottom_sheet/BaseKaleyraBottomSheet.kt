@@ -52,8 +52,8 @@ import com.kaleyra.collaboration_suite_phone_ui.extensions.checkIsInMultiWindowM
 import com.kaleyra.collaboration_suite_phone_ui.extensions.checkIsInPictureInPictureMode
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getCoordinates
 import com.kaleyra.collaboration_suite_phone_ui.utils.item_adapter_animators.AlphaCrossFadeAnimator
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutObserver
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutOffsetListener
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter

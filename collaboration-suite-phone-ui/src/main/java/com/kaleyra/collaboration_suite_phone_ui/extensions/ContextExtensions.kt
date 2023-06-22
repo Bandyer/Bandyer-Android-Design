@@ -86,13 +86,6 @@ fun Context.getScreenRatio(): Float {
 }
 
 /**
- * Check if can draw over apps
- * @receiver Context
- * @return Boolean true if can draw overlays, false otherwise
- */
-fun Context.canDrawOverlays(): Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) Settings.canDrawOverlays(this.applicationContext) else true
-
-/**
  * Checks if this context can be or is in picture in picture mode
  * @receiver Context
  * @return Boolean true if currently in picture in picture mode, false otherwise
@@ -102,44 +95,6 @@ fun Activity.isInPictureInPictureModeCompat(): Boolean {
         val canGoInPip = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
         canGoInPip && (this as? AppCompatActivity)?.isInPictureInPictureMode == true
     } else false
-}
-
-/**
- * Interrupts watching permission change with app ops manager
- * @receiver Context
- * @param callback Function2<String, String, Unit> the callback to be stopped.
- */
-fun Context.stopAppOpsWatch(callback: ((String, String) -> Unit)) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
-    val appOpsManager = this.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-    appOpsManager.stopWatchingMode(callback)
-}
-
-/**
- * Starts watch permission change with app ops manager
- * @receiver Context
- * @param operation String
- * @param callback Function2<String, String, Unit> the callback to be called.
- */
-fun Context.startAppOpsWatch(operation: String, callback: ((String, String) -> Unit)){
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
-    val pckName = applicationContext.packageName
-    val appOpsManager = this.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-    appOpsManager.startWatchingMode(operation, pckName, callback)
-}
-
-/**
- * Finds the fragment activity associated to the context if any.
- * @receiver Context
- * @return Activity?
- */
-fun Context.scanForFragmentActivity(): androidx.fragment.app.FragmentActivity? {
-    return when (this) {
-        is AppCompatActivity -> this
-        is FragmentActivity -> this
-        is ContextWrapper -> this.baseContext.scanForFragmentActivity()
-        else -> null
-    }
 }
 
 /**

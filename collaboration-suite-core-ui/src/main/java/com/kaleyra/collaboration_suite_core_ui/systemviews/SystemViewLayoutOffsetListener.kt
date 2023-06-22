@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.utils.systemviews
+package com.kaleyra.collaboration_suite_core_ui.systemviews
 
 import androidx.fragment.app.FragmentActivity
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.implementation.SystemViewControlsAware
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.implementation.SystemViewControlsAwareInstance
+import com.kaleyra.collaboration_suite_core_ui.systemviews.implementation.SystemViewControlsAware
+import com.kaleyra.collaboration_suite_core_ui.systemviews.implementation.SystemViewControlsAwareInstance
 
 /**
  * Component to use when you want to know if any system view has changed been drawn.

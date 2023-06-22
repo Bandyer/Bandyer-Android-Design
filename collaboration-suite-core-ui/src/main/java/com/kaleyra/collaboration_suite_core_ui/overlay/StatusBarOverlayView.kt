@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.screensharing
+package com.kaleyra.collaboration_suite_core_ui.overlay
 
 import android.animation.Animator
 import android.animation.ValueAnimator
@@ -28,10 +28,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.dp2px
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
-import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.extensions.scanForFragmentActivity
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.scanForFragmentActivity
+import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutObserver
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutOffsetListener
 
 /**
  * Status bar overlay view(a pulsing red alert to be placed under the status bar)

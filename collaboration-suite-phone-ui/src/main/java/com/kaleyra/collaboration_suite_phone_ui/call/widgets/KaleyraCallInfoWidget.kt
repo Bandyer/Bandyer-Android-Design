@@ -36,14 +36,16 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraWidgetCallInfoBinding
 import com.kaleyra.collaboration_suite_phone_ui.extensions.*
 import com.kaleyra.collaboration_suite_phone_ui.call.widgets.recording.KaleyraRecordingWidget
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutObserver
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutOffsetListener
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.scanForFragmentActivity
 
 /**
  * This class represent a widget used to display in-call informations.
  * It has a tile, a subtitle and an icon that can be used to display the recording state of the video/audio call.
  */
-class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.kaleyra_rootLayoutStyle) : ConstraintLayout(context, attrs, defStyleAttr), SystemViewLayoutObserver, HideableWidget {
+class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.kaleyra_rootLayoutStyle) : ConstraintLayout(context, attrs, defStyleAttr),
+    SystemViewLayoutObserver, HideableWidget {
 
     /**
      * Representation of call info ui components

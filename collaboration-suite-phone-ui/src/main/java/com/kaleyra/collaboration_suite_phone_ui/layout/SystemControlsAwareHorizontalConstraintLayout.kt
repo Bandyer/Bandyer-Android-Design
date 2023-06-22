@@ -26,8 +26,9 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.s
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingRight
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingStart
 import com.kaleyra.collaboration_suite_phone_ui.extensions.*
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutObserver
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutOffsetListener
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.scanForFragmentActivity
 
 /**
  * A ConstraintLayout which follows is aware of the system views dimensions and positions

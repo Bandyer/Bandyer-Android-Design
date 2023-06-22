@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.implementation
+package com.kaleyra.collaboration_suite_core_ui.systemviews.implementation
 
 import android.graphics.Rect
 import androidx.core.graphics.Insets
@@ -24,9 +24,10 @@ import androidx.core.view.doOnAttach
 import androidx.fragment.app.FragmentActivity
 import com.kaleyra.collaboration_suite_utils.LifecycleEvents
 import com.kaleyra.collaboration_suite_utils.LifecyleBinder
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutObserver
 
-internal class SystemViewControlsAware(private var finished: (() -> Unit)?) : SystemViewControlsAwareInstance {
+internal class SystemViewControlsAware(private var finished: (() -> Unit)?) :
+    SystemViewControlsAwareInstance {
 
     /**
      * Mapping of observers and requests to keep listening on global layout changes

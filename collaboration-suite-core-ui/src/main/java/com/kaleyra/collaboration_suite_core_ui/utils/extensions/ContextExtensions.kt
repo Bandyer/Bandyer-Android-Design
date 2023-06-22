@@ -17,6 +17,7 @@
 package com.kaleyra.collaboration_suite_core_ui.utils.extensions
 
 import android.app.Activity
+import android.app.AppOpsManager
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -35,6 +36,7 @@ import android.view.View
 import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.MathUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getMimeType
@@ -206,6 +208,51 @@ object ContextExtensions {
             zenValue == 1 || zenValue == 2
         } catch (e: Exception) {
             false
+        }
+    }
+
+    /**
+     * Starts watch permission change with app ops manager
+     * @receiver Context
+     * @param operation String
+     * @param callback Function2<String, String, Unit> the callback to be called.
+     */
+    fun Context.startAppOpsWatch(operation: String, callback: ((String, String) -> Unit)){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+        val pckName = applicationContext.packageName
+        val appOpsManager = this.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        appOpsManager.startWatchingMode(operation, pckName, callback)
+    }
+
+    /**
+     * Interrupts watching permission change with app ops manager
+     * @receiver Context
+     * @param callback Function2<String, String, Unit> the callback to be stopped.
+     */
+    fun Context.stopAppOpsWatch(callback: ((String, String) -> Unit)) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+        val appOpsManager = this.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        appOpsManager.stopWatchingMode(callback)
+    }
+
+    /**
+     * Check if can draw over apps
+     * @receiver Context
+     * @return Boolean true if can draw overlays, false otherwise
+     */
+    fun Context.canDrawOverlays(): Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) Settings.canDrawOverlays(this.applicationContext) else true
+
+    /**
+     * Finds the fragment activity associated to the context if any.
+     * @receiver Context
+     * @return Activity?
+     */
+    fun Context.scanForFragmentActivity(): FragmentActivity? {
+        return when (this) {
+            is AppCompatActivity -> this
+            is FragmentActivity -> this
+            is ContextWrapper -> this.baseContext.scanForFragmentActivity()
+            else -> null
         }
     }
 

@@ -35,12 +35,13 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.KaleyraBottomSheetDialog
 import com.kaleyra.collaboration_suite_phone_ui.dialogs.KaleyraDialog
 import com.kaleyra.collaboration_suite_phone_ui.extensions.*
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
-import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutObserver
+import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutOffsetListener
 import com.kaleyra.collaboration_suite_phone_ui.whiteboard.dialog.KaleyraWhiteboardTextEditorDialog.CustomTextEditorDialog.Companion.TEXT_PLACEHOLDER
 import com.kaleyra.collaboration_suite_phone_ui.whiteboard.layout.KaleyraWhiteboardTextEditorLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.scanForFragmentActivity
 
 
 /**
@@ -76,7 +77,8 @@ class KaleyraWhiteboardTextEditorDialog : KaleyraDialog<KaleyraWhiteboardTextEdi
         fun onTextEditConfirmed(newText: String)
     }
 
-    class CustomTextEditorDialog : KaleyraBottomSheetDialog(), TextWatcher, SystemViewLayoutObserver {
+    class CustomTextEditorDialog : KaleyraBottomSheetDialog(), TextWatcher,
+        SystemViewLayoutObserver {
 
         companion object {
             const val TEXT_PLACEHOLDER = "text_placeholder"

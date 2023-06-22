@@ -29,6 +29,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
 import com.ablanco.zoomy.ZoomListener
 import com.ablanco.zoomy.Zoomy
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.scanForFragmentActivity
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.KaleyraBottomSheetDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.layout.KaleyraSnapshotDialogLayout
