@@ -18,7 +18,6 @@ interface CameraStreamInputsDelegate {
                 val me = call.participants.value.me
                 val stream = me.streams.value.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID } ?: return@onEach
                 stream.audio.value = audio
-                audio.tryEnable()
             }
             .launchIn(coroutineScope)
     }
@@ -33,7 +32,6 @@ interface CameraStreamInputsDelegate {
                 val me = call.participants.value.me
                 val stream = me.streams.value.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID } ?: return@onEach
                 if (hasVideo) stream.video.value = video
-                video.tryEnable()
             }.launchIn(coroutineScope)
     }
 
