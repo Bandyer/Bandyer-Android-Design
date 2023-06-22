@@ -68,7 +68,11 @@ class CallScreenTest {
 
     private var backPressed = false
 
+    private var finishActivity = false
+
     private var fileShareDisplayed = false
+
+    private var whiteboardDisplayed = false
 
     @Before
     fun setUp() {
@@ -88,9 +92,9 @@ class CallScreenTest {
                 permissionsState = null,
                 onConfigurationChange = { },
                 onFullscreenStreamClick = { },
-                onFileShareVisibility = { fileShareDisplayed = true },
-                onWhiteboardVisibility = {},
-                onFinishActivity = { },
+                onFileShareVisibility = { fileShareDisplayed = it },
+                onWhiteboardVisibility = { whiteboardDisplayed = it },
+                onFinishActivity = { finishActivity = true },
                 onUserFeedback = { _,_ -> }
             )
             LaunchedEffect(sideEffect) {
@@ -108,7 +112,10 @@ class CallScreenTest {
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded)
         thumbnailClickedStreamId = null
         thumbnailDoubleClickedStreamId = null
+        fileShareDisplayed = false
+        whiteboardDisplayed = false
         backPressed = false
+        finishActivity = false
     }
 
     @Test
@@ -226,12 +233,11 @@ class CallScreenTest {
     }
 
     @Test
-    fun sheetHiddenAndCallStateEnded_userPerformsBack_onBackPressedInvoked() {
+    fun callStateEnded_userPerformsBack_finishActivityInvoked() {
         callUiState = CallUiState(callState = CallStateUi.Disconnected.Ended)
-        sheetState = BottomSheetState(initialValue = BottomSheetValue.Hidden)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
         Espresso.pressBack()
-        assert(backPressed)
+        assertEquals(true, finishActivity)
     }
 
     @Test
@@ -584,7 +590,21 @@ class CallScreenTest {
     fun shouldShowFileShareComponentTrue_fileShareIsDisplayed() {
         shouldShowFileShareComponent = true
         composeTestRule.waitForIdle()
-        assert(fileShareDisplayed)
+        assertEquals(true, fileShareDisplayed)
+    }
+
+    @Test
+    fun fileShareComponent_onFileShareVisibilityInvoked() {
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.FileShare, LineState.Expanded)
+        composeTestRule.waitForIdle()
+        assertEquals(true, fileShareDisplayed)
+    }
+
+    @Test
+    fun whiteboardComponent_onWhiteboardVisibilityInvoked() {
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.Whiteboard, LineState.Expanded)
+        composeTestRule.waitForIdle()
+        assertEquals(true, whiteboardDisplayed)
     }
 
     // todo understand why this fails
