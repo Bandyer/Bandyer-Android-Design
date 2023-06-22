@@ -90,7 +90,7 @@ class CallScreenTest {
                 onFullscreenStreamClick = { },
                 onFileShareVisibility = { fileShareDisplayed = true },
                 onWhiteboardVisibility = {},
-                onEndCallMessageDismiss = {},
+                onFinishActivity = { },
                 onUserFeedback = { _,_ -> }
             )
             LaunchedEffect(sideEffect) {

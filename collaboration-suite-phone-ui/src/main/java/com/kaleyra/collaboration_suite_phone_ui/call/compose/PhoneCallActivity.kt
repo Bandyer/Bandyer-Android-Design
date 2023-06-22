@@ -58,7 +58,7 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
                 CallScreen(
                     shouldShowFileShareComponent = shouldShowFileShare.collectAsStateWithLifecycle().value,
                     isInPipMode = isInPipMode.collectAsStateWithLifecycle().value,
-                    onBackPressed = this::finishAndRemoveTask,
+                    onEnterPip = ::onUserLeaveHint,
                     onFileShareVisibility = {
                         isFileShareDisplayed = it
                         if (it) shouldShowFileShare.value = false
@@ -70,7 +70,7 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
                             updatePipParams()?.let { setPictureInPictureParams(it) }
                         }
                     },
-                    onActivityFinish = { isActivityFinishing = true },
+                    onActivityFinishing = { isActivityFinishing = true },
                 )
             }
         }

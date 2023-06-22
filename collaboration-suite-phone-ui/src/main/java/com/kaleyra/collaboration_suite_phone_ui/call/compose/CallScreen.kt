@@ -245,11 +245,11 @@ internal fun CallScreen(
     ),
     shouldShowFileShareComponent: Boolean,
     isInPipMode: Boolean,
-    onBackPressed: () -> Unit,
+    onEnterPip: () -> Unit,
     onPipAspectRatio: (Rational) -> Unit,
     onFileShareVisibility: (Boolean) -> Unit,
     onWhiteboardVisibility: (Boolean) -> Unit,
-    onActivityFinish: () -> Unit
+    onActivityFinishing: () -> Unit
 ) {
     val activity = LocalContext.current.findActivity() as FragmentActivity
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -275,23 +275,27 @@ internal fun CallScreen(
             }
         }
     }
-    val onBackPressedInternal by remember {
-        derivedStateOf {
-            if (callUiState.fullscreenStream != null) { { viewModel.fullscreenStream(null) } }
-            else onBackPressed
-        }
-    }
-
-    val onEndCallMessageDismiss = remember(activity) {
+    val onFinishActivity = remember(activity) {
         {
-            onActivityFinish()
+            onActivityFinishing()
             activity.finishAndRemoveTask()
         }
     }
+    val onBackPressed by remember(onFinishActivity, onEnterPip) {
+        derivedStateOf {
+            {
+                when {
+                    callUiState.callState is CallStateUi.Disconnected.Ended -> onFinishActivity()
+                    callUiState.fullscreenStream != null -> { viewModel.fullscreenStream(null) }
+                    else -> onEnterPip()
+                }
+            }
+        }
+    }
 
-    LaunchedEffect(isInPipMode, onActivityFinish) {
+    LaunchedEffect(isInPipMode, onActivityFinishing) {
         viewModel.setOnCallEnded { hasFeedback, hasErrorOccurred, hasBeenKicked ->
-            onActivityFinish()
+            onActivityFinishing()
             when {
                 isInPipMode || !activity.isAtLeastResumed() -> activity.finishAndRemoveTask()
                 !hasFeedback && !hasBeenKicked -> {
@@ -320,8 +324,8 @@ internal fun CallScreen(
         onFullscreenStreamClick = viewModel::fullscreenStream,
         onUserFeedback = viewModel::sendUserFeedback,
         onConfigurationChange = viewModel::updateStreamsArrangement,
-        onBackPressed = onBackPressedInternal,
-        onEndCallMessageDismiss = onEndCallMessageDismiss,
+        onBackPressed = onBackPressed,
+        onFinishActivity = onFinishActivity,
         isInPipMode = isInPipMode,
         onFileShareVisibility = onFileShareVisibility,
         onWhiteboardVisibility = onWhiteboardVisibility
@@ -352,7 +356,7 @@ internal fun CallScreen(
     onThumbnailStreamDoubleClick: (String) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
-    onEndCallMessageDismiss: () -> Unit,
+    onFinishActivity: () -> Unit,
     onFileShareVisibility: (Boolean) -> Unit,
     onWhiteboardVisibility: (Boolean) -> Unit
 ) {
@@ -418,12 +422,6 @@ internal fun CallScreen(
         }
     }
 
-    when {
-        callScreenState.sheetState.isHidden && callUiState.callState is CallStateUi.Disconnected.Ended -> BackHandler(onBack = onBackPressed)
-        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackHandler(onBack = callScreenState::navigateToCallActionsComponent)
-        !callScreenState.isSheetNotDraggableDown -> BackHandler(onBack = callScreenState::collapseSheet)
-    }
-
     if (isInPipMode) {
         PipScreen(
             stream = callUiState.featuredStreams.value.firstOrNull(),
@@ -442,7 +440,7 @@ internal fun CallScreen(
             onThumbnailStreamDoubleClick = onThumbnailStreamDoubleClick,
             onFullscreenStreamClick = onFullscreenStreamClick,
             onUserFeedback = onUserFeedback,
-            onEndCallMessageDismiss = onEndCallMessageDismiss
+            onFinishActivity = onFinishActivity
         )
     }
 }
@@ -525,10 +523,17 @@ internal fun DefaultCallScreen(
     onThumbnailStreamDoubleClick: (String) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
-    onEndCallMessageDismiss: () -> Unit
+    onFinishActivity: () -> Unit
 ) {
     val configuration = LocalConfiguration.current
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
+
+    when {
+        callUiState.callState is CallStateUi.Disconnected.Ended -> BackHandler(onBack = onFinishActivity)
+        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackHandler(onBack = callScreenState::navigateToCallActionsComponent)
+        !callScreenState.isSheetNotDraggableDown -> BackHandler(onBack = callScreenState::collapseSheet)
+        callUiState.fullscreenStream != null -> BackHandler(onBack = { onFullscreenStreamClick(null) })
+    }
 
     BoxWithConstraints(modifier = Modifier.horizontalSystemBarsPadding()) {
 
@@ -584,14 +589,14 @@ internal fun DefaultCallScreen(
         if (callUiState.showFeedback && (callState is CallStateUi.Disconnected.Ended.HungUp || callState is CallStateUi.Disconnected.Ended.Error)) {
             val activity = LocalContext.current.findActivity() as ComponentActivity
             if (activity.isAtLeastResumed()) {
-                UserFeedback(onUserFeedback = onUserFeedback, onDismiss = onEndCallMessageDismiss)
+                UserFeedback(onUserFeedback = onUserFeedback, onDismiss = onFinishActivity)
             }
         }
 
         if (callState is CallStateUi.Disconnected.Ended.Kicked) {
             val activity = LocalContext.current.findActivity() as ComponentActivity
             if (activity.isAtLeastResumed()) {
-                KickedMessage(callState.adminName, onEndCallMessageDismiss)
+                KickedMessage(adminName = callState.adminName, onDismiss = onFinishActivity)
             }
         }
     }
@@ -687,7 +692,7 @@ fun CallScreenPreview() {
             onFullscreenStreamClick = {},
             onThumbnailStreamClick = {},
             onThumbnailStreamDoubleClick = {},
-            onEndCallMessageDismiss = {},
+            onFinishActivity = {},
             onUserFeedback = { _,_ -> }
         )
     }
