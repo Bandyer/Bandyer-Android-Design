@@ -32,6 +32,8 @@ class CallStateMapperTest {
 
     private val participantMeMock = mockk<CallParticipant.Me>()
 
+    private val participantMock = mockk<CallParticipant>()
+
     private val callParticipantsMock = mockk<CallParticipants>()
 
     private val callFlow = MutableStateFlow(callMock)
@@ -43,7 +45,10 @@ class CallStateMapperTest {
             every { callFlow.amIAlone() } returns flowOf(false)
         }
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
-        every { callParticipantsMock.me } returns participantMeMock
+        with(callParticipantsMock) {
+            every { me } returns participantMeMock
+            every { others } returns listOf(participantMock)
+        }
     }
 
     @After
@@ -185,9 +190,13 @@ class CallStateMapperTest {
 
     @Test
     fun stateKicked_toCallStateUi_callStateKicked() = runTest {
-        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.Kicked("userId"))
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.Kicked("adminUserId"))
+        with(participantMock) {
+            every { userId } returns "adminUserId"
+            every { displayName }returns MutableStateFlow("adminUserName")
+        }
         val result = callFlow.toCallStateUi()
-        Assert.assertEquals(CallStateUi.Disconnected.Ended.Kicked("userId"), result.first())
+        Assert.assertEquals(CallStateUi.Disconnected.Ended.Kicked("adminUserName"), result.first())
     }
 
     @Test

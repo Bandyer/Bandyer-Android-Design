@@ -22,7 +22,7 @@ sealed class CallStateUi {
 
             object Declined : Ended()
 
-            data class Kicked(val userId: String) : Ended()
+            data class Kicked(val adminName: String) : Ended()
 
             object AnsweredOnAnotherDevice : Ended()
 

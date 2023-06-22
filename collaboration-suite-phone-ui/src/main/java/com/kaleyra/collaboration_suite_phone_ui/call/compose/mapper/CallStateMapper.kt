@@ -38,7 +38,11 @@ internal object CallStateMapper {
                 state is Call.State.Disconnected.Ended.Error.Server -> CallStateUi.Disconnected.Ended.Error.Server
                 state is Call.State.Disconnected.Ended.Error.Unknown -> CallStateUi.Disconnected.Ended.Error.Unknown
                 state is Call.State.Disconnected.Ended.HungUp -> CallStateUi.Disconnected.Ended.HungUp
-                state is Call.State.Disconnected.Ended.Kicked -> CallStateUi.Disconnected.Ended.Kicked(state.userId)
+                state is Call.State.Disconnected.Ended.Kicked -> {
+                    val admin = participants.others.firstOrNull { it.userId == state.userId }
+                    val adminName = admin?.displayName?.value ?: ""
+                    CallStateUi.Disconnected.Ended.Kicked(adminName)
+                }
                 state == Call.State.Disconnected.Ended.Error -> CallStateUi.Disconnected.Ended.Error
                 state == Call.State.Disconnected.Ended -> CallStateUi.Disconnected.Ended
                 else -> CallStateUi.Disconnected
