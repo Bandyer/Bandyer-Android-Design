@@ -430,6 +430,13 @@ class CallComponentTest {
         assert(avatarBottom < textTop)
     }
 
+    @Test
+    fun fullscreenStream_fullscreenModeMessageIsDisplayed() {
+        callUiState = CallUiState(fullscreenStream = streamMock1)
+        val text = composeTestRule.activity.getString(R.string.kaleyra_fullscreen_info)
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
+    }
+
     private fun <T: ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<T>, T>.assertConnectingTitleIsDisplayed() {
         val connecting = activity.getString(R.string.kaleyra_call_status_connecting)
         onNodeWithContentDescription(connecting).assertIsDisplayed()

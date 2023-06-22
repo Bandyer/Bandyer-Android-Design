@@ -4,9 +4,12 @@ import android.content.res.Configuration
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
@@ -27,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeWidth
@@ -41,6 +45,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 const val CallComponentTag = "CallComponentTag"
 private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
 val YouAreAloneAvatarPadding = DefaultStreamAvatarSize / 2 + 24.dp
+const val FullScreenMessageTimer = 1000L
 
 @Composable
 internal fun rememberCallComponentState(
@@ -110,6 +115,9 @@ internal fun CallComponent(
 ) {
     val shouldShowCallInfo by remember(callUiState) { callUiState.shouldShowCallInfo() }
     val shouldHideWatermark by remember(callUiState) { callUiState.shouldHideWatermark() }
+    val shouldShowFullscreenToast by remember(callUiState) {
+        derivedStateOf { callUiState.fullscreenStream != null }
+    }
     var callInfoWidgetHeight by remember { mutableStateOf(0) }
     var streamHeaderHeight by remember { mutableStateOf(0) }
     val snackbarTopPadding = with(LocalDensity.current) { 16.dp.toPx() }
@@ -146,7 +154,9 @@ internal fun CallComponent(
                                             )
                                         }
                                         .statusBarsPadding()
-                                        .onGloballyPositioned { streamHeaderHeight = it.size.height }
+                                        .onGloballyPositioned {
+                                            streamHeaderHeight = it.size.height
+                                        }
                                 }
                             )
 
@@ -158,7 +168,9 @@ internal fun CallComponent(
                                     modifier = Modifier
                                         .align(Alignment.Center)
                                         .offset {
-                                            val offset = padding.toPx().toInt()
+                                            val offset = padding
+                                                .toPx()
+                                                .toInt()
                                             IntOffset(0, offset)
                                         }
                                 )
@@ -194,6 +206,29 @@ internal fun CallComponent(
                     .align(Alignment.TopCenter)
                     .offset { IntOffset(0, snackbarOffset) }
             )
+
+            if (shouldShowFullscreenToast) {
+                val timer by rememberCountdownTimerState(initialMillis = FullScreenMessageTimer)
+                val visible by remember(timer) {
+                    derivedStateOf { timer != 0L }
+                }
+                AnimatedVisibility(
+                    visible = visible,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = 100.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.kaleyra_fullscreen_info),
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .background(Color.Black, shape = CircleShape)
+                            .padding(vertical = 8.dp, horizontal = 16.dp)
+                    )
+                }
+            }
         }
     }
 }
