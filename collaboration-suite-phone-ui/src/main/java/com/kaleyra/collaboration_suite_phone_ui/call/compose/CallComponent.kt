@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
@@ -45,7 +44,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 const val CallComponentTag = "CallComponentTag"
 private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
 val YouAreAloneAvatarPadding = DefaultStreamAvatarSize / 2 + 24.dp
-const val FullScreenMessageTimer = 1000L
+const val FullScreenMessageMs = 1000L
 
 @Composable
 internal fun rememberCallComponentState(
@@ -208,7 +207,7 @@ internal fun CallComponent(
             )
 
             if (shouldShowFullscreenToast) {
-                val timer by rememberCountdownTimerState(initialMillis = FullScreenMessageTimer)
+                val timer by rememberCountdownTimerState(initialMillis = FullScreenMessageMs)
                 val visible by remember(timer) {
                     derivedStateOf { timer != 0L }
                 }
