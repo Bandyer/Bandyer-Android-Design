@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
@@ -30,21 +31,26 @@ apply from: '../downloadIcons.gradle'
 apply from: '../moveIcons.gradle'
 
 dependencies {
-    implementation catalog.androidxConstraintLayout
-    coreLibraryDesugaring catalog.desugar
 
-    testImplementation catalog.junit
-    testImplementation catalog.mockk
-    testImplementation catalog.roboelectric
-    testImplementation catalog.coroutines
-    testImplementation kaleyraCatalog.kaleyraCollaborationSuite
-    androidTestImplementation catalog.androidxTestEspressoCore
-
+    /** PLatform **/
     api catalog.kotlinStdLib
     api catalog.androidxCoreKtx
     api catalog.appcompat
     api catalog.material
+    coreLibraryDesugaring catalog.desugar
+
+    /** UI **/
     api catalog.squareupPicasso
+    implementation catalog.androidxConstraintLayout
+
+    /** Testing **/
+    testImplementation catalog.junit
+    testImplementation catalog.mockk
+    testImplementation catalog.roboelectric
+    testImplementation catalog.coroutines
+    testImplementation catalog.coroutinesTest
+    testImplementation kaleyraCatalog.kaleyraCollaborationSuite
+    androidTestImplementation catalog.androidxTestEspressoCore
 
     /** Kaleyra **/
     compileOnly kaleyraCatalog.kaleyraCollaborationSuite

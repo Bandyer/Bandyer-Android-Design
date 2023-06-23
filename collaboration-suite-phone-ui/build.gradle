@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
@@ -29,19 +30,9 @@ apply from: '../publish.gradle'
 apply from: '../moveIcons.gradle'
 
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    coreLibraryDesugaring catalog.desugar
-
-    /*** Testing ***/
-    testImplementation catalog.junit
-    testImplementation catalog.mockk
-
-    androidTestImplementation catalog.androidxTestRunner
-    androidTestImplementation catalog.androidxTestEspressoCore
 
     /*** Platform ***/
     implementation catalog.kotlinReflect
-
     implementation catalog.appcompat
     implementation catalog.androidxCoreKtx
     implementation catalog.androidxFragment
@@ -50,17 +41,22 @@ dependencies {
     implementation catalog.material
     implementation catalog.androidxVectorDrawable
     implementation catalog.androidxVectorDrawableAnimated
+    coreLibraryDesugaring catalog.desugar
 
-    compileOnly catalog.zoomy
+    /*** Testing ***/
+    testImplementation catalog.junit
+    testImplementation catalog.mockk
+    androidTestImplementation catalog.androidxTestRunner
+    androidTestImplementation catalog.androidxTestEspressoCore
 
     /*** UI ***/
     api catalog.squareupPicasso
     api catalog.androidxConstraintLayout
     api catalog.fastadapter
     api catalog.fastadapterExtensionsDiff
-
     implementation catalog.androidxRecyclerview
     api catalog.flexbox
+    compileOnly catalog.zoomy
     implementation project(':collaboration-suite-core-ui')
 
     /** Kaleyra **/
