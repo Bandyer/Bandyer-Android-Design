@@ -50,9 +50,9 @@ internal fun FeaturedStream(
     modifier: Modifier = Modifier,
     isTesting: Boolean = false
 ) {
-    var resetCountDown by remember { mutableStateOf(false) }
+    var isHeaderAutoHideEnabled by remember { mutableStateOf(true) }
     val countDown = if (stream.video?.view != null && stream.video.isEnabled) {
-        rememberCountdownTimerState(initialMillis = HeaderAutoHideMs, resetFlag = resetCountDown)
+        rememberCountdownTimerState(initialMillis = HeaderAutoHideMs, enable = isHeaderAutoHideEnabled)
     } else {
         remember(stream) { mutableStateOf(1L) }
     }
@@ -72,7 +72,11 @@ internal fun FeaturedStream(
     Box(
         modifier = modifier
             .pointerInput(Unit) {
-                detectTapGestures(onPress = { resetCountDown = !resetCountDown })
+                detectTapGestures(onPress = {
+                    isHeaderAutoHideEnabled = false
+                    tryAwaitRelease()
+                    isHeaderAutoHideEnabled = true
+                })
             }
             .testTag(FeaturedStreamTag)
     ) {
@@ -97,17 +101,17 @@ internal fun FeaturedStream(
             Header(
                 username = stream.username,
                 fullscreen = isFullscreen,
-                onBackPressed = remember(resetCountDown, disableHeaderButtons, onBackPressed) {
+                onBackPressed = remember(isHeaderAutoHideEnabled, disableHeaderButtons, onBackPressed) {
                     onBackPressed?.let {
                         {
-                            resetCountDown = !resetCountDown
+                            isHeaderAutoHideEnabled = !isHeaderAutoHideEnabled
                             if (disableHeaderButtons) it()
                         }
                     }
                 },
-                onFullscreenClick = remember(resetCountDown, disableHeaderButtons, onFullscreenClick) {
+                onFullscreenClick = remember(isHeaderAutoHideEnabled, disableHeaderButtons, onFullscreenClick) {
                     {
-                        resetCountDown = !resetCountDown
+                        isHeaderAutoHideEnabled = !isHeaderAutoHideEnabled
                         if (disableHeaderButtons) onFullscreenClick()
                     }
                 },

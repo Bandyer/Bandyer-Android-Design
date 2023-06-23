@@ -402,23 +402,18 @@ internal fun CallScreen(
     }
 
     if (callUiState.shouldAutoHideSheet) {
-        var resetCountDown by remember { mutableStateOf(false) }
-        val timer by rememberCountdownTimerState(initialMillis = BottomSheetAutoHideMs, resetFlag = resetCountDown)
+        val enable by remember(callScreenState) {
+            derivedStateOf {
+                callScreenState.sheetContentState.currentComponent == BottomSheetComponent.CallActions && callScreenState.sheetState.isHalfExpanded
+            }
+        }
+        val timer by rememberCountdownTimerState(initialMillis = BottomSheetAutoHideMs, enable = enable)
         LaunchedEffect(Unit) {
             snapshotFlow { timer }
                 .onEach { timer ->
-                    val currentComponent = callScreenState.sheetContentState.currentComponent
-                    if (timer != 0L || currentComponent != BottomSheetComponent.CallActions) return@onEach
+                    if (timer != 0L) return@onEach
                     callScreenState.collapseSheet()
                 }.launchIn(this)
-
-            combine(
-                snapshotFlow { callScreenState.sheetState.progress.fraction },
-                snapshotFlow { callScreenState.sheetState.targetValue }
-            ) { fraction, targetValue ->
-                if (fraction == 1f && (targetValue == BottomSheetValue.HalfExpanded || targetValue == BottomSheetValue.Expanded)) return@combine
-                resetCountDown = !resetCountDown
-            }.launchIn(this)
         }
     }
 
