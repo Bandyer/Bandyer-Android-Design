@@ -19,6 +19,7 @@ package com.kaleyra.collaboration_suite_core_ui
 import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.app.Notification
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -30,6 +31,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Companion.CALL_NOTIFICATION_ID
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamInputsDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
+import com.kaleyra.collaboration_suite_core_ui.call.ScreenShareOverlayDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsOpeningDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsVideoViewDelegate
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate
@@ -55,7 +57,9 @@ import kotlinx.coroutines.plus
 /**
  * The CallService
  */
-class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInputsDelegate, StreamsOpeningDelegate, StreamsVideoViewDelegate, CallNotificationDelegate, FileShareNotificationDelegate, ActivityLifecycleCallbacks {
+class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInputsDelegate,
+    StreamsOpeningDelegate, StreamsVideoViewDelegate, CallNotificationDelegate,
+    FileShareNotificationDelegate, ScreenShareOverlayDelegate, ActivityLifecycleCallbacks {
 
     internal companion object {
         const val CALL_ACTIVITY_CLASS = "call_activity_class"
@@ -69,6 +73,8 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
     private var foregroundJob: Job? = null
 
     private var proximityDelegate: CallProximityDelegate<LifecycleService>? = null
+
+    private var onCallActivityReady: ((Context) -> Unit)? = null
 
     private var proximityCallActivity: ProximityCallActivity? = null
 
@@ -110,6 +116,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         if (activity !is ProximityCallActivity) return
         proximityCallActivity = activity
+        onCallActivityReady?.invoke(activity)
     }
 
     override fun onActivityStarted(activity: Activity) = Unit
@@ -145,6 +152,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                 callActivityClazz,
                 callScope
             )
+            onCallActivityReady = { activityContext -> syncScreenShareOverlay(activityContext, call, callScope) }
 
             call.state
                 .takeWhile { it !is Call.State.Disconnected.Ended }
@@ -154,13 +162,26 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
             if (!DeviceUtils.isSmartGlass) {
                 syncFileShareNotification(this, call, callActivityClazz, callScope)
 
-                combine(call.state, call.participants) { state, participants -> state is Call.State.Disconnected && participants.let { it.creator() != it.me && it.creator() != null } }
+                combine(
+                    call.state,
+                    call.participants
+                ) { state, participants -> state is Call.State.Disconnected && participants.let { it.creator() != it.me && it.creator() != null } }
                     .onEach {
                         // if the call is incoming, don't immediately bind the proximity
                         if (it) return@onEach
-                        proximityDelegate = CallProximityDelegate<LifecycleService>(lifecycleContext = this, call = call, proximityCallActivity = proximityCallActivity).apply { bind() }
-                        recordingTextToSpeechNotifier = CallRecordingTextToSpeechNotifier(call, proximityDelegate!!.sensor!!).apply { start(lifecycleScope) }
-                        mutedTextToSpeechNotifier = CallParticipantMutedTextToSpeechNotifier(call, proximityDelegate!!.sensor!!).apply { start(lifecycleScope) }
+                        proximityDelegate = CallProximityDelegate<LifecycleService>(
+                            lifecycleContext = this,
+                            call = call,
+                            proximityCallActivity = proximityCallActivity
+                        ).apply { bind() }
+                        recordingTextToSpeechNotifier = CallRecordingTextToSpeechNotifier(
+                            call,
+                            proximityDelegate!!.sensor!!
+                        ).apply { start(lifecycleScope) }
+                        mutedTextToSpeechNotifier = CallParticipantMutedTextToSpeechNotifier(
+                            call,
+                            proximityDelegate!!.sensor!!
+                        ).apply { start(lifecycleScope) }
                     }
                     .takeWhile { it }
                     .launchIn(lifecycleScope)
