@@ -59,3 +59,39 @@ internal fun KaleyraTheme(
         content = content
     )
 }
+
+private val TermsDarkColorTheme = darkColors(
+    primary = Color.White,
+    primaryVariant = Color.White,
+    surface = Color(0xFF0E0E0E),
+    onPrimary = Color.Black,
+    onSurface = Color.White
+)
+
+// Compiler unhappy because onBackground is not Color.Black, like onPrimary and onSurface.
+// The compiler want it Color.Black because primary, surface and background colors are all Color.White.
+@SuppressLint("ConflictingOnColor")
+private val TermsLightColorTheme = lightColors(
+    primary = Color.Black,
+    primaryVariant = Color.Black,
+    surface = Color.White,
+    onPrimary = Color.White,
+    onSurface = Color.Black
+)
+
+@Composable
+internal fun TermsAndConditionsTheme(
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val colors = when {
+        isDarkTheme -> TermsDarkColorTheme
+        else -> TermsLightColorTheme
+    }
+
+    MaterialTheme(
+        colors = colors,
+        typography = kaleyraTypography,
+        content = content
+    )
+}

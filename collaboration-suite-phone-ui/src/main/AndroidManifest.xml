@@ -17,12 +17,16 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.kaleyra.collaboration_suite_phone_ui">
+    package="com.kaleyra.collaboration_suite_phone_ui" >
 
     <application>
+        <activity
+            android:name=".call.compose.termsandconditions.PhoneTermsAndConditionsActivity"
+            android:exported="false" />
+
         <receiver
             android:name=".call.compose.fileshare.filepick.FilePickBroadcastReceiver"
-            android:exported="false">
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.kaleyra.collaboration_suite_phone_ui.FILE_PICK_EVENT_ACTION" />
             </intent-filter>
@@ -30,21 +34,21 @@
 
         <activity
             android:name=".call.compose.PhoneCallActivity"
-            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.PhoneCallActivity"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:launchMode="singleTask"
+            android:showForAllUsers="true"
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
-            android:showForAllUsers="true"
             android:supportsPictureInPicture="true"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.PhoneCallActivity"
+            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call"
             tools:targetApi="o_mr1" />
         <activity
             android:name=".chat.PhoneChatActivity"
-            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.chat.PhoneChatActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat" />
+            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.chat.PhoneChatActivity"
+            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".call.compose.fileshare.filepick.FilePickActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
