@@ -9,11 +9,12 @@ import kotlinx.coroutines.isActive
 fun rememberCountdownTimerState(
     initialMillis: Long,
     step: Long = 1000,
-    enable: Boolean = true
+    enable: Boolean = true,
+    reset: Boolean = false
 ): MutableState<Long> {
     val timeLeft = remember(initialMillis) { mutableStateOf(initialMillis) }
     if (enable) {
-        LaunchedEffect(initialMillis, step) {
+        LaunchedEffect(initialMillis, step, reset) {
             val startTime = SystemClock.uptimeMillis()
             timeLeft.value = initialMillis
             while (isActive && timeLeft.value > 0) {
