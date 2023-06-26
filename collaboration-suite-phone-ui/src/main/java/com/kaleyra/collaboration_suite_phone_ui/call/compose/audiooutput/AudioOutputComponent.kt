@@ -32,18 +32,9 @@ internal fun AudioOutputComponent(
     ),
     onItemClick: (AudioDeviceUi) -> Unit,
     onCloseClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    isTesting: Boolean = false
+    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !isTesting) {
-        val permissionsState = rememberMultiplePermissionsState(permissions = listOf(BluetoothScanPermission, BluetoothConnectPermission))
-
-        LaunchedEffect(permissionsState) {
-            permissionsState.launchMultiplePermissionRequest()
-        }
-    }
 
     AudioOutputComponent(
         uiState = uiState,

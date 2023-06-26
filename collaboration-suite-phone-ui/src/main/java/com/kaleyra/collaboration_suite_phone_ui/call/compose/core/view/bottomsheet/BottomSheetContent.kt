@@ -131,8 +131,7 @@ internal fun BottomSheetContent(
                         AudioOutputComponent(
                             onItemClick = { onAudioDeviceClick() },
                             onCloseClick = { contentState.navigateToComponent(BottomSheetComponent.CallActions) },
-                            modifier = Modifier.testTag(AudioOutputComponentTag),
-                            isTesting = permissionsState == null
+                            modifier = Modifier.testTag(AudioOutputComponentTag)
                         )
                     }
                     BottomSheetComponent.ScreenShare -> {
