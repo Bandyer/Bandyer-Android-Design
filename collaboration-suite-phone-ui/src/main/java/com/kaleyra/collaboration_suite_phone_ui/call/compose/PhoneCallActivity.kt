@@ -18,6 +18,8 @@ import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityCallActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenAspectRatio
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -74,14 +76,7 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
                 )
             }
         }
-    }
-
-    override fun disableWindowTouch() {
-        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-    }
-
-    override fun enableWindowTouch() {
-        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        turnScreenOn()
     }
 
     override fun onResume() {
@@ -92,6 +87,19 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
     override fun onPause() {
         super.onPause()
         isInForeground = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        turnScreenOff()
+    }
+
+    override fun disableWindowTouch() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    override fun enableWindowTouch() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
     @SuppressLint("MissingSuperCall")
