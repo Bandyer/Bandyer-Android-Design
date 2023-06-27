@@ -33,10 +33,12 @@ internal class CallProximityDelegate<T>(
 
     override fun onProximitySensorChanged(isNear: Boolean) {
         if (isNear) {
-            proximityCallActivity?.disableWindowTouch()
             if (proximityCallActivity?.disableProximity == false) {
                 wakeLockProximityDelegate.tryTurnScreenOff()
                 cameraProximityDelegate.tryDisableCamera(forceDisableCamera = wakeLockProximityDelegate.isScreenTurnedOff)
+            }
+            if (wakeLockProximityDelegate.isScreenTurnedOff) {
+                proximityCallActivity?.disableWindowTouch()
             }
             audioProximityDelegate.trySwitchToEarpiece()
         } else {

@@ -74,7 +74,7 @@ internal class CallProximityDelegateTest {
         every { proximityCallActivityMock.disableProximity } returns false
         every { wakeLockProximityDelegateMock.isScreenTurnedOff } returns false
         proximityDelegate?.onProximitySensorChanged(true)
-        verify(exactly = 1) { proximityCallActivityMock.disableWindowTouch() }
+        verify(exactly = 0) { proximityCallActivityMock.disableWindowTouch() }
         verify(exactly = 1) { wakeLockProximityDelegateMock.tryTurnScreenOff() }
         verify(exactly = 1) { cameraProximityDelegateMock.tryDisableCamera() }
         verify(exactly = 1) { audioProximityDelegateMock.trySwitchToEarpiece() }
@@ -95,7 +95,7 @@ internal class CallProximityDelegateTest {
     fun `test call proximity activity disable proximity true`() {
         every { proximityCallActivityMock.disableProximity } returns true
         proximityDelegate?.onProximitySensorChanged(true)
-        verify(exactly = 1) { proximityCallActivityMock.disableWindowTouch() }
+        verify(exactly = 0) { proximityCallActivityMock.disableWindowTouch() }
         verify(exactly = 0) { wakeLockProximityDelegateMock.tryTurnScreenOff() }
         verify(exactly = 0) { cameraProximityDelegateMock.tryDisableCamera() }
         verify(exactly = 1) { audioProximityDelegateMock.trySwitchToEarpiece() }
