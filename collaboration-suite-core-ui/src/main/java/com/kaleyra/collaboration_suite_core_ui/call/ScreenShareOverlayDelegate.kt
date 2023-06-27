@@ -8,47 +8,49 @@ import com.kaleyra.collaboration_suite_core_ui.overlay.StatusBarOverlayView
 import com.kaleyra.collaboration_suite_core_ui.overlay.ViewOverlayAttacher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 
 internal interface ScreenShareOverlayDelegate {
 
     fun syncScreenShareOverlay(context: Context, call: Call, scope: CoroutineScope) {
-        var screenShareOverlay: AppViewOverlay? = null
-        combine(
-            isDeviceScreenShareEnabled(call, scope),
-            isApplicationScreenShareEnabled(call, scope)
-        ) { device, application ->
-            when {
-                device -> {
-                    screenShareOverlay = AppViewOverlay(
-                        StatusBarOverlayView(context),
-                        ViewOverlayAttacher.OverlayType.GLOBAL
-                    )
-                    screenShareOverlay!!.show(context)
-                }
+        var deviceScreenShareOverlay: AppViewOverlay? = null
+        var appScreenShareOverlay: AppViewOverlay? = null
 
-                application -> {
-                    screenShareOverlay = AppViewOverlay(
-                        StatusBarOverlayView(context),
-                        ViewOverlayAttacher.OverlayType.CURRENT_APPLICATION
-                    )
-                    screenShareOverlay!!.show(context)
+        isDeviceScreenShareEnabled(call, scope)
+            .distinctUntilChanged()
+            .onEach {
+                if (it) {
+                    deviceScreenShareOverlay = AppViewOverlay(StatusBarOverlayView(context), ViewOverlayAttacher.OverlayType.GLOBAL)
+                    deviceScreenShareOverlay!!.show(context)
+                } else {
+                    deviceScreenShareOverlay?.hide()
+                    deviceScreenShareOverlay = null
                 }
+            }.onCompletion {
+                deviceScreenShareOverlay?.hide()
+                deviceScreenShareOverlay = null
+            }.launchIn(scope)
 
-                else -> {
-                    screenShareOverlay?.hide()
-                    screenShareOverlay = null
+        isApplicationScreenShareEnabled(call, scope)
+            .distinctUntilChanged()
+            .onEach {
+                if (it) {
+                    appScreenShareOverlay = AppViewOverlay(StatusBarOverlayView(context), ViewOverlayAttacher.OverlayType.CURRENT_APPLICATION)
+                    appScreenShareOverlay!!.show(context)
+                } else {
+                    appScreenShareOverlay?.hide()
+                    appScreenShareOverlay = null
                 }
-            }
-        }.onCompletion {
-            screenShareOverlay?.hide()
-            screenShareOverlay = null
-        }.launchIn(scope)
+            }.onCompletion {
+                appScreenShareOverlay?.hide()
+                appScreenShareOverlay = null
+            }.launchIn(scope)
     }
 
     fun isDeviceScreenShareEnabled(call: Call, scope: CoroutineScope): Flow<Boolean> =
