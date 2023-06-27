@@ -13,7 +13,6 @@ internal object InputMapper {
             .flatMapLatest { it.events }
             .filterIsInstance<Input.Audio.Event.Request.Mute>()
             .map { event -> event.producer.displayName.first() }
-            .distinctUntilChanged()
 
     fun Flow<Call>.isAudioOnly(): Flow<Boolean> =
         this.map { it.extras }

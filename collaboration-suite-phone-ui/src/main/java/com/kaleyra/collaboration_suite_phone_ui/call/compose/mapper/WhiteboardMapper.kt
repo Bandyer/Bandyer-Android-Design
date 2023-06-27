@@ -21,8 +21,7 @@ internal object WhiteboardMapper {
     fun Flow<CallUI>.getWhiteboardTextEvents(): Flow<Whiteboard.Event.Text> =
         this.map { it.whiteboard }
             .flatMapLatest { it.events }
-            .filterIsInstance<Whiteboard.Event.Text>()
-            .distinctUntilChanged()
+            .filterIsInstance()
 
     fun SharedFile.toWhiteboardUploadUi(): Flow<WhiteboardUploadUi?> {
         return state.map { state ->
