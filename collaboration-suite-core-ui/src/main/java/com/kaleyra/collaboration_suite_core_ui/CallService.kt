@@ -74,9 +74,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
     private var proximityDelegate: CallProximityDelegate<LifecycleService>? = null
 
-    private var onCallActivityReady: ((Context) -> Unit)? = null
-
-    private var proximityCallActivity: ProximityCallActivity? = null
+    private var onCallActivityReady: ((Context, ProximityCallActivity) -> Unit)? = null
 
     private var recordingTextToSpeechNotifier: TextToSpeechNotifier? = null
 
@@ -115,8 +113,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         if (activity !is ProximityCallActivity) return
-        proximityCallActivity = activity
-        onCallActivityReady?.invoke(activity)
+        onCallActivityReady?.invoke(activity, activity)
     }
 
     override fun onActivityStarted(activity: Activity) = Unit
@@ -128,10 +125,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
 
-    override fun onActivityDestroyed(activity: Activity) {
-        proximityCallActivity = null
-    }
-
+    override fun onActivityDestroyed(activity: Activity) = Unit
     /**
      * Set up the call streams and notifications
      *
@@ -152,7 +146,12 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                 callActivityClazz,
                 callScope
             )
-            onCallActivityReady = { activityContext -> syncScreenShareOverlay(activityContext, call, callScope) }
+            onCallActivityReady = { activityContext, proximityCallActivity ->
+                syncScreenShareOverlay(activityContext, call, callScope)
+                if (!DeviceUtils.isSmartGlass) {
+                    handleProximity(call, proximityCallActivity)
+                }
+            }
 
             call.state
                 .takeWhile { it !is Call.State.Disconnected.Ended }
@@ -161,30 +160,6 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
             if (!DeviceUtils.isSmartGlass) {
                 syncFileShareNotification(this, call, callActivityClazz, callScope)
-
-                combine(
-                    call.state,
-                    call.participants
-                ) { state, participants -> state is Call.State.Disconnected && participants.let { it.creator() != it.me && it.creator() != null } }
-                    .onEach {
-                        // if the call is incoming, don't immediately bind the proximity
-                        if (it) return@onEach
-                        proximityDelegate = CallProximityDelegate<LifecycleService>(
-                            lifecycleContext = this,
-                            call = call,
-                            proximityCallActivity = proximityCallActivity
-                        ).apply { bind() }
-                        recordingTextToSpeechNotifier = CallRecordingTextToSpeechNotifier(
-                            call,
-                            proximityDelegate!!.sensor!!
-                        ).apply { start(lifecycleScope) }
-                        mutedTextToSpeechNotifier = CallParticipantMutedTextToSpeechNotifier(
-                            call,
-                            proximityDelegate!!.sensor!!
-                        ).apply { start(lifecycleScope) }
-                    }
-                    .takeWhile { it }
-                    .launchIn(lifecycleScope)
             }
         }
     }
@@ -224,6 +199,32 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                     startForeground(CALL_NOTIFICATION_ID, notification!!)
                 }
             }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun handleProximity(call: CallUI, proximityCallActivity: ProximityCallActivity) {
+        combine(
+            call.state,
+            call.participants
+        ) { state, participants -> state is Call.State.Disconnected && participants.let { it.creator() != it.me && it.creator() != null } }
+            .onEach {
+                // if the call is incoming, don't immediately bind the proximity
+                if (it) return@onEach
+                proximityDelegate = CallProximityDelegate<LifecycleService>(
+                    lifecycleContext = this,
+                    call = call,
+                    proximityCallActivity = proximityCallActivity
+                ).apply { bind() }
+                recordingTextToSpeechNotifier = CallRecordingTextToSpeechNotifier(
+                    call,
+                    proximityDelegate!!.sensor!!
+                ).apply { start(lifecycleScope) }
+                mutedTextToSpeechNotifier = CallParticipantMutedTextToSpeechNotifier(
+                    call,
+                    proximityDelegate!!.sensor!!
+                ).apply { start(lifecycleScope) }
+            }
+            .takeWhile { it }
             .launchIn(lifecycleScope)
     }
 }
