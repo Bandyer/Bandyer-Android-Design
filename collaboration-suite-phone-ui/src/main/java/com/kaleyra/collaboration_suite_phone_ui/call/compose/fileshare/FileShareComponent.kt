@@ -163,14 +163,14 @@ internal fun FileShareComponent(
                 )
             }
 
-            Column(
+            UserMessageSnackbarsContainer(userMessages = uiState.userMessages)
+
+            SnackbarHost(
+                hostState = snackBarHostState,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 72.dp)
-            ) {
-                UserMessageSnackbarsContainer(userMessages = uiState.userMessages)
-                SnackbarHost(hostState = snackBarHostState)
-            }
+            )
 
             FileShareFab(
                 collapsed = uiState.sharedFiles.count() > 0,
