@@ -85,7 +85,7 @@ internal fun RingingComponent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.weight(1f))
-                if (uiState.recording != null) {
+                if (uiState.recording != null && uiState.recording != RecordingTypeUi.Never) {
                     HelperText(text = stringResource(id = if (uiState.recording == RecordingTypeUi.OnConnect) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer))
                 }
                 val countDownTimer by rememberCountdownTimerState(tapToAnswerTimerMillis)
