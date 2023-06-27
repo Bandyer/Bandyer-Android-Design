@@ -94,8 +94,8 @@ import kotlinx.coroutines.launch
 private val PeekHeight = 48.dp
 private val HalfExpandedHeight = 166.dp
 
-private const val ActivityFinishDelay = 500L
-private const val ActivityFinishErrorDelay = 1300L
+private const val ActivityFinishDelay = 1100L
+private const val ActivityFinishErrorDelay = 1500L
 
 const val BottomSheetAutoHideMs = 9000L
 
