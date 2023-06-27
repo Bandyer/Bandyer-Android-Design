@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,27 +29,27 @@ class StreamsHandlerTest {
 
     private val nMaxFeaturedFlow = MutableStateFlow(DefaultMaxFeatured)
 
-    private val streamMock1 = mockk<StreamUi> {
+    private val streamMock1 = mockk<StreamUi>(relaxed = true) {
         every { id } returns "streamId1"
     }
 
-    private val streamMock2 = mockk<StreamUi> {
+    private val streamMock2 = mockk<StreamUi>(relaxed = true)  {
         every { id } returns "streamId2"
     }
 
-    private val streamMock3 = mockk<StreamUi> {
+    private val streamMock3 = mockk<StreamUi>(relaxed = true)  {
         every { id } returns "streamId3"
     }
 
-    private val streamMock4 = mockk<StreamUi> {
+    private val streamMock4 = mockk<StreamUi>(relaxed = true)  {
         every { id } returns "streamId4"
     }
 
-    private val streamMock5 = mockk<StreamUi> {
+    private val streamMock5 = mockk<StreamUi>(relaxed = true)  {
         every { id } returns "streamId5"
     }
 
-    private val streamMock6 = mockk<StreamUi> {
+    private val streamMock6 = mockk<StreamUi>(relaxed = true)  {
         every { id } returns "streamId6"
     }
 
@@ -310,6 +311,26 @@ class StreamsHandlerTest {
         val (newFeaturedStreams, newThumbnailsStreams) = streamsHandler.streamsArrangement.first()
         assertEquals(listOf(streamMock2), newFeaturedStreams)
         assertEquals(listOf(streamMock1), newThumbnailsStreams)
+    }
+
+    @Test
+    fun testStreamsArrangementOnScreenShareStream() = runTest {
+        val streams = listOf(streamMock1, streamMock2)
+        streamsFlow.value = streams
+
+        advanceUntilIdle()
+        val (featuredStreams, thumbnailsStreams) = streamsHandler.streamsArrangement.first()
+        assertEquals(listOf(streamMock1), featuredStreams)
+        assertEquals(listOf(streamMock2), thumbnailsStreams)
+
+        every { streamMock3.video } returns VideoUi(id = "videoId", isScreenShare = true)
+        val newStreams = listOf(streamMock1, streamMock2, streamMock3)
+        streamsFlow.value = newStreams
+
+        advanceUntilIdle()
+        val (newFeaturedStreams, newThumbnailsStreams) = streamsHandler.streamsArrangement.first()
+        assertEquals(listOf(streamMock3, streamMock1), newFeaturedStreams)
+        assertEquals(listOf(streamMock2), newThumbnailsStreams)
     }
 
     companion object {

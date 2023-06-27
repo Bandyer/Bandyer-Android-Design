@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -30,17 +31,19 @@ internal class StreamsHandler(
 
     init {
         combine(
-            streams,
+            streams.debounce(100),
             nOfMaxFeatured
         ) { newStreams, nOfMaxFeatured ->
             mutex.withLock {
                 val addedStreams = updateStreams(newStreams).toSet()
+                val addedScreenShareStreams = addedStreams.filter { it.video?.isScreenShare == true }.toSet()
+                val cameraStreams = addedStreams - addedScreenShareStreams
 
                 val newStreamsIds = newStreams.map { it.id }
                 val removedFeaturedStreams = findRemovedFeaturedStreams(newStreamsIds).toSet()
                 val removedThumbnailsStreams = findRemovedThumbnailsStreams(newStreamsIds).toSet()
 
-                var newFeaturedStreams = (featuredStreams + addedStreams + thumbnailsStreams - removedFeaturedStreams).take(nOfMaxFeatured)
+                var newFeaturedStreams = (addedScreenShareStreams + featuredStreams + cameraStreams + thumbnailsStreams - removedFeaturedStreams).take(nOfMaxFeatured)
                 val movedToThumbnails = featuredStreams - removedFeaturedStreams - newFeaturedStreams.toSet()
                 var newThumbnailsStreams = movedToThumbnails + thumbnailsStreams + addedStreams - newFeaturedStreams.toSet() - removedThumbnailsStreams
 
