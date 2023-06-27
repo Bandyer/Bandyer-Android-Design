@@ -20,8 +20,11 @@
     package="com.kaleyra.collaboration_suite_phone_ui" >
 
     <application>
+
         <activity
             android:name=".call.compose.termsandconditions.PhoneTermsAndConditionsActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.PhoneTermsAndConditionsActivity"
+            android:launchMode="singleTop"
             android:exported="false" />
 
         <receiver
