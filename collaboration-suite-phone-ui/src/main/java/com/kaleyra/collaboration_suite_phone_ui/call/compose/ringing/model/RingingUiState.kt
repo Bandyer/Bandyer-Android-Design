@@ -26,8 +26,7 @@ data class RingingUiState(
         participants: ImmutableList<String>,
         watermarkInfo: WatermarkInfo?,
         isLink: Boolean,
-        isConnecting: Boolean,
-        userMessages: UserMessages
+        isConnecting: Boolean
     ): RingingUiState {
         return copy(
             video = video,
@@ -35,8 +34,7 @@ data class RingingUiState(
             participants = participants,
             watermarkInfo = watermarkInfo,
             isLink = isLink,
-            isConnecting = isConnecting,
-            userMessages = userMessages
+            isConnecting = isConnecting
         )
     }
 }

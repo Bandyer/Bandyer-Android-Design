@@ -23,8 +23,7 @@ data class DialingUiState(
         participants: ImmutableList<String>,
         watermarkInfo: WatermarkInfo?,
         isLink: Boolean,
-        isConnecting: Boolean,
-        userMessages: UserMessages
+        isConnecting: Boolean
     ): DialingUiState {
         return copy(
             video = video,
@@ -32,8 +31,7 @@ data class DialingUiState(
             participants = participants,
             watermarkInfo = watermarkInfo,
             isLink = isLink,
-            isConnecting = isConnecting,
-            userMessages = userMessages
+            isConnecting = isConnecting
         )
     }
 }
