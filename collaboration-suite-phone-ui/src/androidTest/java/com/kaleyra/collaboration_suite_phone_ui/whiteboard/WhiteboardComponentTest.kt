@@ -17,10 +17,8 @@ import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
@@ -50,6 +48,10 @@ class WhiteboardComponentTest {
 
     private var textEditorState by mutableStateOf(TextEditorState(TextEditorValue.Empty))
 
+    private var recordingUserMessage by mutableStateOf<RecordingMessage?>(null)
+
+    private var mutedUserMessage by mutableStateOf<MutedMessage?>(null)
+
     private var isReloadClicked = false
 
     private var confirmedText: String? = null
@@ -63,6 +65,8 @@ class WhiteboardComponentTest {
                 uiState = uiState,
                 editorSheetState = sheetState,
                 textEditorState = textEditorState,
+                recordingUserMessage = recordingUserMessage,
+                mutedUserMessage = mutedUserMessage,
                 onReloadClick = { isReloadClicked = true },
                 onTextConfirmed = { confirmedText = it },
                 onTextDismissed = { isTextDismissed = true }
@@ -273,14 +277,14 @@ class WhiteboardComponentTest {
 
     @Test
     fun recordingMessage_recordingSnackbarIsDisplayed() {
-        uiState = WhiteboardUiState(userMessages = UserMessages(recordingMessage = RecordingMessage.Started()))
+        recordingUserMessage = RecordingMessage.Started()
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 
     @Test
     fun mutedMessage_mutedSnackbarIsDisplayed() {
-        uiState = WhiteboardUiState(userMessages = UserMessages(mutedMessage = MutedMessage(null)))
+        mutedUserMessage = MutedMessage(null)
         val title = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }

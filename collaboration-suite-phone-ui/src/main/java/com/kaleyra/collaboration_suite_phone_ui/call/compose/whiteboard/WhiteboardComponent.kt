@@ -8,7 +8,6 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +18,8 @@ import com.kaleyra.collaboration_suite.whiteboard.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
@@ -32,7 +33,10 @@ import kotlinx.coroutines.flow.*
 @Composable
 internal fun WhiteboardComponent(
     viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-        factory = WhiteboardViewModel.provideFactory(::requestConfiguration, WhiteboardView(LocalContext.current))
+        factory = WhiteboardViewModel.provideFactory(
+            ::requestConfiguration,
+            WhiteboardView(LocalContext.current)
+        )
     ),
     modifier: Modifier = Modifier
 ) {
@@ -42,11 +46,15 @@ internal fun WhiteboardComponent(
     )
     val textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val recordingUserMessage by viewModel.recordingUserMessage.collectAsStateWithLifecycle(initialValue = null)
+    val mutedUserMessage by viewModel.mutedUserMessage.collectAsStateWithLifecycle(initialValue = null)
 
     WhiteboardComponent(
         uiState = uiState,
         editorSheetState = sheetState,
         textEditorState = textEditorState,
+        recordingUserMessage = recordingUserMessage,
+        mutedUserMessage = mutedUserMessage,
         onReloadClick = viewModel::onReloadClick,
         onTextDismissed = viewModel::onTextDismissed,
         onTextConfirmed = viewModel::onTextConfirmed,
@@ -60,6 +68,8 @@ internal fun WhiteboardComponent(
     uiState: WhiteboardUiState,
     editorSheetState: ModalBottomSheetState,
     textEditorState: TextEditorState,
+    recordingUserMessage: RecordingMessage? = null,
+    mutedUserMessage: MutedMessage? = null,
     onReloadClick: () -> Unit,
     onTextDismissed: () -> Unit,
     onTextConfirmed: (String) -> Unit,
@@ -111,6 +121,7 @@ internal fun WhiteboardComponent(
                                 modifier = contentModifier
                             )
                         }
+
                         uiState.whiteboardView != null -> {
                             WhiteboardContent(
                                 whiteboardView = uiState.whiteboardView,
@@ -125,8 +136,8 @@ internal fun WhiteboardComponent(
                 }
 
                 UserMessageSnackbarsContainer(
-                    userMessages = uiState.userMessages,
-                    modifier = Modifier.align(Alignment.TopCenter)
+                    recordingUserMessage = recordingUserMessage,
+                    mutedUserMessage = mutedUserMessage
                 )
             }
         },
