@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.model.UiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 @Immutable
@@ -22,5 +21,4 @@ data class CallUiState(
     val isMicPermissionRequired: Boolean = true,
     val showFeedback: Boolean = false,
     val shouldAutoHideSheet: Boolean = false,
-    override val userMessages: UserMessages = UserMessages()
 ) : UiState

@@ -15,8 +15,7 @@ data class DialingUiState(
     override val participants: ImmutableList<String> = ImmutableList(listOf()),
     override val watermarkInfo: WatermarkInfo? = null,
     override val isLink: Boolean = false,
-    override val isConnecting: Boolean = false,
-    override val userMessages: UserMessages = UserMessages()
+    override val isConnecting: Boolean = false
 ): PreCallUiState<DialingUiState> {
 
     override fun clone(

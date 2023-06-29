@@ -4,7 +4,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.model.UiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 interface PreCallUiState<out T> : UiState where T: PreCallUiState<T> {
@@ -21,15 +20,12 @@ interface PreCallUiState<out T> : UiState where T: PreCallUiState<T> {
 
     val isConnecting: Boolean
 
-    override val userMessages: UserMessages
-
     fun clone(
         video: VideoUi? = this@PreCallUiState.video,
         avatar: ImmutableUri? = this@PreCallUiState.avatar,
         participants: ImmutableList<String> = this@PreCallUiState.participants,
         watermarkInfo: WatermarkInfo? = this@PreCallUiState.watermarkInfo,
         isLink: Boolean = this@PreCallUiState.isLink,
-        isConnecting: Boolean = this@PreCallUiState.isConnecting,
-        userMessages: UserMessages = this@PreCallUiState.userMessages
+        isConnecting: Boolean = this@PreCallUiState.isConnecting
     ): T
 }

@@ -5,10 +5,9 @@ import androidx.compose.runtime.Stable
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.model.UiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.*
+import java.util.UUID
 
 @Immutable
 data class ChatUiState(
@@ -16,8 +15,7 @@ data class ChatUiState(
     val state: ChatState = ChatState.None,
     val actions: ImmutableSet<ChatAction> = ImmutableSet(setOf()),
     val conversationState: ConversationUiState = ConversationUiState(),
-    val isInCall: Boolean = false,
-    override val userMessages: UserMessages = UserMessages()
+    val isInCall: Boolean = false
 ): UiState
 
 @Immutable
