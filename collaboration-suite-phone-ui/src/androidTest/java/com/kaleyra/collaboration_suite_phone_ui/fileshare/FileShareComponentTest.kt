@@ -26,7 +26,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.moc
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItemTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import org.junit.After
@@ -50,6 +49,10 @@ class FileShareComponentTest {
 
     private var showFileSizeLimitAlertDialog by mutableStateOf(false)
 
+    private var recordingUserMessage by mutableStateOf<RecordingMessage?>(null)
+
+    private var mutedUserMessage by mutableStateOf<MutedMessage?>(null)
+
     private var openFailure: Boolean = false
 
     private var alertDialogDismissed: Boolean = false
@@ -69,6 +72,8 @@ class FileShareComponentTest {
                 showCancelledFileSnackBar = showCancelledFileSnackBar,
                 onFileOpenFailure = { openFailure = true },
                 onAlertDialogDismiss = { alertDialogDismissed = true },
+                recordingUserMessage = recordingUserMessage,
+                mutedUserMessage = mutedUserMessage,
                 onUpload = { uploadUri = it },
                 onDownload = { downloadId = it },
                 onShareCancel = { cancelId = it },
@@ -243,14 +248,14 @@ class FileShareComponentTest {
 
     @Test
     fun recordingMessage_recordingSnackbarIsDisplayed() {
-        fileShareUiState = FileShareUiState(userMessages = UserMessages(recordingMessage = RecordingMessage.Started()))
+        recordingUserMessage = RecordingMessage.Started()
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 
     @Test
     fun mutedMessage_mutedSnackbarIsDisplayed() {
-        fileShareUiState = FileShareUiState(userMessages = UserMessages(mutedMessage = MutedMessage(null)))
+        mutedUserMessage = MutedMessage(null)
         val title = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
