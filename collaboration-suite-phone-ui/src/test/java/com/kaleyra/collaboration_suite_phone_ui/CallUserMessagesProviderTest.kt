@@ -1,49 +1,85 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
-import android.icu.text.AlphabeticIndex.Record
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.withTimeoutOrNull
+import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CallUserMessagesProviderTest {
 
-    private var callMock = mockk<Call>()
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
+    private var callMock = mockk<CallUI>(relaxed = true)
+
+    @Before
+    fun setUp() {
+        CallUserMessagesProvider.start(flowOf(callMock))
+    }
+
+    @After
+    fun tearDown() {
+        CallUserMessagesProvider.dispose()
+    }
+
+    @Test
+    fun testStart() = runTest {
+        CallUserMessagesProvider.start(flowOf(callMock), backgroundScope)
+        assertEquals(true, backgroundScope.isActive)
+    }
+
+    @Test
+    fun testDoubleStart() = runTest {
+        val scope = MainScope()
+        CallUserMessagesProvider.start(flowOf(callMock), scope)
+        CallUserMessagesProvider.start(flowOf(callMock), backgroundScope)
+        assertEquals(false, scope.isActive)
+        assertEquals(true, backgroundScope.isActive)
+    }
+
+    @Test
+    fun testDispose() = runTest {
+        CallUserMessagesProvider.start(flowOf(callMock), backgroundScope)
+        CallUserMessagesProvider.dispose()
+        assertEquals(false, backgroundScope.isActive)
+    }
 
     @Test
     fun testRecordingStartedUserMessage() = runTest {
         every { callMock.extras.recording.state } returns MutableStateFlow(Call.Recording.State.Started)
-        val provider = CallUserMessagesProvider(flowOf(callMock))
-        val actual = provider.recordingUserMessage().first()
+        val actual = CallUserMessagesProvider.recordingUserMessage.first()
         assert(actual is RecordingMessage.Started)
     }
 
     @Test
     fun recordingStateInitializedWithStopped_recordingStoppedUserMessageNotReceived() = runTest {
         every { callMock.extras.recording.state } returns MutableStateFlow(Call.Recording.State.Stopped)
-        val provider = CallUserMessagesProvider(flowOf(callMock))
         val result = withTimeoutOrNull(100) {
-            provider.recordingUserMessage().first()
+            CallUserMessagesProvider.recordingUserMessage.first()
         }
         assertEquals(null, result)
     }
@@ -52,20 +88,17 @@ class CallUserMessagesProviderTest {
     fun testRecordingStoppedUserMessage() = runTest {
         val recordingState = MutableStateFlow<Call.Recording.State>(Call.Recording.State.Started)
         every { callMock.extras.recording.state } returns recordingState
-        val provider = CallUserMessagesProvider(flowOf(callMock))
-        val values = mutableListOf<RecordingMessage>()
         backgroundScope.launch(UnconfinedTestDispatcher()) {
-            provider.recordingUserMessage().toList(values)
+            val actual = CallUserMessagesProvider.recordingUserMessage.drop(1).first()
+            assert(actual is RecordingMessage.Stopped)
         }
         recordingState.value = Call.Recording.State.Stopped
-        assert(values[1] is RecordingMessage.Stopped)
     }
 
     @Test
     fun testRecordingFailedUserMessage() = runTest {
         every { callMock.extras.recording.state } returns MutableStateFlow(Call.Recording.State.Stopped.Error)
-        val provider = CallUserMessagesProvider(flowOf(callMock))
-        val actual = provider.recordingUserMessage().first()
+        val actual = CallUserMessagesProvider.recordingUserMessage.first()
         assert(actual is RecordingMessage.Failed)
     }
 
@@ -84,9 +117,8 @@ class CallUserMessagesProviderTest {
         every { me.streams } returns MutableStateFlow(listOf(streamMock))
         every { streamMock.audio } returns MutableStateFlow(audio)
         every { audio.events } returns MutableStateFlow(event)
-        val provider = CallUserMessagesProvider(flowOf(callMock))
         withTimeout(100) {
-            provider.mutedUserMessage().first()
+            CallUserMessagesProvider.mutedUserMessage.first()
         }
     }
 }
