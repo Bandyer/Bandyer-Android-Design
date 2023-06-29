@@ -15,6 +15,7 @@ internal object RecordingMapper {
     fun Flow<Call>.toRecordingTypeUi(): Flow<RecordingTypeUi> =
         this.map { it.extras.recording }
             .map { it.type.mapToRecordingTypeUi() }
+            .distinctUntilChanged()
 
     fun  Flow<Call>.toRecordingStateUi(): Flow<RecordingStateUi> =
         this.map { it.extras.recording }
