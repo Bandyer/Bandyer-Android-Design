@@ -37,6 +37,8 @@ import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.Messages
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.UserInput
@@ -82,9 +84,13 @@ fun ChatScreen(
     viewModel: ChatUiViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val recordingUserMessage by viewModel.recordingUserMessage.collectAsStateWithLifecycle(initialValue = null)
+    val mutedUserMessage by viewModel.mutedUserMessage.collectAsStateWithLifecycle(initialValue = null)
 
     ChatScreen(
         uiState = uiState,
+        recordingUserMessage = recordingUserMessage,
+        mutedUserMessage = mutedUserMessage,
         onBackPressed = onBackPressed,
         onMessageScrolled = viewModel::onMessageScrolled,
         onResetMessagesScroll = viewModel::onAllMessagesScrolled,
@@ -98,6 +104,8 @@ fun ChatScreen(
 @Composable
 internal fun ChatScreen(
     uiState: ChatUiState,
+    recordingUserMessage: RecordingMessage? = null,
+    mutedUserMessage: MutedMessage? = null,
     onBackPressed: () -> Unit,
     onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
     onResetMessagesScroll: () -> Unit,
@@ -165,8 +173,8 @@ internal fun ChatScreen(
             }
 
             UserMessageSnackbarsContainer(
-                userMessages = uiState.userMessages,
-                modifier = Modifier.align(Alignment.TopCenter)
+                recordingUserMessage = recordingUserMessage,
+                mutedUserMessage = mutedUserMessage
             )
         }
     }
