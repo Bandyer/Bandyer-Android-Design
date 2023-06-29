@@ -3,7 +3,6 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -15,44 +14,55 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.MutedSnack
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.RecordingEndedSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.RecordingErrorSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.RecordingStartedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
+
+const val RecordingStarted = "RecordingStarted"
+const val RecordingEnded = "RecordingEnded"
+const val RecordingError = "RecordingError"
 
 // TODO move to common package between call and chat
 @Composable
 internal fun UserMessageSnackbarsContainer(
-    userMessages: UserMessages,
     modifier: Modifier = Modifier,
-    recordingSnackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    recordingUserMessage: RecordingMessage? = null,
+    mutedUserMessage: MutedMessage? = null,
+    recordingSnackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     mutedSnackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
+    if (recordingUserMessage != null) {
+        LaunchedEffect(recordingUserMessage, recordingSnackbarHostState) {
+            recordingSnackbarHostState.showSnackbar(
+                when (recordingUserMessage) {
+                    is RecordingMessage.Started -> RecordingStarted
+                    is RecordingMessage.Stopped -> RecordingEnded
+                    else -> RecordingError
+                }
+            )
+        }
+    }
+
+    if (mutedUserMessage != null) {
+        LaunchedEffect(mutedUserMessage, mutedSnackbarHostState) {
+            mutedSnackbarHostState.showSnackbar(mutedUserMessage.admin ?: "")
+        }
+    }
+
     Column(modifier) {
-        if (userMessages.recordingMessage != null) {
-            LaunchedEffect(userMessages.recordingMessage, recordingSnackBarHostState) {
-                recordingSnackBarHostState.showSnackbar("")
-            }
-        }
-
-        if (userMessages.mutedMessage != null) {
-            LaunchedEffect(userMessages.mutedMessage, mutedSnackbarHostState) {
-                mutedSnackbarHostState.showSnackbar("")
-            }
-        }
-
         SnackbarHost(
-            hostState = recordingSnackBarHostState,
+            hostState = recordingSnackbarHostState,
             snackbar = {
-                when (userMessages.recordingMessage) {
-                    is RecordingMessage.Started -> RecordingStartedSnackbar()
-                    is RecordingMessage.Stopped -> RecordingEndedSnackbar()
-                    is RecordingMessage.Failed -> RecordingErrorSnackbar()
+                when (it.message) {
+                    RecordingStarted -> RecordingStartedSnackbar()
+                    RecordingEnded -> RecordingEndedSnackbar()
+                    else -> RecordingErrorSnackbar()
                 }
             }
         )
         Spacer(modifier = Modifier.height(12.dp))
         SnackbarHost(
             hostState = mutedSnackbarHostState,
-            snackbar = { userMessages.mutedMessage?.let { MutedSnackbar(it.admin) } }
+            snackbar = { MutedSnackbar(it.message) }
         )
     }
 }

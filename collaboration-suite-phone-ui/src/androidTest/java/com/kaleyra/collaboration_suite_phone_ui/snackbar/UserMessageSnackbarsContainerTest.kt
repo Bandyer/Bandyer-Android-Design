@@ -24,18 +24,23 @@ class UserMessageSnackbarsContainerTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var userMessages by mutableStateOf(UserMessages())
+    private var recordingMessage by mutableStateOf<RecordingMessage?>(null)
+
+    private var mutedMessage by mutableStateOf<MutedMessage?>(null)
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            UserMessageSnackbarsContainer(userMessages = userMessages)
+            UserMessageSnackbarsContainer(
+                recordingUserMessage = recordingMessage,
+                mutedUserMessage = mutedMessage
+            )
         }
     }
 
     @Test
     fun recordingUserMessage_recordingMessageIsDisplayed() {
-        userMessages = UserMessages(recordingMessage = RecordingMessage.Started())
+        recordingMessage = RecordingMessage.Started()
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_recording_started_message)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
@@ -44,7 +49,7 @@ class UserMessageSnackbarsContainerTest {
 
     @Test
     fun mutedUserMessage_mutedMessageIsDisplayed() {
-        userMessages = UserMessages(mutedMessage = MutedMessage(null))
+        mutedMessage = MutedMessage(null)
         val text = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
