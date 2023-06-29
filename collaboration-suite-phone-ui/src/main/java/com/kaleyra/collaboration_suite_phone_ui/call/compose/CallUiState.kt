@@ -20,5 +20,5 @@ data class CallUiState(
     val isCameraPermissionRequired: Boolean = true,
     val isMicPermissionRequired: Boolean = true,
     val showFeedback: Boolean = false,
-    val shouldAutoHideSheet: Boolean = false,
+    val shouldAutoHideSheet: Boolean = false
 ) : UiState
