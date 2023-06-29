@@ -19,8 +19,6 @@ abstract class BaseViewModel<UI_STATE: UiState>(configure: suspend () -> Configu
     private val _call = MutableSharedFlow<CallUI>(replay = 1)
     protected val call = _call.asSharedFlow()
 
-    protected val callUserMessageProvider = CallUserMessagesProvider(call)
-
     protected val _uiState = MutableStateFlow(this.initialState())
     val uiState = _uiState.asStateFlow()
 
