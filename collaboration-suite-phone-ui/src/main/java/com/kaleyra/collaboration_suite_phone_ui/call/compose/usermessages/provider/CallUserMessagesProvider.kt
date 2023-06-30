@@ -1,12 +1,10 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider
 
-import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasBeenMutedBy
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toMutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -23,17 +21,14 @@ object CallUserMessagesProvider {
 
     private var coroutineScope: CoroutineScope? = null
 
-    private val recordingMessageChannel = Channel<RecordingMessage>()
-    val recordingUserMessage: Flow<RecordingMessage> = recordingMessageChannel.receiveAsFlow()
-
-    private val mutedMessageChannel = Channel<MutedMessage>()
-    val mutedUserMessage: Flow<MutedMessage> = mutedMessageChannel.receiveAsFlow()
+    private val userMessageChannel = Channel<UserMessage>(Channel.BUFFERED)
+    val userMessage: Flow<UserMessage> = userMessageChannel.receiveAsFlow()
 
     fun start(call: Flow<CallUI>, scope: CoroutineScope = MainScope() + CoroutineName("CallUserMessagesProvider")) {
         if (coroutineScope != null) dispose()
         coroutineScope = scope
-        observeRecordingEvents(call, coroutineScope!!)
-        observeMutedEvents(call, coroutineScope!!)
+        userMessageChannel.sendRecordingEvents(call, scope)
+        userMessageChannel.sendMutedEvents(call, scope)
     }
 
     fun dispose() {
@@ -41,24 +36,11 @@ object CallUserMessagesProvider {
         coroutineScope = null
     }
 
-    private fun observeRecordingEvents(call: Flow<Call>, scope: CoroutineScope) {
-        call
-            .toRecordingStateUi()
-            .dropWhile { it == RecordingStateUi.Stopped }
-            .onEach { state ->
-                val value = when (state) {
-                    RecordingStateUi.Started -> RecordingMessage.Started()
-                    RecordingStateUi.Stopped -> RecordingMessage.Stopped()
-                    RecordingStateUi.Error -> RecordingMessage.Failed()
-                }
-                recordingMessageChannel.send(value)
-            }.launchIn(scope)
+    private fun Channel<UserMessage>.sendRecordingEvents(call: Flow<CallUI>, scope: CoroutineScope) {
+        call.toRecordingMessage().dropWhile { it is RecordingMessage.Stopped }.onEach { send(it) }.launchIn(scope)
     }
 
-    private fun observeMutedEvents(call: Flow<Call>, scope: CoroutineScope) {
-        call
-            .hasBeenMutedBy()
-            .onEach { mutedMessageChannel.send(MutedMessage(it)) }
-            .launchIn(scope)
+    private fun Channel<UserMessage>.sendMutedEvents(call: Flow<CallUI>, scope: CoroutineScope) {
+        call.toMutedMessage().onEach { send(it) }.launchIn(scope)
     }
 }
