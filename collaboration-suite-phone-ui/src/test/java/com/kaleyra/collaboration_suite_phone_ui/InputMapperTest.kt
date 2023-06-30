@@ -5,13 +5,13 @@ import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasAudio
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasBeenMutedBy
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasUsbCamera
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioOnly
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isSharingScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toMutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
 import io.mockk.every
 import io.mockk.mockk
@@ -173,17 +173,16 @@ class InputMapperTest {
     }
 
     @Test
-    fun inputAudioRequestMute_hasBeenMutedBy_adminDisplayName() = runTest {
+    fun inputAudioRequestMute_toMutedMessage_adminDisplayName() = runTest {
         val event = mockk<Input.Audio.Event.Request.Mute>()
         val producer = mockk<CallParticipant>()
         every { producer.displayName } returns MutableStateFlow("username")
         every { event.producer } returns producer
         every { audioMock.events } returns MutableStateFlow(event)
         val call = MutableStateFlow(callMock)
-        val result = call.hasBeenMutedBy()
+        val result = call.toMutedMessage()
         val actual = result.first()
-        val expected = "username"
-        Assert.assertEquals(expected, actual)
+        Assert.assertEquals("username", actual.admin)
     }
 
     @Test

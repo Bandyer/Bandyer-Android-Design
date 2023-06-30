@@ -3,16 +3,19 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import kotlinx.coroutines.flow.*
 
 internal object InputMapper {
 
-    fun Flow<Call>.hasBeenMutedBy(): Flow<String?> =
+    fun Flow<Call>.toMutedMessage(): Flow<MutedMessage> =
         this.toAudio()
             .flatMapLatest { it.events }
             .filterIsInstance<Input.Audio.Event.Request.Mute>()
             .map { event -> event.producer.displayName.first() }
+            .map { MutedMessage(it) }
 
     fun Flow<Call>.isAudioOnly(): Flow<Boolean> =
         this.map { it.extras }
