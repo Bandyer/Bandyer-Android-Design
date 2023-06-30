@@ -7,6 +7,7 @@ import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
@@ -31,7 +32,8 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
 
     override val uiState = _uiState.asStateFlow()
 
-    override val userMessage = CallUserMessagesProvider.userMessage
+    override val userMessage: Flow<UserMessage>
+        get() = CallUserMessagesProvider.userMessage
 
     init {
         getChatState(participants, chatBox).onEach { state ->
