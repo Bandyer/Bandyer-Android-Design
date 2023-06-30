@@ -19,13 +19,13 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmod
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.*
@@ -83,9 +83,7 @@ class CallViewModelTest {
     fun setUp() {
         mockkConstructor(StreamsHandler::class)
         every { anyConstructed<StreamsHandler>().swapThumbnail(any()) } returns Unit
-        mockkConstructor(CallUserMessagesProvider::class)
-        every { anyConstructed<CallUserMessagesProvider>().recordingUserMessage() } returns MutableStateFlow(RecordingMessage.Started())
-        every { anyConstructed<CallUserMessagesProvider>().mutedUserMessage() } returns MutableStateFlow(MutedMessage(null))
+        mockkObject(CallUserMessagesProvider)
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { inputs } returns inputsMock
@@ -277,24 +275,10 @@ class CallViewModelTest {
     }
 
     @Test
-    fun testRecordingUserMessageReceived_userMessagesUpdated() = runTest {
-        advanceUntilIdle()
-        val actual = viewModel.uiState.first().userMessages.recordingMessage
-        assert(actual is RecordingMessage.Started)
-    }
-
-    @Test
     fun testCallUiState_watermarkInfoUpdated() = runTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().watermarkInfo
         assertEquals(WatermarkInfo(text = "Kaleyra", logo = Logo(dayLogo, nightLogo)), actual)
-    }
-
-    @Test
-    fun testMutedUserMessageReceived_userMessagesUpdated() = runTest {
-        advanceUntilIdle()
-        val actual = viewModel.uiState.first().userMessages.mutedMessage
-        Assert.assertNotEquals(null, actual)
     }
 
     @Test
@@ -483,5 +467,13 @@ class CallViewModelTest {
         advanceUntilIdle()
         val new = viewModel.uiState.first().fullscreenStream
         assertEquals(null, new?.id)
+    }
+
+    @Test
+    fun testUserMessage() = runTest {
+        every { CallUserMessagesProvider.userMessage } returns flowOf(MutedMessage("admin"))
+        advanceUntilIdle()
+        val actual = viewModel.userMessage.first()
+        assert(actual is MutedMessage && actual.admin == "admin")
     }
 }

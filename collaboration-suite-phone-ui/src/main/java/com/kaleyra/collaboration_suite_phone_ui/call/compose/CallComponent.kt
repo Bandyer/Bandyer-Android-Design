@@ -35,7 +35,6 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeWidth
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isOrientationPortrait
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
@@ -98,7 +97,7 @@ internal fun CallComponent(
         maxWidth = maxWidth
     )
 
-    val userMessage by viewModel.recordingUserMessage.collectAsStateWithLifecycle(initialValue = null)
+    val userMessage by viewModel.userMessage.collectAsStateWithLifecycle(initialValue = null)
 
     CallComponent(
         callUiState = callUiState,

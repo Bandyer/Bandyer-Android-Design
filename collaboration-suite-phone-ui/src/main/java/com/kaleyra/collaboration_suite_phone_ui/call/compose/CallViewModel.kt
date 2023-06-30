@@ -9,6 +9,7 @@ import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.toMyCameraStream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.isConnected
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.toCallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallUiStateMapper.toPipAspectRatio
@@ -21,13 +22,18 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper.toWatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallUiState>(configure) {
+internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallUiState>(configure), UserMessageViewModel {
 
     override fun initialState() = CallUiState()
+
+    override val userMessage: Flow<UserMessage>
+        get() = CallUserMessagesProvider.userMessage
 
     private val streams = call
         .toStreamsUi()
@@ -56,6 +62,8 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     private var onPipAspectRatio: ((Rational) -> Unit)? = null
 
     init {
+        CallUserMessagesProvider.start(call)
+
         streamsHandler.streamsArrangement
             .onEach { (featuredStreams, thumbnailsStreams) ->
                 val feat = featuredStreams
@@ -124,22 +132,6 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .onEach { rec -> _uiState.update { it.copy(recording = rec) } }
             .launchIn(viewModelScope)
 
-        callUserMessageProvider
-            .recordingUserMessage()
-            .onEach { message ->
-                _uiState.update {
-                    it.copy(userMessages = it.userMessages.copy(recordingMessage = message))
-                }
-            }.launchIn(viewModelScope)
-
-        callUserMessageProvider
-            .mutedUserMessage()
-            .onEach { message ->
-                _uiState.update {
-                    it.copy(userMessages = it.userMessages.copy(mutedMessage = message))
-                }
-            }.launchIn(viewModelScope)
-
         call
             .map { it.withFeedback }
             .combine(call.isConnected()) { withFeedback, isConnected ->
@@ -154,6 +146,11 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .toPipAspectRatio()
             .onEach { onPipAspectRatio?.invoke(it) }
             .launchIn(viewModelScope)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        CallUserMessagesProvider.dispose()
     }
 
     fun startMicrophone(context: FragmentActivity) {
