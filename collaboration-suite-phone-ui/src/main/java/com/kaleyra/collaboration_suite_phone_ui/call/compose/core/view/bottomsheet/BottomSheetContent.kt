@@ -144,14 +144,14 @@ internal fun BottomSheetContent(
                     BottomSheetComponent.FileShare -> {
                         FileShareComponent(
                             modifier = Modifier
-                                .padding(top = 20.dp)
+                                .padding(top = 12.dp)
                                 .testTag(FileShareComponentTag)
                         )
                     }
                     BottomSheetComponent.Whiteboard -> {
                         WhiteboardComponent(
                             modifier = Modifier
-                                .padding(top = 20.dp)
+                                .padding(top = 12.dp)
                                 .testTag(WhiteboardComponentTag)
                         )
                     }
@@ -160,7 +160,6 @@ internal fun BottomSheetContent(
                             onItemClick = { onVirtualBackgroundClick() },
                             onCloseClick = { contentState.navigateToComponent(BottomSheetComponent.CallActions) },
                             modifier = Modifier
-                                .padding(top = 20.dp)
                                 .testTag(VirtualBackgroundComponentTag)
                         )
                     }
