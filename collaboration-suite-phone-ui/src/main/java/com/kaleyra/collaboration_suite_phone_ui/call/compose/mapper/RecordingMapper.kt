@@ -1,9 +1,12 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.mapToRecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -17,10 +20,17 @@ internal object RecordingMapper {
             .map { it.type.mapToRecordingTypeUi() }
             .distinctUntilChanged()
 
-    fun  Flow<Call>.toRecordingStateUi(): Flow<RecordingStateUi> =
+    fun Flow<Call>.toRecordingStateUi(): Flow<RecordingStateUi> =
         this.map { it.extras.recording }
             .flatMapLatest { it.state }
             .map { it.mapToRecordingStateUi() }
+            .distinctUntilChanged()
+
+    fun Flow<Call>.toRecordingMessage(): Flow<RecordingMessage> =
+        this.
+            map { it.extras.recording }
+            .flatMapLatest { it.state }
+            .map { it.mapToRecordingMessage() }
             .distinctUntilChanged()
 
     fun Flow<Call>.toRecordingUi(): Flow<RecordingUi> =
@@ -40,5 +50,12 @@ internal object RecordingMapper {
             is Call.Recording.State.Started -> RecordingStateUi.Started
             Call.Recording.State.Stopped -> RecordingStateUi.Stopped
             is Call.Recording.State.Stopped.Error -> RecordingStateUi.Error
+        }
+
+    fun Call.Recording.State.mapToRecordingMessage(): RecordingMessage =
+        when (this) {
+            is Call.Recording.State.Started -> RecordingMessage.Started()
+            Call.Recording.State.Stopped -> RecordingMessage.Stopped()
+            is Call.Recording.State.Stopped.Error -> RecordingMessage.Failed()
         }
 }
