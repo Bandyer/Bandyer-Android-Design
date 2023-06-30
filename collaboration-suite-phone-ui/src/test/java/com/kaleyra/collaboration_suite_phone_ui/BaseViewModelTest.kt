@@ -6,7 +6,6 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.model.UiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,10 +24,10 @@ class BaseViewModelTest {
     @get:Rule
     var mainDispatcherRule = MainDispatcherRule()
 
-    private class UiStateImpl(override val userMessages: UserMessages) : UiState
+    private class UiStateImpl() : UiState
 
     private class BaseViewModelImpl(configure: suspend () -> Configuration) : BaseViewModel<UiStateImpl>(configure) {
-        override fun initialState() = UiStateImpl(UserMessages())
+        override fun initialState() = UiStateImpl()
         fun getCall(): Flow<Call> {
             return super.call
         }
