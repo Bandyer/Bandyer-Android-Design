@@ -65,7 +65,7 @@ class FileShareViewModelTest {
     fun setUp() {
         mockkObject(UriExtensions)
         every { any<Uri>().getFileSize() } returns 0
-        mockkConstructor(CallUserMessagesProvider::class)
+        mockkObject(CallUserMessagesProvider)
         viewModel = FileShareViewModel(
             configure = { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true), mockk()) },
             filePickProvider = object : FilePickProvider {
