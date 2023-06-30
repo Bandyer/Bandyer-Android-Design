@@ -43,7 +43,7 @@ internal fun WhiteboardComponent(
     )
     val textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val userMessage by viewModel.recordingUserMessage.collectAsStateWithLifecycle(initialValue = null)
+    val userMessage by viewModel.userMessage.collectAsStateWithLifecycle(initialValue = null)
 
     WhiteboardComponent(
         uiState = uiState,

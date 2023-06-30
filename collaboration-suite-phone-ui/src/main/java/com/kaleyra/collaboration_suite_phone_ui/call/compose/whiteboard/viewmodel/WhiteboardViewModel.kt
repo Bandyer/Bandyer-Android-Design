@@ -10,18 +10,24 @@ import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite.whiteboard.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMapper.getWhiteboardTextEvents
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMapper.isWhiteboardLoading
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMapper.toWhiteboardUploadUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import java.util.concurrent.atomic.AtomicBoolean
 
-internal class WhiteboardViewModel(configure: suspend () -> Configuration, whiteboardView: WhiteboardView) : BaseViewModel<WhiteboardUiState>(configure) {
+internal class WhiteboardViewModel(configure: suspend () -> Configuration, whiteboardView: WhiteboardView) : BaseViewModel<WhiteboardUiState>(configure), UserMessageViewModel {
 
     override fun initialState() = WhiteboardUiState()
+
+    override val userMessage: Flow<UserMessage>
+        get() = CallUserMessagesProvider.userMessage
 
     private val whiteboard = call
         .map { it.whiteboard }
@@ -58,22 +64,6 @@ internal class WhiteboardViewModel(configure: suspend () -> Configuration, white
                 }
                 onTextConfirmed.value = onCompletion
                 _uiState.update { it.copy(text = text) }
-            }.launchIn(viewModelScope)
-
-        callUserMessageProvider
-            .recordingUserMessage()
-            .onEach { message ->
-                _uiState.update {
-                    it.copy(userMessages = it.userMessages.copy(recordingMessage = message))
-                }
-            }.launchIn(viewModelScope)
-
-        callUserMessageProvider
-            .mutedUserMessage()
-            .onEach { message ->
-                _uiState.update {
-                    it.copy(userMessages = it.userMessages.copy(mutedMessage = message))
-                }
             }.launchIn(viewModelScope)
     }
 
