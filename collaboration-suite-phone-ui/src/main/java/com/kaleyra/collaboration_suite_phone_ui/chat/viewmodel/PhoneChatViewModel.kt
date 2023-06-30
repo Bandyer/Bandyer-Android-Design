@@ -23,8 +23,6 @@ import kotlinx.coroutines.launch
 
 class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure), ChatUiViewModel {
 
-    private val callUserMessageProvider = CallUserMessagesProvider(call)
-
     private val showUnreadHeader = MutableStateFlow(true)
 
     private val isFetching = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
@@ -32,6 +30,8 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
     private val _uiState = MutableStateFlow(ChatUiState())
 
     override val uiState = _uiState.asStateFlow()
+
+    override val userMessage = CallUserMessagesProvider.userMessage
 
     init {
         getChatState(participants, chatBox).onEach { state ->
@@ -74,22 +74,6 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
                 it.copy(conversationState = conversationState)
             }
         }.launchIn(viewModelScope)
-
-        callUserMessageProvider
-            .recordingUserMessage()
-            .onEach { message ->
-                _uiState.update {
-                    it.copy(userMessages = it.userMessages.copy(recordingMessage = message))
-                }
-            }.launchIn(viewModelScope)
-
-        callUserMessageProvider
-            .mutedUserMessage()
-            .onEach { message ->
-                _uiState.update {
-                    it.copy(userMessages = it.userMessages.copy(mutedMessage = message))
-                }
-            }.launchIn(viewModelScope)
     }
 
     override fun sendMessage(text: String) {

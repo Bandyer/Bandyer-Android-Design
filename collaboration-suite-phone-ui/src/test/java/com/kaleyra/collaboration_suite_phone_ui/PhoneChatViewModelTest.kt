@@ -20,6 +20,7 @@ import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -37,9 +38,7 @@ class PhoneChatViewModelTest {
 
     @Before
     fun setUp() {
-        mockkConstructor(CallUserMessagesProvider::class)
-        every { anyConstructed<CallUserMessagesProvider>().recordingUserMessage() } returns MutableStateFlow(RecordingMessage.Started())
-        every { anyConstructed<CallUserMessagesProvider>().mutedUserMessage() } returns MutableStateFlow(MutedMessage(null))
+        mockkObject(CallUserMessagesProvider)
         viewModel = spyk(PhoneChatViewModel { Configuration.Success(phoneBoxMock, chatBoxMock,  mockk(relaxed = true), mockk(relaxed = true), usersDescriptionMock) })
         every { viewModel.chat } returns MutableStateFlow(chatMock)
         every { viewModel.messages } returns MutableStateFlow(messagesUIMock)
@@ -47,17 +46,11 @@ class PhoneChatViewModelTest {
     }
 
     @Test
-    fun testRecordingUserMessageReceived_userMessagesUpdated() = runTest {
+    fun testUserMessage() = runTest {
+        every { CallUserMessagesProvider.userMessage } returns flowOf(MutedMessage("admin"))
         advanceUntilIdle()
-        val actual = viewModel.uiState.first().userMessages.recordingMessage
-        assert(actual is RecordingMessage.Started)
-    }
-
-    @Test
-    fun testMutedUserMessageReceived_userMessagesUpdated() = runTest {
-        advanceUntilIdle()
-        val actual = viewModel.uiState.first().userMessages.mutedMessage
-        Assert.assertNotEquals(null, actual)
+        val actual = viewModel.userMessage.first()
+        assert(actual is MutedMessage && actual.admin == "admin")
     }
 
     @Test
@@ -101,4 +94,5 @@ class PhoneChatViewModelTest {
         viewModel.showCall()
         verify { phoneBoxMock.showCall() }
     }
+
 }
