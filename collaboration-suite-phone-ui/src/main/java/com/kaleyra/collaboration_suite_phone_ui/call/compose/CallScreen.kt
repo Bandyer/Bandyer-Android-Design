@@ -565,11 +565,19 @@ internal fun DefaultCallScreen(
                 )
             },
             content = {
+                val shouldShowUserMessages by remember(callScreenState) {
+                    derivedStateOf {
+                        callScreenState.sheetContentState.currentComponent.let {
+                            it != BottomSheetComponent.FileShare && it != BottomSheetComponent.Whiteboard
+                        }
+                    }
+                }
                 CallScreenContent(
                     callState = callUiState.callState,
                     maxWidth = maxWidth,
                     onBackPressed = onBackPressed,
-                    onStreamFullscreenClick = onFullscreenStreamClick
+                    onStreamFullscreenClick = onFullscreenStreamClick,
+                    shouldShowUserMessages = shouldShowUserMessages
                 )
             }
         )

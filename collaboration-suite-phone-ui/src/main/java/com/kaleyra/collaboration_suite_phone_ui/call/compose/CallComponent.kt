@@ -97,7 +97,9 @@ internal fun CallComponent(
         maxWidth = maxWidth
     )
 
-    val userMessage by viewModel.userMessage.collectAsStateWithLifecycle(initialValue = null)
+    // Interrupt the collection of user messages when there is an another ui component
+    // collecting the one time events. These events can be received only by one collector at a time.
+    val userMessage = if (shouldShowUserMessages) viewModel.userMessage.collectAsStateWithLifecycle(initialValue = null).value else null
 
     CallComponent(
         callUiState = callUiState,
@@ -208,7 +210,6 @@ internal fun CallComponent(
             UserMessageSnackbarHandler(
                 userMessage = userMessage,
                 modifier = modifier
-                    .padding(vertical = 12.dp)
                     .align(Alignment.TopCenter)
                     .offset { IntOffset(0, snackbarOffset) }
             )

@@ -19,6 +19,7 @@ internal fun CallScreenContent(
     maxWidth: Dp,
     onBackPressed: () -> Unit,
     onStreamFullscreenClick: (String?) -> Unit,
+    shouldShowUserMessages: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(
@@ -28,7 +29,7 @@ internal fun CallScreenContent(
     ) {
         val targetState by remember(callState) {
             derivedStateOf {
-                when(callState) {
+                when (callState) {
                     is CallStateUi.Ringing -> 0
                     CallStateUi.Dialing -> 1
                     else -> 2
@@ -44,7 +45,12 @@ internal fun CallScreenContent(
             when (target) {
                 0 -> RingingComponent(onBackPressed = onBackPressed)
                 1 -> DialingComponent(onBackPressed = onBackPressed)
-                else -> CallComponent(maxWidth = maxWidth, onBackPressed = onBackPressed, onStreamFullscreenClick = onStreamFullscreenClick)
+                else -> CallComponent(
+                    shouldShowUserMessages = shouldShowUserMessages,
+                    maxWidth = maxWidth,
+                    onBackPressed = onBackPressed,
+                    onStreamFullscreenClick = onStreamFullscreenClick
+                )
             }
         }
     }
