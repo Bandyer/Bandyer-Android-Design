@@ -16,7 +16,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.Sha
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.viewmodel.FileShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.viewmodel.FileShareViewModel.Companion.MaxFileUploadBytes
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -68,8 +66,6 @@ class FileShareViewModelTest {
         mockkObject(UriExtensions)
         every { any<Uri>().getFileSize() } returns 0
         mockkConstructor(CallUserMessagesProvider::class)
-        every { anyConstructed<CallUserMessagesProvider>().recordingUserMessage() } returns MutableStateFlow(RecordingMessage.Started())
-        every { anyConstructed<CallUserMessagesProvider>().mutedUserMessage() } returns MutableStateFlow(MutedMessage(null))
         viewModel = FileShareViewModel(
             configure = { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true), mockk()) },
             filePickProvider = object : FilePickProvider {
@@ -154,20 +150,6 @@ class FileShareViewModelTest {
     }
 
     @Test
-    fun testRecordingUserMessageReceived_userMessagesUpdated() = runTest {
-        advanceUntilIdle()
-        val actual = viewModel.uiState.first().userMessages.recordingMessage
-        assert(actual is RecordingMessage.Started)
-    }
-
-    @Test
-    fun testMutedUserMessageReceived_userMessagesUpdated() = runTest {
-        advanceUntilIdle()
-        val actual = viewModel.uiState.first().userMessages.mutedMessage
-        Assert.assertNotEquals(null, actual)
-    }
-
-    @Test
     fun testUploadOnFilePick() = runTest {
         advanceUntilIdle()
         verify { sharedFolderMock.upload(uriMock) }
@@ -200,5 +182,13 @@ class FileShareViewModelTest {
     fun testDismissUploadLimit() = runTest {
         viewModel.dismissUploadLimit()
         assertEquals(false,  viewModel.uiState.first().showFileSizeLimit)
+    }
+
+    @Test
+    fun testUserMessage() = runTest {
+        every { CallUserMessagesProvider.userMessage } returns flowOf(MutedMessage("admin"))
+        advanceUntilIdle()
+        val actual = viewModel.userMessage.first()
+        assert(actual is MutedMessage && actual.admin == "admin")
     }
 }

@@ -8,14 +8,21 @@ import com.kaleyra.collaboration_suite.sharedfolder.SharedFolder
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getFileSize
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick.FilePickProvider
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.FileShareMapper.toSharedFilesUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 
-internal class FileShareViewModel(configure: suspend () -> Configuration, filePickProvider: FilePickProvider) : BaseViewModel<FileShareUiState>(configure) {
+internal class FileShareViewModel(configure: suspend () -> Configuration, filePickProvider: FilePickProvider) : BaseViewModel<FileShareUiState>(configure), UserMessageViewModel {
+
     override fun initialState() = FileShareUiState()
+
+    override val userMessage: Flow<UserMessage>
+        get() = CallUserMessagesProvider.userMessage
 
     private val sharedFolder: SharedFolder?
         get() = call.getValue()?.sharedFolder
@@ -37,22 +44,6 @@ internal class FileShareViewModel(configure: suspend () -> Configuration, filePi
             .onEach { files ->
                 val list = ImmutableList(files.sortedByDescending { it.time })
                 _uiState.update { it.copy(sharedFiles = list) }
-            }.launchIn(viewModelScope)
-
-        callUserMessageProvider
-            .recordingUserMessage()
-            .onEach { message ->
-                _uiState.update {
-                    it.copy(userMessages = it.userMessages.copy(recordingMessage = message))
-                }
-            }.launchIn(viewModelScope)
-
-        callUserMessageProvider
-            .mutedUserMessage()
-            .onEach { message ->
-                _uiState.update {
-                    it.copy(userMessages = it.userMessages.copy(mutedMessage = message))
-                }
             }.launchIn(viewModelScope)
     }
 

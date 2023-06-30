@@ -56,7 +56,7 @@ internal fun FileShareComponent(
     val (showUnableToOpenFileSnackBar, setShowUnableToOpenSnackBar) = remember { mutableStateOf(false) }
     val (showCancelledFileSnackBar, setShowCancelledFileSnackBar) = remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val userMessage by viewModel.recordingUserMessage.collectAsStateWithLifecycle(initialValue = null)
+    val userMessage by viewModel.userMessage.collectAsStateWithLifecycle(initialValue = null)
 
     DisposableEffect(context) {
         context.sendBroadcast(Intent(context, FileShareVisibilityObserver::class.java).apply {
