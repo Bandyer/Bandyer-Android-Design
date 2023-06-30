@@ -38,9 +38,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.File
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareFab
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.MaxFileSizeDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.viewmodel.FileShareViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
@@ -57,8 +56,7 @@ internal fun FileShareComponent(
     val (showUnableToOpenFileSnackBar, setShowUnableToOpenSnackBar) = remember { mutableStateOf(false) }
     val (showCancelledFileSnackBar, setShowCancelledFileSnackBar) = remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val recordingUserMessage by viewModel.recordingUserMessage.collectAsStateWithLifecycle(initialValue = null)
-    val mutedUserMessage by viewModel.mutedUserMessage.collectAsStateWithLifecycle(initialValue = null)
+    val userMessage by viewModel.recordingUserMessage.collectAsStateWithLifecycle(initialValue = null)
 
     DisposableEffect(context) {
         context.sendBroadcast(Intent(context, FileShareVisibilityObserver::class.java).apply {
@@ -88,8 +86,7 @@ internal fun FileShareComponent(
         onDownload = viewModel::download,
         onShareCancel = viewModel::cancel,
         modifier = modifier,
-        recordingUserMessage = recordingUserMessage,
-        mutedUserMessage = mutedUserMessage
+        userMessage = userMessage
     )
 }
 
@@ -101,8 +98,7 @@ internal fun FileShareComponent(
     onFileOpenFailure: ((doesFileExists: Boolean) -> Unit)? = null,
     onSnackBarShowed: (() -> Unit)? = null,
     onAlertDialogDismiss: (() -> Unit)? = null,
-    recordingUserMessage: RecordingMessage? = null,
-    mutedUserMessage: MutedMessage? = null,
+    userMessage: UserMessage? = null,
     onUpload: (Uri) -> Unit,
     onDownload: (String) -> Unit,
     onShareCancel: (String) -> Unit,
@@ -172,10 +168,7 @@ internal fun FileShareComponent(
                 )
             }
 
-            UserMessageSnackbarsContainer(
-                recordingUserMessage = recordingUserMessage,
-                mutedUserMessage = mutedUserMessage
-            )
+            UserMessageSnackbarHandler(userMessage = userMessage)
 
             SnackbarHost(
                 hostState = snackBarHostState,

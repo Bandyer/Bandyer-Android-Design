@@ -38,8 +38,8 @@ import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.Messages
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.UserInput
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
@@ -84,13 +84,11 @@ fun ChatScreen(
     viewModel: ChatUiViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val recordingUserMessage by viewModel.recordingUserMessage.collectAsStateWithLifecycle(initialValue = null)
-    val mutedUserMessage by viewModel.mutedUserMessage.collectAsStateWithLifecycle(initialValue = null)
+    val userMessage by viewModel.userMessage.collectAsStateWithLifecycle(initialValue = null)
 
     ChatScreen(
         uiState = uiState,
-        recordingUserMessage = recordingUserMessage,
-        mutedUserMessage = mutedUserMessage,
+        userMessage = userMessage,
         onBackPressed = onBackPressed,
         onMessageScrolled = viewModel::onMessageScrolled,
         onResetMessagesScroll = viewModel::onAllMessagesScrolled,
@@ -104,8 +102,7 @@ fun ChatScreen(
 @Composable
 internal fun ChatScreen(
     uiState: ChatUiState,
-    recordingUserMessage: RecordingMessage? = null,
-    mutedUserMessage: MutedMessage? = null,
+    userMessage: UserMessage? = null,
     onBackPressed: () -> Unit,
     onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
     onResetMessagesScroll: () -> Unit,
@@ -172,10 +169,7 @@ internal fun ChatScreen(
                 )
             }
 
-            UserMessageSnackbarsContainer(
-                recordingUserMessage = recordingUserMessage,
-                mutedUserMessage = mutedUserMessage
-            )
+            UserMessageSnackbarHandler(userMessage = userMessage)
         }
     }
 }

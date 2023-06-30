@@ -10,6 +10,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.ChatScreen
 import com.kaleyra.collaboration_suite_phone_ui.chat.MessagesTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.TextFieldTag
@@ -37,9 +38,7 @@ class ChatScreenTest {
         )
     )
 
-    private var recordingUserMessage by mutableStateOf<RecordingMessage?>(null)
-
-    private var mutedUserMessage by mutableStateOf<MutedMessage?>(null)
+    private var userMessage by mutableStateOf<UserMessage?>(null)
 
     private var onBackPressed = false
 
@@ -60,8 +59,7 @@ class ChatScreenTest {
         composeTestRule.setContent {
             ChatScreen(
                 uiState = uiState.collectAsState().value,
-                recordingUserMessage = recordingUserMessage,
-                mutedUserMessage = mutedUserMessage,
+                userMessage = userMessage,
                 onBackPressed = { onBackPressed = true },
                 onMessageScrolled = { onMessageScrolled = true },
                 onResetMessagesScroll = { onResetMessagesScroll = true },
@@ -83,6 +81,7 @@ class ChatScreenTest {
         onShowCall = false
         onSendMessage = false
         onTyping = false
+        userMessage = null
     }
 
     @Test
@@ -138,14 +137,14 @@ class ChatScreenTest {
 
     @Test
     fun recordingMessage_recordingSnackbarIsDisplayed() {
-        recordingUserMessage = RecordingMessage.Started()
+        userMessage = RecordingMessage.Started()
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 
     @Test
     fun mutedMessage_mutedSnackbarIsDisplayed() {
-        mutedUserMessage = MutedMessage(null)
+        userMessage = MutedMessage(null)
         val title = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }

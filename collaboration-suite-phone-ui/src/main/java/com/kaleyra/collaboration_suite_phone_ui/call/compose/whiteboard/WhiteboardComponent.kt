@@ -19,8 +19,8 @@ import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.*
@@ -33,10 +33,7 @@ import kotlinx.coroutines.flow.*
 @Composable
 internal fun WhiteboardComponent(
     viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-        factory = WhiteboardViewModel.provideFactory(
-            ::requestConfiguration,
-            WhiteboardView(LocalContext.current)
-        )
+        factory = WhiteboardViewModel.provideFactory(::requestConfiguration, WhiteboardView(LocalContext.current))
     ),
     modifier: Modifier = Modifier
 ) {
@@ -46,15 +43,13 @@ internal fun WhiteboardComponent(
     )
     val textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val recordingUserMessage by viewModel.recordingUserMessage.collectAsStateWithLifecycle(initialValue = null)
-    val mutedUserMessage by viewModel.mutedUserMessage.collectAsStateWithLifecycle(initialValue = null)
+    val userMessage by viewModel.recordingUserMessage.collectAsStateWithLifecycle(initialValue = null)
 
     WhiteboardComponent(
         uiState = uiState,
         editorSheetState = sheetState,
         textEditorState = textEditorState,
-        recordingUserMessage = recordingUserMessage,
-        mutedUserMessage = mutedUserMessage,
+        userMessage = userMessage,
         onReloadClick = viewModel::onReloadClick,
         onTextDismissed = viewModel::onTextDismissed,
         onTextConfirmed = viewModel::onTextConfirmed,
@@ -68,8 +63,7 @@ internal fun WhiteboardComponent(
     uiState: WhiteboardUiState,
     editorSheetState: ModalBottomSheetState,
     textEditorState: TextEditorState,
-    recordingUserMessage: RecordingMessage? = null,
-    mutedUserMessage: MutedMessage? = null,
+    userMessage: UserMessage? = null,
     onReloadClick: () -> Unit,
     onTextDismissed: () -> Unit,
     onTextConfirmed: (String) -> Unit,
@@ -135,10 +129,7 @@ internal fun WhiteboardComponent(
                     NavigationBarsSpacer()
                 }
 
-                UserMessageSnackbarsContainer(
-                    recordingUserMessage = recordingUserMessage,
-                    mutedUserMessage = mutedUserMessage
-                )
+                UserMessageSnackbarHandler(userMessage = userMessage)
             }
         },
     )

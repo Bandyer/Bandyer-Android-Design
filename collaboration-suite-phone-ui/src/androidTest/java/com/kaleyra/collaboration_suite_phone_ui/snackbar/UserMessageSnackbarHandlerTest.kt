@@ -11,35 +11,31 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarHandler
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class UserMessageSnackbarsContainerTest {
+class UserMessageSnackbarHandlerTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var recordingMessage by mutableStateOf<RecordingMessage?>(null)
-
-    private var mutedMessage by mutableStateOf<MutedMessage?>(null)
+    private var userMessage by mutableStateOf<UserMessage?>(null)
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            UserMessageSnackbarsContainer(
-                recordingUserMessage = recordingMessage,
-                mutedUserMessage = mutedMessage
-            )
+            UserMessageSnackbarHandler(userMessage = userMessage)
         }
     }
 
     @Test
     fun recordingUserMessage_recordingMessageIsDisplayed() {
-        recordingMessage = RecordingMessage.Started()
+        userMessage = RecordingMessage.Started()
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_recording_started_message)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
@@ -48,7 +44,7 @@ class UserMessageSnackbarsContainerTest {
 
     @Test
     fun mutedUserMessage_mutedMessageIsDisplayed() {
-        mutedMessage = MutedMessage(null)
+        userMessage = MutedMessage(null)
         val text = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }

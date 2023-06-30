@@ -35,7 +35,9 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeWidth
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isOrientationPortrait
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarsContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
@@ -86,6 +88,7 @@ internal fun CallComponent(
     maxWidth: Dp,
     onBackPressed: () -> Unit,
     onStreamFullscreenClick: (String?) -> Unit,
+    shouldShowUserMessages: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -95,9 +98,12 @@ internal fun CallComponent(
         maxWidth = maxWidth
     )
 
+    val userMessage by viewModel.recordingUserMessage.collectAsStateWithLifecycle(initialValue = null)
+
     CallComponent(
         callUiState = callUiState,
         callComponentState = callComponentState,
+        userMessage = userMessage,
         onBackPressed = onBackPressed,
         onStreamFullscreenClick = onStreamFullscreenClick,
         modifier = modifier
@@ -109,6 +115,7 @@ internal fun CallComponent(
     callUiState: CallUiState,
     callComponentState: CallComponentState,
     onBackPressed: () -> Unit,
+    userMessage: UserMessage? = null,
     onStreamFullscreenClick: (String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -199,9 +206,10 @@ internal fun CallComponent(
                 )
             }
 
-            UserMessageSnackbarsContainer(
-                userMessages = callUiState.userMessages,
+            UserMessageSnackbarHandler(
+                userMessage = userMessage,
                 modifier = modifier
+                    .padding(vertical = 12.dp)
                     .align(Alignment.TopCenter)
                     .offset { IntOffset(0, snackbarOffset) }
             )

@@ -25,7 +25,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessages
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.mockk
 import org.junit.After
@@ -51,6 +51,8 @@ class CallComponentTest {
 
     private var callComponentState by mutableStateOf(defaultState())
 
+    private var userMessage by mutableStateOf<UserMessage?>(null)
+
     private var isBackPressed = false
 
     private var fullscreenStreamId: String? = ""
@@ -62,6 +64,7 @@ class CallComponentTest {
             CallComponent(
                 callUiState = callUiState,
                 callComponentState = callComponentState,
+                userMessage = userMessage,
                 onBackPressed = { isBackPressed = true },
                 onStreamFullscreenClick = { fullscreenStreamId = it }
             )
@@ -72,6 +75,7 @@ class CallComponentTest {
     fun tearDown() {
         callUiState = CallUiState()
         callComponentState = defaultState()
+        userMessage = null
         isBackPressed = false
         fullscreenStreamId = ""
     }
@@ -393,14 +397,14 @@ class CallComponentTest {
 
     @Test
     fun recordingMessage_recordingSnackbarIsDisplayed() {
-        callUiState = CallUiState(userMessages = UserMessages(recordingMessage = RecordingMessage.Started()))
+        userMessage = RecordingMessage.Started()
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 
     @Test
     fun mutedMessage_mutedSnackbarIsDisplayed() {
-        callUiState = CallUiState(userMessages = UserMessages(mutedMessage = MutedMessage(null)))
+        userMessage = MutedMessage(null)
         val title = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
