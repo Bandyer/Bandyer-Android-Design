@@ -22,7 +22,7 @@ internal fun MutedSnackbar(adminDisplayName: String? = null) {
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun CallParticipantMutedPreview() {
+internal fun MutedSnackbarPreview() {
     KaleyraTheme {
         MutedSnackbar()
     }
