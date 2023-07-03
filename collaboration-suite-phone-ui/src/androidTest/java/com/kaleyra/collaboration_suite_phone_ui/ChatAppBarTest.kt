@@ -1,7 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import androidx.activity.ComponentActivity
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -10,7 +12,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.*
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -23,12 +24,14 @@ import java.time.format.FormatStyle
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
-class TopAppBarTest {
+class ChatAppBarTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private val chatState = MutableStateFlow<ChatState>(ChatState.None)
+    private var chatState by mutableStateOf<ChatState>(ChatState.None)
+
+    private var isInCall by mutableStateOf(false)
 
     private val chatInfo = ChatInfo(name = "chatName")
 
@@ -42,8 +45,9 @@ class TopAppBarTest {
     fun setUp() {
         composeTestRule.setContent {
             ChatAppBar(
-                state = chatState.collectAsState().value,
+                state = chatState,
                 info = chatInfo,
+                isInCall = isInCall,
                 actions = chatActions,
                 onBackPressed = { isBackPressed = true })
         }
@@ -51,7 +55,8 @@ class TopAppBarTest {
 
     @After
     fun tearDown() {
-        chatState.value = ChatState.None
+        chatState = ChatState.None
+        isInCall = false
         isBackPressed = false
         isActionClicked = false
     }
@@ -69,28 +74,28 @@ class TopAppBarTest {
 
     @Test
     fun chatStateNetworkConnecting_connectingDisplayed() {
-        chatState.value = ChatState.NetworkState.Connecting
+        chatState = ChatState.NetworkState.Connecting
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_chat_state_connecting)
         getSubtitle().assertTextEquals(connecting)
     }
 
     @Test
     fun chatStateNetworkOffline_waitingForNetworkDisplayed() {
-        chatState.value = ChatState.NetworkState.Offline
+        chatState = ChatState.NetworkState.Offline
         val waitingForNetwork = composeTestRule.activity.getString(R.string.kaleyra_chat_state_waiting_for_network)
         getSubtitle().assertTextEquals(waitingForNetwork)
     }
 
     @Test
     fun chatStateUserOnline_onlineDisplayed() {
-        chatState.value = ChatState.UserState.Online
+        chatState = ChatState.UserState.Online
         val online = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_online)
         getSubtitle().assertTextEquals(online)
     }
 
     @Test
     fun chatStateUserOffline_lastLoginDisplayed() {
-        chatState.value = ChatState.UserState.Offline(0)
+        chatState = ChatState.UserState.Offline(0)
         val timestamp = DateTimeFormatter
             .ofLocalizedDateTime(FormatStyle.SHORT)
             .withLocale(Locale.getDefault())
@@ -102,7 +107,7 @@ class TopAppBarTest {
 
     @Test
     fun chatStateUserNeverOnline_recentlySeenDisplayed() {
-        chatState.value = ChatState.UserState.Offline(null)
+        chatState = ChatState.UserState.Offline(null)
         val offline = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_offline)
         getSubtitle().assertTextEquals(offline)
     }
@@ -110,10 +115,17 @@ class TopAppBarTest {
     @Test
     fun chatStateUserTyping_typingWithDotsDisplayed() {
         getBouncingDots().assertDoesNotExist()
-        chatState.value = ChatState.UserState.Typing
+        chatState = ChatState.UserState.Typing
         val typing = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_typing)
         getSubtitle().assertTextEquals(typing)
         getBouncingDots().assertIsDisplayed()
+    }
+
+    @Test
+    fun isInCallTrue_actionsAreNotDisplayed() {
+        composeTestRule.onNodeWithTag(ChatActionsTag).assertIsDisplayed()
+        isInCall = true
+        composeTestRule.onNodeWithTag(ChatActionsTag).assertDoesNotExist()
     }
 
     @Test
@@ -125,5 +137,5 @@ class TopAppBarTest {
     // Check all nodes with the given tag and get the first one. This is done because of the MarqueeText implementation.
     private fun getSubtitle() = composeTestRule.onAllNodesWithTag(SubtitleTag).onFirst()
 
-    private fun getBouncingDots() = composeTestRule.onNodeWithTag(BouncingDots)
+    private fun getBouncingDots() = composeTestRule.onNodeWithTag(BouncingDotsTag)
 }

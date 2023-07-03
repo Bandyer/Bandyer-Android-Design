@@ -136,6 +136,7 @@ internal fun ChatScreen(
             ChatAppBar(
                 state = uiState.state,
                 info = uiState.info,
+                isInCall = uiState.isInCall,
                 onBackPressed = onBackPressed,
                 actions = uiState.actions
             )
