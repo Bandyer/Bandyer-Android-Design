@@ -2,8 +2,10 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provi
 
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toMutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toUsbCameraMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UsbCameraMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -29,6 +31,7 @@ object CallUserMessagesProvider {
         coroutineScope = scope
         userMessageChannel.sendRecordingEvents(call, scope)
         userMessageChannel.sendMutedEvents(call, scope)
+        userMessageChannel.sendUsbCameraEvents(call, scope)
     }
 
     fun dispose() {
@@ -42,5 +45,9 @@ object CallUserMessagesProvider {
 
     private fun Channel<UserMessage>.sendMutedEvents(call: Flow<CallUI>, scope: CoroutineScope) {
         call.toMutedMessage().onEach { send(it) }.launchIn(scope)
+    }
+
+    private fun Channel<UserMessage>.sendUsbCameraEvents(call: Flow<CallUI>, scope: CoroutineScope) {
+        call.toUsbCameraMessage().dropWhile { it is UsbCameraMessage.Disconnected }.onEach { send(it) }.launchIn(scope)
     }
 }
