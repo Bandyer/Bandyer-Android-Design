@@ -4,6 +4,7 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasAudio
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioOnly
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.hasVirtualBackground
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -17,8 +18,9 @@ internal object CallActionsMapper {
             flatMapLatest { it.actions },
             hasVirtualBackground(),
             isAudioOnly(),
-            hasAudio()
-        ) { actions, hasVirtualBackground, isAudioOnly, hasAudio ->
+            hasAudio(),
+            isGroupCall()
+        ) { actions, hasVirtualBackground, isAudioOnly, hasAudio, isGroupCall ->
             val result = mutableListOf<CallAction>()
 
             val hasMicrophone = actions.any { action -> action is CallUI.Action.ToggleMicrophone && hasAudio }
@@ -26,7 +28,7 @@ internal object CallActionsMapper {
             val switchCamera = actions.any { action -> action is CallUI.Action.SwitchCamera && !isAudioOnly }
             val hangUp = actions.any { action -> action is CallUI.Action.HangUp }
             val audio = actions.any { action -> action is CallUI.Action.Audio }
-            val chat = actions.any { action -> action is CallUI.Action.OpenChat.Full }
+            val chat = actions.any { action -> action is CallUI.Action.OpenChat.Full && !isGroupCall }
             val fileShare = actions.any { action -> action is CallUI.Action.FileShare }
             val screenShare = actions.any { action -> action is CallUI.Action.ScreenShare }
             val whiteboard = actions.any { action -> action is CallUI.Action.OpenWhiteboard.Full }

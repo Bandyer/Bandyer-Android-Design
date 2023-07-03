@@ -6,6 +6,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallActionsM
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasAudio
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioOnly
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.hasVirtualBackground
 import io.mockk.every
@@ -34,9 +36,11 @@ class CallActionsMapperTest {
     fun setUp() {
         mockkObject(VirtualBackgroundMapper)
         mockkObject(InputMapper)
+        mockkObject(ParticipantMapper)
         every { callFlow.hasVirtualBackground() } returns flowOf(false)
-        every { callFlow.isAudioOnly() } returns flowOf(false)
         every { callFlow.hasAudio() } returns flowOf(true)
+        every { callFlow.isAudioOnly() } returns flowOf(false)
+        every { callFlow.isGroupCall() } returns flowOf(false)
     }
 
     @After
@@ -113,6 +117,23 @@ class CallActionsMapperTest {
         assertEquals(listOf<CallAction>(), actual)
     }
 
+    @Test
+    fun chatActionAndItIsNotGroupCall_toCallActions_actionsListHasChatAction() = runTest {
+        every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.OpenChat.Full))
+        every { callFlow.isGroupCall() } returns flowOf(false)
+        val result = callFlow.toCallActions()
+        val actual = result.first()
+        assertEquals(listOf<CallAction>(CallAction.Chat()), actual)
+    }
+
+    @Test
+    fun chatActionAndItIsGroupCall_toCallActions_emptyList() = runTest {
+        every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.OpenChat.Full))
+        every { callFlow.isGroupCall() } returns flowOf(true)
+        val result = callFlow.toCallActions()
+        val actual = result.first()
+        assertEquals(listOf<CallAction>(), actual)
+    }
 
     @Test
     fun switchCameraActionAndCallHasVideo_toCallActions_actionsListHasSwitchCamera() = runTest {
