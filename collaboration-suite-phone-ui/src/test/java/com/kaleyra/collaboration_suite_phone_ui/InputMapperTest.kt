@@ -4,6 +4,7 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite_core_ui.utils.UsbCameraUtils
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasAudio
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasUsbCamera
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioOnly
@@ -12,9 +13,12 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isSharingScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toMutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toUsbCameraMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UsbCameraMessage
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -199,5 +203,33 @@ class InputMapperTest {
         val call = MutableStateFlow(callMock)
         val actual = call.hasUsbCamera().first()
         Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun usbCameraNotInAvailableInputs_toUsbCameraMessage_usbCameraDisconnectedMessage() = runTest {
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf())
+        val call = MutableStateFlow(callMock)
+        val actual = call.toUsbCameraMessage().first()
+        assert(actual is UsbCameraMessage.Disconnected)
+    }
+
+    @Test
+    fun usbCameraInAvailableInputsAndItIsSupported_toUsbCameraMessage_usbCameraConnectedMessage() = runTest {
+        mockkObject(UsbCameraUtils)
+        every { UsbCameraUtils.isSupported()  } returns true
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Usb>(relaxed = true)))
+        val call = MutableStateFlow(callMock)
+        val actual = call.toUsbCameraMessage().first()
+        assert(actual is UsbCameraMessage.Connected)
+    }
+
+    @Test
+    fun usbCameraNotSupported_toUsbCameraMessage_usbCameraNotSupportedMessage() = runTest {
+        mockkObject(UsbCameraUtils)
+        every { UsbCameraUtils.isSupported()  } returns false
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Usb>(relaxed = true)))
+        val call = MutableStateFlow(callMock)
+        val actual = call.toUsbCameraMessage().first()
+        assert(actual is UsbCameraMessage.NotSupported)
     }
 }
