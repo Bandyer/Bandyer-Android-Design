@@ -11,6 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UsbCameraMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarHandler
 import org.junit.Before
@@ -34,10 +35,28 @@ class UserMessageSnackbarHandlerTest {
     }
 
     @Test
-    fun recordingUserMessage_recordingMessageIsDisplayed() {
+    fun recordingStartedUserMessage_recordingMessageIsDisplayed() {
         userMessage = RecordingMessage.Started
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_recording_started_message)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+        composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
+    }
+
+    @Test
+    fun recordingStoppedUserMessage_recordingMessageIsDisplayed() {
+        userMessage = RecordingMessage.Stopped
+        val title = composeTestRule.activity.getString(R.string.kaleyra_recording_stopped)
+        val subtitle = composeTestRule.activity.getString(R.string.kaleyra_recording_stopped_message)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+        composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
+    }
+
+    @Test
+    fun recordingFailedUserMessage_recordingMessageIsDisplayed() {
+        userMessage = RecordingMessage.Failed
+        val title = composeTestRule.activity.getString(R.string.kaleyra_recording_failed)
+        val subtitle = composeTestRule.activity.getString(R.string.kaleyra_recording_failed_message)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
     }
@@ -47,5 +66,26 @@ class UserMessageSnackbarHandlerTest {
         userMessage = MutedMessage(null)
         val text = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
+    }
+
+    @Test
+    fun usbConnectedUserMessage_usbMessageIsDisplayed() {
+        userMessage = UsbCameraMessage.Connected("")
+        val title = composeTestRule.activity.getString(R.string.kaleyra_generic_external_camera_connected)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun usbDisconnectedUserMessage_usbMessageIsDisplayed() {
+        userMessage = UsbCameraMessage.Disconnected
+        val title = composeTestRule.activity.getString(R.string.kaleyra_external_camera_disconnected)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun usbNotSupportedUserMessage_usbMessageIsDisplayed() {
+        userMessage = UsbCameraMessage.NotSupported
+        val title = composeTestRule.activity.getString(R.string.kaleyra_external_camera_unsupported)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 }

@@ -15,8 +15,12 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.MutedSnack
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.RecordingEndedSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.RecordingErrorSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.RecordingStartedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.UsbConnectedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.UsbDisconnectedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.UsbNotSupportedSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UsbCameraMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.filterNotNull
@@ -24,6 +28,9 @@ import kotlinx.coroutines.flow.filterNotNull
 const val RecordingStarted = "RecordingStarted"
 const val RecordingStopped = "RecordingStopped"
 const val RecordingError = "RecordingError"
+const val UsbConnected = "UsbConnected"
+const val UsbDisconnected = "UsbDisconnected"
+const val UsbNotSupported = "UsbNotSupported"
 const val MutedByAdmin = "MutedByAdmin"
 
 // TODO move to common package between call and chat
@@ -42,12 +49,16 @@ internal fun UserMessageSnackbarHandler(
                 snackbarHostState.showSnackbar(
                     message = when (it) {
                         is MutedMessage -> it.admin ?: ""
+                        is UsbCameraMessage.Connected -> it.name
                         else -> ""
                     },
                     actionLabel = when (it) {
                         is RecordingMessage.Started -> RecordingStarted
                         is RecordingMessage.Stopped -> RecordingStopped
                         is RecordingMessage.Failed -> RecordingError
+                        is UsbCameraMessage.Connected -> UsbConnected
+                        is UsbCameraMessage.Disconnected -> UsbDisconnected
+                        is UsbCameraMessage.NotSupported -> UsbNotSupported
                         else -> MutedByAdmin
                     }
                 )
@@ -62,6 +73,9 @@ internal fun UserMessageSnackbarHandler(
                 RecordingStarted -> RecordingStartedSnackbar()
                 RecordingStopped -> RecordingEndedSnackbar()
                 RecordingError -> RecordingErrorSnackbar()
+                UsbConnected -> UsbConnectedSnackbar(it.message)
+                UsbDisconnected -> UsbDisconnectedSnackbar()
+                UsbNotSupported -> UsbNotSupportedSnackbar()
                 MutedByAdmin -> MutedSnackbar(it.message)
             }
         }
