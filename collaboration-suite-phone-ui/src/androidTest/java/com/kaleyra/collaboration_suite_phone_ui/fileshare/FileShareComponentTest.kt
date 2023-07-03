@@ -247,7 +247,7 @@ class FileShareComponentTest {
 
     @Test
     fun recordingMessage_recordingSnackbarIsDisplayed() {
-        userMessage = RecordingMessage.Started()
+        userMessage = RecordingMessage.Started
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }

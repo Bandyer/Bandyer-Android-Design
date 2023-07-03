@@ -54,8 +54,8 @@ internal object RecordingMapper {
 
     fun Call.Recording.State.mapToRecordingMessage(): RecordingMessage =
         when (this) {
-            is Call.Recording.State.Started -> RecordingMessage.Started()
-            Call.Recording.State.Stopped -> RecordingMessage.Stopped()
-            is Call.Recording.State.Stopped.Error -> RecordingMessage.Failed()
+            is Call.Recording.State.Started -> RecordingMessage.Started
+            Call.Recording.State.Stopped -> RecordingMessage.Stopped
+            is Call.Recording.State.Stopped.Error -> RecordingMessage.Failed
         }
 }

@@ -35,7 +35,7 @@ class UserMessageSnackbarHandlerTest {
 
     @Test
     fun recordingUserMessage_recordingMessageIsDisplayed() {
-        userMessage = RecordingMessage.Started()
+        userMessage = RecordingMessage.Started
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_recording_started_message)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
