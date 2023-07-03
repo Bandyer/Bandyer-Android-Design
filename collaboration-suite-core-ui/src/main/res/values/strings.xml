@@ -59,6 +59,7 @@
     </plurals>
     <string name="kaleyra_call_participant_utterance_muted_by_admin">Muted</string>
 
+    <!-- TERMS AND CONDITIONS -->
     <string name="kaleyra_user_data_consent_agreement_notification_title">Terms and conditions</string>
     <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_message">You have a new message</string>
     <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_call">Incoming call</string>

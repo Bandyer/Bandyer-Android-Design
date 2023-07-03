@@ -59,6 +59,8 @@
     </plurals>
     <string name="kaleyra_call_participant_utterance_muted_by_admin">Microfono disabilitato</string>
 
+
+    <!-- TERMS AND CONDITIONS -->
     <string name="kaleyra_user_data_consent_agreement_notification_title">Termini e condizioni</string>
     <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_message">Hai un nuovo messaggio</string>
     <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_call">Chiamata in entrata</string>
