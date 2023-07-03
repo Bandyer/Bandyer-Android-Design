@@ -232,4 +232,10 @@
     <string name="kaleyra_start_audio_upgradable_call">Avvia chiamata</string>
     <string name="kaleyra_start_video_call">Avvia videochiamata</string>
 
+    <!-- USB CAMERA -->
+    <string name="kaleyra_generic_external_camera_connected">Camera USB aggiuntiva connessa</string>
+    <string name="kaleyra_external_camera_connected">Camera USB aggiuntiva %1$s connessa</string>
+    <string name="kaleyra_external_camera_disconnected">Camera USB aggiuntiva disconnessa</string>
+    <string name="kaleyra_external_camera_unsupported">La camera USB aggiuntiva non può essere utilizzata su questo dispositivo.</string>
+
 </resources>

@@ -233,4 +233,10 @@
     <string name="kaleyra_start_audio_upgradable_call">Start call</string>
     <string name="kaleyra_start_video_call">Start video call</string>
 
+    <!-- USB CAMERA -->
+    <string name="kaleyra_generic_external_camera_connected">External USB camera connected</string>
+    <string name="kaleyra_external_camera_connected">External USB camera %1$s connected</string>
+    <string name="kaleyra_external_camera_disconnected">External USB camera disconnected</string>
+    <string name="kaleyra_external_camera_unsupported">External USB camera not supported on this device.</string>
+
 </resources>
