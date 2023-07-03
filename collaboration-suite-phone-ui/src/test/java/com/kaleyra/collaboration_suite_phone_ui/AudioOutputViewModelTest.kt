@@ -129,7 +129,6 @@ class AudioOutputViewModelTest {
         advanceUntilIdle()
         viewModel.setDevice(AudioDeviceUi.Muted)
         verify(exactly = 1) { callMock.setAudioOutputDevice(AudioOutputDevice.None()) }
-        verify(exactly = 1) { callMock.setAudioOutputDevice(AudioOutputDevice.None()) }
         verify(exactly = 1) { audioMock1.tryDisable() }
         verify(exactly = 1) { audioMock2.tryDisable() }
     }
