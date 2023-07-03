@@ -36,11 +36,11 @@ internal object CallActionsMapper {
             if (hasMicrophone) result += CallAction.Microphone()
             if (hasCamera) result += CallAction.Camera()
             if (switchCamera) result += CallAction.SwitchCamera()
-            if (audio) result += CallAction.Audio()
             if (chat) result += CallAction.Chat()
+            if (whiteboard) result += CallAction.Whiteboard()
+            if (audio) result += CallAction.Audio()
             if (fileShare) result += CallAction.FileShare()
             if (screenShare) result += CallAction.ScreenShare()
-            if (whiteboard) result += CallAction.Whiteboard()
             if (hasVirtualBackground) result += CallAction.VirtualBackground()
 
             if (hangUp) {

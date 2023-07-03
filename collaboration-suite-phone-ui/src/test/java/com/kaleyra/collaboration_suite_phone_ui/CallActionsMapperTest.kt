@@ -79,11 +79,11 @@ class CallActionsMapperTest {
             CallAction.Camera(),
             CallAction.SwitchCamera(),
             CallAction.HangUp(),
-            CallAction.Audio(),
             CallAction.Chat(),
+            CallAction.Whiteboard(),
+            CallAction.Audio(),
             CallAction.FileShare(),
-            CallAction.ScreenShare(),
-            CallAction.Whiteboard()
+            CallAction.ScreenShare()
         )
         assertEquals(expected, actual)
     }
