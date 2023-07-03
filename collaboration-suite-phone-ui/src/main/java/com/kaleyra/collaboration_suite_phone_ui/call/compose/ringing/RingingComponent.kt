@@ -92,7 +92,7 @@ internal fun RingingComponent(
                 if (countDownTimer == 0L) {
                     HelperText(text = stringResource(id = R.string.kaleyra_tap_to_answer))
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     horizontalArrangement = Arrangement.SpaceAround,
                     modifier = Modifier
