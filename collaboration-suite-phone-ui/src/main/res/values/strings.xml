@@ -239,4 +239,7 @@
     <string name="kaleyra_external_camera_disconnected">External USB camera disconnected</string>
     <string name="kaleyra_external_camera_unsupported">External USB camera not supported on this device.</string>
 
+    <!-- CAMERA RESTRICTION -->
+    <string name="kaleyra_user_has_no_video_permissions">Your user does not have video publish capability permissions.</string>
+
 </resources>
