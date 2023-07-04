@@ -9,6 +9,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UsbCameraMessage
@@ -86,6 +87,13 @@ class UserMessageSnackbarHandlerTest {
     fun usbNotSupportedUserMessage_usbMessageIsDisplayed() {
         userMessage = UsbCameraMessage.NotSupported
         val title = composeTestRule.activity.getString(R.string.kaleyra_external_camera_unsupported)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun cameraRestrictionUserMessage_cameraRestrictionIsDisplayed() {
+        userMessage = CameraRestrictionMessage()
+        val title = composeTestRule.activity.getString(R.string.kaleyra_user_has_no_video_permissions)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 }
