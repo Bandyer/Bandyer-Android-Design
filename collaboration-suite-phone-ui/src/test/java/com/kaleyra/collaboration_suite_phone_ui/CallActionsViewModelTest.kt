@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.content.Context
 import com.bandyer.android_audiosession.model.AudioOutputDevice
+import com.kaleyra.collaboration_suite.Contact
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -15,6 +16,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.A
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel.CallActionsViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,9 +64,15 @@ class CallActionsViewModelTest {
 
     private val effectsMock = mockk<Effects>()
 
+    private val restrictionMock = mockk<Contact.Restrictions>()
+
+    private val cameraRestrictionMock = mockk<Contact.Restrictions.Restriction.Camera>()
+
     @Before
     fun setUp() {
-        viewModel = spyk(CallActionsViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk(relaxed = true), mockk(relaxed = true), mockk()) })
+        viewModel = spyk(CallActionsViewModel {
+            Configuration.Success(phoneBoxMock, chatBoxMock, mockk(relaxed = true), mockk(relaxed = true), mockk())
+        })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { inputs } returns inputsMock
@@ -89,7 +98,12 @@ class CallActionsViewModelTest {
         every { otherParticipantMock.userId }returns "otherUserId"
         every { inputsMock.availableInputs } returns MutableStateFlow(setOf(audioMock, videoMock))
         every { videoMock.lenses } returns listOf(frontLens, rearLens)
-        every { meMock.streams } returns MutableStateFlow(listOf(myStreamMock))
+        with(meMock) {
+            every { streams } returns MutableStateFlow(listOf(myStreamMock))
+            every { restrictions } returns restrictionMock
+        }
+        every { restrictionMock.camera } returns MutableStateFlow(cameraRestrictionMock)
+        every { cameraRestrictionMock.usage } returns true
         every { videoMock.enabled } returns MutableStateFlow(false)
         every { audioMock.enabled } returns MutableStateFlow(false)
         every { rearLens.isRear } returns false
@@ -411,6 +425,20 @@ class CallActionsViewModelTest {
         advanceUntilIdle()
         viewModel.toggleCamera()
         verify(exactly = 1) { videoMock.tryDisable() }
+    }
+
+    @Test
+    fun testToggleCameraWithCameraRestriction() = runTest {
+        mockkObject(CallUserMessagesProvider)
+        every { cameraRestrictionMock.usage } returns false
+        advanceUntilIdle()
+        viewModel.toggleCamera()
+        advanceUntilIdle()
+        verify(exactly = 1) {
+            CallUserMessagesProvider.sendUserMessage(withArg {
+                assertEquals(it::class, CameraRestrictionMessage::class)
+            })
+        }
     }
 
     @Test

@@ -22,7 +22,12 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isSharingScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.isVirtualBackgroundEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -66,6 +71,8 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
 
     private val availableInputs: Set<Input>?
         get() = call.getValue()?.inputs?.availableInputs?.value
+
+    private var wasCameraRestrictionMessageSent = false
 
     init {
         // TODO check that only the modified call action will be updated ui side
@@ -116,7 +123,22 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         val input = availableInputs?.let { inputs ->
             inputs.firstOrNull { it is Input.Video.Camera.Usb } ?: inputs.firstOrNull { it is Input.Video.Camera.Internal }
         }
-        if (!isMyCameraEnabled.value) input?.tryEnable() else input?.tryDisable()
+        val call = call.getValue() ?: return
+        val participants = call.participants.value
+        val restrictions = participants.me.restrictions
+        val canUseCamera = restrictions.camera.value.usage
+        if (canUseCamera) {
+            if (!isMyCameraEnabled.value) input?.tryEnable() else input?.tryDisable()
+        } else {
+            // Avoid sending a burst of camera restriction message event
+            if (wasCameraRestrictionMessageSent) return
+            viewModelScope.launch() {
+                wasCameraRestrictionMessageSent = true
+                CallUserMessagesProvider.sendUserMessage(CameraRestrictionMessage())
+                delay(1500L)
+                wasCameraRestrictionMessageSent = false
+            }
+        }
     }
 
     fun switchCamera() {
