@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UsbCameraMessage
@@ -180,5 +181,13 @@ class CallUserMessagesProviderTest {
         CallUserMessagesProvider.start(callFlow)
         val actual = CallUserMessagesProvider.userMessage.first()
         assert(actual is UsbCameraMessage.NotSupported)
+    }
+
+    @Test
+    fun testSendUserMessage() = runTest {
+        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.sendUserMessage(CameraRestrictionMessage())
+        val actual = CallUserMessagesProvider.userMessage.first()
+        assert(actual is CameraRestrictionMessage)
     }
 }

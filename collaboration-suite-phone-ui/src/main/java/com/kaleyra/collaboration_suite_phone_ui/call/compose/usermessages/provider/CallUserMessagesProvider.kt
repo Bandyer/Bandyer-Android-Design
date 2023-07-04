@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
 object CallUserMessagesProvider {
@@ -32,6 +33,12 @@ object CallUserMessagesProvider {
         userMessageChannel.sendRecordingEvents(call, scope)
         userMessageChannel.sendMutedEvents(call, scope)
         userMessageChannel.sendUsbCameraEvents(call, scope)
+    }
+
+    fun sendUserMessage(userMessage: UserMessage) {
+        coroutineScope?.launch {
+            userMessageChannel.send(userMessage)
+        }
     }
 
     fun dispose() {
