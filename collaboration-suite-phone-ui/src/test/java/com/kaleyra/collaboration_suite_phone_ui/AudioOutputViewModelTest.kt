@@ -21,6 +21,7 @@ import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -68,6 +69,9 @@ class AudioOutputViewModelTest {
         every { participantMock2.streams } returns MutableStateFlow(listOf(streamMock2))
         every { streamMock1.audio } returns MutableStateFlow(audioMock1)
         every { streamMock2.audio } returns MutableStateFlow(audioMock2)
+        val currentAudioOutputDeviceFlow = MutableSharedFlow<AudioOutputDevice>(replay = 1, extraBufferCapacity = 1)
+        every { callMock.currentAudioOutputDevice } returns currentAudioOutputDeviceFlow
+        every { callMock.setAudioOutputDevice(any()) } answers { currentAudioOutputDeviceFlow.tryEmit(secondArg()) }
     }
 
     @After
