@@ -1,14 +1,12 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput
 
 import android.content.res.Configuration
-import android.os.Build
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposeCompilerApi
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
@@ -19,28 +17,31 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.m
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.view.AudioOutputContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.viewmodel.AudioOutputViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.subfeaturelayout.SubFeatureLayout
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.BluetoothConnectPermission
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.BluetoothScanPermission
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.rememberMultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun AudioOutputComponent(
     viewModel: AudioOutputViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
         factory = AudioOutputViewModel.provideFactory(::requestConfiguration)
     ),
-    onItemClick: (AudioDeviceUi) -> Unit,
+    onDeviceConnected: () -> Unit,
     onCloseClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val scope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     AudioOutputComponent(
         uiState = uiState,
-        onItemClick = {
-            viewModel.setDevice(it)
-            onItemClick(it)
+        onItemClick = remember(scope, viewModel, onDeviceConnected) {
+            {
+                scope.launch {
+                    viewModel.setDevice(it)
+                    onDeviceConnected()
+                }
+            }
         },
         onCloseClick = onCloseClick,
         modifier = modifier

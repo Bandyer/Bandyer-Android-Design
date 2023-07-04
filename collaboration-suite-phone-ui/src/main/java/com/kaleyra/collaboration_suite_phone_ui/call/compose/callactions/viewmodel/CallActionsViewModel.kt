@@ -132,7 +132,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         } else {
             // Avoid sending a burst of camera restriction message event
             if (wasCameraRestrictionMessageSent) return
-            viewModelScope.launch() {
+            viewModelScope.launch {
                 wasCameraRestrictionMessageSent = true
                 CallUserMessagesProvider.sendUserMessage(CameraRestrictionMessage())
                 delay(1500L)

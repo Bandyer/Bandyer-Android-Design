@@ -129,7 +129,7 @@ internal fun BottomSheetContent(
                     }
                     BottomSheetComponent.AudioOutput -> {
                         AudioOutputComponent(
-                            onItemClick = { onAudioDeviceClick() },
+                            onDeviceConnected = onAudioDeviceClick,
                             onCloseClick = { contentState.navigateToComponent(BottomSheetComponent.CallActions) },
                             modifier = Modifier.testTag(AudioOutputComponentTag)
                         )
