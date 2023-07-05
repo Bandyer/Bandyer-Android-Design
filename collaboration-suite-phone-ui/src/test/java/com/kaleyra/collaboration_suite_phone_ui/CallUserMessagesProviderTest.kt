@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.AudioConnectionFailureMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
@@ -181,6 +182,26 @@ class CallUserMessagesProviderTest {
         CallUserMessagesProvider.start(callFlow)
         val actual = CallUserMessagesProvider.userMessage.first()
         assert(actual is UsbCameraMessage.NotSupported)
+    }
+
+    @Test
+    fun testGenericAudioOutputFailureMessage() = runTest {
+        with(InputMapper) {
+            every { callFlow.toAudioConnectionFailureMessage() } returns flowOf(AudioConnectionFailureMessage.Generic)
+        }
+        CallUserMessagesProvider.start(callFlow)
+        val actual = CallUserMessagesProvider.userMessage.first()
+        assert(actual is AudioConnectionFailureMessage.Generic)
+    }
+
+    @Test
+    fun testInSystemCallAudioOutputFailureMessage() = runTest {
+        with(InputMapper) {
+            every { callFlow.toAudioConnectionFailureMessage() } returns flowOf(AudioConnectionFailureMessage.InSystemCall)
+        }
+        CallUserMessagesProvider.start(callFlow)
+        val actual = CallUserMessagesProvider.userMessage.first()
+        assert(actual is AudioConnectionFailureMessage.InSystemCall)
     }
 
     @Test

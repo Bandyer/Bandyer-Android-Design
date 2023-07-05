@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider
 
 import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toAudioConnectionFailureMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toMutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toUsbCameraMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingMessage
@@ -33,6 +34,7 @@ object CallUserMessagesProvider {
         userMessageChannel.sendRecordingEvents(call, scope)
         userMessageChannel.sendMutedEvents(call, scope)
         userMessageChannel.sendUsbCameraEvents(call, scope)
+        userMessageChannel.sendFailedAudioOutputEvents(call, scope)
     }
 
     fun sendUserMessage(userMessage: UserMessage) {
@@ -56,5 +58,9 @@ object CallUserMessagesProvider {
 
     private fun Channel<UserMessage>.sendUsbCameraEvents(call: Flow<CallUI>, scope: CoroutineScope) {
         call.toUsbCameraMessage().dropWhile { it is UsbCameraMessage.Disconnected }.onEach { send(it) }.launchIn(scope)
+    }
+
+    private fun Channel<UserMessage>.sendFailedAudioOutputEvents(call: Flow<CallUI>, scope: CoroutineScope) {
+        call.toAudioConnectionFailureMessage().onEach { send(it) }.launchIn(scope)
     }
 }
