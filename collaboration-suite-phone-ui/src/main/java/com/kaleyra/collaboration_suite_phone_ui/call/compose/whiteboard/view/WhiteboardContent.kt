@@ -39,6 +39,8 @@ internal fun WhiteboardContent(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT
                         )
+                        isFocusable = true
+                        isFocusableInTouchMode = true
                     }
                 },
                 modifier = Modifier.testTag(WhiteboardViewTag)
