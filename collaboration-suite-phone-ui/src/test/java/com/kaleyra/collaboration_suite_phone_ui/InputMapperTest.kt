@@ -1,10 +1,13 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import com.bandyer.android_audiosession.model.AudioOutputDevice
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_core_ui.utils.UsbCameraUtils
+import com.kaleyra.collaboration_suite_extension_audio.extensions.AudioOutputConnectionError
+import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasAudio
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasUsbCamera
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioOnly
@@ -12,9 +15,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isSharingScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toAudioConnectionFailureMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toMutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toUsbCameraMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.AudioConnectionFailureMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UsbCameraMessage
 import io.mockk.every
 import io.mockk.mockk
@@ -231,5 +236,27 @@ class InputMapperTest {
         val call = MutableStateFlow(callMock)
         val actual = call.toUsbCameraMessage().first()
         assert(actual is UsbCameraMessage.NotSupported)
+    }
+
+    @Test
+    fun audioConnectionGenericError_toAudioConnectionFailureMessage_genericAudioConnectionFailure() = runTest {
+        mockkObject(CollaborationAudioExtensions)
+        with(CollaborationAudioExtensions) {
+            every { callMock.failedAudioOutputDevice } returns MutableStateFlow(AudioOutputConnectionError(AudioOutputDevice.Loudspeaker(), isInSystemCall = false))
+        }
+        val call = MutableStateFlow(callMock)
+        val actual = call.toAudioConnectionFailureMessage().first()
+        assert(actual is AudioConnectionFailureMessage.Generic)
+    }
+
+    @Test
+    fun audioConnectionInCallError_toAudioConnectionFailureMessage_inCallAudioConnectionFailure() = runTest {
+        mockkObject(CollaborationAudioExtensions)
+        with(CollaborationAudioExtensions) {
+            every { callMock.failedAudioOutputDevice } returns MutableStateFlow(AudioOutputConnectionError(AudioOutputDevice.Loudspeaker(), isInSystemCall = true))
+        }
+        val call = MutableStateFlow(callMock)
+        val actual = call.toAudioConnectionFailureMessage().first()
+        assert(actual is AudioConnectionFailureMessage.InSystemCall)
     }
 }
