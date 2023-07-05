@@ -441,6 +441,14 @@ class CallComponentTest {
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
+    @Test
+    fun callStateEnded_streamsGridIsNotDisplayed() {
+        callUiState = CallUiState(callState = mockk())
+        composeTestRule.onNodeWithTag(StreamsGridTag).assertIsDisplayed()
+        callUiState = CallUiState(callState = CallStateUi.Disconnected.Ended)
+        composeTestRule.onNodeWithTag(StreamsGridTag).assertDoesNotExist()
+    }
+
     private fun <T: ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<T>, T>.assertConnectingTitleIsDisplayed() {
         val connecting = activity.getString(R.string.kaleyra_call_status_connecting)
         onNodeWithContentDescription(connecting).assertIsDisplayed()

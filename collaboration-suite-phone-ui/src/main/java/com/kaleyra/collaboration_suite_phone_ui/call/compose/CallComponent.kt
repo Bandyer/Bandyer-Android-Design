@@ -43,6 +43,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 const val CallComponentTag = "CallComponentTag"
+const val StreamsGridTag = "StreamsGridTag"
 private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
 val YouAreAloneAvatarPadding = DefaultStreamAvatarSize / 2 + 24.dp
 const val FullScreenMessageMs = 1000L
@@ -136,51 +137,55 @@ internal fun CallComponent(
 
     CompositionLocalProvider(LocalContentColor provides Color.White) {
         Box(modifier.testTag(CallComponentTag)) {
-            AdaptiveGrid(
-                columns = if (callUiState.fullscreenStream == null) callComponentState.columns else 1
-            ) {
-                val streams = callUiState.fullscreenStream?.let { listOf(it) } ?: callUiState.featuredStreams.value
-                repeat(streams.count()) { index ->
-                    val stream = streams[index]
-                    key(stream.id) {
-                        Box {
-                            FeaturedStream(
-                                stream = stream,
-                                isFullscreen = callUiState.fullscreenStream != null,
-                                onBackPressed = if (index == 0 && !shouldShowCallInfo) onBackPressed else null,
-                                // TODO optimize recomposition
-                                onFullscreenClick = remember(onStreamFullscreenClick, callUiState.fullscreenStream) {
-                                    { if (callUiState.fullscreenStream != null) onStreamFullscreenClick(null) else onStreamFullscreenClick(stream.id) }
-                                },
-                                headerModifier = remember(index, callComponentState, streamHeaderOffset) {
-                                    Modifier
-                                        .offset {
-                                            IntOffset(
-                                                x = 0,
-                                                y = if (index < callComponentState.columns) streamHeaderOffset else 0
-                                            )
-                                        }
-                                        .statusBarsPadding()
-                                        .onGloballyPositioned {
-                                            streamHeaderHeight = it.size.height
-                                        }
-                                }
-                            )
 
-                            if (callUiState.amIAlone && callUiState.callState !is CallStateUi.Disconnected.Ended) {
-                                val padding by animateDpAsState(targetValue = if (stream.video?.isEnabled == false) YouAreAloneAvatarPadding else 0.dp)
-                                Text(
-                                    text = stringResource(id = R.string.kaleyra_call_left_alone),
-                                    style = LocalTextStyle.current.shadow(),
-                                    modifier = Modifier
-                                        .align(Alignment.Center)
-                                        .offset {
-                                            val offset = padding
-                                                .toPx()
-                                                .toInt()
-                                            IntOffset(0, offset)
-                                        }
+            if (callUiState.callState !is CallStateUi.Disconnected.Ended) {
+                AdaptiveGrid(
+                    columns = if (callUiState.fullscreenStream == null) callComponentState.columns else 1,
+                    modifier = Modifier.testTag(StreamsGridTag)
+                ) {
+                    val streams = callUiState.fullscreenStream?.let { listOf(it) } ?: callUiState.featuredStreams.value
+                    repeat(streams.count()) { index ->
+                        val stream = streams[index]
+                        key(stream.id) {
+                            Box {
+                                FeaturedStream(
+                                    stream = stream,
+                                    isFullscreen = callUiState.fullscreenStream != null,
+                                    onBackPressed = if (index == 0 && !shouldShowCallInfo) onBackPressed else null,
+                                    // TODO optimize recomposition
+                                    onFullscreenClick = remember(onStreamFullscreenClick, callUiState.fullscreenStream) {
+                                        { if (callUiState.fullscreenStream != null) onStreamFullscreenClick(null) else onStreamFullscreenClick(stream.id) }
+                                    },
+                                    headerModifier = remember(index, callComponentState, streamHeaderOffset) {
+                                        Modifier
+                                            .offset {
+                                                IntOffset(
+                                                    x = 0,
+                                                    y = if (index < callComponentState.columns) streamHeaderOffset else 0
+                                                )
+                                            }
+                                            .statusBarsPadding()
+                                            .onGloballyPositioned {
+                                                streamHeaderHeight = it.size.height
+                                            }
+                                    }
                                 )
+
+                                if (callUiState.amIAlone) {
+                                    val padding by animateDpAsState(targetValue = if (stream.video?.isEnabled == false) YouAreAloneAvatarPadding else 0.dp)
+                                    Text(
+                                        text = stringResource(id = R.string.kaleyra_call_left_alone),
+                                        style = LocalTextStyle.current.shadow(),
+                                        modifier = Modifier
+                                            .align(Alignment.Center)
+                                            .offset {
+                                                val offset = padding
+                                                    .toPx()
+                                                    .toInt()
+                                                IntOffset(0, offset)
+                                            }
+                                    )
+                                }
                             }
                         }
                     }
