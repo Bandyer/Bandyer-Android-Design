@@ -130,14 +130,6 @@ class CallUserMessagesProviderTest {
         }
     }
 
-
-
-
-
-
-
-
-
     @Test
     fun testUsbConnectedUserMessage() = runTest {
         with(InputMapper) {

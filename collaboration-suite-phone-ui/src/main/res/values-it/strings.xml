@@ -241,4 +241,8 @@
     <!-- CAMERA RESTRICTION -->
     <string name="kaleyra_user_has_no_video_permissions">La tua utenza non possiede i permessi per pubblicare il video.</string>
 
+    <!-- AUDIO FAILURE -->
+    <string name="kaleyra_generic_routing_exception">Non è stato possibile effettuare il cambio di dispositivo di uscita audio.</string>
+    <string name="kaleyra_already_in_system_call_routing_exception">Non è possibile cambiare il dispositivo di uscita audio mentre una chiamata di sistema è in corso.</string>
+
 </resources>
