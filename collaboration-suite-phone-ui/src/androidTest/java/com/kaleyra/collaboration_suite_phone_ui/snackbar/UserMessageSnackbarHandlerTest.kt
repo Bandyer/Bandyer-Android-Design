@@ -9,6 +9,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.AudioConnectionFailureMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
@@ -94,6 +95,20 @@ class UserMessageSnackbarHandlerTest {
     fun cameraRestrictionUserMessage_cameraRestrictionIsDisplayed() {
         userMessage = CameraRestrictionMessage()
         val title = composeTestRule.activity.getString(R.string.kaleyra_user_has_no_video_permissions)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun genericAudioFailureMessage_genericAudioFailureIsDisplayed() {
+        userMessage = AudioConnectionFailureMessage.Generic
+        val title = composeTestRule.activity.getString(R.string.kaleyra_generic_audio_routing_error)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun inSystemCallAudioFailureMessage_inSystemCallAudioFailureIsDisplayed() {
+        userMessage = AudioConnectionFailureMessage.InSystemCall
+        val title = composeTestRule.activity.getString(R.string.kaleyra_already_in_system_call_audio_routing_error)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 }

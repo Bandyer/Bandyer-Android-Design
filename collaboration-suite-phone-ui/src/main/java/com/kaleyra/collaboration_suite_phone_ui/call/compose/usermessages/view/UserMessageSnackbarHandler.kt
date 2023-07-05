@@ -11,6 +11,9 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_extension_audio.extensions.AudioOutputConnectionError
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.AudioOutputGenericFailureSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.AudioOutputInSystemCallFailureSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.CameraRestrictionSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.MutedSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.RecordingEndedSnackbar
@@ -19,6 +22,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.RecordingS
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.UsbConnectedSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.UsbDisconnectedSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.UsbNotSupportedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.AudioConnectionFailureMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
@@ -35,6 +39,8 @@ const val UsbConnected = "UsbConnected"
 const val UsbDisconnected = "UsbDisconnected"
 const val UsbNotSupported = "UsbNotSupported"
 const val CameraRestriction = "CameraRestriction"
+const val AudioOutputGenericFailure = "AudioOutputGenericFailure"
+const val AudioOutputInSystemCallFailure = "AudioOutputInSystemCallFailure"
 const val MutedByAdmin = "MutedByAdmin"
 
 // TODO move to common package between call and chat
@@ -64,6 +70,8 @@ internal fun UserMessageSnackbarHandler(
                         is UsbCameraMessage.Disconnected -> UsbDisconnected
                         is UsbCameraMessage.NotSupported -> UsbNotSupported
                         is CameraRestrictionMessage -> CameraRestriction
+                        is AudioConnectionFailureMessage.Generic -> AudioOutputGenericFailure
+                        is AudioConnectionFailureMessage.InSystemCall -> AudioOutputInSystemCallFailure
                         is MutedMessage -> MutedByAdmin
                         else -> null
                     }
@@ -83,6 +91,8 @@ internal fun UserMessageSnackbarHandler(
                 UsbDisconnected -> UsbDisconnectedSnackbar()
                 UsbNotSupported -> UsbNotSupportedSnackbar()
                 CameraRestriction -> CameraRestrictionSnackbar()
+                AudioOutputGenericFailure -> AudioOutputGenericFailureSnackbar()
+                AudioOutputInSystemCallFailure -> AudioOutputInSystemCallFailureSnackbar()
                 MutedByAdmin -> MutedSnackbar(it.message)
             }
         }
