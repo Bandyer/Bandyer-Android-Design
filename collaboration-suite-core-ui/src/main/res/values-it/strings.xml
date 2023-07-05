@@ -73,4 +73,6 @@
     <string name="kaleyra_utterance_recording_started">Registrazione avviata</string>
     <string name="kaleyra_utterance_recording_stopped">Registrazione interrotta</string>
 
+    <string name="kaleyra_call_join_url_already_in_call_error">Non è possibile entrare in una chiamata da url mentre è già in corso un\'altra chiamata.</string>
+
 </resources>

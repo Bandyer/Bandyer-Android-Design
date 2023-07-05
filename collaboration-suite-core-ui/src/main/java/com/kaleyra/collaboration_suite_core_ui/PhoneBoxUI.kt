@@ -18,7 +18,9 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.Context
 import android.content.Intent
-import com.kaleyra.collaboration_suite.User
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
@@ -41,6 +43,8 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /**
  * Phone box UI
@@ -141,23 +145,36 @@ class PhoneBoxUI(
 
     private fun listenToCalls() {
         var serviceJob: Job? = null
-        call.onEach {
-            if (it.state.value is Call.State.Disconnected.Ended || !withUI) return@onEach
-            serviceJob?.cancel()
-            serviceJob = callService(it, callScope)
-            it.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope)
-            if (it.isLink) showOnAppResumed(it) else internalShow(it)
+        var currentCall: CallUI? = null
+        val mutex = Mutex()
+        call.onEach { call ->
+            when {
+                mutex.withLock { currentCall == null } -> {
+                    if (call.state.value is Call.State.Disconnected.Ended || !withUI) return@onEach
+                    mutex.withLock { currentCall = call }
+                    serviceJob?.cancel()
+                    serviceJob = callService(call, callScope) {
+                        mutex.withLock { currentCall = null }
+                    }
+                    call.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope)
+                    if (call.isLink) showOnAppResumed(call) else internalShow(call)
+                }
+                call.isLink -> showCannotJoinUrl()
+            }
         }.onCompletion {
             with(ContextRetainer.context) { stopService(Intent(this, CallService::class.java)) }
         }.launchIn(callScope)
     }
 
-    private fun callService(call: CallUI, scope: CoroutineScope): Job = with(ContextRetainer.context) {
+    private fun callService(call: CallUI, scope: CoroutineScope, onServiceStopped: suspend () -> Unit): Job = with(ContextRetainer.context) {
         var isCallServiceStarted = false
         call.state
             .onEach { state ->
                 when {
-                    state is Call.State.Disconnected.Ended -> stopService(Intent(this, CallService::class.java))
+                    state is Call.State.Disconnected.Ended -> {
+                        stopService(Intent(this, CallService::class.java))
+                        onServiceStopped()
+                    }
                     !isCallServiceStarted                  -> {
                         val intent = Intent(this, CallService::class.java)
                         intent.putExtra(CallService.CALL_ACTIVITY_CLASS, callActivityClazz)
@@ -176,6 +193,12 @@ class PhoneBoxUI(
         return AppLifecycle.isInForeground.value &&
                 (!context.isDND() || (context.isDND() && isOutgoing)) &&
                 (!context.isSilent() || (context.isSilent() && (isOutgoing || call.isLink)))
+    }
+
+    private fun showCannotJoinUrl() {
+        Handler(Looper.getMainLooper()).post {
+            Toast.makeText(ContextRetainer.context, R.string.kaleyra_call_join_url_already_in_call_error, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showOnAppResumed(call: CallUI): Unit = let { AppLifecycle.isInForeground.dropWhile { !it }.take(1).onEach { internalShow(call) }.launchIn(callScope) }

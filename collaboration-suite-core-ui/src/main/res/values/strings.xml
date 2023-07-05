@@ -72,4 +72,6 @@
     <string name="kaleyra_utterance_recording_started">Recording starting now</string>
     <string name="kaleyra_utterance_recording_stopped">Recording stopped</string>
 
+    <string name="kaleyra_call_join_url_already_in_call_error">A join url call cannot be created while already in a call.</string>
+
 </resources>
