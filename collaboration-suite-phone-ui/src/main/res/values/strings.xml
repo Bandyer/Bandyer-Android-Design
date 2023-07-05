@@ -243,7 +243,7 @@
     <string name="kaleyra_user_has_no_video_permissions">Your user does not have video publish capability permissions.</string>
 
     <!-- AUDIO FAILURE -->
-    <string name="kaleyra_generic_routing_exception">Unable to change audio output device.</string>
-    <string name="kaleyra_already_in_system_call_routing_exception">Unable to change audio output device while a system call is already ongoing.</string>
+    <string name="kaleyra_generic_audio_routing_error">Unable to change audio output device.</string>
+    <string name="kaleyra_already_in_system_call_audio_routing_error">Unable to change audio output device while a system call is already ongoing.</string>
 
 </resources>

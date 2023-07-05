@@ -8,16 +8,31 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 @Composable
-internal fun AudioOutputFailureSnackbar() {
+internal fun AudioOutputGenericFailureSnackbar() {
     val resources = LocalContext.current.resources
-    UserMessageInfoSnackbar(title = resources.getString(R.string.kaleyra_already_in_system_call_routing_exception))
+    UserMessageInfoSnackbar(title = resources.getString(R.string.kaleyra_generic_audio_routing_error))
+}
+
+@Composable
+internal fun AudioOutputInSystemCallFailureSnackbar() {
+    val resources = LocalContext.current.resources
+    UserMessageInfoSnackbar(title = resources.getString(R.string.kaleyra_already_in_system_call_audio_routing_error))
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun AudioOutputFailureSnackbarPreview() {
+internal fun AudioOutputGenericFailureSnackbarPreview() {
     KaleyraTheme {
-        AudioOutputFailureSnackbar()
+        AudioOutputGenericFailureSnackbar()
+    }
+}
+
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+internal fun AudioOutputInSystemCallFailureSnackbarPreview() {
+    KaleyraTheme {
+        AudioOutputInSystemCallFailureSnackbar()
     }
 }
