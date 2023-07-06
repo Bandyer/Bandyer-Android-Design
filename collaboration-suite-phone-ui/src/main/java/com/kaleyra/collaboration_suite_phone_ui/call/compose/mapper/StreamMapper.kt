@@ -2,9 +2,14 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.CallParticipant
+import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doOthersHaveStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VideoMapper.mapToVideoUi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -138,6 +143,15 @@ internal object StreamMapper {
             doAnyOfMyStreamsIsLive()
         ) { doesOthersHaveStreams, doAnyOfMyStreamsIsLive ->
             !doesOthersHaveStreams || !doAnyOfMyStreamsIsLive
+        }.distinctUntilChanged()
+
+    fun Flow<Call>.amIWaitingOthers(): Flow<Boolean> =
+        combine(
+            flatMapLatest { it.state },
+            amIAlone(),
+            toInCallParticipants()
+        ) { callState, amIAlone, inCallParticipants ->
+            callState is Call.State.Connected && amIAlone && inCallParticipants.size == 1
         }.distinctUntilChanged()
 
     private fun Stream.isMyStreamLive(): Flow<Boolean> =

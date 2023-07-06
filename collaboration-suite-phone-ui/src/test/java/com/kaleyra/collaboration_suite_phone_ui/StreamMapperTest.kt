@@ -6,8 +6,10 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIWaitingOthers
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doAnyOfMyStreamsIsLive
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doOthersHaveStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.hasAtLeastAVideoEnabled
@@ -689,6 +691,74 @@ class StreamMapperTest {
         val result = callFlow.amIAlone()
         val actual = result.first()
         Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun `call is connected and I am alone and there is only one in call participant, am I waiting others is true`() = runTest {
+        val callFlow = flowOf(callMock)
+        mockkObject(StreamMapper)
+        mockkObject(ParticipantMapper)
+        with(StreamMapper) {
+            every { callFlow.amIAlone() } returns flowOf(true)
+        }
+        with(ParticipantMapper) {
+            every { callFlow.toInCallParticipants() } returns flowOf(listOf(participantMeMock))
+        }
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
+        val result = callFlow.amIWaitingOthers()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun `call is not connected, am I waiting others is false`() = runTest {
+        val callFlow = flowOf(callMock)
+        mockkObject(StreamMapper)
+        mockkObject(ParticipantMapper)
+        with(StreamMapper) {
+            every { callFlow.amIAlone() } returns flowOf(true)
+        }
+        with(ParticipantMapper) {
+            every { callFlow.toInCallParticipants() } returns flowOf(listOf(participantMeMock))
+        }
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
+        val result = callFlow.amIWaitingOthers()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun `I am no alone, am I waiting others is false`() = runTest {
+        val callFlow = flowOf(callMock)
+        mockkObject(StreamMapper)
+        mockkObject(ParticipantMapper)
+        with(StreamMapper) {
+            every { callFlow.amIAlone() } returns flowOf(false)
+        }
+        with(ParticipantMapper) {
+            every { callFlow.toInCallParticipants() } returns flowOf(listOf(participantMeMock))
+        }
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
+        val result = callFlow.amIWaitingOthers()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun `there are more than one in call participants, am I waiting others is false`() = runTest {
+        val callFlow = flowOf(callMock)
+        mockkObject(StreamMapper)
+        mockkObject(ParticipantMapper)
+        with(StreamMapper) {
+            every { callFlow.amIAlone() } returns flowOf(true)
+        }
+        with(ParticipantMapper) {
+            every { callFlow.toInCallParticipants() } returns flowOf(listOf(participantMeMock, participantMock1))
+        }
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
+        val result = callFlow.amIWaitingOthers()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
     }
 
     @Test
