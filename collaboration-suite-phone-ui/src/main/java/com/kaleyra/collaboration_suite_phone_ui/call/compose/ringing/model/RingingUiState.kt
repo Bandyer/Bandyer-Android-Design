@@ -10,6 +10,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 @Immutable
 data class RingingUiState(
+    val amIWaitingOthers: Boolean = false,
     val recording: RecordingTypeUi? = null,
     val answered: Boolean = false,
     override val video: VideoUi? = null,
