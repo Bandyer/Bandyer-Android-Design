@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,45 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version("1.5.31")
     id 'androidx.navigation.safeargs.kotlin'
+    alias(catalog.plugins.dokka)
 }
 
 apply from: '../versions.gradle'
 apply from: '../android.gradle'
+apply from: '../licenses.gradle'
 apply from: '../publish.gradle'
 apply from: '../moveIcons.gradle'
 
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    coreLibraryDesugaring androidX.desugar
+    coreLibraryDesugaring catalog.desugar
 
-    testImplementation test.jUnit
-    androidTestImplementation test.espresso
+    testImplementation catalog.junit
+    androidTestImplementation catalog.androidxTestEspressoCore
 
     // Platform
-    implementation coroutines.core
-    implementation ktxExtensions.lifecycleRuntime
-    implementation ktxExtensions.core
-    implementation ktxExtensions.fragment
-    implementation ktxExtensions.activity
-    implementation navigation.fragmentKtx
-    implementation navigation.uiKtx
-    implementation google.material
-    implementation androidX.dataBindingCommon
+    implementation catalog.coroutines
+    implementation catalog.androidxLifecycleRuntime
+    implementation catalog.androidxCoreKtx
+    implementation catalog.androidxFragment
+    implementation catalog.androidxActivity
+    implementation catalog.androidxNavigationFragmentKtx
+    implementation catalog.androidxNavigationUiKtx
+    implementation catalog.material
+    implementation catalog.androidxDataBindingCommon
 
     // UI
-    api fastAdapter.fastAdapter
-    api fastAdapter.diff
+    api catalog.fastadapter
+    api catalog.fastadapterExtensionsDiff
     api project(':collaboration-suite-core-ui')
 
     /** Kaleyra **/
-    implementation kaleyra.collaboration
-    implementation kaleyra.collaboration_extension_audio
+    implementation kaleyraCatalog.kaleyraCollaborationSuite
+    implementation kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
 }
