@@ -24,7 +24,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class RingingComponentTes {
+class RingingComponentTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -181,6 +181,14 @@ class RingingComponentTes {
         composeTestRule.onNodeWithText(ringingQuantityOne).assertIsDisplayed()
         uiState = RingingUiState(participants = ImmutableList(listOf("user1", "user2")))
         composeTestRule.onNodeWithText(ringingQuantityOther).assertIsDisplayed()
+    }
+
+    @Test
+    fun amIWaitingOthersTrue_waitingForOtherParticipantsIsDisplayed() {
+        val text = composeTestRule.activity.getString(R.string.kaleyra_waiting_for_other_participants)
+        composeTestRule.onNodeWithText(text).assertDoesNotExist()
+        uiState = RingingUiState(amIWaitingOthers = true)
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
     private fun ComposeTestRule.assertRingingButtonIsDisplayed(text: String) {

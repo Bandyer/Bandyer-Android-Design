@@ -1,12 +1,14 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -22,23 +24,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.PreCallComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.viewmodel.RingingViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.DefaultStreamAvatarSize
+import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 const val RingingContentTag = "RingingContentTag"
 const val TapToAnswerTimerMillis = 7000L
+val WaitingForOtherAvatarPadding = DefaultStreamAvatarSize / 2 + 24.dp
 
 @Composable
 internal fun RingingComponent(
@@ -76,6 +82,21 @@ internal fun RingingComponent(
         onBackPressed = onBackPressed,
         modifier = modifier.testTag(RingingContentTag)
     ) {
+        if (uiState.amIWaitingOthers) {
+            val padding by animateDpAsState(targetValue = if (uiState.video?.isEnabled == false) WaitingForOtherAvatarPadding else 0.dp)
+            Text(
+                text = stringResource(id = R.string.kaleyra_waiting_for_other_participants),
+                style = LocalTextStyle.current.shadow(),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .offset {
+                        val offset = padding
+                            .toPx()
+                            .toInt()
+                        IntOffset(0, offset)
+                    }
+            )
+        }
         AnimatedVisibility(
             visible = !uiState.answered,
             enter = fadeIn(),
