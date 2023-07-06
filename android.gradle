@@ -22,6 +22,17 @@ android {
         minSdkVersion catalog.versions.minSdkVersion.get()
         targetSdkVersion catalog.versions.sdkVersion.get().toInteger()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode 1
+        versionName moduleVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+        debug {
+            minifyEnabled false
+        }
     }
 
     lint {
