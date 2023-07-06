@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
@@ -75,6 +76,31 @@ internal class RingingViewModelTest : PreCallViewModelTest<RingingViewModel, Rin
         assertEquals(false, current)
         advanceUntilIdle()
         val new = viewModel.uiState.first().answered
+        assertEquals(true, new)
+    }
+
+    @Test
+    fun testPreCallUiState_amIWaitingForOthersUpdated() = runTest {
+        with(callMock) {
+            every { state } returns MutableStateFlow(Call.State.Connected)
+            every { participants } returns MutableStateFlow(callParticipantsMock)
+        }
+        with(participantMock1) {
+            every { streams } returns MutableStateFlow(listOf())
+            every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
+        }
+        with(participantMeMock) {
+            every { streams } returns MutableStateFlow(listOf())
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+        }
+        with(callParticipantsMock) {
+            every { me } returns participantMeMock
+            every { others } returns listOf(participantMock1)
+        }
+        val current = viewModel.uiState.first().amIWaitingOthers
+        assertEquals(false, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().amIWaitingOthers
         assertEquals(true, new)
     }
 
