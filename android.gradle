@@ -49,7 +49,5 @@ android {
         dataBinding true
     }
 
-    aaptOptions.cruncherEnabled = false
-
     resourcePrefix 'kaleyra'
 }
