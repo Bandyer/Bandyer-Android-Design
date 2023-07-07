@@ -1,8 +1,10 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.content.res.Configuration
+import android.view.MotionEvent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +20,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -46,6 +50,8 @@ const val CallComponentTag = "CallComponentTag"
 const val StreamsGridTag = "StreamsGridTag"
 private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
 val YouAreAloneAvatarPadding = DefaultStreamAvatarSize / 2 + 24.dp
+val SnackbarPadding = 16.dp
+val FeaturedStreamHeaderHeight = 48.dp
 const val FullScreenMessageMs = 1000L
 
 @Composable
@@ -112,6 +118,7 @@ internal fun CallComponent(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun CallComponent(
     callUiState: CallUiState,
@@ -126,28 +133,53 @@ internal fun CallComponent(
     val shouldShowFullscreenToast by remember(callUiState) {
         derivedStateOf { callUiState.fullscreenStream != null }
     }
+
+    val density = LocalDensity.current
     var callInfoWidgetHeight by remember { mutableStateOf(0) }
-    var streamHeaderHeight by remember { mutableStateOf(0) }
-    val snackbarTopPadding = with(LocalDensity.current) { 16.dp.toPx() }
+    val streamHeaderHeight = remember { with(density) { FeaturedStreamHeaderHeight.toPx() } }
+    val snackbarTopPadding = remember { with(density) { SnackbarPadding.toPx() } }
+
+    var streamsHeaderAutoHideResetFlag by remember { mutableStateOf(true) }
+
+    val shouldAddSnackbarHeaderPadding by remember(callUiState, callComponentState) {
+        derivedStateOf {
+            callUiState.featuredStreams.value.take(callComponentState.columns).any { it.video?.view == null || !it.video.isEnabled }
+        }
+    }
+    val snackbarHeaderPaddingTimer by rememberCountdownTimerState(initialMillis = HeaderAutoHideMs, enable = !shouldAddSnackbarHeaderPadding)
     val snackbarOffsetValue by derivedStateOf {
-        snackbarTopPadding + streamHeaderHeight + if (shouldShowCallInfo) callInfoWidgetHeight else 0
+        snackbarTopPadding +
+                (if (shouldShowCallInfo) callInfoWidgetHeight else 0) +
+                (if (snackbarHeaderPaddingTimer > 0L) streamHeaderHeight else 0f)
     }
     val streamHeaderOffset by animateIntAsState(targetValue = if (shouldShowCallInfo) callInfoWidgetHeight else 0)
     val snackbarOffset by animateIntAsState(targetValue = snackbarOffsetValue.toInt())
 
     CompositionLocalProvider(LocalContentColor provides Color.White) {
         Box(modifier.testTag(CallComponentTag)) {
-
             if (callUiState.callState !is CallStateUi.Disconnected.Ended) {
                 AdaptiveGrid(
                     columns = if (callUiState.fullscreenStream == null) callComponentState.columns else 1,
-                    modifier = Modifier.testTag(StreamsGridTag)
+                    modifier = Modifier
+                        .pointerInteropFilter {
+                            if (it.action == MotionEvent.ACTION_DOWN) {
+                                streamsHeaderAutoHideResetFlag = !streamsHeaderAutoHideResetFlag
+                            }
+                            false
+                        }
+                        .testTag(StreamsGridTag)
                 ) {
                     val streams = callUiState.fullscreenStream?.let { listOf(it) } ?: callUiState.featuredStreams.value
                     repeat(streams.count()) { index ->
                         val stream = streams[index]
                         key(stream.id) {
                             Box {
+                                val autoHideHeaderTimer by rememberCountdownTimerState(
+                                    initialMillis = HeaderAutoHideMs,
+                                    reset = streamsHeaderAutoHideResetFlag,
+                                    enable = stream.video?.view != null && stream.video.isEnabled
+                                )
+                                val headerAlpha by animateFloatAsState(targetValue = if (autoHideHeaderTimer > 0L) 1f else 0f)
                                 FeaturedStream(
                                     stream = stream,
                                     isFullscreen = callUiState.fullscreenStream != null,
@@ -165,8 +197,8 @@ internal fun CallComponent(
                                                 )
                                             }
                                             .statusBarsPadding()
-                                            .onGloballyPositioned {
-                                                streamHeaderHeight = it.size.height
+                                            .graphicsLayer {
+                                                alpha = headerAlpha
                                             }
                                     }
                                 )
