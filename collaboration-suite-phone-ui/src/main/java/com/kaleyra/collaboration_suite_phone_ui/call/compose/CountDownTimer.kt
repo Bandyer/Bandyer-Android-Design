@@ -12,7 +12,7 @@ fun rememberCountdownTimerState(
     enable: Boolean = true,
     reset: Boolean = false
 ): MutableState<Long> {
-    val timeLeft = remember(initialMillis) { mutableStateOf(initialMillis) }
+    val timeLeft = remember(initialMillis, enable) { mutableStateOf(initialMillis) }
     if (enable) {
         LaunchedEffect(initialMillis, step, reset) {
             val startTime = SystemClock.uptimeMillis()
