@@ -16,6 +16,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.RingingComp
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
 import org.junit.Before
@@ -29,7 +31,9 @@ class RingingComponentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    var uiState by mutableStateOf(RingingUiState(video = streamUiMock.video))
+    private var uiState by mutableStateOf(RingingUiState(video = streamUiMock.video))
+
+    private var userMessage by mutableStateOf<UserMessage?>(null)
 
     private var timerMillis by mutableStateOf(0L)
 
@@ -44,6 +48,7 @@ class RingingComponentTest {
         composeTestRule.setContent {
             RingingComponent(
                 uiState = uiState,
+                userMessage = userMessage,
                 tapToAnswerTimerMillis = timerMillis,
                 onBackPressed = { backPressed = true },
                 onAnswerClick = { answerClicked = true },
@@ -189,6 +194,13 @@ class RingingComponentTest {
         composeTestRule.onNodeWithText(text).assertDoesNotExist()
         uiState = RingingUiState(amIWaitingOthers = true)
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
+    }
+
+    @Test
+    fun userMessage_userMessageSnackbarIsDisplayed() {
+        userMessage = RecordingMessage.Started
+        val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 
     private fun ComposeTestRule.assertRingingButtonIsDisplayed(text: String) {

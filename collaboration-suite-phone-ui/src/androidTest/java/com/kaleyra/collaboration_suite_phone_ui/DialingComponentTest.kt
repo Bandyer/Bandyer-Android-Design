@@ -20,6 +20,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.view.Dialin
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
 import org.junit.Before
@@ -35,6 +37,8 @@ class DialingComponentTest {
 
     private var uiState by mutableStateOf(DialingUiState(video = streamUiMock.video))
 
+    private var userMessage by mutableStateOf<UserMessage?>(null)
+
     private var backPressed = false
 
     @Before
@@ -42,6 +46,7 @@ class DialingComponentTest {
         composeTestRule.setContent {
             DialingComponent(
                 uiState = uiState,
+                userMessage = userMessage,
                 onBackPressed = { backPressed = true }
             )
         }
@@ -119,6 +124,13 @@ class DialingComponentTest {
     fun callStateDialing_dialingSubtitleIsDisplayed() {
         val dialing = composeTestRule.activity.getString(R.string.kaleyra_call_status_ringing)
         composeTestRule.onNodeWithText(dialing).assertIsDisplayed()
+    }
+
+    @Test
+    fun userMessage_userMessageSnackbarIsDisplayed() {
+        userMessage = RecordingMessage.Started
+        val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 
 }

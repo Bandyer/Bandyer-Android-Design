@@ -3,7 +3,9 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall
 import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.Composable
@@ -13,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.IntOffset
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
@@ -22,11 +25,14 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWid
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.DefaultStreamAvatarSize
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarHandler
 
 @Composable
 internal fun <T: PreCallUiState<T>> PreCallComponent(
     uiState: T,
     subtitle: String,
+    userMessage: UserMessage? = null,
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable (BoxScope.() -> Unit)? = null
@@ -51,14 +57,18 @@ internal fun <T: PreCallUiState<T>> PreCallComponent(
                 )
             }
 
-            CallInfoWidget(
-                onBackPressed = onBackPressed,
-                title = uiState.participants.value.joinToString(separator = ", "),
-                subtitle = if (!uiState.isLink && !uiState.isConnecting) subtitle else stringResource(id = R.string.kaleyra_call_status_connecting),
-                watermarkInfo = uiState.watermarkInfo,
-                recording = false,
-                modifier = Modifier.statusBarsPadding()
-            )
+            Column {
+                CallInfoWidget(
+                    onBackPressed = onBackPressed,
+                    title = uiState.participants.value.joinToString(separator = ", "),
+                    subtitle = if (!uiState.isLink && !uiState.isConnecting) subtitle else stringResource(id = R.string.kaleyra_call_status_connecting),
+                    watermarkInfo = uiState.watermarkInfo,
+                    recording = false,
+                    modifier = Modifier.statusBarsPadding()
+                )
+
+                UserMessageSnackbarHandler(userMessage = userMessage)
+            }
 
             content?.invoke(this)
         }

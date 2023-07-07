@@ -37,6 +37,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.Rec
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.viewmodel.RingingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.DefaultStreamAvatarSize
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
@@ -55,8 +56,11 @@ internal fun RingingComponent(
     onBackPressed: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val userMessage by viewModel.userMessage.collectAsStateWithLifecycle(null)
+
     RingingComponent(
         uiState = uiState,
+        userMessage = userMessage,
         onBackPressed = onBackPressed,
         onAnswerClick = viewModel::accept,
         onDeclineClick = viewModel::decline,
@@ -69,6 +73,7 @@ internal fun RingingComponent(
 internal fun RingingComponent(
     uiState: RingingUiState,
     modifier: Modifier = Modifier,
+    userMessage: UserMessage? = null,
     tapToAnswerTimerMillis: Long = TapToAnswerTimerMillis,
     onBackPressed: () -> Unit,
     onAnswerClick: () -> Unit,
@@ -78,6 +83,7 @@ internal fun RingingComponent(
 
     PreCallComponent(
         uiState = uiState,
+        userMessage = userMessage,
         subtitle = pluralStringResource(id = R.plurals.kaleyra_call_incoming_status_ringing, count = uiState.participants.count()),
         onBackPressed = onBackPressed,
         modifier = modifier.testTag(RingingContentTag)

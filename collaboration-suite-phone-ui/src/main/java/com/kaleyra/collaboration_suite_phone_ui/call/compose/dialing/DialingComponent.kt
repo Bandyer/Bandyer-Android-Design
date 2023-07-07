@@ -12,6 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.view.DialingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.viewmodel.DialingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.PreCallComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
@@ -27,8 +28,11 @@ internal fun DialingComponent(
     onBackPressed: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val userMessage by viewModel.userMessage.collectAsStateWithLifecycle(null)
+
     DialingComponent(
         uiState = uiState,
+        userMessage =userMessage ,
         onBackPressed = onBackPressed,
         modifier = modifier
     )
@@ -38,10 +42,12 @@ internal fun DialingComponent(
 internal fun DialingComponent(
     uiState: DialingUiState,
     modifier: Modifier = Modifier,
+    userMessage: UserMessage? = null,
     onBackPressed: () -> Unit = { }
 ) {
     PreCallComponent(
         uiState = uiState,
+        userMessage = userMessage,
         subtitle = stringResource(id = R.string.kaleyra_call_status_ringing),
         onBackPressed = onBackPressed,
         modifier = modifier.testTag(DialingContentTag)
