@@ -49,7 +49,6 @@
         <activity
             android:name=".chat.PhoneChatActivity"
             android:launchMode="singleTop"
-            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.chat.PhoneChatActivity"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat"
             android:windowSoftInputMode="adjustResize" />
         <activity
