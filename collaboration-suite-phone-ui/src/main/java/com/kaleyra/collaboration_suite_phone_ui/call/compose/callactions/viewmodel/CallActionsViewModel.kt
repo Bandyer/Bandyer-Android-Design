@@ -126,7 +126,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         val call = call.getValue() ?: return
         val participants = call.participants.value
         val restrictions = participants.me.restrictions
-        val canUseCamera = restrictions.camera.value.usage
+        val canUseCamera = !restrictions.camera.value.usage
         if (canUseCamera) {
             if (!isMyCameraEnabled.value) input?.tryEnable() else input?.tryDisable()
         } else {

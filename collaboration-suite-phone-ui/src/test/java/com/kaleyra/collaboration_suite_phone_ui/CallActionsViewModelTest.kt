@@ -103,7 +103,7 @@ class CallActionsViewModelTest {
             every { restrictions } returns restrictionMock
         }
         every { restrictionMock.camera } returns MutableStateFlow(cameraRestrictionMock)
-        every { cameraRestrictionMock.usage } returns true
+        every { cameraRestrictionMock.usage } returns false
         every { videoMock.enabled } returns MutableStateFlow(false)
         every { audioMock.enabled } returns MutableStateFlow(false)
         every { rearLens.isRear } returns false
@@ -430,7 +430,7 @@ class CallActionsViewModelTest {
     @Test
     fun testToggleCameraWithCameraRestriction() = runTest {
         mockkObject(CallUserMessagesProvider)
-        every { cameraRestrictionMock.usage } returns false
+        every { cameraRestrictionMock.usage } returns true
         advanceUntilIdle()
         viewModel.toggleCamera()
         advanceUntilIdle()
