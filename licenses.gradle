@@ -1,27 +1,23 @@
-//////////////////////// ADD LICENSE IN AAR //////////////////////////////////
+//////////////////////// ADD LICENSE.txt IN AAR //////////////////////////////////
 
 def projName = name
 def outputAarDir = file('build/outputs/aar')
 def outputAarUnzipedDir = file('build/outputs/aar/unziped')
 def aarReleaseFile = file('build/outputs/aar/' + projName + '-release.aar')
 
-task generateThirdPartiesLicenses(type: Exec) {
-    workingDir '../scripts'
-    commandLine 'python3', 'generate_third_parties_licenses.py'
-}
-
-task unzipAar(type: Copy, dependsOn: 'generateThirdPartiesLicenses') {
+task unzipAar(type: Copy) {
     from zipTree(aarReleaseFile)
     into outputAarUnzipedDir
+    doLast { println("unzipAar task completed.") }
 }
 
-task addLicenseFileInUnzipedAar(type: Copy, dependsOn: 'unzipAar') {
-    from file("../")
-    into outputAarUnzipedDir
-    include 'LICENSE.txt', 'THIRD_PARTY_LICENSES.txt'
+task generateThirdPartiesLicenses(type: Exec, dependsOn: 'unzipAar') {
+    workingDir '../scripts'
+    commandLine 'python3', 'generate_third_parties_licenses.py', project.getName()
+    doLast { println("generateThirdPartiesLicenses task completed.") }
 }
 
-task reZipAar(type: Zip, dependsOn: 'addLicenseFileInUnzipedAar') {
+task reZipAar(type: Zip, dependsOn: 'generateThirdPartiesLicenses') {
     from outputAarUnzipedDir
     includeEmptyDirs = false
     include '*'
@@ -31,6 +27,7 @@ task reZipAar(type: Zip, dependsOn: 'addLicenseFileInUnzipedAar') {
     destinationDir(outputAarDir)
     doLast {
         outputAarUnzipedDir.deleteDir()
+        println("reZipAar task completed.")
     }
 }
 

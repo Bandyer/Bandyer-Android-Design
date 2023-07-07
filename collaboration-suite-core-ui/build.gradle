@@ -1,3 +1,5 @@
+import com.github.jk1.license.render.JsonReportRenderer
+
 /*
  * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
@@ -21,6 +23,7 @@ plugins {
     id 'kotlin-kapt'
     id 'maven-publish'
     alias(catalog.plugins.dokka)
+    alias(catalog.plugins.licenseReport)
 }
 
 apply from: '../versions.gradle'
@@ -55,4 +58,33 @@ dependencies {
     /** Kaleyra **/
     compileOnly kaleyraCatalog.kaleyraCollaborationSuite
     compileOnly kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
+}
+
+licenseReport {
+    // Set output directory for the report data.
+    // Defaults to ${project.buildDir}/reports/dependency-license.
+    outputDir = "$projectDir/build/licenses"
+
+    // Select projects to examine for dependencies.
+    // Defaults to current project and all its subprojects
+    projects = [project] + project.subprojects
+
+    // Adjust the configurations to fetch dependencies. Default is 'runtimeClasspath'
+    // For Android projects use 'releaseRuntimeClasspath' or 'yourFlavorNameReleaseRuntimeClasspath'
+    // Use 'ALL' to dynamically resolve all configurations:
+    // configurations = ALL
+    configurations = ['releaseRuntimeClasspath']
+
+    // Set custom report renderer, implementing ReportRenderer.
+    // Yes, you can write your own to support any format necessary.
+    renderers = [new JsonReportRenderer('licenses.json', false)]
+}
+
+// workaround for mockk spyk(proxy)
+// https://mockk.io/doc/md/jdk16-access-exceptions.html
+tasks.withType(Test) {
+    jvmArgs(
+            "--add-opens", "java.base/java.time=ALL-UNNAMED",
+            "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED"
+    )
 }

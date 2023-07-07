@@ -34,8 +34,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-android-extensions-runtime:${catalog.versions.jetbrainsKotlinVersion.get()}"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${catalog.plugins.androidxNavigationSafeArgs.get().version}"
     }
-
-    ext.dokkaPluginVersion = "${catalog.plugins.dokka.get().version}"
 }
 
 allprojects {
