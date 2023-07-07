@@ -7,12 +7,15 @@ os.chdir("../")
 
 print("|---> GENERATING THIRD PARTIES LICENCES FILE FOR MODULE " + MODULE_NAME + "...")
 
+def replaceTextInFile(path, match, replace):
+    with open(path) as file:
+        text = file.read().replace(match, replace)
+    with open(path, "w") as writer:
+        writer.write(text)
+
 ## temporary implement core-ui module as compileOnly for licenses generation
 os.chdir(MODULE_NAME)
-with open("build.gradle") as buildGradle:
-  text = buildGradle.read().replace("api project(\":collaboration-suite-core-ui\")", "compileOnly project(\":collaboration-suite-core-ui\")")
-with open("build.gradle", "w") as writer:
-  writer.write(text)
+replaceTextInFile("build.gradle", "api project(\":collaboration-suite-core-ui\")", "compileOnly project(\":collaboration-suite-core-ui\")")
 
 os.chdir("../")
 os.system("./gradlew :" + MODULE_NAME + ":generateLicenseReport")
@@ -29,9 +32,6 @@ os.system(COPY_LICENSE_COMMAND)
 
 ## reset implementation of core-ui module as api for licenses generation
 os.chdir(MODULE_NAME)
-with open("build.gradle") as resetBuildGradle:
-  resetText = resetBuildGradle.read().replace("compileOnly project(\":collaboration-suite-core-ui\")", "api project(\":collaboration-suite-core-ui\")")
-with open("build.gradle", "w") as resetWriter:
-  resetWriter.write(resetText)
+replaceTextInFile("build.gradle", "compileOnly project(\":collaboration-suite-core-ui\")", "api project(\":collaboration-suite-core-ui\")")
 
 print("|---> LICENSE.txt and THIRD_PARTY_LICENSES.txt ready for aar release.")
