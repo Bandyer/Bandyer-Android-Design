@@ -42,6 +42,7 @@
             android:showForAllUsers="true"
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
+            android:turnScreenOn="true"
             android:supportsPictureInPicture="true"
             android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.PhoneCallActivity"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call"
