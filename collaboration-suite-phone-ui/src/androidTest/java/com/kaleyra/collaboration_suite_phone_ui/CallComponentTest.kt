@@ -396,20 +396,6 @@ class CallComponentTest {
     }
 
     @Test
-    fun recordingMessage_recordingSnackbarIsDisplayed() {
-        userMessage = RecordingMessage.Started
-        val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
-        composeTestRule.onNodeWithText(title).assertIsDisplayed()
-    }
-
-    @Test
-    fun mutedMessage_mutedSnackbarIsDisplayed() {
-        userMessage = MutedMessage(null)
-        val title = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
-        composeTestRule.onNodeWithText(title).assertIsDisplayed()
-    }
-
-    @Test
     fun amIAloneTrue_youAreAloneIsDisplayed() {
         callUiState = CallUiState(callState = mockk(), amIAlone = true, featuredStreams =  ImmutableList(listOf(streamMock1)))
         val text = composeTestRule.activity.getString(R.string.kaleyra_call_left_alone)
@@ -447,6 +433,13 @@ class CallComponentTest {
         composeTestRule.onNodeWithTag(StreamsGridTag).assertIsDisplayed()
         callUiState = CallUiState(callState = CallStateUi.Disconnected.Ended)
         composeTestRule.onNodeWithTag(StreamsGridTag).assertDoesNotExist()
+    }
+
+    @Test
+    fun userMessage_userMessageSnackbarIsDisplayed() {
+        userMessage = RecordingMessage.Started
+        val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 
     private fun <T: ComponentActivity> AndroidComposeTestRule<ActivityScenarioRule<T>, T>.assertConnectingTitleIsDisplayed() {

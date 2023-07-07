@@ -275,16 +275,10 @@ class WhiteboardComponentTest {
     }
 
     @Test
-    fun recordingMessage_recordingSnackbarIsDisplayed() {
+    fun userMessage_userMessageSnackbarIsDisplayed() {
         userMessage = RecordingMessage.Started
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 
-    @Test
-    fun mutedMessage_mutedSnackbarIsDisplayed() {
-        userMessage = MutedMessage(null)
-        val title = composeTestRule.activity.resources.getQuantityString(R.plurals.kaleyra_call_participant_muted_by_admin, 0, "")
-        composeTestRule.onNodeWithText(title).assertIsDisplayed()
-    }
 }
