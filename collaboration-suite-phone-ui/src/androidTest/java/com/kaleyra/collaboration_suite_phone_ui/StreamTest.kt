@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
-import android.graphics.Rect
 import android.net.Uri
 import android.view.View
 import androidx.activity.ComponentActivity
@@ -16,7 +15,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
 import org.junit.After
-import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -62,13 +60,29 @@ class StreamTest {
     }
 
     @Test
-    fun avatarVisibleTrue_avatarIsDisplayed() {
+    fun streamViewNullAndAvatarVisibleFalse_avatarIsDisplayed() {
+        streamView = ImmutableView(View(composeTestRule.activity))
         isAvatarVisible = true
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
-    fun avatarVisibleFalse_avatarDoesNotExists() {
+    fun streamViewNullAndAvatarVisibleTrue_avatarIsDisplayed() {
+        streamView = ImmutableView(View(composeTestRule.activity))
+        isAvatarVisible = true
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun streamViewNotNullAndAvatarVisibleTrue_avatarIsDisplayed() {
+        streamView = ImmutableView(View(composeTestRule.activity))
+        isAvatarVisible = true
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun streamViewNotNullAndAvatarVisibleFalse_avatarDoesNotExists() {
+        streamView = ImmutableView(View(composeTestRule.activity))
         isAvatarVisible = false
         composeTestRule.findAvatar().assertDoesNotExist()
     }
