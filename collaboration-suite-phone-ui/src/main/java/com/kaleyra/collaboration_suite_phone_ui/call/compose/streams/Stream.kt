@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.streams
 
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -23,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.constraintlayout.helper.widget.MotionPlaceholder
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
@@ -38,6 +40,8 @@ val DefaultStreamAvatarSize = 128.dp
 internal fun Stream(
     streamView: ImmutableView? = null,
     avatar: ImmutableUri?,
+    @DrawableRes  avatarPlaceholder: Int = R.drawable.ic_kaleyra_avatar_bold,
+    @DrawableRes  avatarError: Int = R.drawable.ic_kaleyra_avatar_bold,
     avatarSize: Dp = DefaultStreamAvatarSize,
     avatarVisible: Boolean = false
 ) {
@@ -74,8 +78,8 @@ internal fun Stream(
                     Avatar(
                         uri = avatar,
                         contentDescription = stringResource(id = R.string.kaleyra_avatar),
-                        placeholder = R.drawable.ic_kaleyra_avatar_bold,
-                        error = R.drawable.ic_kaleyra_avatar_bold,
+                        placeholder = avatarPlaceholder,
+                        error = avatarError,
                         contentColor = LocalContentColor.current,
                         backgroundColor = colorResource(id = R.color.kaleyra_color_background_dark),
                         size = avatarSize
