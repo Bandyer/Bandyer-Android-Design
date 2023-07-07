@@ -76,6 +76,7 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
     private val nightLogo = mockk<Uri>()
 
     open fun setUp() {
+        mockkObject(CallUserMessagesProvider)
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
         with(callParticipantsMock) {
