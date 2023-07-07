@@ -12,11 +12,14 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCa
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -201,6 +204,14 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
         advanceUntilIdle()
         val actual = viewModel.uiState.first().watermarkInfo
         assertEquals(WatermarkInfo(text = "Kaleyra", logo = Logo(dayLogo, nightLogo)), actual)
+    }
+
+    @Test
+    fun testUserMessage() = runTest {
+        every { CallUserMessagesProvider.userMessage } returns flowOf(MutedMessage("admin"))
+        advanceUntilIdle()
+        val actual = viewModel.userMessage.first()
+        assert(actual is MutedMessage && actual.admin == "admin")
     }
 
 }
