@@ -1,7 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.streams
 
-import android.view.MotionEvent
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -11,17 +9,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,14 +24,12 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamViewSettings.featuredSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStreamWrapper
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.rememberCountdownTimerState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 const val FeaturedStreamTag = "FeaturedStreamTag"
 const val HeaderAutoHideMs = 5000L
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun FeaturedStream(
     stream: StreamUi,
@@ -52,35 +40,7 @@ internal fun FeaturedStream(
     modifier: Modifier = Modifier,
     isTesting: Boolean = false
 ) {
-    var resetHeaderAutoHide by remember { mutableStateOf(true) }
-    val countDown = if (stream.video?.view != null && stream.video.isEnabled) {
-        rememberCountdownTimerState(initialMillis = HeaderAutoHideMs, reset = resetHeaderAutoHide)
-    } else {
-        remember(stream) { mutableStateOf(1L) }
-    }
-
-    val headerTargetAlpha by remember(countDown) {
-        derivedStateOf {
-            if (countDown.value > 0L) 1f else 0f
-        }
-    }
-    val headerAlpha by animateFloatAsState(targetValue = headerTargetAlpha)
-    val disableHeaderButtons by remember(headerTargetAlpha) {
-        derivedStateOf {
-            headerTargetAlpha == 1f
-        }
-    }
-
-    Box(
-        modifier = modifier
-            .pointerInteropFilter {
-                if (it.action == MotionEvent.ACTION_DOWN) {
-                    resetHeaderAutoHide = !resetHeaderAutoHide
-                }
-                false
-            }
-            .testTag(FeaturedStreamTag)
-    ) {
+    Box(modifier = modifier.testTag(FeaturedStreamTag)) {
         CompositionLocalProvider(LocalContentColor provides Color.White) {
             StreamContainer {
                 PointerStreamWrapper(
@@ -102,23 +62,9 @@ internal fun FeaturedStream(
             Header(
                 username = stream.username,
                 fullscreen = isFullscreen,
-                onBackPressed = remember(resetHeaderAutoHide, disableHeaderButtons, onBackPressed) {
-                    onBackPressed?.let {
-                        {
-                            resetHeaderAutoHide = !resetHeaderAutoHide
-                            if (disableHeaderButtons) it()
-                        }
-                    }
-                },
-                onFullscreenClick = remember(resetHeaderAutoHide, disableHeaderButtons, onFullscreenClick) {
-                    {
-                        resetHeaderAutoHide = !resetHeaderAutoHide
-                        if (disableHeaderButtons) onFullscreenClick()
-                    }
-                },
-                modifier = Modifier
-                    .graphicsLayer { alpha = headerAlpha }
-                    .then(headerModifier)
+                onBackPressed = onBackPressed,
+                onFullscreenClick = onFullscreenClick,
+                modifier = Modifier.then(headerModifier)
             )
         }
     }
