@@ -151,6 +151,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     override fun onCleared() {
         super.onCleared()
         CallUserMessagesProvider.dispose()
+        call.getValue()?.inputs?.releaseAll()
     }
 
     fun startMicrophone(context: FragmentActivity) {
