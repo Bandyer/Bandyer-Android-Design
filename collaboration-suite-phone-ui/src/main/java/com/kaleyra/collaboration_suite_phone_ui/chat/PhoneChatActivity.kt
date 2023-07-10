@@ -65,12 +65,6 @@ internal class PhoneChatActivity : ChatActivity() {
         setContent {
             MdcTheme(setDefaultFontFamily = true) {
                 ChatScreen(onBackPressed = this::finishAndRemoveTask, viewModel = viewModel)
-
-                val isSystemInDarkTheme = isSystemInDarkTheme()
-                SideEffect {
-                    window.navigationBarColor = if (isSystemInDarkTheme) Color.Black.toArgb() else Color.White.toArgb()
-                    WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightNavigationBars = !isSystemInDarkTheme
-                }
             }
         }
     }
