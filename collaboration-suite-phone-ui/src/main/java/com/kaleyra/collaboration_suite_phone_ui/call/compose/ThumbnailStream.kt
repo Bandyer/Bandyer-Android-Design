@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
+import android.view.View
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
@@ -49,7 +51,7 @@ internal fun ThumbnailStream(
                 Stream(
                     streamView = stream.video?.view?.thumbnailSettings(
                         scaleType = if (shouldFit) StreamView.ScaleType.Fit else StreamView.ScaleType.Fill(1f)
-                    ),
+                    ) ?: ImmutableView(View(LocalContext.current)),
                     avatar = stream.avatar,
                     avatarVisible = stream.video?.view == null || !stream.video.isEnabled,
                     avatarSize = 64.dp
