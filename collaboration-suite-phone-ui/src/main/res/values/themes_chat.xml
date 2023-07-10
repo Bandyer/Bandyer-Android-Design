@@ -16,19 +16,16 @@
 
 <resources>
     <style name="KaleyraCollaborationSuiteUI.Theme.Chat.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.DayNight">
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@android:color/black</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Chat.Day" parent="KaleyraCollaborationSuiteUI.Theme.Day">
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@android:color/black</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Chat.Night" parent="KaleyraCollaborationSuiteUI.Theme.Night">
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@android:color/black</item>
     </style>
