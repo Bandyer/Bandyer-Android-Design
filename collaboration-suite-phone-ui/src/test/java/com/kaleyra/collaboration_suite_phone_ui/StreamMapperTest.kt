@@ -11,6 +11,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIWaitingOthers
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doAnyOfMyStreamsIsLive
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doIHaveStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doOthersHaveStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.hasAtLeastAVideoEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.mapToStreamsUi
@@ -781,6 +782,32 @@ class StreamMapperTest {
     fun participantHasVideoDisabled_hasAtLeastAVideoEnabled_false() = runTest {
         val flow = flowOf(listOf(StreamUi(id = "streamId", username = "username", video = VideoUi(id = "videoId", isEnabled = false))))
         val result = flow.hasAtLeastAVideoEnabled()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
+    fun meHasOneStream_doIHaveStreams_true() = runTest {
+        mockkObject(ParticipantMapper)
+        val flow = flowOf(callMock)
+        with(ParticipantMapper) {
+            every { flow.toMe() } returns flowOf(participantMeMock)
+        }
+        every { participantMeMock.streams } returns MutableStateFlow(listOf(mockk()))
+        val result = flow.doIHaveStreams()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun meHasNoStreamS_doIHaveStreams_false() = runTest {
+        mockkObject(ParticipantMapper)
+        val flow = flowOf(callMock)
+        with(ParticipantMapper) {
+            every { flow.toMe() } returns flowOf(participantMeMock)
+        }
+        every { participantMeMock.streams } returns MutableStateFlow(listOf())
+        val result = flow.doIHaveStreams()
         val actual = result.first()
         Assert.assertEquals(false, actual)
     }
