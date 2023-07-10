@@ -7,6 +7,7 @@ import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toMe
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayImages
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayNames
 import io.mockk.every
@@ -32,6 +33,8 @@ class ParticipantMapperTest {
     private val participantMock1 = mockk<CallParticipant>(relaxed = true)
 
     private val participantMock2 = mockk<CallParticipant>(relaxed = true)
+
+    private val participantMeMock = mockk<CallParticipant.Me>(relaxed = true)
 
     private val uriMock1 = mockk<Uri>(relaxed = true)
 
@@ -483,5 +486,12 @@ class ParticipantMapperTest {
             val newExpected = listOf(meMock)
             assertEquals(newExpected, new)
         }
+
+    @Test
+    fun testToMe() = runTest {
+        every { callParticipantsMock.me } returns participantMeMock
+        val actual = flowOf(callMock).toMe().first()
+        assertEquals(participantMeMock, actual)
+    }
 
 }

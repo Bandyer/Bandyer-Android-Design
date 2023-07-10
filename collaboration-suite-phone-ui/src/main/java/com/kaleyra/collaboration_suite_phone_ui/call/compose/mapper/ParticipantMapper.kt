@@ -98,4 +98,9 @@ internal object ParticipantMapper {
                     }
             }
             .distinctUntilChanged()
+
+    fun Flow<Call>.toMe(): Flow<CallParticipant.Me> =
+        this.flatMapLatest { it.participants }
+            .map { it.me }
+            .distinctUntilChanged()
 }
