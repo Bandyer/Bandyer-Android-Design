@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.content.res.Configuration
 import android.util.Rational
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -27,10 +28,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -452,7 +451,7 @@ internal fun PipScreen(
         if (stream != null) {
             StreamContainer {
                 Stream(
-                    streamView = stream.video?.view?.pipSettings(),
+                    streamView = stream.video?.view?.pipSettings() ?: ImmutableView(View(LocalContext.current)),
                     avatar = stream.avatar,
                     avatarSize = 48.dp,
                     avatarVisible = stream.video == null || !stream.video.isEnabled
