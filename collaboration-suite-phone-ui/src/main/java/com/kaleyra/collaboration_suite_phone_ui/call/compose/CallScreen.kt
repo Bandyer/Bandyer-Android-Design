@@ -342,7 +342,6 @@ private fun getPermissions(callUiState: CallUiState): State<List<String>> {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun CallScreen(
     callUiState: CallUiState,

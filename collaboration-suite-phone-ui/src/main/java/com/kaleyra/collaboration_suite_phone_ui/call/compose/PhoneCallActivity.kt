@@ -26,23 +26,25 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
 
+    private companion object {
+        var pictureInPictureAspectRatio: Rational = Rational(9, 16)
+
+        val isInPipMode: MutableStateFlow<Boolean> = MutableStateFlow(false)
+
+        val shouldShowFileShare: MutableStateFlow<Boolean> = MutableStateFlow(false)
+
+        var isActivityFinishing: Boolean = false
+
+        var isInForeground: Boolean = false
+
+        var isFileShareDisplayed: Boolean = false
+
+        var isWhiteboardDisplayed: Boolean = false
+    }
+
     private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() = enterPipModeIfSupported()
     }
-
-    private var pictureInPictureAspectRatio: Rational = Rational(9, 16)
-
-    private val shouldShowFileShare: MutableStateFlow<Boolean> = MutableStateFlow(false)
-
-    private val isInPipMode: MutableStateFlow<Boolean> = MutableStateFlow(false)
-
-    private var isActivityFinishing: Boolean = false
-
-    private var isInForeground: Boolean = false
-
-    private var isFileShareDisplayed: Boolean = false
-
-    private var isWhiteboardDisplayed: Boolean = false
 
     override val disableProximity: Boolean
         get() = !isInForeground || isInPipMode.value || isWhiteboardDisplayed || isFileShareDisplayed
