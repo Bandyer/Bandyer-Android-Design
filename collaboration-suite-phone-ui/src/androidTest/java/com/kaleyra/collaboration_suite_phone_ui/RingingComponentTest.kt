@@ -11,6 +11,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.view.DialingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.RingingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
@@ -194,6 +195,42 @@ class RingingComponentTest {
         composeTestRule.onNodeWithText(text).assertDoesNotExist()
         uiState = RingingUiState(amIWaitingOthers = true)
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
+    }
+
+    @Test
+    fun isVideoIncomingTrueAndVideoIsNull_avatarIsNotDisplayed() {
+        uiState = RingingUiState(isVideoIncoming = true, video = null)
+        composeTestRule.findAvatar().assertDoesNotExist()
+    }
+
+    @Test
+    fun isVideoIncomingFalseAndVideoIsNull_avatarIsDisplayed() {
+        uiState = RingingUiState(isVideoIncoming = false, video = null)
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun videoViewIsNullAndVideoIsDisabled_avatarIsDisplayed() {
+        uiState = RingingUiState(video = VideoUi(id = "videoId", view = null, isEnabled = false))
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun videoNotNullAndVideoViewIsNullAndVideoIsEnabled_avatarIsNotDisplayed() {
+        uiState = RingingUiState(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
+        composeTestRule.findAvatar().assertDoesNotExist()
+    }
+
+    @Test
+    fun videoViewIsNotNullAndVideoIsDisabled_avatarIsDisplayed() {
+        uiState = RingingUiState(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false))
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun videoIsEnabled_avatarIsNotDisplayed() {
+        uiState = RingingUiState(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
+        composeTestRule.findAvatar().assertDoesNotExist()
     }
 
     @Test
