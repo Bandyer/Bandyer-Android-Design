@@ -20,12 +20,15 @@ interface PreCallUiState<out T> : UiState where T: PreCallUiState<T> {
 
     val isConnecting: Boolean
 
+    val isVideoIncoming: Boolean
+
     fun clone(
         video: VideoUi? = this@PreCallUiState.video,
         avatar: ImmutableUri? = this@PreCallUiState.avatar,
         participants: ImmutableList<String> = this@PreCallUiState.participants,
         watermarkInfo: WatermarkInfo? = this@PreCallUiState.watermarkInfo,
         isLink: Boolean = this@PreCallUiState.isLink,
-        isConnecting: Boolean = this@PreCallUiState.isConnecting
+        isConnecting: Boolean = this@PreCallUiState.isConnecting,
+        isVideoIncoming: Boolean = this@PreCallUiState.isVideoIncoming
     ): T
 }

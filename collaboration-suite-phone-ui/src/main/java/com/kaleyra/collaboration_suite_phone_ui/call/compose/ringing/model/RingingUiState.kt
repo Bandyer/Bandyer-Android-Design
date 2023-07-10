@@ -18,7 +18,8 @@ data class RingingUiState(
     override val participants: ImmutableList<String> = ImmutableList(listOf()),
     override val watermarkInfo: WatermarkInfo? = null,
     override val isLink: Boolean = false,
-    override val isConnecting: Boolean = false
+    override val isConnecting: Boolean = false,
+    override val isVideoIncoming: Boolean = false
 ): PreCallUiState<RingingUiState> {
 
     override fun clone(
@@ -27,7 +28,8 @@ data class RingingUiState(
         participants: ImmutableList<String>,
         watermarkInfo: WatermarkInfo?,
         isLink: Boolean,
-        isConnecting: Boolean
+        isConnecting: Boolean,
+        isVideoIncoming: Boolean
     ): RingingUiState {
         return copy(
             video = video,
@@ -35,7 +37,8 @@ data class RingingUiState(
             participants = participants,
             watermarkInfo = watermarkInfo,
             isLink = isLink,
-            isConnecting = isConnecting
+            isConnecting = isConnecting,
+            isVideoIncoming = isVideoIncoming
         )
     }
 }

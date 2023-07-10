@@ -14,7 +14,8 @@ data class DialingUiState(
     override val participants: ImmutableList<String> = ImmutableList(listOf()),
     override val watermarkInfo: WatermarkInfo? = null,
     override val isLink: Boolean = false,
-    override val isConnecting: Boolean = false
+    override val isConnecting: Boolean = false,
+    override val isVideoIncoming: Boolean = false
 ): PreCallUiState<DialingUiState> {
 
     override fun clone(
@@ -23,7 +24,8 @@ data class DialingUiState(
         participants: ImmutableList<String>,
         watermarkInfo: WatermarkInfo?,
         isLink: Boolean,
-        isConnecting: Boolean
+        isConnecting: Boolean,
+        isVideoIncoming: Boolean
     ): DialingUiState {
         return copy(
             video = video,
@@ -31,7 +33,8 @@ data class DialingUiState(
             participants = participants,
             watermarkInfo = watermarkInfo,
             isLink = isLink,
-            isConnecting = isConnecting
+            isConnecting = isConnecting,
+            isVideoIncoming = isVideoIncoming
         )
     }
 }
