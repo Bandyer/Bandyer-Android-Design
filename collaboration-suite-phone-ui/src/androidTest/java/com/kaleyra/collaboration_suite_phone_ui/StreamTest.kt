@@ -26,15 +26,13 @@ class StreamTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var streamView by mutableStateOf<ImmutableView?>(null)
-
     private var isAvatarVisible by mutableStateOf(false)
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             Stream(
-                streamView = streamView,
+                streamView = ImmutableView(View(composeTestRule.activity)),
                 avatar = ImmutableUri(Uri.EMPTY),
                 avatarVisible = isAvatarVisible
             )
@@ -43,48 +41,24 @@ class StreamTest {
 
     @After
     fun tearDown() {
-        streamView = null
         isAvatarVisible = false
     }
 
     @Test
-    fun streamViewNull_streamViewDoesNotExists() {
-        streamView = null
-        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
-    }
-
-    @Test
-    fun streamViewNotNull_streamViewIsDisplayed() {
-        streamView = ImmutableView(View(composeTestRule.activity))
+    fun streamViewIsDisplayed() {
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertIsDisplayed()
     }
 
     @Test
-    fun streamViewNullAndAvatarVisibleFalse_avatarIsDisplayed() {
-        streamView = ImmutableView(View(composeTestRule.activity))
-        isAvatarVisible = true
-        composeTestRule.findAvatar().assertIsDisplayed()
-    }
-
-    @Test
-    fun streamViewNullAndAvatarVisibleTrue_avatarIsDisplayed() {
-        streamView = ImmutableView(View(composeTestRule.activity))
-        isAvatarVisible = true
-        composeTestRule.findAvatar().assertIsDisplayed()
-    }
-
-    @Test
-    fun streamViewNotNullAndAvatarVisibleTrue_avatarIsDisplayed() {
-        streamView = ImmutableView(View(composeTestRule.activity))
-        isAvatarVisible = true
-        composeTestRule.findAvatar().assertIsDisplayed()
-    }
-
-    @Test
-    fun streamViewNotNullAndAvatarVisibleFalse_avatarDoesNotExists() {
-        streamView = ImmutableView(View(composeTestRule.activity))
+    fun avatarVisibleFalse_avatarIsNotDisplayed() {
         isAvatarVisible = false
         composeTestRule.findAvatar().assertDoesNotExist()
+    }
+
+    @Test
+    fun avatarVisibleTrue_avatarIsDisplayed() {
+        isAvatarVisible = true
+        composeTestRule.findAvatar().assertIsDisplayed()
     }
 
 }

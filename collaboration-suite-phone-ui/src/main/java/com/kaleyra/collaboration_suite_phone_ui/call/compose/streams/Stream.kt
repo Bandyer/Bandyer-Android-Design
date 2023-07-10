@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.streams
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedContent
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -24,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.constraintlayout.helper.widget.MotionPlaceholder
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
@@ -38,7 +39,7 @@ val DefaultStreamAvatarSize = 128.dp
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun Stream(
-    streamView: ImmutableView? = null,
+    streamView: ImmutableView,
     avatar: ImmutableUri?,
     @DrawableRes  avatarPlaceholder: Int = R.drawable.ic_kaleyra_avatar_bold,
     @DrawableRes  avatarError: Int = R.drawable.ic_kaleyra_avatar_bold,
@@ -47,31 +48,29 @@ internal fun Stream(
 ) {
     Box {
         AnimatedContent(
-            targetState = streamView != null && !avatarVisible,
+            targetState = !avatarVisible,
             transitionSpec = {
                 if (targetState) fadeIn(tween(500)) with fadeOut(tween(500))
                 else EnterTransition.None with ExitTransition.None
             }
         ) {
             if (it) {
-                if (streamView != null) {
-                    key(streamView) {
-                        AndroidView(
-                            factory = {
-                                streamView.value.also {
-                                    val parentView = it.parent as? ViewGroup
-                                    parentView?.removeView(it)
-                                }
-                            },
-                            update = { view ->
-                                val newLayoutParams = view.layoutParams
-                                newLayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-                                newLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-                                view.layoutParams = newLayoutParams
-                            },
-                            modifier = Modifier.testTag(StreamViewTestTag)
-                        )
-                    }
+                key(streamView) {
+                    AndroidView(
+                        factory = {
+                            streamView.value.also {
+                                val parentView = it.parent as? ViewGroup
+                                parentView?.removeView(it)
+                            }
+                        },
+                        update = { view ->
+                            val newLayoutParams = view.layoutParams
+                            newLayoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+                            newLayoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+                            view.layoutParams = newLayoutParams
+                        },
+                        modifier = Modifier.testTag(StreamViewTestTag)
+                    )
                 }
             } else {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -95,7 +94,7 @@ internal fun Stream(
 internal fun StreamPreview() {
     KaleyraTheme {
         Stream(
-            streamView = streamUiMock.video?.view,
+            streamView = streamUiMock.video?.view ?: ImmutableView(View(LocalContext.current)),
             avatar = streamUiMock.avatar,
             avatarVisible = false
         )
