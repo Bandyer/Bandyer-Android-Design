@@ -8,6 +8,7 @@ import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_core_ui.utils.UsbCameraUtils
 import com.kaleyra.collaboration_suite_extension_audio.extensions.AudioOutputConnectionError
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasAudio
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasUsbCamera
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioOnly
@@ -15,9 +16,12 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isMyMicEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isSharingScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isVideoIncoming
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toAudioConnectionFailureMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toMutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.toUsbCameraMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.doIHaveStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.AudioConnectionFailureMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UsbCameraMessage
@@ -27,8 +31,10 @@ import io.mockk.mockkObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -258,5 +264,38 @@ class InputMapperTest {
         val call = MutableStateFlow(callMock)
         val actual = call.toAudioConnectionFailureMessage().first()
         assert(actual is AudioConnectionFailureMessage.InSystemCall)
+    }
+
+    @Test
+    fun audioVideoCallAndIHaveStreams_isVideoIncoming_true() = runTest {
+        mockkObject(InputMapper)
+        mockkObject(StreamMapper)
+        val flow = flowOf(callMock)
+        every { flow.isAudioVideo() } returns flowOf(true)
+        every { flow.doIHaveStreams() } returns flowOf(true)
+        val actual = flow.isVideoIncoming().first()
+        assertEquals(true, actual)
+    }
+
+    @Test
+    fun notAudioVideoCallAndIHaveStreams_isVideoIncoming_false() = runTest {
+        mockkObject(InputMapper)
+        mockkObject(StreamMapper)
+        val flow = flowOf(callMock)
+        every { flow.isAudioVideo() } returns flowOf(false)
+        every { flow.doIHaveStreams() } returns flowOf(true)
+        val actual = flow.isVideoIncoming().first()
+        assertEquals(false, actual)
+    }
+
+    @Test
+    fun audioVideoCallAndIHaveNoStreams_isVideoIncoming_false() = runTest {
+        mockkObject(InputMapper)
+        mockkObject(StreamMapper)
+        val flow = flowOf(callMock)
+        every { flow.isAudioVideo() } returns flowOf(true)
+        every { flow.doIHaveStreams() } returns flowOf(false)
+        val actual = flow.isVideoIncoming().first()
+        assertEquals(false, actual)
     }
 }
