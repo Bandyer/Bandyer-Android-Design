@@ -2,12 +2,14 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.*
+import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.Theme
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isVideoIncoming
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
@@ -42,6 +44,8 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
     protected val themeMock = mockk<Theme>()
 
     protected val callMock = mockk<CallUI>(relaxed = true)
+
+    private val preferredTypeMock = mockk<Call.PreferredType>(relaxed = true)
 
     private val uriMock1 = mockk<Uri>()
 
@@ -131,6 +135,8 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
             every { displayImage } returns MutableStateFlow(uriMock3)
             every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
         }
+        every { callMock.extras.preferredType } returns preferredTypeMock
+        every { preferredTypeMock.isVideoEnabled() } returns true
         with(themeMock) {
             every { day } returns mockk {
                 every { logo } returns dayLogo
@@ -205,6 +211,16 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
         advanceUntilIdle()
         val actual = viewModel.uiState.first().watermarkInfo
         assertEquals(WatermarkInfo(text = "Kaleyra", logo = Logo(dayLogo, nightLogo)), actual)
+    }
+
+    @Test
+    fun testPreCallUiState_isVideoIncomingUpdated() = runTest {
+        every { participantMeMock.streams } returns MutableStateFlow(listOf(mockk(relaxed = true)))
+        val current = viewModel.uiState.first().isVideoIncoming
+        assertEquals(false, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().isVideoIncoming
+        assertEquals(true, new)
     }
 
     @Test

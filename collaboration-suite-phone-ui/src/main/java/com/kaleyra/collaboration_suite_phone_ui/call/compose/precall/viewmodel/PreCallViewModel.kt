@@ -5,6 +5,7 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.UserMessageViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isVideoIncoming
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayImages
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayNames
@@ -30,6 +31,11 @@ internal abstract class PreCallViewModel<T : PreCallUiState<T>>(configure: suspe
         theme
             .toWatermarkInfo(companyName)
             .onEach { watermarkInfo -> _uiState.update { it.clone(watermarkInfo = watermarkInfo) } }
+            .launchIn(viewModelScope)
+
+        call
+            .isVideoIncoming()
+            .onEach { isVideoIncoming -> _uiState.update { it.clone(isVideoIncoming = isVideoIncoming) } }
             .launchIn(viewModelScope)
 
         call
