@@ -31,11 +31,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -57,6 +54,8 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
 
     private var wasPhoneBoxConnected = false
     private var wasChatBoxConnected = false
+
+    private var endedCallIds = mutableSetOf<String>()
 
     private var scope = CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.IO)
 
@@ -117,6 +116,11 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
                 phoneBoxState is PhoneBox.State.Connected && callState is Call.State.Disconnected.Ended && !isInForeground
             }.collectLatest {
                 if (!it) return@collectLatest
+
+                val endedCallId = collaboration.phoneBox.call.replayCache.firstOrNull()?.id
+                if (endedCallId in endedCallIds) return@collectLatest
+                endedCallId?.let { endedCallIds.add(it) }
+
                 delay(300)
                 performAction(Action.PAUSE)
             }
@@ -124,14 +128,14 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     }
 
     private fun syncWithChatMessages(scope: CoroutineScope) {
-        collaboration.chatBox.chats
-            .flatMapLatest { chats -> chats.map { it.messages }.merge() }
-            .filter { it.list.isNotEmpty() }
-            .mapLatest { delay(3000); it }
+        collaboration.chatBox.state
+            .dropWhile { it !is ChatBox.State.Connected.Synchronized }
             .onEach {
                 val phoneBox = collaboration.phoneBox
                 val call = phoneBox.call.replayCache.firstOrNull()
-                if (AppLifecycle.isInForeground.value || (call != null && call.state.value !is Call.State.Disconnected.Ended) || phoneBox.state.value !is PhoneBox.State.Connected) return@onEach
+                if (AppLifecycle.isInForeground.value ||
+                    (call != null && call.state.value !is Call.State.Disconnected.Ended) ||
+                    phoneBox.state.value !is PhoneBox.State.Connected) return@onEach
                 performAction(Action.PAUSE)
             }.launchIn(scope)
     }

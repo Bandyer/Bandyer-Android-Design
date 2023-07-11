@@ -95,16 +95,17 @@ dependencies {
     implementation "com.github.imablanco:Zoomy:1ee82834df"
 
     /***  Leak Canary ***/
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.8.1"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.10"
 
     /***  KaleyraCollaborationSuiteUI ***/
     implementation project(':collaboration-suite-phone-ui')
     implementation project(':collaboration-suite-glass-ui')
     implementation project(':collaboration-suite-core-ui')
+
 //    implementation project(":collaboration-suite")
 
     implementation("androidx.profileinstaller:profileinstaller:1.2.0")
 
-    implementation "com.kaleyra:collaboration-suite-utils:2.0.1"
-    implementation "com.bandyer:bandyer-android-audiosession:3.0.3"
+    implementation "com.kaleyra:collaboration-suite-utils:3.0.1"
+    implementation "com.bandyer:bandyer-android-audiosession:3.1.0"
 }

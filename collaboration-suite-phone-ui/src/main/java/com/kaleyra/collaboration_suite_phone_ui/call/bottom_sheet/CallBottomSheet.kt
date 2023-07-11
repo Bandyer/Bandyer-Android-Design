@@ -231,7 +231,7 @@ open class CallBottomSheet<T>(
         val linearLayoutManager: LinearLayoutManager? = bottomSheetLayoutContent.recyclerView?.layoutManager as? LinearLayoutManager
         val lastVisiblePosition = linearLayoutManager?.findLastCompletelyVisibleItemPosition() ?: callActionItems.size
         val notVerticallyDraggable = bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL ||
-                (lastVisiblePosition == (callActionItems.size - 1) && with(linearLayoutManager!!.findViewByPosition(lastVisiblePosition)) {
+                (!isExpanded() && lastVisiblePosition == (callActionItems.size - 1) && with(linearLayoutManager!!.findViewByPosition(lastVisiblePosition)) {
                     this?.isVisible() == true && this.alpha == 1f
                 })
 

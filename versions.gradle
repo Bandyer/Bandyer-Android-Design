@@ -1,7 +1,7 @@
 ext {
     sdkVersion = 32
     buildToolsVersion = "31.0.0"
-    moduleVersion = "3.8.0"
+    moduleVersion = "4.0.0"
     moduleGroupId = "com.kaleyra"
 
     // Versions
@@ -32,7 +32,7 @@ ext {
 
     def kotlinCoroutinesVersion = "1.6.1"
 
-    def collaborationSuiteVersion = "1.0.0-alpha8"
+    def collaborationSuiteVersion = "1.0.0-alpha9"
     def collaborationSuiteExtensionAudioVersion = collaborationSuiteVersion
 
     def junitVersion = "4.13.2"

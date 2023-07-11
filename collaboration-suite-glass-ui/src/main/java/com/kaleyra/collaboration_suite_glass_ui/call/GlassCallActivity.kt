@@ -340,9 +340,6 @@ internal class GlassCallActivity :
                     }
                 }.launchIn(this)
 
-
-
-
             viewModel.amIAlone
                 .takeWhile { it }
                 .onCompletion { binding.kaleyraStatusBar.showTimer() }

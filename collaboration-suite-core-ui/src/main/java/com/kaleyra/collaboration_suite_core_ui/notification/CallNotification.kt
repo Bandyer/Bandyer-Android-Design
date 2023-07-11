@@ -84,7 +84,7 @@ class CallNotification {
         val channelName: String,
         val type: Type,
         var isHighImportance: Boolean = false,
-        var enableCallStyle: Boolean = false,
+        var enableCallStyle: Boolean = true,
         var color: Int? = null,
         var user: String? = null,
         var enableTimer: Boolean = false,
@@ -353,12 +353,12 @@ class CallNotification {
                             context.getString(R.string.kaleyra_notification_decline),
                             declineIntent
                         ).build()
-                        builder.setActions(answerAction, declineAction)
+                        builder.setActions(declineAction, answerAction)
                     }
                     else -> {
                         val declineAction = Notification.Action.Builder(
                             Icon.createWithResource(context, R.drawable.ic_kaleyra_decline),
-                            context.getString(R.string.kaleyra_notification_decline),
+                            context.getString(R.string.kaleyra_notification_hangup),
                             declineIntent
                         ).build()
                         builder.setActions(declineAction)
