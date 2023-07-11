@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.LocalContentColor
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
@@ -28,6 +30,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamViewSettings.featuredSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 const val FeaturedStreamTag = "FeaturedStreamTag"
@@ -95,7 +98,8 @@ private fun Header(
             modifier = Modifier
                 .padding(vertical = 12.dp, horizontal = 16.dp)
                 .weight(1f),
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+            style = LocalTextStyle.current.shadow()
         )
 
         IconButton(
