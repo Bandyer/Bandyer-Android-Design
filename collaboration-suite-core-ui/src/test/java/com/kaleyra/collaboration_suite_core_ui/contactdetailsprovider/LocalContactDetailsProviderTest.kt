@@ -22,6 +22,11 @@ internal class LocalContactDetailsProviderTest {
 
     private val uriUser2 = mockk<Uri>()
 
+    private val successResult = setOf(
+        ContactDetails("userId1", "username1", uriUser1),
+        ContactDetails("userId2", "username2", uriUser2)
+    )
+
     @Test
     fun `test contacts details empty user ids`() = runTest(testDispatcher) {
         val provider = LocalContactDetailsProvider(
@@ -39,11 +44,7 @@ internal class LocalContactDetailsProviderTest {
             ioDispatcher = testDispatcher
         )
         val result = provider.fetchContactsDetails("userId1", "userId2")
-        val expected = setOf(
-            ContactDetails("userId1", "username1", uriUser1),
-            ContactDetails("userId2", "username2", uriUser2)
-        )
-        assertEquals(expected, result)
+        assertEquals(successResult, result)
     }
 
     @Test
@@ -53,11 +54,7 @@ internal class LocalContactDetailsProviderTest {
             ioDispatcher = testDispatcher
         )
         val result = provider.fetchContactsDetails("userId1", "userId2")
-        val expected = setOf(
-            ContactDetails("userId1", "username1", uriUser1),
-            ContactDetails("userId2", "username2", uriUser2)
-        )
-        assertEquals(expected, result)
+        assertEquals(successResult, result)
     }
 
     @Test
@@ -79,11 +76,7 @@ internal class LocalContactDetailsProviderTest {
             ioDispatcher = testDispatcher
         )
         val result = provider.fetchContactsDetails("userId1", "userId2", timeout = timeout)
-        val expected = setOf(
-            ContactDetails("userId1", "username1", uriUser1),
-            ContactDetails("userId2", "username2", uriUser2)
-        )
-        assertEquals(expected, result)
+        assertEquals(successResult, result)
     }
 
     @Test
