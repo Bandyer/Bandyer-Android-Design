@@ -6,7 +6,6 @@ import com.kaleyra.collaboration_suite.Contacts
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.test.StandardTestDispatcher
 
 abstract class BaseRemoteContactDetailsProviderTest {
 
@@ -30,7 +29,7 @@ abstract class BaseRemoteContactDetailsProviderTest {
     }
 
 
-    protected val uriContact1 = mockk<Uri>()
+    protected val uriUser1 = mockk<Uri>()
 
-    protected val uriContact2 = mockk<Uri>()
+    protected val uriUser2 = mockk<Uri>()
 }

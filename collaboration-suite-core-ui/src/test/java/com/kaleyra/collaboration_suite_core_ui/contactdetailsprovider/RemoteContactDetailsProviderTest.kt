@@ -1,26 +1,17 @@
 package com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite.Contact
-import com.kaleyra.collaboration_suite.Contacts
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetails
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.RemoteContactDetailsProvider
-import io.mockk.mockk
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onSubscription
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Test
-import kotlin.math.exp
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RemoteContactDetailsProviderTest : BaseRemoteContactDetailsProviderTest() {
@@ -46,15 +37,15 @@ class RemoteContactDetailsProviderTest : BaseRemoteContactDetailsProviderTest() 
     fun `test contacts details immediate fetch`() = runTest(testDispatcher) {
         val contacts = ContactsMock(
             hashMapOf(
-                "userId1" to ContactMock("userId1", MutableStateFlow("username1"), MutableStateFlow(uriContact1)),
-                "userId2" to ContactMock("userId2", MutableStateFlow("username2"), MutableStateFlow(uriContact2))
+                "userId1" to ContactMock("userId1", MutableStateFlow("username1"), MutableStateFlow(uriUser1)),
+                "userId2" to ContactMock("userId2", MutableStateFlow("username2"), MutableStateFlow(uriUser2))
             )
         )
         val provider = RemoteContactDetailsProvider(contacts = contacts, ioDispatcher = testDispatcher)
         val result = provider.fetchContactsDetails("userId1", "userId2")
         val expected = setOf(
-            ContactDetails("userId1", "username1", uriContact1),
-            ContactDetails("userId2", "username2", uriContact2)
+            ContactDetails("userId1", "username1", uriUser1),
+            ContactDetails("userId2", "username2", uriUser2)
         )
         Assert.assertEquals(expected, result)
     }
@@ -65,19 +56,19 @@ class RemoteContactDetailsProviderTest : BaseRemoteContactDetailsProviderTest() 
         val contact1 = ContactMock(
             "userId1",
             MutableStateFlow<String?>(null).emitWithDelay(newValue = "username1", delay = timeout, backgroundScope),
-            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriContact1, delay = timeout, backgroundScope)
+            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriUser1, delay = timeout, backgroundScope)
         )
         val contact2 = ContactMock(
             "userId2",
             MutableStateFlow<String?>(null).emitWithDelay(newValue = "username2", delay = timeout, backgroundScope),
-            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriContact2, delay = timeout, backgroundScope)
+            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriUser2, delay = timeout, backgroundScope)
         )
         val contacts = ContactsMock(hashMapOf("userId1" to contact1, "userId2" to contact2))
         val provider = RemoteContactDetailsProvider(contacts = contacts, ioDispatcher = testDispatcher)
         val result = provider.fetchContactsDetails("userId1", "userId2")
         val expected = setOf(
-            ContactDetails("userId1", "username1", uriContact1),
-            ContactDetails("userId2", "username2", uriContact2)
+            ContactDetails("userId1", "username1", uriUser1),
+            ContactDetails("userId2", "username2", uriUser2)
         )
         Assert.assertEquals(expected, result)
     }
@@ -88,12 +79,12 @@ class RemoteContactDetailsProviderTest : BaseRemoteContactDetailsProviderTest() 
         val contact1 = ContactMock(
             "userId1",
             MutableStateFlow<String?>(null).emitWithDelay(newValue = "username1", delay = timeout, backgroundScope),
-            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriContact1, delay = timeout, backgroundScope)
+            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriUser1, delay = timeout, backgroundScope)
         )
         val contact2 = ContactMock(
             "userId2",
             MutableStateFlow<String?>(null).emitWithDelay(newValue = "username2", delay = timeout, backgroundScope),
-            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriContact2, delay = timeout, backgroundScope)
+            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriUser2, delay = timeout, backgroundScope)
         )
         val contacts = ContactsMock(hashMapOf("userId1" to contact1, "userId2" to contact2))
         val provider = RemoteContactDetailsProvider(contacts = contacts, ioDispatcher = testDispatcher)
@@ -108,20 +99,20 @@ class RemoteContactDetailsProviderTest : BaseRemoteContactDetailsProviderTest() 
         val contact1 = ContactMock(
             "userId1",
             MutableStateFlow<String?>(null).emitWithDelay(newValue = "username1", delay = timeout, backgroundScope),
-            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriContact1, delay = timeout, backgroundScope)
+            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriUser1, delay = timeout, backgroundScope)
         )
         val contact2 = ContactMock(
             "userId2",
             MutableStateFlow<String?>(null).emitWithDelay(newValue = "username2", delay = timeout, backgroundScope),
-            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriContact2, delay = timeout, backgroundScope)
+            MutableStateFlow<Uri?>(null).emitWithDelay(newValue = uriUser2, delay = timeout, backgroundScope)
         )
         val contacts = ContactsMock(hashMapOf("userId1" to contact1, "userId2" to contact2))
         val provider = RemoteContactDetailsProvider(contacts = contacts, ioDispatcher = testDispatcher)
 
         val result = provider.fetchContactsDetails("userId1", "userId2", timeout = timeout + 1)
         val expected = setOf(
-            ContactDetails("userId1", "username1", uriContact1),
-            ContactDetails("userId2", "username2", uriContact2)
+            ContactDetails("userId1", "username1", uriUser1),
+            ContactDetails("userId2", "username2", uriUser2)
         )
         Assert.assertEquals(expected, result)
     }
