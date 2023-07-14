@@ -7,9 +7,9 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-abstract class BaseRemoteContactDetailsProviderTest {
+internal object RemoteContactDetailsProviderTestHelper {
 
-    protected class ContactMock(
+    class ContactMock(
         override val userId: String,
         override val displayName: StateFlow<String?> = MutableStateFlow(null),
         override val displayImage: StateFlow<Uri?> = MutableStateFlow(null)
@@ -17,7 +17,7 @@ abstract class BaseRemoteContactDetailsProviderTest {
         override val restrictions: Contact.Restrictions = mockk()
     }
 
-    protected class ContactsMock(private val contacts: Map<String, Contact>): Contacts {
+    class ContactsMock(private val contacts: Map<String, Contact>): Contacts {
         override val collection: Map<String, Contact> = HashMap()
         override suspend fun get(userId: String): Result<Contact> {
             return contacts[userId]?.let {
@@ -28,8 +28,7 @@ abstract class BaseRemoteContactDetailsProviderTest {
         override fun clear() = Unit
     }
 
+    val uriUser1 = mockk<Uri>()
 
-    protected val uriUser1 = mockk<Uri>()
-
-    protected val uriUser2 = mockk<Uri>()
+    val uriUser2 = mockk<Uri>()
 }
