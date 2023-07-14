@@ -7,6 +7,7 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.Cac
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedRemoteContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetails
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.ContactDetailsProvider
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-internal class CollaborationContactDetailsProvider : ContactDetailsProvider {
+internal class CollaborationContactDetailsProvider(private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) : ContactDetailsProvider {
 
     private val primaryProvider: ContactDetailsProvider
         get() = localContactDetailsProvider ?: remoteContactDetailsProvider ?: defaultProvider
@@ -32,21 +33,21 @@ internal class CollaborationContactDetailsProvider : ContactDetailsProvider {
 
     private var localContactDetailsProvider: CachedLocalContactDetailsProvider? = null
         get() = with(CollaborationUI.usersDescription) {
-            field?.takeIf { it.usersDescription == this } ?: this?.let { CachedLocalContactDetailsProvider(it) }.apply { field = this }
+            field?.takeIf { it.usersDescription == this } ?: this?.let { CachedLocalContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
         }
 
     private var remoteContactDetailsProvider: CachedRemoteContactDetailsProvider? = null
         get() = with(CollaborationUI.collaboration?.contacts) {
-            field?.takeIf { it.contacts == this } ?: this?.let { CachedRemoteContactDetailsProvider(it) }.apply { field = this }
+            field?.takeIf { it.contacts == this } ?: this?.let { CachedRemoteContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
         }
 
     override suspend fun fetchContactsDetails(
         vararg userIds: String,
         timeout: Long
     ): Set<ContactDetails> = coroutineScope {
-        val primaryContactDetails = async(Dispatchers.IO) { primaryProvider.fetchContactsDetails(userIds = userIds) }
-        val fallbackContactDetails = async(Dispatchers.IO) { fallbackProvider.fetchContactsDetails(userIds = userIds) }
-        val defaultProviderContacts = async(Dispatchers.IO) { defaultProvider.fetchContactsDetails(userIds = userIds) }
+        val primaryContactDetails = async(ioDispatcher) { primaryProvider.fetchContactsDetails(userIds = userIds) }
+        val fallbackContactDetails = async(ioDispatcher) { fallbackProvider.fetchContactsDetails(userIds = userIds) }
+        val defaultProviderContacts = async(ioDispatcher) { defaultProvider.fetchContactsDetails(userIds = userIds) }
         primaryContactDetails.await().takeIf { it.isNotEmpty() } ?: fallbackContactDetails.await().takeIf { it.isNotEmpty() } ?: defaultProviderContacts.await()
     }
 }
