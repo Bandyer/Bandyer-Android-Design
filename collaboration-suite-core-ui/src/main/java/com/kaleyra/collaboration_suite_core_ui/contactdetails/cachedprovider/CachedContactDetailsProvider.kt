@@ -1,14 +1,9 @@
 package com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider
 
-import com.kaleyra.collaboration_suite.Contacts
 import com.kaleyra.collaboration_suite_core_ui.Cache
 import com.kaleyra.collaboration_suite_core_ui.PerpetualCache
-import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.ContactDetailsProvider
-import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.DefaultContactDetailsProvider
-import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.LocalContactDetailsProvider
-import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.RemoteContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetails
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.ContactDetailsProvider
 
 internal abstract class CachedContactDetailsProvider(private val provider: ContactDetailsProvider) :
     ContactDetailsProvider {
@@ -33,12 +28,3 @@ internal abstract class CachedContactDetailsProvider(private val provider: Conta
         return contactsDetails.toSet()
     }
 }
-
-internal class CachedLocalContactDetailsProvider(val usersDescription: UsersDescription) :
-    CachedContactDetailsProvider(LocalContactDetailsProvider(usersDescription))
-
-internal class CachedRemoteContactDetailsProvider(val contacts: Contacts) :
-    CachedContactDetailsProvider(RemoteContactDetailsProvider(contacts))
-
-internal class CachedDefaultContactDetailsProvider :
-    CachedContactDetailsProvider(DefaultContactDetailsProvider())
