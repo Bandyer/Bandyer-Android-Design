@@ -2,6 +2,9 @@ package com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider
 
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetails
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.LocalContactDetailsProvider
+import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.uriUser1
+import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.uriUser2
+import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.usersDescriptionMock
 import com.kaleyra.collaboration_suite_core_ui.model.DefaultUsersDescription
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -10,7 +13,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal open class LocalContactDetailsProviderTest : BaseLocalContactDetailsProviderTest() {
+internal open class LocalContactDetailsProviderTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
