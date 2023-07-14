@@ -23,33 +23,9 @@ import org.junit.Test
 import kotlin.math.exp
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class RemoteContactDetailsProviderTest {
-
-    private class ContactMock(
-        override val userId: String,
-        override val displayName: StateFlow<String?> = MutableStateFlow(null),
-        override val displayImage: StateFlow<Uri?> = MutableStateFlow(null)
-    ): Contact {
-        override val restrictions: Contact.Restrictions = mockk()
-    }
-
-    private class ContactsMock(private val contacts: Map<String, Contact>): Contacts {
-        override val collection: Map<String, Contact> = HashMap()
-        override suspend fun get(userId: String): Result<Contact> {
-            return contacts[userId]?.let {
-                Result.success(it)
-            } ?: Result.failure(Exception("contact not found"))
-        }
-        override suspend fun me(): Contact.Me = mockk()
-        override fun clear() = Unit
-    }
-
+class RemoteContactDetailsProviderTest : BaseRemoteContactDetailsProviderTest() {
 
     private val testDispatcher = StandardTestDispatcher()
-
-    private val uriContact1 = mockk<Uri>()
-
-    private val uriContact2 = mockk<Uri>()
 
     @Test
     fun `test contacts details empty user ids`() = runTest(testDispatcher) {
