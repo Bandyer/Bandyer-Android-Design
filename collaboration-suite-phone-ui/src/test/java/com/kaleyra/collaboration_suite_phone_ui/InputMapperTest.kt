@@ -5,6 +5,8 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.UsbCameraUtils
 import com.kaleyra.collaboration_suite_extension_audio.extensions.AudioOutputConnectionError
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions
@@ -189,9 +191,10 @@ class InputMapperTest {
 
     @Test
     fun inputAudioRequestMute_toMutedMessage_adminDisplayName() = runTest {
+        mockkObject(ContactDetailsManager)
         val event = mockk<Input.Audio.Event.Request.Mute>()
         val producer = mockk<CallParticipant>()
-        every { producer.displayName } returns MutableStateFlow("username")
+        every { producer.combinedDisplayName } returns MutableStateFlow("username")
         every { event.producer } returns producer
         every { audioMock.events } returns MutableStateFlow(event)
         val call = MutableStateFlow(callMock)
