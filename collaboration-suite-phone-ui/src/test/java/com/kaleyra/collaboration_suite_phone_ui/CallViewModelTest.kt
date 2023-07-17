@@ -157,7 +157,7 @@ class CallViewModelTest {
                 every { logo } returns nightLogo
             }
         }
-        viewModel = spyk(CallViewModel { Success(phoneBoxMock, mockk(), MutableStateFlow(companyNameMock), MutableStateFlow(themeMock), mockk()) })
+        viewModel = spyk(CallViewModel { Success(phoneBoxMock, mockk(), MutableStateFlow(companyNameMock), MutableStateFlow(themeMock)) })
     }
 
     @After

@@ -8,6 +8,9 @@ import com.kaleyra.collaboration_suite.sharedfolder.SharedFolder
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getFileSize
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
@@ -64,10 +67,11 @@ class FileShareViewModelTest {
     @Before
     fun setUp() {
         mockkObject(UriExtensions)
+        mockkObject(ContactDetailsManager)
         every { any<Uri>().getFileSize() } returns 0
         mockkObject(CallUserMessagesProvider)
         viewModel = FileShareViewModel(
-            configure = { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true), mockk()) },
+            configure = { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true)) },
             filePickProvider = object : FilePickProvider {
                 override val fileUri: Flow<Uri> = MutableStateFlow(uriMock)
             }
@@ -81,11 +85,11 @@ class FileShareViewModelTest {
         }
         with(meMock) {
             every { userId } returns "myUserId"
-            every { displayName } returns MutableStateFlow("myDisplayName")
+            every { combinedDisplayName } returns MutableStateFlow("myDisplayName")
         }
         with(senderMock) {
             every { userId } returns "userId"
-            every { displayName } returns MutableStateFlow("displayName")
+            every { combinedDisplayName } returns MutableStateFlow("displayName")
         }
         with(sharedFileMock1) {
             every { id } returns "sharedFileId"

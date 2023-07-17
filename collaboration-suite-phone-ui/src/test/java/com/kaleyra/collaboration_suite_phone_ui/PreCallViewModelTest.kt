@@ -6,10 +6,12 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.Theme
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isVideoIncoming
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
@@ -81,6 +83,7 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
 
     open fun setUp() {
         mockkObject(CallUserMessagesProvider)
+        mockkObject(ContactDetailsManager)
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
         with(callParticipantsMock) {
@@ -117,22 +120,22 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
         with(participantMeMock) {
             every { userId } returns "myUserID"
             every { streams } returns MutableStateFlow(listOf(myStreamMock))
-            every { displayName } returns MutableStateFlow("myDisplayName")
-            every { displayImage } returns MutableStateFlow(uriMock1)
+            every { combinedDisplayName } returns MutableStateFlow("myDisplayName")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock1)
             every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
         }
         with(participantMock1) {
             every { userId } returns "userId1"
             every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
-            every { displayName } returns MutableStateFlow("displayName1")
-            every { displayImage } returns MutableStateFlow(uriMock2)
+            every { combinedDisplayName } returns MutableStateFlow("displayName1")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock2)
             every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
         }
         with(participantMock2) {
             every { userId } returns "userId2"
             every { streams } returns MutableStateFlow(listOf(streamMock3))
-            every { displayName } returns MutableStateFlow("displayName2")
-            every { displayImage } returns MutableStateFlow(uriMock3)
+            every { combinedDisplayName } returns MutableStateFlow("displayName2")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock3)
             every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
         }
         every { callMock.extras.preferredType } returns preferredTypeMock
