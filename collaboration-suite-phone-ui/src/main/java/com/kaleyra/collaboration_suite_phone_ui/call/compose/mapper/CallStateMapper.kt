@@ -8,6 +8,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
@@ -41,7 +43,7 @@ internal object CallStateMapper {
                 state is Call.State.Disconnected.Ended.HungUp -> CallStateUi.Disconnected.Ended.HungUp
                 state is Call.State.Disconnected.Ended.Kicked -> {
                     val admin = participants.others.firstOrNull { it.userId == state.userId }
-                    val adminName = admin?.combinedDisplayName?.value ?: ""
+                    val adminName = admin?.combinedDisplayName?.firstOrNull() ?: ""
                     CallStateUi.Disconnected.Ended.Kicked(adminName)
                 }
                 state == Call.State.Disconnected.Ended.Error -> CallStateUi.Disconnected.Ended.Error
