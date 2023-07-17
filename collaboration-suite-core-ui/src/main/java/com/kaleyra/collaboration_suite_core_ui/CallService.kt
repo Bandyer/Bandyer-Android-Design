@@ -34,6 +34,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_core_ui.call.ScreenShareOverlayDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsOpeningDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsVideoViewDelegate
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.CallProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityCallActivity
@@ -152,6 +153,13 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                     handleProximity(call, proximityCallActivity)
                 }
             }
+
+            call.participants
+                .onEach { participants ->
+                    val userIds = participants.list.map { it.userId }.toTypedArray()
+                    ContactDetailsManager.refreshContactDetails(*userIds)
+                }
+                .launchIn(lifecycleScope)
 
             call.state
                 .takeWhile { it !is Call.State.Disconnected.Ended }
