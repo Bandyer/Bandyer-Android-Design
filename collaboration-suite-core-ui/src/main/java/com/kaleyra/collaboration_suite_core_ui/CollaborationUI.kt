@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
+import com.kaleyra.collaboration_suite_core_ui.model.DefaultUsersDescription
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
 import com.kaleyra.collaboration_suite_utils.cached
@@ -46,7 +47,8 @@ object CollaborationUI {
     /**
      * Collaboration
      */
-    private var collaboration: Collaboration? = null
+    @get:Synchronized @set:Synchronized
+    internal var collaboration: Collaboration? = null
 
     private val serialScope by lazy { CoroutineScope(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) }
 
@@ -68,7 +70,8 @@ object CollaborationUI {
     /**
      * Users description to be used for the UI
      */
-    var usersDescription: UsersDescription = UsersDescription()
+    @get:Synchronized @set:Synchronized
+    var usersDescription: UsersDescription? = null
 
     /**
      * Phone box
