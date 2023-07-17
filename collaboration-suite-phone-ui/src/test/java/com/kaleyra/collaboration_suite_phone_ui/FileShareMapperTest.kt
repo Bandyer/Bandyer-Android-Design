@@ -7,6 +7,8 @@ import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
 import com.kaleyra.collaboration_suite.sharedfolder.SharedFolder
 import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.FileShareMapper.mapToSharedFileUi
@@ -14,6 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.FileShareMap
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.FileShareMapper.toSharedFilesUi
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -75,10 +78,11 @@ class FileShareMapperTest {
 
     @Before
     fun setUp() {
+        mockkObject(ContactDetailsManager)
         every { participantsMock.me } returns meMock
         with(meMock) {
             every { userId } returns "myUserId"
-            every { displayName } returns MutableStateFlow("myDisplayName")
+            every { combinedDisplayName } returns MutableStateFlow("myDisplayName")
         }
         with(callMock) {
             every { sharedFolder } returns sharedFolderMock
@@ -86,11 +90,11 @@ class FileShareMapperTest {
         }
         with(senderMock) {
             every { userId } returns "userId"
-            every { displayName } returns MutableStateFlow("displayName")
+            every { combinedDisplayName } returns MutableStateFlow("displayName")
         }
         with(senderMock2) {
             every { userId } returns "userId2"
-            every { displayName } returns MutableStateFlow("displayName2")
+            every { combinedDisplayName } returns MutableStateFlow("displayName2")
         }
         with(sharedFileMock1) {
             every { id } returns "sharedFileId"
@@ -155,7 +159,7 @@ class FileShareMapperTest {
     @Test
     fun updateSenderDisplayName_toSharedFilesUi_setContainsSharedFileUiWithUpdatedDisplayName() = runTest {
         val displayName = MutableStateFlow("oldDisplayName")
-        every { senderMock2.displayName } returns displayName
+        every { senderMock2.combinedDisplayName } returns displayName
         every { sharedFolderMock.files } returns MutableStateFlow(setOf(sharedFileMock1, sharedFileMock2))
 
         val flow = flowOf(callMock).toSharedFilesUi()
@@ -207,7 +211,7 @@ class FileShareMapperTest {
     fun senderWithNoDisplayName_mapToShareFileUi_mappedSenderIsUserId() = runTest {
         with(senderMock) {
             every { userId } returns "userId"
-            every { displayName } returns MutableStateFlow(null)
+            every { combinedDisplayName } returns MutableStateFlow(null)
         }
         val result = sharedFileMock1.mapToSharedFileUi("myUserId")
         val actual = result.first()
@@ -218,7 +222,7 @@ class FileShareMapperTest {
     @Test
     fun displayNameUpdated_mapToShareFileUi_updatedDisplayNameIsMapped() = runTest {
         val flow = MutableStateFlow("displayName")
-        every { senderMock.displayName } returns flow
+        every { senderMock.combinedDisplayName } returns flow
 
         val result = sharedFileMock1.mapToSharedFileUi("myUserId")
         val actual = result.first()
