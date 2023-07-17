@@ -94,8 +94,8 @@ class VideoMapperTest {
         val events = MutableSharedFlow<Input.Video.Event.Pointer>()
         every { videoMock.events } returns events
 
-        val expected1 = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.value ?: "", pointerMock1.position.x, pointerMock1.position.y))
-        val expected2 = expected1 + PointerUi(pointerMock2.producer.combinedDisplayName.value ?: "", pointerMock2.position.x, pointerMock2.position.y)
+        val expected1 = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.first() ?: "", pointerMock1.position.x, pointerMock1.position.y))
+        val expected2 = expected1 + PointerUi(pointerMock2.producer.combinedDisplayName.first() ?: "", pointerMock2.position.x, pointerMock2.position.y)
 
         val values = mutableListOf<List<PointerUi>>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -116,8 +116,8 @@ class VideoMapperTest {
         val events = MutableSharedFlow<Input.Video.Event.Pointer>()
         every { videoMock.events } returns events
 
-        val expected1 = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.value ?: "", pointerMock1.position.x, pointerMock1.position.y), PointerUi(pointerMock2.producer.combinedDisplayName.value ?: "", pointerMock2.position.x, pointerMock2.position.y))
-        val expected2 = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.value ?: "", pointerMock1.position.x, pointerMock1.position.y))
+        val expected1 = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.first() ?: "", pointerMock1.position.x, pointerMock1.position.y), PointerUi(pointerMock2.producer.combinedDisplayName.first() ?: "", pointerMock2.position.x, pointerMock2.position.y))
+        val expected2 = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.first() ?: "", pointerMock1.position.x, pointerMock1.position.y))
 
         val values = mutableListOf<List<PointerUi>>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -142,7 +142,7 @@ class VideoMapperTest {
         val events = MutableSharedFlow<Input.Video.Event.Pointer>()
         every { cameraMock.events } returns events
 
-        val expected = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.value ?: "", 100 - pointerMock1.position.x, pointerMock1.position.y))
+        val expected = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.first() ?: "", 100 - pointerMock1.position.x, pointerMock1.position.y))
 
         val values = mutableListOf<List<PointerUi>>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -161,7 +161,7 @@ class VideoMapperTest {
         val events = MutableSharedFlow<Input.Video.Event.Pointer>()
         every { cameraMock.events } returns events
 
-        val expected = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.value ?: "", 100 - pointerMock1.position.x, pointerMock1.position.y))
+        val expected = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.first() ?: "", 100 - pointerMock1.position.x, pointerMock1.position.y))
 
         val values = mutableListOf<List<PointerUi>>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -175,10 +175,10 @@ class VideoMapperTest {
     }
 
     @Test
-    fun videoPointerEvent_mapToPointerUi_mappedPointerUi() {
+    fun videoPointerEvent_mapToPointerUi_mappedPointerUi() = runTest {
         val actual = pointerMock1.mapToPointerUi()
         val expected = PointerUi(
-            username = pointerMock1.producer.combinedDisplayName.value ?: "",
+            username = pointerMock1.producer.combinedDisplayName.first() ?: "",
             x = pointerMock1.position.x,
             y = pointerMock1.position.y
         )
@@ -186,10 +186,10 @@ class VideoMapperTest {
     }
 
     @Test
-    fun mirrorTrue_mapToPointerUi_mirroredPointerUi() {
+    fun mirrorTrue_mapToPointerUi_mirroredPointerUi() = runTest {
         val actual = pointerMock1.mapToPointerUi(mirror = true)
         val expected = PointerUi(
-            username = pointerMock1.producer.combinedDisplayName.value ?: "",
+            username = pointerMock1.producer.combinedDisplayName.first() ?: "",
             x = 100 - pointerMock1.position.x,
             y = pointerMock1.position.y
         )

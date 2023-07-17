@@ -5,7 +5,6 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VideoMapper.mapToPointersUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -61,9 +61,9 @@ internal object VideoMapper {
         }.distinctUntilChanged()
     }
 
-    fun Input.Video.Event.Pointer.mapToPointerUi(mirror: Boolean = false): PointerUi {
+    suspend fun Input.Video.Event.Pointer.mapToPointerUi(mirror: Boolean = false): PointerUi {
         return PointerUi(
-            username = producer.combinedDisplayName.value ?: "",
+            username = producer.combinedDisplayName.firstOrNull() ?: "",
             x = if (mirror) 100 - position.x else position.x,
             y = position.y
         )
