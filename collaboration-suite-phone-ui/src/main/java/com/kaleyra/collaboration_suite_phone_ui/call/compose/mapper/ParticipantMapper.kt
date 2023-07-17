@@ -3,6 +3,8 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -28,7 +30,7 @@ internal object ParticipantMapper {
                 if (others.isEmpty()) flowOf(listOf())
                 else others
                     .map { participant ->
-                        participant.displayName.map { displayName ->
+                        participant.combinedDisplayName.map { displayName ->
                             Pair(participant.userId, displayName)
                         }
                     }
@@ -52,7 +54,7 @@ internal object ParticipantMapper {
                 if (others.isEmpty()) flowOf(listOf())
                 else others
                     .map { participant ->
-                        participant.displayImage.map { displayName ->
+                        participant.combinedDisplayImage.map { displayName ->
                             Pair(participant.userId, displayName)
                         }
                     }
