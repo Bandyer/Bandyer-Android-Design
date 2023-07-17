@@ -22,8 +22,6 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
 
     val companyName = _configuration.mapSuccess { it.companyName }.flatMapLatest { it }.shareInEagerly(viewModelScope)
 
-    val usersDescription = _configuration.mapSuccess { it.usersDescription }.shareInEagerly(viewModelScope)
-
     init {
         viewModelScope.launch {
             _configuration.emit(configure())
@@ -44,8 +42,7 @@ sealed class Configuration {
     data class Success(val phoneBox: PhoneBoxUI,
                        val chatBoxUI: ChatBoxUI,
                        val companyName: SharedFlow<String>,
-                       val theme: SharedFlow<Theme>,
-                       val usersDescription: UsersDescription) : Configuration()
+                       val theme: SharedFlow<Theme>) : Configuration()
     object Failure : Configuration()
 }
 
@@ -54,7 +51,6 @@ suspend fun requestConfiguration(): Configuration {
     return if (CollaborationUI.isConfigured) Configuration.Success(CollaborationUI.phoneBox,
                                                                    CollaborationUI.chatBox,
                                                                    CollaborationUI.companyName,
-                                                                   CollaborationUI.theme,
-                                                                   CollaborationUI.usersDescription)
+                                                                   CollaborationUI.theme)
     else Configuration.Failure
 }

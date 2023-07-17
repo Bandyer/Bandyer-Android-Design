@@ -17,6 +17,7 @@
 package com.kaleyra.collaboration_suite_glass_ui.chat.fragments
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,9 +32,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.chatbox.Chat.State.Active
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
@@ -53,6 +54,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
@@ -247,13 +249,12 @@ internal class ChatFragment : BaseFragment(), TiltListener {
         messages: List<Message>,
         callback: (List<ChatMessagePage>) -> Unit
     ) {
-        val usersDescription = viewModel.usersDescription.replayCache.firstOrNull() ?: UsersDescription()
         binding.kaleyraChatMessage.root.post {
             scope.launch {
                 val allPages = mutableListOf<ChatMessagePage>()
                 messages.forEach {
-                    val user = usersDescription.name(listOf(it.creator.userId))
-                    val avatar = usersDescription.image(listOf(it.creator.userId))
+                    val user = it.creator.combinedDisplayName.first() ?: ""
+                    val avatar = it.creator.combinedDisplayImage.first() ?: Uri.EMPTY
                     val pages = paginateMessage(user, it.content, it.creationDate.time)
                     for (i in pages.indices) {
                         allPages.add(

@@ -20,7 +20,7 @@ import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItemData
 import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatViewModel
@@ -28,6 +28,7 @@ import com.kaleyra.collaboration_suite_glass_ui.common.ParticipantsFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -41,9 +42,6 @@ internal class ChatParticipantsFragment : ParticipantsFragment() {
         )
     }
 
-    override val usersDescription: UsersDescription
-        get() = viewModel.usersDescription.replayCache.firstOrNull() ?: UsersDescription()
-
     private var participantJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,17 +53,12 @@ internal class ChatParticipantsFragment : ParticipantsFragment() {
         super.bindUI()
         repeatOnStarted {
             val myUserId = viewModel.participants.replayCache.firstOrNull()?.me?.userId ?: return@repeatOnStarted
-            val usersDescription = viewModel.usersDescription.replayCache.firstOrNull() ?: return@repeatOnStarted
             viewModel.participants
                 .onEach { it ->
                     val sortedList = it.list.sortedBy { myUserId != it.userId }
                     val items = sortedList.map { part ->
-                        val data = part.userId.let {
-                            ParticipantItemData(
-                                it,
-                                usersDescription.name(listOf(it))
-                            )
-                        }
+                        val data =
+                            ParticipantItemData(part.userId, part.combinedDisplayName.first() ?: "")
                         ParticipantItem(data)
                     }
                     FastAdapterDiffUtil[itemAdapter!!] =

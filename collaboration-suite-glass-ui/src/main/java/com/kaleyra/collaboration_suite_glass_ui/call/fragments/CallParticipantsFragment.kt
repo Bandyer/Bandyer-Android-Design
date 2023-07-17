@@ -18,7 +18,7 @@ package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItemData
@@ -47,9 +47,6 @@ internal class CallParticipantsFragment : ParticipantsFragment() {
         if (args.enableTilt) tiltListener = this
     }
 
-    override val usersDescription: UsersDescription
-        get() = viewModel.usersDescription.replayCache.firstOrNull() ?: UsersDescription()
-
     override fun bindUI() {
         super.bindUI()
         binding.kaleyraUserInfo.hideState(true)
@@ -64,13 +61,7 @@ internal class CallParticipantsFragment : ParticipantsFragment() {
                     val sortedList =
                         pair.first.sortedBy { pair.second.me.userId != it.userId }
                     val items = sortedList.map { part ->
-                        val usersDescription = viewModel.usersDescription.first()
-                        val data = part.userId.let {
-                            ParticipantItemData(
-                                it,
-                                usersDescription.name(listOf(it))
-                            )
-                        }
+                        val data = ParticipantItemData(part.userId, part.combinedDisplayName.first() ?: "")
                         ParticipantItem(data)
                     }
                     FastAdapterDiffUtil[itemAdapter!!] =
