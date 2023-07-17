@@ -143,7 +143,6 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
             setStreamsVideoView(this@CallService, call.participants, callScope)
             syncCallNotification(
                 call,
-                CollaborationUI.usersDescription,
                 callActivityClazz,
                 callScope
             )

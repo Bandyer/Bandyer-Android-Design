@@ -17,8 +17,11 @@
 package com.kaleyra.collaboration_suite_core_ui.call
 
 import android.app.Notification
+import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite.phonebox.CallParticipants
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isIncoming
@@ -28,9 +31,10 @@ import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
 /**
@@ -65,20 +69,19 @@ interface CallNotificationDelegate {
      * Sync the notifications with the call
      *
      * @param call The call
-     * @param usersDescription The usersDescription
      * @param activityClazz The call activity class
      * @param scope The coroutine scope
      */
     fun syncCallNotification(
         call: Call,
-        usersDescription: UsersDescription,
         activityClazz: Class<*>,
         scope: CoroutineScope
     ) {
-        call.state.onEach {
-            val notification =
-                buildNotification(call, usersDescription, activityClazz) ?: return@onEach
-            showNotification(notification)
+        combine(call.state, call.participants) { callState, participants ->
+            ContactDetailsManager.refreshContactDetails(*participants.list.map { it.userId }.toTypedArray())
+            val notification = buildNotification(call, participants, activityClazz)
+            if (notification != null) showNotification(notification)
+            callState
         }
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion { clearNotification() }
@@ -87,15 +90,14 @@ interface CallNotificationDelegate {
 
     private suspend fun buildNotification(
         call: Call,
-        usersDescription: UsersDescription,
+        participants: CallParticipants,
         activityClazz: Class<*>
     ): Notification? {
         val context = ContextRetainer.context
-        val participants = call.participants.value
         val isGroupCall = participants.others.count() > 1
         val enableCallStyle = !DeviceUtils.isSmartGlass
-        val callerDescription = usersDescription.name(listOf(participants.creator()?.userId ?: ""))
-        val calleeDescription = usersDescription.name(participants.others.map { it.userId })
+        val callerDescription = participants.creator()?.combinedDisplayName?.firstOrNull() ?: ""
+        val calleeDescription = participants.others.map { it.combinedDisplayName.firstOrNull() ?: Uri.EMPTY }.joinToString()
 
         return when {
             call.isIncoming() -> {
