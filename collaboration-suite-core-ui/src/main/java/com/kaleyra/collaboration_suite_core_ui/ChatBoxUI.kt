@@ -20,6 +20,7 @@ import android.content.Context
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,6 +32,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.launch
 
 /**
  * The chat box UI
@@ -92,8 +94,13 @@ class ChatBoxUI(
      * @param context context to bind the chat ui
      * @param chat The chat object that should be shown.
      */
-    fun show(context: Context, chat: ChatUI) =
+    fun show(context: Context, chat: ChatUI) {
+        chatScope.launch {
+            val userIds = chat.participants.value.list.map { it.userId }
+            ContactDetailsManager.refreshContactDetails(*userIds.toTypedArray())
+        }
         UIProvider.showChat(context, chatActivityClazz, chat.participants.value.others.first().userId)
+    }
 
     /**
      * @suppress
