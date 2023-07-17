@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
@@ -62,7 +63,7 @@ internal object VideoMapper {
 
     fun Input.Video.Event.Pointer.mapToPointerUi(mirror: Boolean = false): PointerUi {
         return PointerUi(
-            username = producer.displayName.value ?: "",
+            username = producer.combinedDisplayName.value ?: "",
             x = if (mirror) 100 - position.x else position.x,
             y = position.y
         )

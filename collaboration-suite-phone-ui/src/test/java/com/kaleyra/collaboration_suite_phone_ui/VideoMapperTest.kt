@@ -2,6 +2,8 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
@@ -10,6 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VideoMapper.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VideoMapper.mapToVideoUi
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,6 +43,7 @@ class VideoMapperTest {
 
     @Before
     fun setUp() {
+        mockkObject(ContactDetailsManager)
         with(videoMock) {
             every { id } returns "videoId"
             every { view } returns MutableStateFlow(viewMock)
@@ -48,7 +52,7 @@ class VideoMapperTest {
         with(pointerMock1) {
             every { producer } returns mockk {
                 every { userId } returns "userId1"
-                every { displayName } returns MutableStateFlow("displayName")
+                every { combinedDisplayName } returns MutableStateFlow("displayName")
             }
             every { position.x } returns 30f
             every { position.y } returns 45f
@@ -90,8 +94,8 @@ class VideoMapperTest {
         val events = MutableSharedFlow<Input.Video.Event.Pointer>()
         every { videoMock.events } returns events
 
-        val expected1 = listOf(PointerUi(pointerMock1.producer.displayName.value ?: "", pointerMock1.position.x, pointerMock1.position.y))
-        val expected2 = expected1 + PointerUi(pointerMock2.producer.displayName.value ?: "", pointerMock2.position.x, pointerMock2.position.y)
+        val expected1 = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.value ?: "", pointerMock1.position.x, pointerMock1.position.y))
+        val expected2 = expected1 + PointerUi(pointerMock2.producer.combinedDisplayName.value ?: "", pointerMock2.position.x, pointerMock2.position.y)
 
         val values = mutableListOf<List<PointerUi>>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -112,8 +116,8 @@ class VideoMapperTest {
         val events = MutableSharedFlow<Input.Video.Event.Pointer>()
         every { videoMock.events } returns events
 
-        val expected1 = listOf(PointerUi(pointerMock1.producer.displayName.value ?: "", pointerMock1.position.x, pointerMock1.position.y), PointerUi(pointerMock2.producer.displayName.value ?: "", pointerMock2.position.x, pointerMock2.position.y))
-        val expected2 = listOf(PointerUi(pointerMock1.producer.displayName.value ?: "", pointerMock1.position.x, pointerMock1.position.y))
+        val expected1 = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.value ?: "", pointerMock1.position.x, pointerMock1.position.y), PointerUi(pointerMock2.producer.combinedDisplayName.value ?: "", pointerMock2.position.x, pointerMock2.position.y))
+        val expected2 = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.value ?: "", pointerMock1.position.x, pointerMock1.position.y))
 
         val values = mutableListOf<List<PointerUi>>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -138,7 +142,7 @@ class VideoMapperTest {
         val events = MutableSharedFlow<Input.Video.Event.Pointer>()
         every { cameraMock.events } returns events
 
-        val expected = listOf(PointerUi(pointerMock1.producer.displayName.value ?: "", 100 - pointerMock1.position.x, pointerMock1.position.y))
+        val expected = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.value ?: "", 100 - pointerMock1.position.x, pointerMock1.position.y))
 
         val values = mutableListOf<List<PointerUi>>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -157,7 +161,7 @@ class VideoMapperTest {
         val events = MutableSharedFlow<Input.Video.Event.Pointer>()
         every { cameraMock.events } returns events
 
-        val expected = listOf(PointerUi(pointerMock1.producer.displayName.value ?: "", 100 - pointerMock1.position.x, pointerMock1.position.y))
+        val expected = listOf(PointerUi(pointerMock1.producer.combinedDisplayName.value ?: "", 100 - pointerMock1.position.x, pointerMock1.position.y))
 
         val values = mutableListOf<List<PointerUi>>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -174,7 +178,7 @@ class VideoMapperTest {
     fun videoPointerEvent_mapToPointerUi_mappedPointerUi() {
         val actual = pointerMock1.mapToPointerUi()
         val expected = PointerUi(
-            username = pointerMock1.producer.displayName.value ?: "",
+            username = pointerMock1.producer.combinedDisplayName.value ?: "",
             x = pointerMock1.position.x,
             y = pointerMock1.position.y
         )
@@ -185,7 +189,7 @@ class VideoMapperTest {
     fun mirrorTrue_mapToPointerUi_mirroredPointerUi() {
         val actual = pointerMock1.mapToPointerUi(mirror = true)
         val expected = PointerUi(
-            username = pointerMock1.producer.displayName.value ?: "",
+            username = pointerMock1.producer.combinedDisplayName.value ?: "",
             x = 100 - pointerMock1.position.x,
             y = pointerMock1.position.y
         )
