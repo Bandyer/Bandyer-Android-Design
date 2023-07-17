@@ -6,6 +6,8 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.MessagesUI
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
@@ -72,7 +74,7 @@ internal object UiModelMapper {
         participants: Flow<ChatParticipants>
     ): Flow<ChatInfo> {
         val participant = participants.otherParticipant()
-        return combine(participant.flatMapLatest { it.displayName }, participant.flatMapLatest { it.displayImage }) { name, image ->
+        return combine(participant.flatMapLatest { it.combinedDisplayName }, participant.flatMapLatest { it.combinedDisplayImage }) { name, image ->
             ChatInfo(name = name ?: "", image = ImmutableUri(image ?: Uri.EMPTY))
         }
     }
