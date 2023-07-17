@@ -3,6 +3,8 @@ package com.kaleyra.collaboration_suite_phone_ui
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.isConnected
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.toCallStateUi
@@ -190,10 +192,11 @@ class CallStateMapperTest {
 
     @Test
     fun stateKicked_toCallStateUi_callStateKicked() = runTest {
+        mockkObject(ContactDetailsManager)
         every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.Kicked("adminUserId"))
         with(participantMock) {
             every { userId } returns "adminUserId"
-            every { displayName }returns MutableStateFlow("adminUserName")
+            every { combinedDisplayName }returns MutableStateFlow("adminUserName")
         }
         val result = callFlow.toCallStateUi()
         Assert.assertEquals(CallStateUi.Disconnected.Ended.Kicked("adminUserName"), result.first())

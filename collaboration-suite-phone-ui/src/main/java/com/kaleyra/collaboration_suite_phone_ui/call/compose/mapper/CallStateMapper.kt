@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
 import kotlinx.coroutines.flow.Flow
@@ -40,7 +41,7 @@ internal object CallStateMapper {
                 state is Call.State.Disconnected.Ended.HungUp -> CallStateUi.Disconnected.Ended.HungUp
                 state is Call.State.Disconnected.Ended.Kicked -> {
                     val admin = participants.others.firstOrNull { it.userId == state.userId }
-                    val adminName = admin?.displayName?.value ?: ""
+                    val adminName = admin?.combinedDisplayName?.value ?: ""
                     CallStateUi.Disconnected.Ended.Kicked(adminName)
                 }
                 state == Call.State.Disconnected.Ended.Error -> CallStateUi.Disconnected.Ended.Error
