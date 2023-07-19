@@ -25,32 +25,21 @@ internal class CollaborationContactDetailsProvider(private val ioDispatcher: Cor
 
     private var localContactDetailsProvider: CachedLocalContactDetailsProvider? = null
         get() = with(CollaborationUI.usersDescription) {
-            field?.takeIf { it.usersDescription == this }
-                ?: this?.let { CachedLocalContactDetailsProvider(it, ioDispatcher) }
-                    .apply { field = this }
+            field?.takeIf { it.usersDescription == this } ?: this?.let { CachedLocalContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
         }
 
     private var remoteContactDetailsProvider: CachedRemoteContactDetailsProvider? = null
         get() = with(CollaborationUI.collaboration?.contacts) {
-            field?.takeIf { it.contacts == this } ?: this?.let {
-                CachedRemoteContactDetailsProvider(
-                    it,
-                    ioDispatcher
-                )
-            }.apply { field = this }
+            field?.takeIf { it.contacts == this } ?: this?.let { CachedRemoteContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
         }
 
     override suspend fun fetchContactsDetails(
         vararg userIds: String,
         timeout: Long
     ): Set<ContactDetails> = coroutineScope {
-        val primaryContactDetails =
-            async(ioDispatcher) { primaryProvider.fetchContactsDetails(userIds = userIds) }
-        val fallbackContactDetails =
-            async(ioDispatcher) { fallbackProvider.fetchContactsDetails(userIds = userIds) }
-        val defaultProviderContacts =
-            async(ioDispatcher) { defaultProvider.fetchContactsDetails(userIds = userIds) }
-        primaryContactDetails.await().takeIf { it.isNotEmpty() } ?: fallbackContactDetails.await()
-            .takeIf { it.isNotEmpty() } ?: defaultProviderContacts.await()
+        val primaryContactDetails = async(ioDispatcher) { primaryProvider.fetchContactsDetails(userIds = userIds) }
+        val fallbackContactDetails = async(ioDispatcher) { fallbackProvider.fetchContactsDetails(userIds = userIds) }
+        val defaultProviderContacts = async(ioDispatcher) { defaultProvider.fetchContactsDetails(userIds = userIds) }
+        primaryContactDetails.await().takeIf { it.isNotEmpty() } ?: fallbackContactDetails.await().takeIf { it.isNotEmpty() } ?: defaultProviderContacts.await()
     }
 }
