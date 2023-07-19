@@ -14,7 +14,7 @@ import kotlinx.coroutines.sync.withLock
 // TODO update the remote details when they change
 // TODO use updateDisplayDetails?, invoke when connected on call module
 // TODO check if it is right also in the call link
-internal object ContactDetailsManager {
+object ContactDetailsManager {
 
     const val FETCH_TIMEOUT = 2500L
 
