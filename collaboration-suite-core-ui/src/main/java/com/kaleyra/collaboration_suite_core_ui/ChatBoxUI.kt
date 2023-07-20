@@ -120,12 +120,14 @@ class ChatBoxUI(
             msgsScope?.cancel()
             msgsScope = CoroutineScope(SupervisorJob(chatScope.coroutineContext[Job]))
             chats.forEach { chat ->
+                val chatParticipants = chat.participants.value
+                ContactDetailsManager.refreshContactDetails(*chatParticipants.list.map { it.userId }.toTypedArray())
                 chat.messages.onEach messagesUI@{
                     if (!withUI) return@messagesUI
                     val lastMessage = it.other.firstOrNull { it.state.value is Message.State.Received }
                     if (lastMessage == null || lastMessagePerChat[chat.id] == lastMessage.id) return@messagesUI
                     lastMessagePerChat[chat.id] = lastMessage.id
-                    it.showUnreadMsgs(chat.id, chat.participants.value.me.userId)
+                    it.showUnreadMsgs(chat.id, chatParticipants)
                 }.launchIn(msgsScope!!)
             }
         }.launchIn(chatScope)
