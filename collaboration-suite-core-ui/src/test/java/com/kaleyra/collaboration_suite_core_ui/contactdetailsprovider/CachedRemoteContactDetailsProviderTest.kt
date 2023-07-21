@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider
 
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedRemoteContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetails
+import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.ContactDetailsTestHelper.assertEqualsContactDetails
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.RemoteContactDetailsProviderTestHelper.uriUser1
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.RemoteContactDetailsProviderTestHelper.uriUser2
 import io.mockk.coVerify
@@ -25,15 +26,15 @@ class CachedRemoteContactDetailsProviderTest {
         val contacts = RemoteContactDetailsProviderTestHelper.ContactsMock(hashMapOf("userId1" to contact1, "userId2" to contact2))
         val provider = CachedRemoteContactDetailsProvider(contacts = contacts, ioDispatcher = testDispatcher)
         val result = provider.fetchContactsDetails("userId1")
-        val expected = setOf(ContactDetails("userId1", "username1", uriUser1))
-        Assert.assertEquals(expected, result)
+        val expected = listOf(ContactDetails("userId1", MutableStateFlow("username1"), MutableStateFlow(uriUser1)))
+        assertEqualsContactDetails(expected, result)
 
         val newResult = provider.fetchContactsDetails("userId1", "userId2")
-        val newExpected =  setOf(
-            ContactDetails("userId1", "username1", uriUser1),
-            ContactDetails("userId2", "username2", uriUser2),
+        val newExpected = listOf(
+            ContactDetails("userId1", MutableStateFlow("username1"), MutableStateFlow(uriUser1)),
+            ContactDetails("userId2", MutableStateFlow("username2"), MutableStateFlow(uriUser2)),
         )
-        Assert.assertEquals(newExpected, newResult)
+        assertEqualsContactDetails(newExpected, newResult)
 
         coVerify(exactly = 1) { contact1.displayName }
         coVerify(exactly = 1) { contact1.displayImage }

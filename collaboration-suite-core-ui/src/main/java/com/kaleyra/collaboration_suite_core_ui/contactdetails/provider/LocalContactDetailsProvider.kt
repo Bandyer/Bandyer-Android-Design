@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_core_ui.contactdetails.provider
 
+import android.net.Uri
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetails
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import kotlinx.coroutines.CoroutineDispatcher
@@ -7,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withTimeout
 
 internal class LocalContactDetailsProvider(
@@ -22,9 +24,10 @@ internal class LocalContactDetailsProvider(
             withTimeout(timeout) {
                 val contactsDetails = userIds.map { userId ->
                     async(ioDispatcher) {
-                        val name = async { usersDescription.name(listOf(userId)) }
-                        val image = async { usersDescription.image(listOf(userId)) }
-                        ContactDetails(userId = userId, name = name.await(), image = image.await())
+                        val deferredName = async { usersDescription.name(listOf(userId)) }
+                        val deferredImage = async { usersDescription.image(listOf(userId)) }
+                        val (name, image) = listOf(deferredName, deferredImage).awaitAll()
+                        ContactDetails(userId = userId, name = MutableStateFlow(name as String), image = MutableStateFlow(image as Uri))
                     }
                 }
                 contactsDetails.awaitAll()

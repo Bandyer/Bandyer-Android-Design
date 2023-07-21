@@ -3,14 +3,15 @@ package com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider
 import android.net.Uri
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedLocalContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetails
+import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.ContactDetailsTestHelper.assertEqualsContactDetails
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.usersDescriptionMock
 import com.kaleyra.collaboration_suite_core_ui.model.DefaultUsersDescription
 import io.mockk.coVerify
 import io.mockk.spyk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -29,15 +30,15 @@ internal class CachedLocalContactDetailsProviderTest {
         )
 
         val result = provider.fetchContactsDetails("userId1")
-        val expected = setOf(ContactDetails("userId1", "username1", LocalContactDetailsProviderTestHelper.uriUser1))
-        Assert.assertEquals(expected, result)
+        val expected = listOf(ContactDetails("userId1", MutableStateFlow("username1"), MutableStateFlow(LocalContactDetailsProviderTestHelper.uriUser1)))
+        assertEqualsContactDetails(expected, result)
 
         val newResult = provider.fetchContactsDetails("userId1", "userId2")
-        val newExpected =  setOf(
-            ContactDetails("userId1", "username1", LocalContactDetailsProviderTestHelper.uriUser1),
-            ContactDetails("userId2", "username2", LocalContactDetailsProviderTestHelper.uriUser2),
+        val newExpected =  listOf(
+            ContactDetails("userId1", MutableStateFlow("username1"), MutableStateFlow(LocalContactDetailsProviderTestHelper.uriUser1)),
+            ContactDetails("userId2", MutableStateFlow("username2"), MutableStateFlow(LocalContactDetailsProviderTestHelper.uriUser2)),
         )
-        Assert.assertEquals(newExpected, newResult)
+        assertEqualsContactDetails(newExpected, newResult)
 
         coVerify(exactly = 1) { name.invoke(listOf("userId1")) }
         coVerify(exactly = 1) { name.invoke(listOf("userId1")) }

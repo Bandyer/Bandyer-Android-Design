@@ -6,4 +6,4 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 internal class CachedRemoteContactDetailsProvider(val contacts: Contacts, ioDispatcher: CoroutineDispatcher = Dispatchers.IO) :
-    CachedContactDetailsProvider(RemoteContactDetailsProvider(contacts, ioDispatcher))
+    CachedContactDetailsProvider(RemoteContactDetailsProvider(contacts))

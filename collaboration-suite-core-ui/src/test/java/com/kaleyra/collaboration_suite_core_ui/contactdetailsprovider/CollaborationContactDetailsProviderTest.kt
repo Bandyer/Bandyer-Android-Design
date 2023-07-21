@@ -6,6 +6,7 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.Cac
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedLocalContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedRemoteContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.CollaborationContactDetailsProvider
+import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.ContactDetailsTestHelper.assertEqualsContactDetails
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.usersDescriptionMock
 import com.kaleyra.collaboration_suite_core_ui.model.DefaultUsersDescription
 import io.mockk.every
@@ -62,7 +63,7 @@ class CollaborationContactDetailsProviderTest {
         val userIds = arrayOf("userId1", "userId2")
         val result = provider.fetchContactsDetails(*userIds)
         val expected = localProvider.fetchContactsDetails(*userIds)
-        assertEquals(expected, result)
+        assertEqualsContactDetails(expected.toList(), result)
     }
 
     @Test
@@ -77,7 +78,7 @@ class CollaborationContactDetailsProviderTest {
         val userIds = arrayOf("userId1", "userId2")
         val result = provider.fetchContactsDetails(*userIds)
         val expected = remoteProvider.fetchContactsDetails(*userIds)
-        assertEquals(expected, result)
+        assertEqualsContactDetails(expected.toList(), result)
     }
 
     @Test
@@ -90,7 +91,7 @@ class CollaborationContactDetailsProviderTest {
         val userIds = arrayOf("userId1", "userId2")
         val result = provider.fetchContactsDetails(*userIds)
         val expected = defaultProvider.fetchContactsDetails(*userIds)
-        assertEquals(expected, result)
+        assertEqualsContactDetails(expected.toList(), result)
     }
 
     @Test
@@ -106,7 +107,7 @@ class CollaborationContactDetailsProviderTest {
         val userIds = arrayOf("userId1", "userId2")
         val result = provider.fetchContactsDetails(*userIds)
         val expected = remoteProvider.fetchContactsDetails(*userIds)
-        assertEquals(expected, result)
+        assertEqualsContactDetails(expected.toList(), result)
     }
 
     @Test
@@ -120,7 +121,7 @@ class CollaborationContactDetailsProviderTest {
         val userIds = arrayOf("userId1", "userId2")
         val result = provider.fetchContactsDetails(*userIds)
         val expected = defaultProvider.fetchContactsDetails(*userIds)
-        assertEquals(expected, result)
+        assertEqualsContactDetails(expected.toList(), result)
     }
 
     @Test
@@ -134,7 +135,7 @@ class CollaborationContactDetailsProviderTest {
 
         val result = provider.fetchContactsDetails(*userIds)
         val expected = localProvider.fetchContactsDetails(*userIds)
-        assertEquals(expected, result)
+        assertEqualsContactDetails(expected.toList(), result)
 
         val uriMock = mockk<Uri>()
         val newUsersDescription = DefaultUsersDescription(name = { it.joinToString() }, image = { uriMock })
@@ -143,7 +144,7 @@ class CollaborationContactDetailsProviderTest {
 
         val newResult = provider.fetchContactsDetails(*userIds)
         val newExpected = newLocalProvider.fetchContactsDetails(*userIds)
-        assertEquals(newExpected, newResult)
+        assertEqualsContactDetails(newExpected.toList(), newResult)
     }
 
     @Test
@@ -159,7 +160,7 @@ class CollaborationContactDetailsProviderTest {
 
         val result = provider.fetchContactsDetails(*userIds)
         val expected = remoteProvider.fetchContactsDetails(*userIds)
-        assertEquals(expected, result)
+        assertEqualsContactDetails(expected.toList(), result)
 
         val uriMock = mockk<Uri>()
         val newContacts = RemoteContactDetailsProviderTestHelper.ContactsMock(
