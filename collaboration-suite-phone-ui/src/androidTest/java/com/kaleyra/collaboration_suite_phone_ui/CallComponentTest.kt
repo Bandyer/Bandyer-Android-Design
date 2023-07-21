@@ -23,7 +23,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWid
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStreamTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -169,8 +168,8 @@ class CallComponentTest {
         val newStreamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
         val newStreamTwoTextTop = composeTestRule.onNodeWithText("user2", useUnmergedTree = true).getBoundsInRoot().top
         val callInfoWidgetHeight = composeTestRule.onNodeWithTag(CallInfoWidgetTag).getBoundsInRoot().height
-        assertEquals(newStreamOneTextTop, streamOneTextTop + callInfoWidgetHeight)
-        assertEquals(streamTwoTextTop, newStreamTwoTextTop)
+        newStreamOneTextTop.assertIsEqualTo(streamOneTextTop + callInfoWidgetHeight, "first stream header")
+        streamTwoTextTop.assertIsEqualTo(newStreamTwoTextTop, "first stream header")
     }
 
     @Test
@@ -194,8 +193,8 @@ class CallComponentTest {
         val newStreamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
         val newStreamTwoTextTop = composeTestRule.onNodeWithText("user2", useUnmergedTree = true).getBoundsInRoot().top
         val callInfoWidgetHeight = composeTestRule.onNodeWithTag(CallInfoWidgetTag).getBoundsInRoot().height
-        assertEquals(newStreamOneTextTop, streamOneTextTop + callInfoWidgetHeight)
-        assertEquals(newStreamTwoTextTop, streamTwoTextTop + callInfoWidgetHeight)
+        newStreamOneTextTop.assertIsEqualTo(streamOneTextTop + callInfoWidgetHeight, "stream headers")
+        newStreamTwoTextTop.assertIsEqualTo(streamTwoTextTop + callInfoWidgetHeight, "stream headers")
     }
 
     @Test
@@ -213,7 +212,7 @@ class CallComponentTest {
         )
         val newStreamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
         val callInfoWidgetHeight = composeTestRule.onNodeWithTag(CallInfoWidgetTag).getBoundsInRoot().height
-        assertEquals(newStreamOneTextTop, streamOneTextTop + callInfoWidgetHeight)
+        newStreamOneTextTop.assertIsEqualTo(streamOneTextTop + callInfoWidgetHeight, "stream header")
     }
 
     @Test
