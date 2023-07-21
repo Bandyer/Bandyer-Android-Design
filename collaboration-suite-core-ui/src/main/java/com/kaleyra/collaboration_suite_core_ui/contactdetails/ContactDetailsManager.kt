@@ -13,8 +13,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-// TODO use updateDisplayDetails?, invoke when connected on call module
-// TODO check if it is right also in the call link
 object ContactDetailsManager {
 
     const val FETCH_TIMEOUT = 2500L
