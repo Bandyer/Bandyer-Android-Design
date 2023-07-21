@@ -37,6 +37,7 @@ internal class CompanyUI(
 
 internal class NoOpCompany(
     override val name: SharedFlow<String> = MutableSharedFlow(),
+    override val id: SharedFlow<String> = MutableSharedFlow(),
     override val theme: SharedFlow<Company.Theme> = MutableSharedFlow()
 ) : Company
 
