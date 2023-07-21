@@ -420,6 +420,28 @@ class CallComponentTest {
     }
 
     @Test
+    fun amIAloneTrueAndVideoViewIsNull_youAreAloneIsDisplayedUnderTheVideoAvatar() {
+        callUiState = CallUiState(callState = mockk(), amIAlone = true, featuredStreams = ImmutableList(listOf(streamMock1.copy(video = VideoUi(id = "videoId", view = null, isEnabled = false)))))
+        val text = composeTestRule.activity.getString(R.string.kaleyra_call_left_alone)
+        val avatar = composeTestRule.activity.getString(R.string.kaleyra_avatar)
+        val avatarBottom = composeTestRule.onNodeWithContentDescription(avatar).getUnclippedBoundsInRoot().bottom
+        val textTop = composeTestRule.onNodeWithText(text).getUnclippedBoundsInRoot().top
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
+        assert(avatarBottom < textTop)
+    }
+
+    @Test
+    fun amIAloneTrueAndVideoIsNull_youAreAloneIsDisplayedUnderTheVideoAvatar() {
+        callUiState = CallUiState(callState = mockk(), amIAlone = true, featuredStreams = ImmutableList(listOf(streamMock1.copy(video = null))))
+        val text = composeTestRule.activity.getString(R.string.kaleyra_call_left_alone)
+        val avatar = composeTestRule.activity.getString(R.string.kaleyra_avatar)
+        val avatarBottom = composeTestRule.onNodeWithContentDescription(avatar).getUnclippedBoundsInRoot().bottom
+        val textTop = composeTestRule.onNodeWithText(text).getUnclippedBoundsInRoot().top
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
+        assert(avatarBottom < textTop)
+    }
+
+    @Test
     fun fullscreenStream_fullscreenModeMessageIsDisplayed() {
         callUiState = CallUiState(fullscreenStream = streamMock1)
         val text = composeTestRule.activity.getString(R.string.kaleyra_fullscreen_info)
