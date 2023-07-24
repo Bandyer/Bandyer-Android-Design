@@ -63,7 +63,7 @@ internal object InputMapper {
             .flatMapLatest { it.streams }
             .map { streams ->
                 streams.firstOrNull { stream ->
-                    stream.video.firstOrNull { it is Input.Video.Camera } != null
+                    stream.video.firstOrNull() is Input.Video.Camera
                 }
             }
             .filterNotNull()
@@ -104,7 +104,7 @@ internal object InputMapper {
             .flatMapLatest { it.streams }
             .map { streams ->
                 streams.firstOrNull { stream ->
-                    stream.audio.firstOrNull { it != null } != null
+                    stream.audio.filterNotNull().firstOrNull() != null
                 }
             }
             .filterNotNull()
