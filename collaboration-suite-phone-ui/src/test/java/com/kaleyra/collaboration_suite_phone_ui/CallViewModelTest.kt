@@ -9,6 +9,9 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration.Success
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.Theme
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
@@ -57,11 +60,11 @@ class CallViewModelTest {
 
     private val streamMock2 = mockk<Stream>(relaxed = true)
 
-    private val streamMock3 = mockk<Stream>()
+    private val streamMock3 = mockk<Stream>(relaxed = true)
 
-    private val streamMock4 = mockk<Stream>()
+    private val streamMock4 = mockk<Stream>(relaxed = true)
 
-    private val myStreamMock = mockk<Stream.Mutable>()
+    private val myStreamMock = mockk<Stream.Mutable>(relaxed = true)
 
     private val callParticipantsMock = mockk<CallParticipants>()
 
@@ -84,6 +87,7 @@ class CallViewModelTest {
         mockkConstructor(StreamsHandler::class)
         every { anyConstructed<StreamsHandler>().swapThumbnail(any()) } returns Unit
         mockkObject(CallUserMessagesProvider)
+        mockkObject(ContactDetailsManager)
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { inputs } returns inputsMock
@@ -133,21 +137,21 @@ class CallViewModelTest {
         with(participantMeMock) {
             every { userId } returns "myUserId"
             every { streams } returns MutableStateFlow(listOf(myStreamMock))
-            every { displayName } returns MutableStateFlow("myDisplayName")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { combinedDisplayName } returns MutableStateFlow("myDisplayName")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock)
             every { feedback } returns MutableStateFlow(null)
         }
         with(participantMock1) {
             every { userId } returns "userId1"
             every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
-            every { displayName } returns MutableStateFlow("displayName1")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { combinedDisplayName } returns MutableStateFlow("displayName1")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock)
         }
         with(participantMock2) {
             every { userId } returns "userId2"
             every { streams } returns MutableStateFlow(listOf(streamMock3))
-            every { displayName } returns MutableStateFlow("displayName2")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { combinedDisplayName } returns MutableStateFlow("displayName2")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock)
         }
         with(themeMock) {
             every { day } returns mockk {
