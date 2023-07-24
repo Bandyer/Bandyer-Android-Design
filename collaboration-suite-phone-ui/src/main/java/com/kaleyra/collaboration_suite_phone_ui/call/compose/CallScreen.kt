@@ -263,11 +263,7 @@ internal fun CallScreen(
     )
     val permissions by remember(callScreenState) { getPermissions(callUiState) }
     val permissionsState = rememberMultiplePermissionsState(permissions = permissions) { permissionsResult ->
-        permissionsResult.forEach { (permission, isGranted) ->
-            if (!isGranted) {
-                viewModel.hangUp()
-                return@forEach
-            }
+        permissionsResult.forEach { (permission, _) ->
             when (permission) {
                 RecordAudioPermission -> viewModel.startMicrophone(activity)
                 CameraPermission -> viewModel.startCamera(activity)
