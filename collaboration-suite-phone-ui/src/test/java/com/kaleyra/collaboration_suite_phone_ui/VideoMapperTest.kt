@@ -61,7 +61,7 @@ class VideoMapperTest {
         with(pointerMock2) {
             every { producer } returns mockk {
                 every { userId } returns "userId2"
-                every { displayName } returns MutableStateFlow("displayName2")
+                every { combinedDisplayName } returns MutableStateFlow("displayName2")
             }
             every { position.x } returns 60f
             every { position.y } returns 20f
