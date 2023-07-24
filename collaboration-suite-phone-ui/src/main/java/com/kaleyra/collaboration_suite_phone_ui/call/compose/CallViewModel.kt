@@ -43,7 +43,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             else 0L
         }
         .map { (_: List<CallParticipant>, streams: List<StreamUi>) -> streams }
-        .shareIn(viewModelScope, SharingStarted.Eagerly)
+        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
 
     private val callState = call
         .toCallStateUi()
