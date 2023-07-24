@@ -136,6 +136,7 @@ class CallViewModelTest {
         }
         with(participantMeMock) {
             every { userId } returns "myUserId"
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
             every { streams } returns MutableStateFlow(listOf(myStreamMock))
             every { combinedDisplayName } returns MutableStateFlow("myDisplayName")
             every { combinedDisplayImage } returns MutableStateFlow(uriMock)
@@ -143,12 +144,14 @@ class CallViewModelTest {
         }
         with(participantMock1) {
             every { userId } returns "userId1"
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
             every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
             every { combinedDisplayName } returns MutableStateFlow("displayName1")
             every { combinedDisplayImage } returns MutableStateFlow(uriMock)
         }
         with(participantMock2) {
             every { userId } returns "userId2"
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
             every { streams } returns MutableStateFlow(listOf(streamMock3))
             every { combinedDisplayName } returns MutableStateFlow("displayName2")
             every { combinedDisplayImage } returns MutableStateFlow(uriMock)

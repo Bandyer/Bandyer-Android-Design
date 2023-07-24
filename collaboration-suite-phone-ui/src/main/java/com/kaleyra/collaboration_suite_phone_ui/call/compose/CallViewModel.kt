@@ -16,6 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallUiStateM
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioOnly
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.hasAtLeastAVideoEnabled
@@ -35,13 +36,14 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     override val userMessage: Flow<UserMessage>
         get() = CallUserMessagesProvider.userMessage
 
-    private val streams = call
-        .toStreamsUi()
-        .debounce {
-            if (it.size == 1) SINGLE_STREAM_DEBOUNCE_MILLIS
+    private val streams: Flow<List<StreamUi>> =
+        combine(call.toInCallParticipants(), call.toStreamsUi()) { participants, streams -> participants to streams }
+        .debounce { (participants: List<CallParticipant>, streams: List<StreamUi>) ->
+            if (participants.size != 1 && streams.size == 1) SINGLE_STREAM_DEBOUNCE_MILLIS
             else 0L
         }
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+        .map { (_: List<CallParticipant>, streams: List<StreamUi>) -> streams }
+        .shareIn(viewModelScope, SharingStarted.Eagerly)
 
     private val callState = call
         .toCallStateUi()
