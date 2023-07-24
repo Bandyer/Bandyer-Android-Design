@@ -181,10 +181,10 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
     @Test
     fun testPreCallUiState_isLinkUpdated() = runTest {
         every { callMock.isLink } returns true
-        val current = viewModel.uiState.first().isConnecting
+        val current = viewModel.uiState.first().isLink
         assertEquals(false, current)
         advanceUntilIdle()
-        val new = viewModel.uiState.first().isConnecting
+        val new = viewModel.uiState.first().isLink
         assertEquals(true, new)
     }
 
