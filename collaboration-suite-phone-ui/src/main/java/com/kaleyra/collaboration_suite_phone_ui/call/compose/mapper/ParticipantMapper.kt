@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import android.net.Uri
+import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
@@ -16,10 +17,10 @@ import kotlinx.coroutines.flow.transform
 
 internal object ParticipantMapper {
 
-    fun Flow<Call>.isGroupCall(): Flow<Boolean> =
-        this.flatMapLatest { it.participants }
-            .map { it.others.size > 1 }
-            .distinctUntilChanged()
+    fun Flow<Call>.isGroupCall(companyId: Flow<String>): Flow<Boolean> =
+        combine(this.flatMapLatest { it.participants }, companyId) { participants, companyId ->
+            participants.others.filter { it.userId != companyId }.size > 1
+        }.distinctUntilChanged()
 
     fun Flow<Call>.toOtherDisplayNames(): Flow<List<String>> =
         this.flatMapLatest { it.participants }

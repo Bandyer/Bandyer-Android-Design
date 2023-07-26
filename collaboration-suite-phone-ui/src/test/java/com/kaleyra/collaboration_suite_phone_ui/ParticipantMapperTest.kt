@@ -145,7 +145,7 @@ class ParticipantMapperTest {
     fun singleOtherParticipants_isGroupCall_false() = runTest {
         every { callParticipantsMock.others } returns listOf(participantMock1)
         val call = MutableStateFlow(callMock)
-        val result = call.isGroupCall()
+        val result = call.isGroupCall(MutableStateFlow("companyId"))
         Assert.assertEquals(false, result.first())
     }
 
@@ -153,8 +153,17 @@ class ParticipantMapperTest {
     fun multipleOtherParticipants_isGroupCall_true() = runTest {
         every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
         val call = MutableStateFlow(callMock)
-        val result = call.isGroupCall()
+        val result = call.isGroupCall(MutableStateFlow("companyId"))
         Assert.assertEquals(true, result.first())
+    }
+
+    @Test
+    fun `when a participant userId is the companyId, they are not counted as group member`() = runTest {
+        every { participantMock1.userId } returns "companyId"
+        every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
+        val call = MutableStateFlow(callMock)
+        val result = call.isGroupCall(MutableStateFlow("companyId"))
+        Assert.assertEquals(false, result.first())
     }
 
     @Test
