@@ -25,8 +25,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmod
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -35,7 +33,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
     override fun initialState() = CallActionsUiState()
 
     private val callActions = call
-        .toCallActions()
+        .toCallActions(company.flatMapLatest { it.id })
         .shareInEagerly(viewModelScope)
 
     private val isCallConnected = call
@@ -157,9 +155,10 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         val call = call.getValue()
         val participants = call?.participants?.getValue()
         if (chatBox == null || participants == null) return
+        val companyId = company.getValue()?.id?.getValue()
         chatBox.chat(
             context = context,
-            userIDs = participants.others.map { it.userId }
+            userIDs = participants.others.filter { it.userId != companyId }.map { it.userId }
         )
     }
 
