@@ -1,8 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite.Company
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI.theme
 import com.kaleyra.collaboration_suite_core_ui.Theme
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper.toWatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
@@ -10,6 +8,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkIn
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
@@ -19,6 +18,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class WatermarkMapperTest {
 
     private val themeMock = mockk<Theme>()

@@ -1,6 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
+import androidx.compose.runtime.MutableState
+import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -41,7 +43,7 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
 
     protected val phoneBoxMock = mockk<PhoneBoxUI>()
 
-    protected val companyNameMock = "Kaleyra"
+    protected val companyMock = mockk<Company>()
 
     protected val themeMock = mockk<Theme>()
 
@@ -140,6 +142,7 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
         }
         every { callMock.extras.preferredType } returns preferredTypeMock
         every { preferredTypeMock.isVideoEnabled() } returns true
+        every { companyMock.name } returns MutableStateFlow("Kaleyra")
         with(themeMock) {
             every { day } returns mockk {
                 every { logo } returns dayLogo

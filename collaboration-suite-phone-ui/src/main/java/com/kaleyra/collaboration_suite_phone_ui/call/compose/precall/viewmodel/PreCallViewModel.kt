@@ -17,6 +17,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provid
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -31,7 +33,7 @@ internal abstract class PreCallViewModel<T : PreCallUiState<T>>(configure: suspe
 
     init {
         theme
-            .toWatermarkInfo(companyName)
+            .toWatermarkInfo(company.flatMapLatest { it.name })
             .onEach { watermarkInfo -> _uiState.update { it.clone(watermarkInfo = watermarkInfo) } }
             .launchIn(viewModelScope)
 
