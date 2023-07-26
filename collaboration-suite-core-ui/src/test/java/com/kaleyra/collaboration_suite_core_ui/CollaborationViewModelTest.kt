@@ -44,9 +44,9 @@ class CollaborationViewModelTest {
 
     @Test
     fun configurationSuccessful_getCompanyName_getCompanyNameInstance() = runTest {
-        val companyName = MutableStateFlow("Kaleyra")
-        val viewModel = object : CollaborationViewModel({ Configuration.Success(mockk(), mockk(), companyName = companyName, mockk(relaxed = true)) }) {}
-        assertEquals(viewModel.companyName.first(), companyName.value)
+        val company = mockk<CompanyUI>()
+        val viewModel = object : CollaborationViewModel({ Configuration.Success(mockk(), mockk(), company = company, mockk(relaxed = true)) }) {}
+        assertEquals(viewModel.company.first(), company)
     }
 
     @Test
