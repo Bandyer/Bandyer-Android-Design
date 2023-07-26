@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity
+import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -76,7 +77,7 @@ class CallViewModelTest {
 
     private val participantMock2 = mockk<CallParticipant>()
 
-    private val companyNameMock = "Kaleyra"
+    private val companyMock = mockk<Company>()
 
     private val themeMock = mockk<Theme>()
 
@@ -158,6 +159,10 @@ class CallViewModelTest {
             every { combinedDisplayName } returns MutableStateFlow("displayName2")
             every { combinedDisplayImage } returns MutableStateFlow(uriMock)
         }
+        with(companyMock) {
+            every { name } returns MutableStateFlow("Kaleyra")
+            every { id } returns MutableStateFlow("companyId")
+        }
         with(themeMock) {
             every { day } returns mockk {
                 every { logo } returns dayLogo
@@ -166,7 +171,7 @@ class CallViewModelTest {
                 every { logo } returns nightLogo
             }
         }
-        viewModel = spyk(CallViewModel { Success(phoneBoxMock, mockk(), MutableStateFlow(companyNameMock), MutableStateFlow(themeMock)) })
+        viewModel = spyk(CallViewModel { Success(phoneBoxMock, mockk(), companyMock, MutableStateFlow(themeMock)) })
     }
 
     @After

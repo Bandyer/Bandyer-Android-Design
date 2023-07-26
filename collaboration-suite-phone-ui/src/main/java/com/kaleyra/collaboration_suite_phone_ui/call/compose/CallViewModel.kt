@@ -85,7 +85,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
         }.launchIn(viewModelScope)
 
         theme
-            .toWatermarkInfo(companyName)
+            .toWatermarkInfo(company.flatMapLatest { it.name })
             .onEach { watermarkInfo -> _uiState.update { it.copy(watermarkInfo = watermarkInfo) } }
             .launchIn(viewModelScope)
 
@@ -120,7 +120,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
         }.takeWhile { !it }.launchIn(viewModelScope)
 
         call
-            .isGroupCall()
+            .isGroupCall(company.flatMapLatest { it.id })
             .onEach { isGroupCall -> _uiState.update { it.copy(isGroupCall = isGroupCall) } }
             .launchIn(viewModelScope)
 
