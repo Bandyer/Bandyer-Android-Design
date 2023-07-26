@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
+import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasAudio
@@ -13,13 +14,13 @@ import kotlinx.coroutines.flow.flatMapLatest
 
 internal object CallActionsMapper {
 
-    fun Flow<CallUI>.toCallActions(): Flow<List<CallAction>> =
+    fun Flow<CallUI>.toCallActions(companyId: Flow<String>): Flow<List<CallAction>> =
         combine(
             flatMapLatest { it.actions },
             hasVirtualBackground(),
             isAudioOnly(),
             hasAudio(),
-            isGroupCall()
+            isGroupCall(companyId)
         ) { actions, hasVirtualBackground, isAudioOnly, hasAudio, isGroupCall ->
             val result = mutableListOf<CallAction>()
 
