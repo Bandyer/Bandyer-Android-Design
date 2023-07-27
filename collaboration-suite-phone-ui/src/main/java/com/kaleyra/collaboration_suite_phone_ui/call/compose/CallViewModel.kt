@@ -28,6 +28,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provid
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallUiState>(configure), UserMessageViewModel {
 
@@ -43,11 +44,11 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             else 0L
         }
         .map { (_: List<CallParticipant>, streams: List<StreamUi>) -> streams }
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+        .shareInEagerly(viewModelScope)
 
     private val callState = call
         .toCallStateUi()
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+        .shareInEagerly(viewModelScope)
 
     private val maxNumberOfFeaturedStreams = MutableStateFlow(DEFAULT_FEATURED_STREAMS_COUNT)
 
@@ -64,6 +65,13 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     private var onPipAspectRatio: ((Rational) -> Unit)? = null
 
     init {
+        viewModelScope.launch {
+            val result = withTimeoutOrNull(NULL_CALL_TIMEOUT) {
+                call.firstOrNull()
+            }
+            result ?: onCallEnded?.invoke(false, false, false)
+        }
+
         CallUserMessagesProvider.start(call)
 
         streamsHandler.streamsArrangement
@@ -209,6 +217,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
         const val DEFAULT_FEATURED_STREAMS_COUNT = 2
         const val SINGLE_STREAM_DEBOUNCE_MILLIS = 5000L
+        const val NULL_CALL_TIMEOUT = 1000L
 
         fun provideFactory(configure: suspend () -> Configuration) =
             object : ViewModelProvider.Factory {
