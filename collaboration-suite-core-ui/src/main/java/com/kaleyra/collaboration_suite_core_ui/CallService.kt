@@ -93,6 +93,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
             return START_NOT_STICKY
         }
         application.registerActivityLifecycleCallbacks(this)
+        Thread.setDefaultUncaughtExceptionHandler(CallUncaughtExceptionHandler)
         setUpCall(callActivityClazz)
         return START_NOT_STICKY
     }
