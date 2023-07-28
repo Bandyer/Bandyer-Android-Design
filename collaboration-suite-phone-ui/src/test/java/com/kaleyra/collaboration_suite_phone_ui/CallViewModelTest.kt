@@ -229,6 +229,30 @@ class CallViewModelTest {
     }
 
     @Test
+    fun testRingingCallUiState_featuredStreamsNotUpdated() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnected)
+        every { callParticipantsMock.creator() } returns mockk(relaxed = true)
+        val current = viewModel.uiState.first().featuredStreams
+        assertEquals(ImmutableList<StreamUi>(listOf()), current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().featuredStreams
+        val featuredStreamsIds = new.value.map { it.id }
+        assertEquals(listOf<String>(), featuredStreamsIds)
+    }
+
+    @Test
+    fun testDialingCallUiState_featuredStreamsNotUpdated() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Connecting)
+        every { callParticipantsMock.creator() } returns participantMeMock
+        val current = viewModel.uiState.first().featuredStreams
+        assertEquals(ImmutableList<StreamUi>(listOf()), current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().featuredStreams
+        val featuredStreamsIds = new.value.map { it.id }
+        assertEquals(listOf<String>(), featuredStreamsIds)
+    }
+
+    @Test
     fun testCallUiState_thumbnailStreamsUpdated() = runTest {
         val current = viewModel.uiState.first().thumbnailStreams
         assertEquals(ImmutableList<StreamUi>(listOf()), current)
@@ -236,6 +260,30 @@ class CallViewModelTest {
         val new = viewModel.uiState.first().thumbnailStreams
         val thumbnailStreamsIds = new.value.map { it.id }
         assertEquals(listOf(streamMock3.id, myStreamMock.id), thumbnailStreamsIds)
+    }
+
+    @Test
+    fun testRingingCallUiState_thumbnailStreamsNotUpdated() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnected)
+        every { callParticipantsMock.creator() } returns mockk(relaxed = true)
+        val current = viewModel.uiState.first().thumbnailStreams
+        assertEquals(ImmutableList<StreamUi>(listOf()), current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().thumbnailStreams
+        val thumbnailStreamsIds = new.value.map { it.id }
+        assertEquals(listOf<String>(), thumbnailStreamsIds)
+    }
+
+    @Test
+    fun testDialingCallUiState_thumbnailStreamsNotUpdated() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Connecting)
+        every { callParticipantsMock.creator() } returns participantMeMock
+        val current = viewModel.uiState.first().thumbnailStreams
+        assertEquals(ImmutableList<StreamUi>(listOf()), current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().thumbnailStreams
+        val thumbnailStreamsIds = new.value.map { it.id }
+        assertEquals(listOf<String>(), thumbnailStreamsIds)
     }
 
     @Test
