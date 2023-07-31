@@ -22,7 +22,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.mapTo
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure), ChatUiViewModel {
+class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure) {
 
     private val showUnreadHeader = MutableStateFlow(true)
 
@@ -30,9 +30,9 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
 
     private val _uiState = MutableStateFlow(ChatUiState())
 
-    override val uiState = _uiState.asStateFlow()
+    val uiState = _uiState.asStateFlow()
 
-    override val userMessage: Flow<UserMessage>
+    val userMessage: Flow<UserMessage>
         get() = CallUserMessagesProvider.userMessage
 
     init {
@@ -78,18 +78,18 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
         }.launchIn(viewModelScope)
     }
 
-    override fun sendMessage(text: String) {
+    fun sendMessage(text: String) {
         val chat = chat.getValue() ?: return
         chat.add(Message.Content.Text(text))
         showUnreadHeader.value = false
     }
 
-    override fun typing() {
+    fun typing() {
         val chat = chat.getValue() ?: return
         chat.participants.value.me.typing()
     }
 
-    override fun fetchMessages() {
+    fun fetchMessages() {
         viewModelScope.launch {
             isFetching.emit(true)
             chat.first().fetch(FETCH_COUNT)
@@ -97,17 +97,17 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
         }
     }
 
-    override fun onMessageScrolled(messageItem: ConversationItem.MessageItem) {
+    fun onMessageScrolled(messageItem: ConversationItem.MessageItem) {
         val messages = messages.getValue()?.other ?: return
         messages.firstOrNull { it.id == messageItem.id }?.markAsRead()
     }
 
-    override fun onAllMessagesScrolled() {
+    fun onAllMessagesScrolled() {
         val messages = messages.getValue()?.other ?: return
         messages.first().markAsRead()
     }
 
-    override fun showCall() {
+    fun showCall() {
         val phoneBox = phoneBox.getValue() ?: return
         phoneBox.showCall()
     }
