@@ -33,9 +33,8 @@ internal class RingingViewModelTest : PreCallViewModelTest<RingingViewModel, Rin
             Configuration.Success(
                 phoneBoxMock,
                 mockk(),
-                MutableStateFlow(companyNameMock),
-                MutableStateFlow(themeMock),
-                mockk()
+                companyMock,
+                MutableStateFlow(themeMock)
             )
         })
     }

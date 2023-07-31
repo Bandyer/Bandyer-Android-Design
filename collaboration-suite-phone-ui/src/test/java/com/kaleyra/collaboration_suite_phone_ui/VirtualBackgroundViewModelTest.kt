@@ -52,7 +52,7 @@ class VirtualBackgroundViewModelTest {
     @Before
     fun setUp() {
         viewModel =
-            VirtualBackgroundViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true), mockk()) }
+            VirtualBackgroundViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true)) }
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.participants } returns MutableStateFlow(participantsMock)
         every { participantsMock.me } returns meMock

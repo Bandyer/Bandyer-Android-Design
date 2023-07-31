@@ -1,0 +1,5 @@
+package com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider
+
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.DefaultContactDetailsProvider
+
+internal class CachedDefaultContactDetailsProvider : CachedContactDetailsProvider(DefaultContactDetailsProvider())

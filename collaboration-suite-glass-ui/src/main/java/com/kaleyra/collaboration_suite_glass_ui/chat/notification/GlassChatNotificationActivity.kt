@@ -33,6 +33,8 @@ import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
@@ -44,6 +46,7 @@ import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigati
 import com.kaleyra.collaboration_suite_glass_ui.common.AvatarGroupView
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatNotificationActivityGlassBinding
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -94,15 +97,14 @@ internal class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEv
         val chat = getChat(intent) ?: return@launch
         val nOfMessages = getNOfUnreadMessages(chat)
         msgsPerChat[chat.id] = nOfMessages
-        val usersDescription = CollaborationUI.usersDescription
         val message = getLastReceivedMessage(chat) ?: return@launch
-        val userId = message.creator.userId
-        val username = usersDescription.name(listOf(userId))
-        val avatar = usersDescription.image(listOf(userId))
+        val participant = message.creator
+        val username = participant.combinedDisplayName.first() ?: ""
+        val avatar = participant.combinedDisplayImage.first() ?: Uri.EMPTY
         val text = (message.content as? Message.Content.Text)?.message ?: ""
         val counter = msgsPerChat.values.sum()
 
-        if (counter == 1) setSingleMessageUI(userId, username, avatar, text) else setMultipleMessagesUI(userId, username, avatar, counter)
+        if (counter == 1) setSingleMessageUI(participant.userId, username, avatar, text) else setMultipleMessagesUI(participant.userId, username, avatar, counter)
     }
 
     private fun setSingleMessageUI(userId: String, username: String, avatar: Uri, text: String) = with(binding) {

@@ -41,6 +41,7 @@ import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard.LoadOptions
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
@@ -319,13 +320,14 @@ internal class GlassCallActivity :
                             is Call.State.Disconnected.Ended.Declined                -> resources.getString(R.string.kaleyra_glass_call_declined)
                             is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> resources.getString(R.string.kaleyra_glass_answered_on_another_device)
                             is Call.State.Disconnected.Ended.Kicked                  -> {
-                                val userDescription = viewModel.usersDescription.first()
-                                val name = userDescription.name(listOf(state.userId))
+                                val call = viewModel.call.replayCache.first()
+                                val participant = call.participants.value.list.find { it.userId == state.userId }
+                                val name = participant?.combinedDisplayName?.first() ?: ""
                                 val hasDescription = name.isNotEmpty() && name != state.userId
                                 resources.getQuantityString(
                                     R.plurals.kaleyra_glass_removed_from_call,
                                     if (hasDescription) 1 else 0,
-                                    userDescription
+                                    name
                                 )
                             }
                             is Call.State.Disconnected.Ended.LineBusy                -> resources.getString(R.string.kaleyra_glass_line_busy)
@@ -352,15 +354,14 @@ internal class GlassCallActivity :
 
             viewModel.requestMuteEvents.onEach {
                 with(binding.kaleyraToastContainer) {
-                    val userDescription = viewModel.usersDescription.first()
-                    val name = userDescription.name(listOf(it.producer.userId))
+                    val name = it.producer.combinedDisplayName.first() ?: ""
                     val hasDescription = name.isNotEmpty() && name != it.producer.userId
                     show(
                         ADMIN_MUTED_TOAST_ID,
                         resources.getQuantityString(
                             R.plurals.kaleyra_glass_muted_by_admin,
                             if (hasDescription) 1 else 0,
-                            userDescription
+                            name
                         ),
                         R.drawable.ic_kaleyra_glass_alert
                     )
@@ -429,20 +430,18 @@ internal class GlassCallActivity :
 
             viewModel.onParticipantJoin
                 .onEach { part ->
-                    val userDescription = viewModel.usersDescription.first()
                     val text = resources.getString(
                         R.string.kaleyra_glass_user_joined_pattern,
-                        userDescription.name(listOf(part.userId))
+                        part.combinedDisplayName.first()
                     )
                     binding.kaleyraToastContainer.show(text = text)
                 }.launchIn(this)
 
             viewModel.onParticipantLeave
                 .onEach { part ->
-                    val userDescription = viewModel.usersDescription.first()
                     val text = resources.getString(
                         R.string.kaleyra_glass_user_left_pattern,
-                        userDescription.name(listOf(part.userId))
+                        part.combinedDisplayName.first()
                     )
                     binding.kaleyraToastContainer.show(text = text)
 
@@ -516,14 +515,9 @@ internal class GlassCallActivity :
                 .onEach { pair ->
                     val streamId = pair.first
                     val event = pair.second
-                    val userId = event.producer.userId
-                    val userDescription = viewModel.usersDescription.first()
+                    val name = event.producer.combinedDisplayName.first() ?: ""
 
-                    onPointerEvent(
-                        streamId,
-                        event,
-                        userDescription.name(listOf(userId))
-                    )
+                    onPointerEvent(streamId, event, name)
                 }.launchIn(this)
 
             var currentWhiteboard: Whiteboard? = null

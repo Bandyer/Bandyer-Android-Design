@@ -16,6 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallUiStateM
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioOnly
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.hasAtLeastAVideoEnabled
@@ -27,6 +28,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provid
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallUiState>(configure), UserMessageViewModel {
 
@@ -35,17 +37,18 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     override val userMessage: Flow<UserMessage>
         get() = CallUserMessagesProvider.userMessage
 
-    private val streams = call
-        .toStreamsUi()
-        .debounce {
-            if (it.size == 1) SINGLE_STREAM_DEBOUNCE_MILLIS
+    private val streams: Flow<List<StreamUi>> =
+        combine(call.toInCallParticipants(), call.toStreamsUi()) { participants, streams -> participants to streams }
+        .debounce { (participants: List<CallParticipant>, streams: List<StreamUi>) ->
+            if (participants.size != 1 && streams.size == 1) SINGLE_STREAM_DEBOUNCE_MILLIS
             else 0L
         }
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+        .map { (_: List<CallParticipant>, streams: List<StreamUi>) -> streams }
+        .shareInEagerly(viewModelScope)
 
     private val callState = call
         .toCallStateUi()
-        .shareIn(viewModelScope, SharingStarted.WhileSubscribed())
+        .shareInEagerly(viewModelScope)
 
     private val maxNumberOfFeaturedStreams = MutableStateFlow(DEFAULT_FEATURED_STREAMS_COUNT)
 
@@ -64,16 +67,23 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     private var onAudioOrVideoChanged: ((Boolean, Boolean) -> Unit)? = null
 
     init {
+        viewModelScope.launch {
+            val result = withTimeoutOrNull(NULL_CALL_TIMEOUT) {
+                call.firstOrNull()
+            }
+            result ?: onCallEnded?.invoke(false, false, false)
+        }
+
         CallUserMessagesProvider.start(call)
 
         streamsHandler.streamsArrangement
-            .onEach { (featuredStreams, thumbnailsStreams) ->
-                val feat = featuredStreams
-                val thumb = thumbnailsStreams.filterNot { it.id == ScreenShareViewModel.SCREEN_SHARE_STREAM_ID }
+            .combine(callState) { (featuredStreams, thumbnailsStreams), state ->
+                if (state is CallStateUi.Ringing || state is CallStateUi.Dialing) return@combine
+                val thumbnails = thumbnailsStreams.filterNot { it.id == ScreenShareViewModel.SCREEN_SHARE_STREAM_ID }
                 _uiState.update {
                     it.copy(
-                        featuredStreams = ImmutableList(feat),
-                        thumbnailStreams = ImmutableList(thumb)
+                        featuredStreams = ImmutableList(featuredStreams),
+                        thumbnailStreams = ImmutableList(thumbnails)
                     )
                 }
             }
@@ -85,7 +95,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
         }.launchIn(viewModelScope)
 
         theme
-            .toWatermarkInfo(companyName)
+            .toWatermarkInfo(company.flatMapLatest { it.name })
             .onEach { watermarkInfo -> _uiState.update { it.copy(watermarkInfo = watermarkInfo) } }
             .launchIn(viewModelScope)
 
@@ -121,7 +131,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
         }.takeWhile { !it }.launchIn(viewModelScope)
 
         call
-            .isGroupCall()
+            .isGroupCall(company.flatMapLatest { it.id })
             .onEach { isGroupCall -> _uiState.update { it.copy(isGroupCall = isGroupCall) } }
             .launchIn(viewModelScope)
 
@@ -215,6 +225,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
         const val DEFAULT_FEATURED_STREAMS_COUNT = 2
         const val SINGLE_STREAM_DEBOUNCE_MILLIS = 5000L
+        const val NULL_CALL_TIMEOUT = 1000L
 
         fun provideFactory(configure: suspend () -> Configuration) =
             object : ViewModelProvider.Factory {

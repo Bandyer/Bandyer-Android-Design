@@ -3,6 +3,8 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
@@ -32,7 +34,7 @@ internal object StreamMapper {
 //                    else listOf()
 //                }
                     participant.streams
-                        .mapToStreamsUi(participant.displayName, participant.displayImage)
+                        .mapToStreamsUi(participant.combinedDisplayName, participant.combinedDisplayImage)
                         .map {
                             Pair(participant.userId, it)
                         }
@@ -51,7 +53,7 @@ internal object StreamMapper {
         this.flatMapLatest { it.participants }
             .map { it.me }
             .flatMapLatest { me ->
-                me.streams.mapToStreamsUi(me.displayName, me.displayImage)
+                me.streams.mapToStreamsUi(me.combinedDisplayName, me.combinedDisplayImage)
             }
             .distinctUntilChanged()
 

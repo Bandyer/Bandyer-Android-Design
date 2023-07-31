@@ -40,7 +40,7 @@ class BaseViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = BaseViewModelImpl { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true), mockk()) }
+        viewModel = BaseViewModelImpl { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true)) }
     }
 
     @Test

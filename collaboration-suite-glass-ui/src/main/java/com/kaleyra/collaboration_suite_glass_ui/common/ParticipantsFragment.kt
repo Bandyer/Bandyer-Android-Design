@@ -22,14 +22,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
+import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItem
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
@@ -40,12 +43,15 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoot
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 /**
  * ParticipantsFragment
  */
 internal abstract class ParticipantsFragment : BaseFragment(), TiltListener {
+
+    private val viewModel: CallViewModel by activityViewModels()
 
     private var _binding: KaleyraGlassFragmentParticipantsBinding? = null
     override val binding: KaleyraGlassFragmentParticipantsBinding get() = _binding!!
@@ -55,7 +61,7 @@ internal abstract class ParticipantsFragment : BaseFragment(), TiltListener {
 
     protected var currentParticipantIndex = -1
 
-    protected abstract val usersDescription: UsersDescription
+    private val participants by lazy { viewModel.call.replayCache.first().participants.value.list }
 
     /**
      * @suppress
@@ -110,10 +116,11 @@ internal abstract class ParticipantsFragment : BaseFragment(), TiltListener {
                         itemAdapter!!.getAdapterItem(currentParticipantIndex).data.userId
                     with(binding.kaleyraUserInfo) {
                         lifecycleScope.launch {
-                            val name = usersDescription.name(listOf(userId))
+                            val user = participants.find { it.userId == userId }
+                            val name = user?.combinedDisplayName?.first() ?: ""
                             setName(name)
 
-                            val image = usersDescription.image(listOf(userId))
+                            val image = user?.combinedDisplayImage?.first() ?: Uri.EMPTY
                             if (image != Uri.EMPTY) setAvatar(image)
                             else {
                                 setAvatar(null)

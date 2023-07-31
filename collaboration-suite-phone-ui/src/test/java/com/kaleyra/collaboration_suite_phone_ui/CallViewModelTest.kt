@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity
+import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -9,8 +10,12 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration.Success
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.Theme
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel.Companion.SINGLE_STREAM_DEBOUNCE_MILLIS
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
@@ -26,6 +31,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.*
@@ -57,9 +63,9 @@ class CallViewModelTest {
 
     private val streamMock2 = mockk<Stream>(relaxed = true)
 
-    private val streamMock3 = mockk<Stream>()
+    private val streamMock3 = mockk<Stream>(relaxed = true)
 
-    private val streamMock4 = mockk<Stream>()
+    private val streamMock4 = mockk<Stream>(relaxed = true)
 
     private val myStreamMock = mockk<Stream.Mutable>(relaxed = true)
 
@@ -71,7 +77,7 @@ class CallViewModelTest {
 
     private val participantMock2 = mockk<CallParticipant>()
 
-    private val companyNameMock = "Kaleyra"
+    private val companyMock = mockk<Company>()
 
     private val themeMock = mockk<Theme>()
 
@@ -84,6 +90,7 @@ class CallViewModelTest {
         mockkConstructor(StreamsHandler::class)
         every { anyConstructed<StreamsHandler>().swapThumbnail(any()) } returns Unit
         mockkObject(CallUserMessagesProvider)
+        mockkObject(ContactDetailsManager)
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { inputs } returns inputsMock
@@ -132,22 +139,29 @@ class CallViewModelTest {
         }
         with(participantMeMock) {
             every { userId } returns "myUserId"
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
             every { streams } returns MutableStateFlow(listOf(myStreamMock))
-            every { displayName } returns MutableStateFlow("myDisplayName")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { combinedDisplayName } returns MutableStateFlow("myDisplayName")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock)
             every { feedback } returns MutableStateFlow(null)
         }
         with(participantMock1) {
             every { userId } returns "userId1"
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
             every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
-            every { displayName } returns MutableStateFlow("displayName1")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { combinedDisplayName } returns MutableStateFlow("displayName1")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock)
         }
         with(participantMock2) {
             every { userId } returns "userId2"
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
             every { streams } returns MutableStateFlow(listOf(streamMock3))
-            every { displayName } returns MutableStateFlow("displayName2")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { combinedDisplayName } returns MutableStateFlow("displayName2")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock)
+        }
+        with(companyMock) {
+            every { name } returns MutableStateFlow("Kaleyra")
+            every { id } returns MutableStateFlow("companyId")
         }
         with(themeMock) {
             every { day } returns mockk {
@@ -157,12 +171,41 @@ class CallViewModelTest {
                 every { logo } returns nightLogo
             }
         }
-        viewModel = spyk(CallViewModel { Success(phoneBoxMock, mockk(), MutableStateFlow(companyNameMock), MutableStateFlow(themeMock), mockk()) })
+        viewModel = spyk(CallViewModel { Success(phoneBoxMock, mockk(), companyMock, MutableStateFlow(themeMock)) })
     }
 
     @After
     fun teardown() {
         unmockkAll()
+    }
+
+    @Test
+    fun `test streams updated after a debounce time if there is only my stream and there are still participants in call`() = runTest {
+        every { participantMock1.streams } returns MutableStateFlow(listOf())
+        every { participantMock2.streams } returns MutableStateFlow(listOf())
+        every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
+        advanceTimeBy(SINGLE_STREAM_DEBOUNCE_MILLIS + 500)
+        val current = viewModel.uiState.first().featuredStreams.value.map { it.id }
+        assertEquals(listOf(myStreamMock.id), current)
+    }
+
+    @Test
+    fun `test streams updated immediately if there is only my stream and there are no other participants in call`() = runTest {
+        with(participantMock1) {
+            every { streams } returns MutableStateFlow(listOf())
+            every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
+        }
+        with(participantMock2) {
+            every { streams } returns MutableStateFlow(listOf())
+            every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
+        }
+        with(participantMeMock) {
+            every { streams } returns MutableStateFlow(listOf(myStreamMock))
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+        }
+        advanceTimeBy(500)
+        val current = viewModel.uiState.first().featuredStreams.value.map { it.id }
+        assertEquals(listOf(myStreamMock.id), current)
     }
 
     @Test
@@ -186,6 +229,30 @@ class CallViewModelTest {
     }
 
     @Test
+    fun testRingingCallUiState_featuredStreamsNotUpdated() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnected)
+        every { callParticipantsMock.creator() } returns mockk(relaxed = true)
+        val current = viewModel.uiState.first().featuredStreams
+        assertEquals(ImmutableList<StreamUi>(listOf()), current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().featuredStreams
+        val featuredStreamsIds = new.value.map { it.id }
+        assertEquals(listOf<String>(), featuredStreamsIds)
+    }
+
+    @Test
+    fun testDialingCallUiState_featuredStreamsNotUpdated() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Connecting)
+        every { callParticipantsMock.creator() } returns participantMeMock
+        val current = viewModel.uiState.first().featuredStreams
+        assertEquals(ImmutableList<StreamUi>(listOf()), current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().featuredStreams
+        val featuredStreamsIds = new.value.map { it.id }
+        assertEquals(listOf<String>(), featuredStreamsIds)
+    }
+
+    @Test
     fun testCallUiState_thumbnailStreamsUpdated() = runTest {
         val current = viewModel.uiState.first().thumbnailStreams
         assertEquals(ImmutableList<StreamUi>(listOf()), current)
@@ -193,6 +260,30 @@ class CallViewModelTest {
         val new = viewModel.uiState.first().thumbnailStreams
         val thumbnailStreamsIds = new.value.map { it.id }
         assertEquals(listOf(streamMock3.id, myStreamMock.id), thumbnailStreamsIds)
+    }
+
+    @Test
+    fun testRingingCallUiState_thumbnailStreamsNotUpdated() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnected)
+        every { callParticipantsMock.creator() } returns mockk(relaxed = true)
+        val current = viewModel.uiState.first().thumbnailStreams
+        assertEquals(ImmutableList<StreamUi>(listOf()), current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().thumbnailStreams
+        val thumbnailStreamsIds = new.value.map { it.id }
+        assertEquals(listOf<String>(), thumbnailStreamsIds)
+    }
+
+    @Test
+    fun testDialingCallUiState_thumbnailStreamsNotUpdated() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Connecting)
+        every { callParticipantsMock.creator() } returns participantMeMock
+        val current = viewModel.uiState.first().thumbnailStreams
+        assertEquals(ImmutableList<StreamUi>(listOf()), current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().thumbnailStreams
+        val thumbnailStreamsIds = new.value.map { it.id }
+        assertEquals(listOf<String>(), thumbnailStreamsIds)
     }
 
     @Test

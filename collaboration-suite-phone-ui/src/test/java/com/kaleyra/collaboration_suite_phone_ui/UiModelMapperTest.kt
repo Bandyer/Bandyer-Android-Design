@@ -19,6 +19,11 @@ import android.net.Uri
 import com.kaleyra.collaboration_suite.chatbox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.*
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.callMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.callState
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatBoxMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatBoxState
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatParticipantsMock
@@ -31,11 +36,8 @@ import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherReadMessageMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherUnreadMessageMock1
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherUnreadMessageMock2
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.usersDescriptionMock
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.yesterday
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.callMock
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.callState
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.phoneBoxMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.yesterday
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
@@ -198,9 +200,10 @@ class UiModelMapperTest {
 
     @Test
     fun usersDescription_getChatInfo_userIdAndImageUri() = runTest {
+        mockkObject(ContactDetailsManager)
         val uriMock = mockk<Uri>()
-        every { otherParticipantMock.displayName } returns MutableStateFlow("customDisplayName")
-        every { otherParticipantMock.displayImage } returns MutableStateFlow(uriMock)
+        every { otherParticipantMock.combinedDisplayName } returns MutableStateFlow("customDisplayName")
+        every { otherParticipantMock.combinedDisplayImage } returns MutableStateFlow(uriMock)
         assertEquals(getChatInfo(flowOf(chatParticipantsMock)).first(), ChatInfo("customDisplayName", ImmutableUri(uriMock)))
     }
 

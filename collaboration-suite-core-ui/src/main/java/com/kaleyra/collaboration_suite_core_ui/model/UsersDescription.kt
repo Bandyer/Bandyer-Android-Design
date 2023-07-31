@@ -24,7 +24,12 @@ import android.net.Uri
  * @property name suspend function to implement which will be used to display user display name
  * @property image suspend function to implement which will be used to display user image
  */
-class UsersDescription(
-    val name: suspend (userIds: List<String>) -> String = { it.joinToString() },
-    val image: suspend (userIds: List<String>) -> Uri = { Uri.EMPTY }
-)
+class DefaultUsersDescription(
+    override val name: suspend (userIds: List<String>) -> String = { it.joinToString() },
+    override val image: suspend (userIds: List<String>) -> Uri = { Uri.EMPTY }
+) : UsersDescription
+
+interface UsersDescription {
+    val name: suspend (userIds: List<String>) -> String
+    val image: suspend (userIds: List<String>) -> Uri
+}

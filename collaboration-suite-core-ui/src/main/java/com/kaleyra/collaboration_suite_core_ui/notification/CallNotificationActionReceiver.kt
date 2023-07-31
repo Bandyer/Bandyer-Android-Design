@@ -59,6 +59,9 @@ class CallNotificationActionReceiver : CollaborationBroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val pendingResult = goAsync()
         CoroutineScope(Dispatchers.IO).launch {
+            if (intent.action == ACTION_HANGUP) {
+                NotificationManager.cancel(CALL_NOTIFICATION_ID)
+            }
             requestConfigure().let {
                 if (!it) {
                     NotificationManager.cancel(CALL_NOTIFICATION_ID)
@@ -67,10 +70,7 @@ class CallNotificationActionReceiver : CollaborationBroadcastReceiver() {
                 CollaborationUI.onCallReady(this) { call ->
                     when (intent.action) {
                         ACTION_ANSWER            -> call.connect()
-                        ACTION_HANGUP            -> {
-                            call.end()
-                            NotificationManager.cancel(CALL_NOTIFICATION_ID)
-                        }
+                        ACTION_HANGUP            -> call.end()
                         ACTION_STOP_SCREEN_SHARE -> TODO()
                         else                     -> Unit
                     }

@@ -34,7 +34,7 @@ class TermsAndConditionsViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = TermsAndConditionsViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk(relaxed = true), mockk(relaxed = true), mockk()) }
+        viewModel = TermsAndConditionsViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk(relaxed = true), mockk(relaxed = true)) }
     }
 
     @After

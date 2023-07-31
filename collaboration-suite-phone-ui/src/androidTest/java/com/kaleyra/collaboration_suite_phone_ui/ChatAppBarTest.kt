@@ -61,36 +61,37 @@ class ChatAppBarTest {
         isActionClicked = false
     }
 
+    // Check the content description instead of the text because the title and subtitle views are AndroidViews
+
     @Test
     fun title_set() {
-        // Check all nodes with the given text and get the first one. This is done because of the MarqueeText implementation.
-        composeTestRule.onAllNodesWithText(chatInfo.name).onFirst().assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(chatInfo.name).assertIsDisplayed()
     }
 
     @Test
     fun chatStateNone_subtitleNotDisplayed() {
-        getSubtitle().assertTextEquals("")
+        getSubtitle().assertContentDescriptionEquals("")
     }
 
     @Test
     fun chatStateNetworkConnecting_connectingDisplayed() {
         chatState = ChatState.NetworkState.Connecting
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_chat_state_connecting)
-        getSubtitle().assertTextEquals(connecting)
+        getSubtitle().assertContentDescriptionEquals(connecting)
     }
 
     @Test
     fun chatStateNetworkOffline_waitingForNetworkDisplayed() {
         chatState = ChatState.NetworkState.Offline
         val waitingForNetwork = composeTestRule.activity.getString(R.string.kaleyra_chat_state_waiting_for_network)
-        getSubtitle().assertTextEquals(waitingForNetwork)
+        getSubtitle().assertContentDescriptionEquals(waitingForNetwork)
     }
 
     @Test
     fun chatStateUserOnline_onlineDisplayed() {
         chatState = ChatState.UserState.Online
         val online = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_online)
-        getSubtitle().assertTextEquals(online)
+        getSubtitle().assertContentDescriptionEquals(online)
     }
 
     @Test
@@ -102,14 +103,14 @@ class ChatAppBarTest {
             .withZone(ZoneId.systemDefault())
             .format(Instant.ofEpochMilli(0))
         val offline = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_last_login, timestamp)
-        getSubtitle().assertTextEquals(offline)
+        getSubtitle().assertContentDescriptionEquals(offline)
     }
 
     @Test
     fun chatStateUserNeverOnline_recentlySeenDisplayed() {
         chatState = ChatState.UserState.Offline(null)
         val offline = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_offline)
-        getSubtitle().assertTextEquals(offline)
+        getSubtitle().assertContentDescriptionEquals(offline)
     }
 
     @Test
@@ -117,7 +118,7 @@ class ChatAppBarTest {
         getBouncingDots().assertDoesNotExist()
         chatState = ChatState.UserState.Typing
         val typing = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_typing)
-        getSubtitle().assertTextEquals(typing)
+        getSubtitle().assertContentDescriptionEquals(typing)
         getBouncingDots().assertIsDisplayed()
     }
 
@@ -134,8 +135,7 @@ class ChatAppBarTest {
         assert(isActionClicked)
     }
 
-    // Check all nodes with the given tag and get the first one. This is done because of the MarqueeText implementation.
-    private fun getSubtitle() = composeTestRule.onAllNodesWithTag(SubtitleTag).onFirst()
+    private fun getSubtitle() = composeTestRule.onNodeWithTag(SubtitleTag)
 
     private fun getBouncingDots() = composeTestRule.onNodeWithTag(BouncingDotsTag)
 }

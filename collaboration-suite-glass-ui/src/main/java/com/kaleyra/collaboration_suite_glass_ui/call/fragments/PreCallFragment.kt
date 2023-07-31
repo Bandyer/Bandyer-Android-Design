@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.annotation.SuppressLint
 import android.view.View
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -39,16 +40,16 @@ internal abstract class PreCallFragment : ConnectingFragment(),
 
             repeatOnStarted {
                 viewModel.participants.onEach { participants ->
-                    val usersDescription = viewModel.usersDescription.first()
                     kaleyraCounter.text = resources.getString(
                         R.string.kaleyra_glass_n_of_participants_pattern,
                         participants.others.size + 1
                     )
 
                     val nParticipants = participants.others.count() + 1
-                    val userIds =
-                        participants.others.let { if (nParticipants > 2) it.plus(participants.me) else it }.map { it.userId }
-                    kaleyraParticipants.text = usersDescription.name(userIds)
+                    val names = participants.others
+                        .let { if (nParticipants > 2) it.plus(participants.me) else it }
+                        .map { it.combinedDisplayName.first() ?: "" }
+                    kaleyraParticipants.text = names.joinToString()
                     updateUIOnParticipantsViewChange()
 
                     setSubtitle(nParticipants > 2, viewModel.call.replayCache.first().isLink)

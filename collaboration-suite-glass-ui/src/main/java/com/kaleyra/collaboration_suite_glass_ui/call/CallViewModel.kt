@@ -17,6 +17,7 @@
 package com.kaleyra.collaboration_suite_glass_ui.call
 
 import android.content.Context
+import android.net.Uri
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -39,6 +40,8 @@ import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_glass_ui.call.model.StreamParticipant
@@ -142,14 +145,13 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
             val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
             participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
                 if (itsMe || (state == CallParticipant.State.InCall && streams.isNotEmpty())) {
-                    val usersDescription = usersDescription.first()
                     val newStreams = streams.map {
                         StreamParticipant(
                             participant,
                             itsMe,
                             it,
-                            usersDescription.name(listOf(participant.userId)),
-                            usersDescription.image(listOf(participant.userId))
+                            participant.combinedDisplayName.first() ?: "",
+                            participant.combinedDisplayImage.first() ?: Uri.EMPTY
                         )
                     }
                     val currentStreams = uiStreams.filter { it.participant == participant }

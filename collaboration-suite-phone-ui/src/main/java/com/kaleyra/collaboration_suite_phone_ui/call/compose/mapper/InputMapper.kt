@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.UsbCameraUtils
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.failedAudioOutputDevice
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toMe
@@ -39,7 +40,7 @@ internal object InputMapper {
         this.toAudio()
             .flatMapLatest { it.events }
             .filterIsInstance<Input.Audio.Event.Request.Mute>()
-            .map { event -> event.producer.displayName.first() }
+            .map { event -> event.producer.combinedDisplayName.first() }
             .map { MutedMessage(it) }
 
     fun Flow<Call>.isAudioOnly(): Flow<Boolean> =
@@ -65,7 +66,7 @@ internal object InputMapper {
             .flatMapLatest { it.streams }
             .map { streams ->
                 streams.firstOrNull { stream ->
-                    stream.video.firstOrNull { it is Input.Video.Camera } != null
+                    stream.video.firstOrNull() is Input.Video.Camera
                 }
             }
             .filterNotNull()
@@ -106,7 +107,7 @@ internal object InputMapper {
             .flatMapLatest { it.streams }
             .map { streams ->
                 streams.firstOrNull { stream ->
-                    stream.audio.firstOrNull { it != null } != null
+                    stream.audio.filterNotNull().firstOrNull() != null
                 }
             }
             .filterNotNull()

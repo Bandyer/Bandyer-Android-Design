@@ -16,9 +16,13 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 internal abstract class PreCallViewModel<T : PreCallUiState<T>>(configure: suspend () -> Configuration) : BaseViewModel<T>(configure), UserMessageViewModel {
 
@@ -29,9 +33,13 @@ internal abstract class PreCallViewModel<T : PreCallUiState<T>>(configure: suspe
 
     init {
         theme
-            .toWatermarkInfo(companyName)
+            .toWatermarkInfo(company.flatMapLatest { it.name })
             .onEach { watermarkInfo -> _uiState.update { it.clone(watermarkInfo = watermarkInfo) } }
             .launchIn(viewModelScope)
+
+        viewModelScope.launch {
+            _uiState.update { it.clone(isLink = call.first().isLink) }
+        }
 
         call
             .isVideoIncoming()

@@ -16,14 +16,20 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
+import android.net.Uri
+import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.Messages
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMessage
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.DisplayedChatActivity
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import kotlinx.coroutines.flow.firstOrNull
 
 /**
  * The messages UI
@@ -42,35 +48,38 @@ class MessagesUI(
      * Shows the notification of the unread messages
      *
      * @param chatId The Chat id
-     * @param loggedUserId The logged user id
+     * @param chatParticipants ChatParticipants
      */
-    suspend fun showUnreadMsgs(chatId: String, loggedUserId: String) {
+    suspend fun showUnreadMsgs(chatId: String, chatParticipants: ChatParticipants) {
         if (DisplayedChatActivity.chatId.value == chatId) return
         chatCustomNotificationActivityClazz?.let {
-            showCustomInAppNotification(chatId, loggedUserId, it)
-        } ?: showNotification(chatId, loggedUserId)
+            showCustomInAppNotification(chatId, chatParticipants, it)
+        } ?: showNotification(chatId, chatParticipants)
     }
 
     private suspend fun showCustomInAppNotification(
         chatId: String,
-        loggedUserId: String,
+        chatParticipants: ChatParticipants,
         chatCustomNotificationActivity: Class<*>
     ) {
         if (AppLifecycle.isInForeground.value) CustomChatNotificationManager.notify(chatId, chatCustomNotificationActivity)
-        else showNotification(chatId, loggedUserId, chatCustomNotificationActivity)
+        else showNotification(chatId, chatParticipants, chatCustomNotificationActivity)
     }
 
     private suspend fun showNotification(
         chatId: String,
-        loggedUserId: String,
+        chatParticipants: ChatParticipants,
         chatCustomNotificationActivity: Class<*>? = null
     ) {
-        val messages = other.filter { it.state.value is Message.State.Received }
-            .map { it.toChatNotificationMessage() }.sortedBy { it.timestamp }
+        val messages = other
+            .filter { it.state.value is Message.State.Received }
+            .map { it.toChatNotificationMessage(chatParticipants) }
+            .sortedBy { it.timestamp }
+        val me = chatParticipants.me
         val notification = NotificationManager.buildChatNotification(
-            loggedUserId,
-            CollaborationUI.usersDescription.name(listOf(loggedUserId)),
-            CollaborationUI.usersDescription.image(listOf(loggedUserId)),
+            me.userId,
+            me.combinedDisplayName.firstOrNull() ?: "",
+            me.combinedDisplayImage.firstOrNull() ?: Uri.EMPTY,
 //            chatId,
             messages,
             chatActivityClazz,
@@ -79,11 +88,14 @@ class MessagesUI(
         NotificationManager.notify(chatId.hashCode(), notification)
     }
 
-    private suspend fun OtherMessage.toChatNotificationMessage() = ChatNotificationMessage(
-        creator.userId,
-        CollaborationUI.usersDescription.name(listOf(creator.userId)),
-        CollaborationUI.usersDescription.image(listOf(creator.userId)),
-        (content as? Message.Content.Text)?.message ?: "",
-        creationDate.time
-    )
+    private suspend fun OtherMessage.toChatNotificationMessage(chatParticipants: ChatParticipants): ChatNotificationMessage {
+        val otherParticipant = chatParticipants.others.find { it.userId == creator.userId }
+        return  ChatNotificationMessage(
+            creator.userId,
+            otherParticipant?.combinedDisplayName?.firstOrNull() ?: "",
+            otherParticipant?.combinedDisplayImage?.firstOrNull() ?: Uri.EMPTY,
+            (content as? Message.Content.Text)?.message ?: "",
+            creationDate.time
+        )
+    }
 }

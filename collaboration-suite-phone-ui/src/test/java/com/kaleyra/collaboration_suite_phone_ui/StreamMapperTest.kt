@@ -2,6 +2,9 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.*
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
@@ -103,6 +106,7 @@ class StreamMapperTest {
 
     @Before
     fun setUp() {
+        mockkObject(ContactDetailsManager)
         // only needed for toCallStateUi function
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
         with(callParticipantsMock) {
@@ -112,20 +116,20 @@ class StreamMapperTest {
         with(participantMock1) {
             every { userId } returns "userId1"
             every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
-            every { displayName } returns MutableStateFlow("displayName1")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { combinedDisplayName } returns MutableStateFlow("displayName1")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock)
         }
         with(participantMock2) {
             every { userId } returns "userId2"
             every { streams } returns MutableStateFlow(listOf(streamMock3))
-            every { displayName } returns MutableStateFlow("displayName2")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { combinedDisplayName } returns MutableStateFlow("displayName2")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock)
         }
         with(participantMeMock) {
             every { userId } returns "myUserId"
             every { streams } returns MutableStateFlow(listOf(myStreamMock1, myStreamMock2))
-            every { displayName } returns MutableStateFlow("myDisplayName")
-            every { displayImage } returns MutableStateFlow(uriMock)
+            every { combinedDisplayName } returns MutableStateFlow("myDisplayName")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock)
         }
         with(streamMock1) {
             every { id } returns "streamId1"
@@ -260,7 +264,7 @@ class StreamMapperTest {
     @Test
     fun updateParticipantDisplayName_toStreamsUi_participantStreamUiUpdated() = runTest {
         val displayNameParticipant1 = MutableStateFlow("displayName1")
-        every { participantMock1.displayName } returns displayNameParticipant1
+        every { participantMock1.combinedDisplayName } returns displayNameParticipant1
 
         val call = MutableStateFlow(callMock)
         val result = call.toStreamsUi()
@@ -286,7 +290,7 @@ class StreamMapperTest {
     @Test
     fun updateParticipantDisplayImage_toStreamsUi_participantStreamUiUpdated() = runTest {
         val displayImageParticipant1 = MutableStateFlow(uriMock)
-        every { participantMock1.displayImage } returns displayImageParticipant1
+        every { participantMock1.combinedDisplayImage } returns displayImageParticipant1
 
         val call = MutableStateFlow(callMock)
         val result = call.toStreamsUi()
@@ -336,7 +340,7 @@ class StreamMapperTest {
     @Test
     fun updateMyDisplayName_toMyStreamsUi() = runTest {
         val myDisplayName = MutableStateFlow("displayName1")
-        every { participantMeMock.displayName } returns myDisplayName
+        every { participantMeMock.combinedDisplayName } returns myDisplayName
 
         val call = MutableStateFlow(callMock)
         val result = call.toMyStreamsUi()
@@ -360,7 +364,7 @@ class StreamMapperTest {
     @Test
     fun updateMyDisplayImage_toMyStreamsUi_mappedStreamUiUpdated() = runTest {
         val myDisplayImage = MutableStateFlow(uriMock)
-        every { participantMeMock.displayImage } returns myDisplayImage
+        every { participantMeMock.combinedDisplayImage } returns myDisplayImage
 
         val call = MutableStateFlow(callMock)
         val result = call.toMyStreamsUi()

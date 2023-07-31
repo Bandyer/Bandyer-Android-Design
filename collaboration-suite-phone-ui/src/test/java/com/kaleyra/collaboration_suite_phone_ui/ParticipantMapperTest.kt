@@ -5,6 +5,9 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toMe
@@ -12,6 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantM
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayNames
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -42,16 +46,17 @@ class ParticipantMapperTest {
 
     @Before
     fun setUp() {
+        mockkObject(ContactDetailsManager)
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
         with(participantMock1) {
             every { userId } returns "userId1"
-            every { displayName } returns MutableStateFlow("displayName1")
-            every { displayImage } returns MutableStateFlow(uriMock1)
+            every { combinedDisplayName } returns MutableStateFlow("displayName1")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock1)
         }
         with(participantMock2) {
             every { userId } returns "userId2"
-            every { displayName } returns MutableStateFlow("displayName2")
-            every { displayImage } returns MutableStateFlow(uriMock2)
+            every { combinedDisplayName } returns MutableStateFlow("displayName2")
+            every { combinedDisplayImage } returns MutableStateFlow(uriMock2)
         }
     }
 
@@ -120,7 +125,7 @@ class ParticipantMapperTest {
         val displayNameFlow = MutableStateFlow("displayName2")
         val participantMock3 = mockk<CallParticipant> {
             every { userId } returns "userId3"
-            every { displayName } returns displayNameFlow
+            every { combinedDisplayName } returns displayNameFlow
         }
         every { callParticipantsMock.others } returns listOf(participantMock1, participantMock3)
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
@@ -140,7 +145,7 @@ class ParticipantMapperTest {
     fun singleOtherParticipants_isGroupCall_false() = runTest {
         every { callParticipantsMock.others } returns listOf(participantMock1)
         val call = MutableStateFlow(callMock)
-        val result = call.isGroupCall()
+        val result = call.isGroupCall(MutableStateFlow("companyId"))
         Assert.assertEquals(false, result.first())
     }
 
@@ -148,8 +153,17 @@ class ParticipantMapperTest {
     fun multipleOtherParticipants_isGroupCall_true() = runTest {
         every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
         val call = MutableStateFlow(callMock)
-        val result = call.isGroupCall()
+        val result = call.isGroupCall(MutableStateFlow("companyId"))
         Assert.assertEquals(true, result.first())
+    }
+
+    @Test
+    fun `when a participant userId is the companyId, they are not counted as group member`() = runTest {
+        every { participantMock1.userId } returns "companyId"
+        every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
+        val call = MutableStateFlow(callMock)
+        val result = call.isGroupCall(MutableStateFlow("companyId"))
+        Assert.assertEquals(false, result.first())
     }
 
     @Test
@@ -218,7 +232,7 @@ class ParticipantMapperTest {
         val displayImageFlow = MutableStateFlow(uriMock2)
         val participantMock3 = mockk<CallParticipant> {
             every { userId } returns "userId3"
-            every { displayImage } returns displayImageFlow
+            every { combinedDisplayImage } returns displayImageFlow
         }
         every { callParticipantsMock.others } returns listOf(participantMock1, participantMock3)
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)

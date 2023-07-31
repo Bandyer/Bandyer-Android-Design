@@ -21,10 +21,15 @@ import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.BackIconButton
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.Ellipsize
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.EllipsizeText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
-import com.kaleyra.collaboration_suite_phone_ui.chat.custom.MarqueeText
 import com.kaleyra.collaboration_suite_phone_ui.chat.custom.TypingDots
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableSet
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 internal const val SubtitleTag = "SubtitleTag"
@@ -59,19 +64,19 @@ internal fun ChatDetails(info: ChatInfo, state: ChatState) {
             size = 40.dp
         )
         Column(Modifier.padding(start = 12.dp)) {
-            MarqueeText(
+            EllipsizeText(
                 text = info.name,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                gradientEdgeColor = MaterialTheme.colors.primary
+                ellipsize = Ellipsize.Marquee
             )
             Row {
-                MarqueeText(
+                EllipsizeText(
                     text = textFor(state),
                     fontSize = 12.sp,
-                    gradientEdgeColor = MaterialTheme.colors.primary,
                     color = LocalContentColor.current.copy(alpha = 0.5f),
-                    textModifier = Modifier.testTag(SubtitleTag)
+                    modifier = Modifier.testTag(SubtitleTag),
+                    ellipsize = Ellipsize.Marquee
                 )
                 if (state is ChatState.UserState.Typing) {
                     TypingDots(

@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.android_audiosession.model.AudioOutputDevice
+import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.Contact
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
@@ -45,6 +46,8 @@ class CallActionsViewModelTest {
 
     private val chatBoxMock = mockk<ChatBoxUI>(relaxed = true)
 
+    private val companyMock = mockk<Company>(relaxed = true)
+
     private val callMock = mockk<CallUI>(relaxed = true)
 
     private val callParticipantsMock = mockk<CallParticipants>()
@@ -80,9 +83,10 @@ class CallActionsViewModelTest {
     @Before
     fun setUp() {
         viewModel = spyk(CallActionsViewModel {
-            Configuration.Success(phoneBoxMock, chatBoxMock, mockk(relaxed = true), mockk(relaxed = true), mockk())
+            Configuration.Success(phoneBoxMock, chatBoxMock, companyMock, mockk(relaxed = true))
         })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
+        every { companyMock.id } returns MutableStateFlow("companyId")
         with(callMock) {
             every { inputs } returns inputsMock
             every { actions } returns MutableStateFlow(setOf(CallUI.Action.HangUp, CallUI.Action.Audio))
@@ -551,6 +555,25 @@ class CallActionsViewModelTest {
     fun testShowChat() = runTest {
         val contextMock = mockk<Context>()
         every { chatBoxMock.chat(any(), any()) } returns Result.success(mockk())
+        advanceUntilIdle()
+        viewModel.showChat(contextMock)
+        val expectedUserIds = listOf(otherParticipantMock.userId)
+        verify(exactly = 1) {
+            chatBoxMock.chat(
+                context = contextMock,
+                userIDs = withArg { assertEquals(it, expectedUserIds) }
+            )
+        }
+    }
+
+    @Test
+    fun testShowChatWithCompanyIdParticipant() = runTest {
+        val contextMock = mockk<Context>()
+        val companyParticipant = mockk<CallParticipant> {
+            every { userId } returns "companyId"
+        }
+        every { chatBoxMock.chat(any(), any()) } returns Result.success(mockk())
+        every { callParticipantsMock.others } returns listOf(otherParticipantMock, companyParticipant)
         advanceUntilIdle()
         viewModel.showChat(contextMock)
         val expectedUserIds = listOf(otherParticipantMock.userId)

@@ -26,6 +26,7 @@ enum class Ellipsize(val value: TextUtils.TruncateAt) {
     Marquee(TextUtils.TruncateAt.MARQUEE)
 }
 
+// TODO move to a common package between chat and call
 // Replace this when compose Text will support overflow middle ellipsize
 @Composable
 internal fun EllipsizeText(
