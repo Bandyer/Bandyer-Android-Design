@@ -21,6 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.CallAct
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.MultiplePermissionsState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.PermissionState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.VirtualBackgroundComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardComponent
@@ -81,7 +82,6 @@ internal fun rememberBottomSheetContentState(
 internal fun BottomSheetContent(
     contentState: BottomSheetContentState,
     modifier: Modifier = Modifier,
-    permissionsState: MultiplePermissionsState? = null,
     onLineClick: () -> Unit = { },
     onCallActionClick: (CallAction) -> Unit = { },
     onAudioDeviceClick: () -> Unit = { },
@@ -109,7 +109,6 @@ internal fun BottomSheetContent(
                 when (target) {
                     BottomSheetComponent.CallActions -> {
                         CallActionsComponent(
-                            permissionsState = permissionsState,
                             onItemClick = { action ->
                                 // TODO move this out to callScreen onCallActionClick?
                                 contentState.navigateToComponent(

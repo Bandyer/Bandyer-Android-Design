@@ -89,7 +89,6 @@ class CallScreenTest {
                 onThumbnailStreamClick = { thumbnailClickedStreamId = it },
                 onThumbnailStreamDoubleClick = { thumbnailDoubleClickedStreamId = it },
                 onBackPressed = { backPressed = true },
-                permissionsState = null,
                 onConfigurationChange = { },
                 onFullscreenStreamClick = { },
                 onFileShareVisibility = { fileShareDisplayed = it },

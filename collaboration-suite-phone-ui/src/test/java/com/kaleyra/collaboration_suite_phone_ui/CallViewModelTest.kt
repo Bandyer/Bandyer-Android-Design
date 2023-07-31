@@ -61,7 +61,7 @@ class CallViewModelTest {
 
     private val streamMock4 = mockk<Stream>()
 
-    private val myStreamMock = mockk<Stream.Mutable>()
+    private val myStreamMock = mockk<Stream.Mutable>(relaxed = true)
 
     private val callParticipantsMock = mockk<CallParticipants>()
 
@@ -90,7 +90,7 @@ class CallViewModelTest {
             every { participants } returns MutableStateFlow(callParticipantsMock)
             every { extras.recording.state } returns MutableStateFlow(Call.Recording.State.Started)
             every { extras.recording.type } returns Call.Recording.Type.OnConnect
-            every { extras.preferredType } returns Call.PreferredType()
+            every { extras.preferredType } returns MutableStateFlow(Call.PreferredType.audioVideo())
             every { state } returns MutableStateFlow<Call.State>(Call.State.Disconnected)
         }
         with(callParticipantsMock) {
@@ -240,7 +240,7 @@ class CallViewModelTest {
 
     @Test
     fun testCallUiState_isAudioOnlyUpdated() = runTest {
-        every { callMock.extras.preferredType } returns Call.PreferredType(video = null)
+        every { callMock.extras.preferredType } returns  MutableStateFlow(Call.PreferredType.audioOnly())
         val current = viewModel.uiState.first().isAudioOnly
         assertEquals(false, current)
         advanceUntilIdle()
@@ -251,7 +251,7 @@ class CallViewModelTest {
     @Test
     fun testCallUiState_callIsConnectedAndItsAudioVideo_shouldAutoHideSheetUpdated() = runTest {
         every { callMock.state } returns MutableStateFlow(Call.State.Connected)
-        every { callMock.extras.preferredType } returns Call.PreferredType(video = Call.Video.Enabled)
+        every { callMock.extras.preferredType } returns  MutableStateFlow(Call.PreferredType.audioVideo())
         every { videoMock.enabled } returns MutableStateFlow(false)
         every { myVideoMock.enabled } returns MutableStateFlow(false)
         val current = viewModel.uiState.first().shouldAutoHideSheet
@@ -264,7 +264,7 @@ class CallViewModelTest {
     @Test
     fun testCallUiState_callIsConnectedAndAParticipantHasVideoEnabled_shouldAutoHideSheetUpdated() = runTest {
         every { callMock.state } returns MutableStateFlow(Call.State.Connected)
-        every { callMock.extras.preferredType } returns Call.PreferredType(video = Call.Video.Disabled)
+        every { callMock.extras.preferredType } returns  MutableStateFlow(Call.PreferredType.audioUpgradable())
         every { videoMock.enabled } returns MutableStateFlow(true)
         every { myVideoMock.enabled } returns MutableStateFlow(false)
         val current = viewModel.uiState.first().shouldAutoHideSheet

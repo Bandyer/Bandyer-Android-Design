@@ -28,9 +28,9 @@ class TermsAndConditionsViewModelTest {
 
     private lateinit var viewModel: TermsAndConditionsViewModel
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>()
+    private val phoneBoxMock = mockk<PhoneBoxUI>(relaxed = true)
 
-    private val chatBoxMock = mockk<ChatBoxUI>()
+    private val chatBoxMock = mockk<ChatBoxUI>(relaxed = true)
 
     @Before
     fun setUp() {

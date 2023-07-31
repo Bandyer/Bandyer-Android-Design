@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel
 
+import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -25,8 +26,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmod
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -102,34 +101,22 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
             .launchIn(viewModelScope)
     }
 
-    fun startMicrophone(context: FragmentActivity) {
+    fun toggleMic(activity: Activity?) {
+        if (activity !is FragmentActivity) return
         viewModelScope.launch {
-            call.getValue()?.inputs?.request(context, Inputs.Type.Microphone)
+            call.getValue()?.inputs?.request(activity, Inputs.Type.Microphone)
+            val input = availableInputs?.lastOrNull { it is Input.Audio }
+            if (!isMyMicEnabled.value) input?.tryEnable() else input?.tryDisable()
         }
     }
 
-    fun startCamera(context: FragmentActivity) {
-        viewModelScope.launch {
-            call.getValue()?.inputs?.request(context, Inputs.Type.Camera.Internal)
-        }
-    }
-
-    fun toggleMic() {
-        val input = availableInputs?.firstOrNull { it is Input.Audio }
-        if (!isMyMicEnabled.value) input?.tryEnable() else input?.tryDisable()
-    }
-
-    fun toggleCamera() {
-        val input = availableInputs?.let { inputs ->
-            inputs.firstOrNull { it is Input.Video.Camera.Usb } ?: inputs.firstOrNull { it is Input.Video.Camera.Internal }
-        }
+    fun toggleCamera(activity: Activity?) {
+        if (activity !is FragmentActivity) return
         val call = call.getValue() ?: return
         val participants = call.participants.value
         val restrictions = participants.me.restrictions
         val canUseCamera = !restrictions.camera.value.usage
-        if (canUseCamera) {
-            if (!isMyCameraEnabled.value) input?.tryEnable() else input?.tryDisable()
-        } else {
+        if (!canUseCamera) {
             // Avoid sending a burst of camera restriction message event
             if (wasCameraRestrictionMessageSent) return
             viewModelScope.launch {
@@ -138,7 +125,21 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
                 delay(1500L)
                 wasCameraRestrictionMessageSent = false
             }
+            return
         }
+
+        viewModelScope.launch {
+            val input = call.inputs.request(activity, Inputs.Type.Camera.External).getOrNull<Input.Video>() ?: return@launch
+            toggleVideoInput(input)
+        }
+        viewModelScope.launch {
+            val input = call.inputs.request(activity, Inputs.Type.Camera.Internal).getOrNull<Input.Video>() ?: return@launch
+            toggleVideoInput(input)
+        }
+    }
+
+    private fun toggleVideoInput(input: Input.Video) {
+        if (!isMyCameraEnabled.value) input.tryEnable() else input.tryDisable()
     }
 
     fun switchCamera() {
@@ -177,7 +178,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
     }
 
     private fun List<CallAction>.updateActionIfExists(action: CallAction): List<CallAction> {
-        val index = indexOfFirst { it.javaClass == action.javaClass}.takeIf { it != -1 } ?: return this
+        val index = indexOfFirst { it.javaClass == action.javaClass }.takeIf { it != -1 } ?: return this
         return if (this[index] == action) this else toMutableList().apply { this[index] = action }
     }
 

@@ -35,7 +35,6 @@ class CallScreenRecreationTest {
                         initialLineState = LineState.Expanded
                     )
                 ),
-                permissionsState = rememberMultiplePermissionsState(listOf()),
                 onThumbnailStreamClick = { },
                 onThumbnailStreamDoubleClick = { },
                 onFullscreenStreamClick = { },

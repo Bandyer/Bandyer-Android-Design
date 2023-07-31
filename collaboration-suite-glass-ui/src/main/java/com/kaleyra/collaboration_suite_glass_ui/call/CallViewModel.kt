@@ -328,7 +328,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
 
             _micPermission.value = Permission(
                 inputRequest is Inputs.RequestResult.Success,
-                inputRequest is Inputs.RequestResult.Error.PermissionDenied.Forever
+                inputRequest is Inputs.RequestResult.Error.PermissionDenied.SystemAppPreference.Forever
             )
 
             val input = inputRequest.getOrNull<Input.Audio>() ?: return@launchWhenResumed
@@ -347,7 +347,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
 
             _camPermission.value = Permission(
                 inputRequest is Inputs.RequestResult.Success,
-                inputRequest is Inputs.RequestResult.Error.PermissionDenied.Forever
+                inputRequest is Inputs.RequestResult.Error.PermissionDenied.SystemAppPreference.Forever
             )
 
             val input = inputRequest.getOrNull<Input.Video.Camera.Internal>() ?: return@launchWhenResumed

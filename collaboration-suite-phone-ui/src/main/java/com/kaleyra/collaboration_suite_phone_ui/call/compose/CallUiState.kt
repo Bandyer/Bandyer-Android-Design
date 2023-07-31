@@ -17,8 +17,6 @@ data class CallUiState(
     val isAudioOnly: Boolean = false,
     val isGroupCall: Boolean = false,
     val amIAlone: Boolean = false,
-    val isCameraPermissionRequired: Boolean = true,
-    val isMicPermissionRequired: Boolean = true,
     val showFeedback: Boolean = false,
     val shouldAutoHideSheet: Boolean = false
 ) : UiState

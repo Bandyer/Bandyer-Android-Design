@@ -96,6 +96,7 @@ internal class RingingViewModelTest : PreCallViewModelTest<RingingViewModel, Rin
         with(callParticipantsMock) {
             every { me } returns participantMeMock
             every { others } returns listOf(participantMock1)
+            every { creator() } returns mockk()
         }
         val current = viewModel.uiState.first().amIWaitingOthers
         assertEquals(false, current)
