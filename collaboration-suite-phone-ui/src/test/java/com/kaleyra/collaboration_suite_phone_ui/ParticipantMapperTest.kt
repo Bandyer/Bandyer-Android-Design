@@ -11,6 +11,7 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toMe
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toMyParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayImages
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayNames
 import io.mockk.every
@@ -506,6 +507,14 @@ class ParticipantMapperTest {
         every { callParticipantsMock.me } returns participantMeMock
         val actual = flowOf(callMock).toMe().first()
         assertEquals(participantMeMock, actual)
+    }
+
+    @Test
+    fun testToMyState() = runTest {
+        every { callParticipantsMock.me } returns participantMeMock
+        every { participantMeMock.state } returns MutableStateFlow(CallParticipant.State.InCall)
+        val actual = flowOf(callMock).toMyParticipantState().first()
+        assertEquals(CallParticipant.State.InCall, actual)
     }
 
 }
