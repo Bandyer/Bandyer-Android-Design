@@ -61,6 +61,7 @@ class WhiteBoardDialog : BaseKaleyraWhiteboardDialog<WhiteBoardDialog.Whiteboard
                 setInitialScale(1)
 
                 settings.apply {
+                    cacheMode = WebSettings.LOAD_DEFAULT
                     domStorageEnabled = true
                     databaseEnabled = true
                     displayZoomControls = true

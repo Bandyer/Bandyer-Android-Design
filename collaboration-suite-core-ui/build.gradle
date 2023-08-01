@@ -1,5 +1,7 @@
+import com.github.jk1.license.render.JsonReportRenderer
+
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,72 +15,95 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version("1.6.21")
+    alias(catalog.plugins.dokka)
+    alias(catalog.plugins.licenseReport)
 }
 
 apply from: '../versions.gradle'
+apply from: '../licenses.gradle'
 apply from: '../android.gradle'
 apply from: '../publish.gradle'
 apply from: '../downloadIcons.gradle'
 apply from: '../moveIcons.gradle'
 
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    coreLibraryDesugaring androidX.desugar
 
-    testImplementation test.jUnit
-    testImplementation test.mockk
-    testImplementation test.robolectric
-    testImplementation test.coroutines
-    testImplementation project(":collaboration-suite-extension-audio")
-    testImplementation project(":collaboration-suite")
-//    testImplementation kaleyra.collaboration
-    androidTestImplementation test.espresso
+    /** Platform **/
+    api catalog.kotlinStdLib
+    api catalog.androidxCoreKtx
+    api catalog.appcompat
+    api catalog.material
+    coreLibraryDesugaring catalog.desugar
 
-    api jetbrains.stdlib
-    api ktxExtensions.core
-    api androidX.appCompat
-    api google.material
-    api picasso.picasso
-
+    /** UI **/
+    api catalog.squareupPicasso
+    implementation catalog.androidxConstraintLayout
     api 'androidx.activity:activity-compose:1.5.1'
     api "androidx.compose.material:material:1.2.1"
     api "androidx.compose.foundation:foundation:1.2.1"
     api "androidx.compose.runtime:runtime:1.2.1"
+    api "androidx.compose.ui:ui-tooling-preview:1.2.1"
     api 'com.google.android.material:compose-theme-adapter:1.1.13'
     api 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
 
-//    def composeBom = platform('androidx.compose:compose-bom:2022.10.00')
-//    implementation composeBom
-//    androidTestImplementation composeBom
-//
-//    api 'androidx.compose.material:material'
-//    api 'androidx.compose.foundation:foundation'
-//    api "androidx.compose.runtime:runtime"
-
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
-
-    androidTestImplementation "io.mockk:mockk-android:1.13.3"
-    testImplementation 'io.mockk:mockk:1.13.3'
-
-    androidTestImplementation "androidx.test.espresso:espresso-intents:3.4.0"
-    
+    /** Testing **/
+    testImplementation project(":collaboration-suite")
+    testImplementation catalog.junit
+    testImplementation catalog.mockk
+    testImplementation catalog.roboelectric
+    testImplementation catalog.coroutines
+    testImplementation catalog.coroutinesTest
+//    testImplementation kaleyraCatalog.kaleyraCollaborationSuite
+    testImplementation project(":collaboration-suite-extension-audio")
     testImplementation project(":collaboration-suite")
 
+    androidTestImplementation catalog.androidxTestEspressoCore
+    androidTestImplementation "io.mockk:mockk-android:1.13.3"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:3.4.0"
+
     debugImplementation "androidx.compose.ui:ui-tooling:1.2.1"
-    api "androidx.compose.ui:ui-tooling-preview:1.2.1"
 
     /** Kaleyra **/
     implementation project(':collaboration-suite-utils')
 
     compileOnly project(":collaboration-suite")
     compileOnly project(":collaboration-suite-extension-audio")
+//    compileOnly kaleyraCatalog.kaleyraCollaborationSuite
+//    compileOnly kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
 }
 
+licenseReport {
+    // Set output directory for the report data.
+    // Defaults to ${project.buildDir}/reports/dependency-license.
+    outputDir = "$projectDir/build/licenses"
+
+    // Select projects to examine for dependencies.
+    // Defaults to current project and all its subprojects
+    projects = [project] + project.subprojects
+
+    // Adjust the configurations to fetch dependencies. Default is 'runtimeClasspath'
+    // For Android projects use 'releaseRuntimeClasspath' or 'yourFlavorNameReleaseRuntimeClasspath'
+    // Use 'ALL' to dynamically resolve all configurations:
+    // configurations = ALL
+    configurations = ['releaseRuntimeClasspath']
+
+    // Set custom report renderer, implementing ReportRenderer.
+    // Yes, you can write your own to support any format necessary.
+    renderers = [new JsonReportRenderer('licenses.json', false)]
+}
+
+// workaround for mockk spyk(proxy)
+// https://mockk.io/doc/md/jdk16-access-exceptions.html
+tasks.withType(Test) {
+    jvmArgs(
+            "--add-opens", "java.base/java.time=ALL-UNNAMED",
+            "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED"
+    )
+}

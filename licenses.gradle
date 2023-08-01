@@ -1,0 +1,36 @@
+//////////////////////// ADD LICENSE.txt IN AAR //////////////////////////////////
+
+def projName = name
+def outputAarDir = file('build/outputs/aar')
+def outputAarUnzipedDir = file('build/outputs/aar/unziped')
+def aarReleaseFile = file('build/outputs/aar/' + projName + '-release.aar')
+
+task unzipAar(type: Copy) {
+    from zipTree(aarReleaseFile)
+    into outputAarUnzipedDir
+    doLast { println("unzipAar task completed.") }
+}
+
+task generateThirdPartiesLicenses(type: Exec, dependsOn: 'unzipAar') {
+    workingDir '../scripts'
+    commandLine 'python3', 'generate_third_parties_licenses.py', project.getName()
+    doLast { println("generateThirdPartiesLicenses task completed.") }
+}
+
+task reZipAar(type: Zip, dependsOn: 'generateThirdPartiesLicenses') {
+    from outputAarUnzipedDir
+    includeEmptyDirs = false
+    include '*'
+    include '*/*'
+    include '*/*/*'
+    archiveName projName + '-release.aar'
+    destinationDir(outputAarDir)
+    doLast {
+        outputAarUnzipedDir.deleteDir()
+        println("reZipAar task completed.")
+    }
+}
+
+afterEvaluate {
+    bundleReleaseAar.finalizedBy(reZipAar)
+}

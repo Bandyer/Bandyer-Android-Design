@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,34 +20,28 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
-def kotlin_coroutines = "1.6.1"
-def kotlinVersion = "1.6.21"
-
 android {
-    compileSdkVersion 32
-    buildToolsVersion "31.0.0"
+
+    compileSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
+    buildToolsVersion sampleAppCatalog.versions.sampleAppToolsVersion.get()
 
     defaultConfig {
         applicationId "com.kaleyra.demo_collaboration_suite_ui"
-        minSdkVersion 21
-        targetSdkVersion 32
+        minSdkVersion sampleAppCatalog.versions.sampleAppMinSdkVersion.get().toInteger()
+        targetSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        debug {
+            minifyEnabled false
         }
-        benchmark {
-            signingConfig signingConfigs.debug
-            matchingFallbacks = ['release']
-            debuggable false
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -58,12 +52,7 @@ android {
     }
 
     buildFeatures {
-        compose true
         viewBinding true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0-rc02'
     }
 
     kotlinOptions {
@@ -72,40 +61,34 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    /*** Platform ***/
+    implementation sampleAppCatalog.kotlinStdLib
+    implementation sampleAppCatalog.androidxMultidex
+    implementation sampleAppCatalog.appcompat
+    implementation sampleAppCatalog.androidxRecyclerview
+    implementation sampleAppCatalog.androidxCoreKtx
+    implementation sampleAppCatalog.material
+    implementation sampleAppCatalog.androidxConstraintLayout
+    implementation sampleAppCatalog.coroutines
+    implementation sampleAppCatalog.androidxFragment
+    implementation sampleAppCatalog.androidxActivity
+    coreLibraryDesugaring sampleAppCatalog.desugar
 
     /*** Test implementation ***/
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation sampleAppCatalog.junit
+    androidTestImplementation sampleAppCatalog.junitTestExt
+    androidTestImplementation sampleAppCatalog.androidxTestEspressoCore
 
-    /*** Platform ***/
-    implementation "androidx.multidex:multidex:2.0.1"
-    implementation "androidx.appcompat:appcompat:1.4.0"
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation "androidx.core:core-ktx:1.7.0"
-    implementation "com.google.android.material:material:1.4.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.2"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
-    implementation 'androidx.fragment:fragment-ktx:1.4.0'
-    implementation 'androidx.activity:activity-ktx:1.4.0'
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-
-    implementation "com.github.imablanco:Zoomy:1ee82834df"
+    /*** UI ***/
+    implementation sampleAppCatalog.zoomy
 
     /***  Leak Canary ***/
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.10"
+    debugImplementation sampleAppCatalog.squareupLeakCanary
 
     /***  KaleyraCollaborationSuiteUI ***/
     implementation project(':collaboration-suite-phone-ui')
     implementation project(':collaboration-suite-glass-ui')
     implementation project(':collaboration-suite-core-ui')
-
-//    implementation project(":collaboration-suite")
-
-    implementation("androidx.profileinstaller:profileinstaller:1.2.0")
-
-    implementation "com.kaleyra:collaboration-suite-utils:3.0.1"
-    implementation "com.bandyer:bandyer-android-audiosession:3.1.0"
+    implementation kaleyraCatalog.kaleyraCollaborationSuiteUtils
+    implementation kaleyraCatalog.kaleyraAudioSession
 }
