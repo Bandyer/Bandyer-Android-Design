@@ -59,10 +59,10 @@ import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallActi
 import com.kaleyra.collaboration_suite_phone_ui.call.widgets.KaleyraCallActionWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.widgets.KaleyraCallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.widgets.KaleyraCallUserInfoWidget
-import com.kaleyra.collaboration_suite_phone_ui.screensharing.AppViewOverlay
-import com.kaleyra.collaboration_suite_phone_ui.screensharing.StatusBarOverlayView
+import com.kaleyra.collaboration_suite_core_ui.overlay.AppViewOverlay
+import com.kaleyra.collaboration_suite_core_ui.overlay.StatusBarOverlayView
 import com.kaleyra.collaboration_suite_phone_ui.screensharing.dialog.KaleyraScreenSharePickerDialog
-import com.kaleyra.collaboration_suite_phone_ui.views.ViewOverlayAttacher
+import com.kaleyra.collaboration_suite_core_ui.overlay.ViewOverlayAttacher
 import com.kaleyra.collaboration_suite_phone_ui.virtualbackground.KaleyraVirtualBackgroundPickerDialog
 import java.util.UUID
 

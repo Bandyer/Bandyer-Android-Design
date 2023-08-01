@@ -43,7 +43,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.Messages
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.UserInput
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.ChatAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
@@ -77,7 +77,7 @@ fun ChatScreen(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-internal fun ChatScreen(
+fun ChatScreen(
     uiState: ChatUiState,
     userMessage: UserMessage? = null,
     onBackPressed: () -> Unit,
@@ -185,7 +185,7 @@ internal fun OngoingCallLabel(onClick: () -> Unit) {
 @Composable
 internal fun ChatScreenPreview() = KaleyraTheme {
     ChatScreen(
-        uiState = mockUiState,
+        uiState = mockChatUiState,
         onBackPressed = { },
         onMessageScrolled = { },
         onResetMessagesScroll = { },
@@ -200,7 +200,7 @@ internal fun ChatScreenPreview() = KaleyraTheme {
 @Composable
 internal fun ChatScreenDarkPreview() = KaleyraTheme(isDarkTheme = true) {
     ChatScreen(
-        uiState = mockUiState,
+        uiState = mockChatUiState,
         onBackPressed = { },
         onMessageScrolled = { },
         onResetMessagesScroll = { },

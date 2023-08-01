@@ -22,13 +22,20 @@ buildscript {
 
     ext.sdkVersion = 31
     ext.buildToolsVersion = "31.0.0"
-    ext.kotlin_version = '1.6.10'
-    ext.bandyer_core_av = "11.0.2"
-    ext.bandyer_comm_center = "9.1.2"
-    ext.bandyer_chat = "0.3.0"
-    ext.bandyer_utils = "2.3.1"
-    ext.bandyer_networking = "4.1.0"
+
+    ext.kotlin_version = '1.6.21'
+    ext.bandyer_core_av = "13.0.0"
+    ext.bandyer_comm_center = "10.2.0"
+    ext.bandyer_chat = "1.0.0-alpha7"
+    ext.bandyer_utils = "3.0.1"
+    ext.extension_usb_camera = bandyer_core_av
+    ext.extension_virtual_background = bandyer_core_av
+    ext.collaboration_suite_utils = bandyer_utils
+    ext.bandyer_networking = "5.0.0"
     ext.collaboration_suite_networking = bandyer_networking
+    ext.collaboration_suite_core_ui = "3.8.0"
+    ext.collaboration_suite_glass_ui = collaboration_suite_core_ui
+    ext.collaboration_suite_phone_ui = collaboration_suite_core_ui
     ext.serialization_version = '0.5.1'
     ext.nav_version = "2.3.5"
 

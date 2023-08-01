@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.model
 
-import android.net.Uri
 import kotlinx.coroutines.flow.MutableStateFlow
 
 val mockConversationItems = ImmutableList(
@@ -77,7 +76,7 @@ val mockConversationUiState = ConversationUiState(
     unreadMessagesCount = 5
 )
 
-val mockUiState = ChatUiState(
+val mockChatUiState = ChatUiState(
     info = ChatInfo("John Smith", null),
     state = ChatState.NetworkState.Connecting,
     actions = mockActions,
