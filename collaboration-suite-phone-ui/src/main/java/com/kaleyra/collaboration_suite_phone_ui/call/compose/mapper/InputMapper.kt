@@ -66,7 +66,7 @@ internal object InputMapper {
             .flatMapLatest { it.streams }
             .map { streams ->
                 streams.firstOrNull { stream ->
-                    stream.video.firstOrNull() is Input.Video.Camera
+                    stream.video.firstOrNull { it is Input.Video.Camera } != null
                 }
             }
             .filterNotNull()
@@ -97,8 +97,8 @@ internal object InputMapper {
                 val usbCamera = inputs.firstOrNull { it is Input.Video.Camera.Usb }
                 when {
                     usbCamera != null && UsbCameraUtils.isSupported() -> UsbCameraMessage.Connected((usbCamera as Input.Video.Camera.Usb).name)
-                    usbCamera != null -> UsbCameraMessage.NotSupported
-                    else -> UsbCameraMessage.Disconnected
+                    usbCamera != null                                 -> UsbCameraMessage.NotSupported
+                    else                                              -> UsbCameraMessage.Disconnected
                 }
             }
 
@@ -107,7 +107,7 @@ internal object InputMapper {
             .flatMapLatest { it.streams }
             .map { streams ->
                 streams.firstOrNull { stream ->
-                    stream.audio.filterNotNull().firstOrNull() != null
+                    stream.audio.firstOrNull { it != null } != null
                 }
             }
             .filterNotNull()
