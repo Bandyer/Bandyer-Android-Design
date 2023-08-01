@@ -45,17 +45,20 @@ internal object InputMapper {
 
     fun Flow<Call>.isAudioOnly(): Flow<Boolean> =
         this.map { it.extras }
-            .map { !it.preferredType.hasVideo() }
+            .flatMapLatest { it.preferredType }
+            .map { !it.hasVideo() }
             .distinctUntilChanged()
 
     fun Flow<Call>.isAudioVideo(): Flow<Boolean> =
         this.map { it.extras }
-            .map { it.preferredType.isVideoEnabled() }
+            .flatMapLatest { it.preferredType }
+            .map { it.isVideoEnabled() }
             .distinctUntilChanged()
 
     fun Flow<Call>.hasAudio(): Flow<Boolean> =
         this.map { it.extras }
-            .map { it.preferredType.hasAudio() }
+            .flatMapLatest { it.preferredType }
+            .map { it.hasAudio() }
             .distinctUntilChanged()
 
     fun Flow<Call>.isMyCameraEnabled(): Flow<Boolean> =

@@ -3,13 +3,15 @@ package com.kaleyra.collaboration_suite_core_ui.call
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 interface CameraStreamInputsDelegate {
-    
+
     fun handleCameraStreamAudio(call: Call, coroutineScope: CoroutineScope) {
         call.inputs.availableInputs
             .map { it.filterIsInstance<Input.Audio>().firstOrNull() }
@@ -23,15 +25,16 @@ interface CameraStreamInputsDelegate {
     }
 
     fun handleCameraStreamVideo(call: Call, coroutineScope: CoroutineScope) {
-        val hasVideo = call.extras.preferredType.hasVideo()
         call.inputs.availableInputs
-            .map { inputs -> inputs.lastOrNull { it is Input.Video.Camera.Internal || it is Input.Video.Camera.Usb } as? Input.Video.My }
-            .filterNotNull()
-            .onEach { video ->
-                video.setQuality(Input.Video.Quality.Definition.HD)
+            .map { inputs -> inputs.lastOrNull { it is Input.Video.Camera }}
+            .filterIsInstance<Input.Video.My>()
+            .combine(call.extras.preferredType) { video, preferredType ->
+                val hasVideo = preferredType.hasVideo()
+                if (!hasVideo) return@combine
                 val me = call.participants.value.me
-                val stream = me.streams.value.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID } ?: return@onEach
-                if (hasVideo) stream.video.value = video
+                val stream = me.streams.value.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID } ?: return@combine
+                video.setQuality(Input.Video.Quality.Definition.HD)
+                stream.video.value = video
             }.launchIn(coroutineScope)
     }
 

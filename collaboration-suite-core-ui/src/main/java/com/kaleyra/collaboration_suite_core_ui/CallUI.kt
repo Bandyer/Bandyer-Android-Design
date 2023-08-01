@@ -19,7 +19,15 @@ package com.kaleyra.collaboration_suite_core_ui
 import android.os.Parcelable
 import androidx.annotation.Keep
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.Call.PreferredType
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.mapToStateFlow
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.parcelize.Parcelize
 import java.io.File
 
@@ -31,7 +39,7 @@ import java.io.File
  */
 class CallUI(
     private val call: Call,
-    val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(call.getDefaultActions())
+    val actions: MutableStateFlow<Set<Action>> = call.getDefaultActions()
 ) : Call by call {
 
     /**
@@ -168,12 +176,23 @@ class CallUI(
     }
 }
 
-private fun Call.getDefaultActions() = mutableSetOf<CallUI.Action>().apply {
-    if (extras.preferredType.hasAudio()) add(CallUI.Action.ToggleMicrophone)
-    if (extras.preferredType.hasVideo()) {
+private fun Call.getDefaultActions(): MutableStateFlow<Set<Action>> {
+    val actions = MutableStateFlow(buildSet {
+        add(CallUI.Action.ChangeVolume)
+        add(CallUI.Action.ShowParticipants)
+    })
+    extras.preferredType.onEach {
+        actions.value = it.addActions(actions.value)
+    }.launchIn(MainScope())
+    return actions
+}
+
+private fun PreferredType.addActions(actions: Set<Action>) = buildSet {
+    if (this@addActions.hasAudio()) add(CallUI.Action.ToggleMicrophone)
+    if (this@addActions.hasVideo()) {
         add(CallUI.Action.ToggleCamera)
         add(CallUI.Action.SwitchCamera)
     }
-    add(CallUI.Action.ChangeVolume)
-    add(CallUI.Action.ShowParticipants)
+    addAll(actions)
 }
+

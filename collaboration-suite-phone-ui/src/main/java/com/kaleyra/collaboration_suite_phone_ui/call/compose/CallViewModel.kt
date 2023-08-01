@@ -64,6 +64,8 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
     private var onPipAspectRatio: ((Rational) -> Unit)? = null
 
+    private var onAudioOrVideoChanged: ((Boolean, Boolean) -> Unit)? = null
+
     init {
         viewModelScope.launch {
             val result = withTimeoutOrNull(NULL_CALL_TIMEOUT) {
@@ -111,8 +113,9 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
                         callState is CallStateUi.Disconnected.Ended.Error,
                         callState is CallStateUi.Disconnected.Ended.Kicked
                     )
-                    is CallStateUi.Reconnecting -> fullscreenStream(null)
-                    else -> Unit
+
+                    is CallStateUi.Reconnecting       -> fullscreenStream(null)
+                    else                              -> Unit
                 }
             }
             .launchIn(viewModelScope)
@@ -156,6 +159,11 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .toPipAspectRatio()
             .onEach { onPipAspectRatio?.invoke(it) }
             .launchIn(viewModelScope)
+
+        call
+            .flatMapLatest { it.extras.preferredType }
+            .onEach { onAudioOrVideoChanged?.invoke(it.isAudioEnabled(), it.isVideoEnabled()) }
+            .launchIn(viewModelScope)
     }
 
     override fun onCleared() {
@@ -165,20 +173,16 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     }
 
     fun startMicrophone(context: FragmentActivity) {
-        viewModelScope.launch {
-            val call = call.getValue()
-            if (call?.toMyCameraStream()?.audio?.value != null) return@launch
-            call?.inputs?.request(context, Inputs.Type.Microphone)
-        }
+        val call = call.getValue() ?: return
+        if (call.toMyCameraStream()?.audio?.value != null) return
+        viewModelScope.launch { call.inputs.request(context, Inputs.Type.Microphone) }
     }
 
     fun startCamera(context: FragmentActivity) {
-        viewModelScope.launch {
-            val call = call.getValue()
-            if (call?.toMyCameraStream()?.video?.value != null) return@launch
-            call?.inputs?.request(context, Inputs.Type.Camera.Internal)
-            call?.inputs?.request(context, Inputs.Type.Camera.External)
-        }
+        val call = call.getValue() ?: return
+        if (call.toMyCameraStream()?.video?.value != null) return
+        viewModelScope.launch { call.inputs.request(context, Inputs.Type.Camera.Internal).getOrNull<Input.Video>() }
+        viewModelScope.launch { call.inputs.request(context, Inputs.Type.Camera.External).getOrNull<Input.Video>() }
     }
 
     fun hangUp() {
@@ -188,7 +192,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     fun updateStreamsArrangement(isMediumSizeDevice: Boolean) {
         val count = when {
             !isMediumSizeDevice -> 2
-            else -> 4
+            else                -> 4
         }
         maxNumberOfFeaturedStreams.value = count
     }
@@ -211,6 +215,10 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
     fun setOnPipAspectRatio(block: (Rational) -> Unit) {
         onPipAspectRatio = block
+    }
+
+    fun setOnAudioOrVideoChanged(block: (isAudioEnabled: Boolean, isVideoEnabled: Boolean) -> Unit) {
+        onAudioOrVideoChanged = block
     }
 
     companion object {

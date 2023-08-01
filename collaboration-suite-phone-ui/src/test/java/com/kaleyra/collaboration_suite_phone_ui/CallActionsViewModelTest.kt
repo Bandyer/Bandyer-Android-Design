@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import android.content.Context
+import androidx.fragment.app.FragmentActivity
 import com.bandyer.android_audiosession.model.AudioOutputDevice
 import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.Contact
@@ -20,10 +21,12 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmod
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import io.mockk.*
+import io.mockk.Ordering.ORDERED
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -61,6 +64,8 @@ class CallActionsViewModelTest {
 
     private val videoMock = mockk<Input.Video.Camera.Internal>(relaxed = true)
 
+    private val externalCameraMock = mockk<Input.Video.Camera.Usb>(relaxed = true)
+
     private val rearLens = mockk<Input.Video.Camera.Internal.Lens>()
 
     private val frontLens = mockk<Input.Video.Camera.Internal.Lens>()
@@ -70,6 +75,10 @@ class CallActionsViewModelTest {
     private val restrictionMock = mockk<Contact.Restrictions>()
 
     private val cameraRestrictionMock = mockk<Contact.Restrictions.Restriction.Camera>()
+
+    private val inputs = MutableStateFlow(setOf<Input>())
+    
+    private val activity = mockk<FragmentActivity>()
 
     @Before
     fun setUp() {
@@ -83,8 +92,8 @@ class CallActionsViewModelTest {
             every { actions } returns MutableStateFlow(setOf(CallUI.Action.HangUp, CallUI.Action.Audio))
             every { state } returns MutableStateFlow(mockk())
             every { participants } returns MutableStateFlow(callParticipantsMock)
-            every { effects }returns effectsMock
-            every { extras.preferredType } returns Call.PreferredType.audioVideo()
+            every { effects } returns effectsMock
+            every { extras.preferredType } returns MutableStateFlow(Call.PreferredType.audioVideo())
         }
         with(callParticipantsMock) {
             every { me } returns meMock
@@ -99,8 +108,26 @@ class CallActionsViewModelTest {
             every { available } returns MutableStateFlow(setOf())
             every { preselected } returns MutableStateFlow(Effect.Video.None)
         }
-        every { otherParticipantMock.userId }returns "otherUserId"
-        every { inputsMock.availableInputs } returns MutableStateFlow(setOf(audioMock, videoMock))
+        every { otherParticipantMock.userId } returns "otherUserId"
+
+        inputs.value = setOf(audioMock, videoMock)
+        every { inputsMock.availableInputs } returns inputs
+
+        coEvery { inputsMock.request(any(), Inputs.Type.Microphone) } coAnswers {
+            Inputs.RequestResult.Success(audioMock).apply {
+                inputs.value = setOf(input)
+            }
+        }
+        coEvery { inputsMock.request(any(), Inputs.Type.Camera.Internal) } coAnswers {
+            Inputs.RequestResult.Success(videoMock).apply {
+                inputs.value = setOf(input)
+            }
+        }
+        coEvery { inputsMock.request(any(), Inputs.Type.Camera.External) } coAnswers {
+            Inputs.RequestResult.Success(externalCameraMock).apply {
+                inputs.value = setOf(input)
+            }
+        }
         every { videoMock.lenses } returns listOf(frontLens, rearLens)
         with(meMock) {
             every { streams } returns MutableStateFlow(listOf(myStreamMock))
@@ -109,6 +136,7 @@ class CallActionsViewModelTest {
         every { restrictionMock.camera } returns MutableStateFlow(cameraRestrictionMock)
         every { cameraRestrictionMock.usage } returns false
         every { videoMock.enabled } returns MutableStateFlow(false)
+        every { videoMock.state } returns MutableStateFlow(Input.State.Active)
         every { audioMock.enabled } returns MutableStateFlow(false)
         every { rearLens.isRear } returns false
         every { frontLens.isRear } returns true
@@ -401,33 +429,88 @@ class CallActionsViewModelTest {
 
     @Test
     fun testToggleMicOn() = runTest {
+        inputsMock
+        every { audioMock.enabled } returns MutableStateFlow(false)
+        runCurrent()
+        viewModel.toggleMic(activity)
+        runCurrent()
+        verify(exactly = 1) { audioMock.tryEnable() }
+    }
+
+    @Test
+    fun testToggleMicOnWithoutAvailableInput() = runTest {
+        inputs.value = setOf()
         every { audioMock.enabled } returns MutableStateFlow(false)
         advanceUntilIdle()
-        viewModel.toggleMic()
+        viewModel.toggleMic(activity)
+        advanceUntilIdle()
+        coVerify(exactly = 1) { inputsMock.request(any(), Inputs.Type.Microphone) }
         verify(exactly = 1) { audioMock.tryEnable() }
     }
 
     @Test
     fun testToggleMicOff() = runTest {
         every { audioMock.enabled } returns MutableStateFlow(true)
+        runCurrent()
+        viewModel.toggleMic(activity)
+        runCurrent()
+        verify(exactly = 1) { audioMock.tryDisable() }
+    }
+
+    @Test
+    fun testToggleMicOffWithoutAvailableInput() = runTest {
+        inputs.value = setOf()
+        every { audioMock.enabled } returns MutableStateFlow(true)
         advanceUntilIdle()
-        viewModel.toggleMic()
+        viewModel.toggleMic(activity)
+        advanceUntilIdle()
+        coVerify(exactly = 1) { inputsMock.request(any(), Inputs.Type.Microphone) }
         verify(exactly = 1) { audioMock.tryDisable() }
     }
 
     @Test
     fun testToggleCameraOn() = runTest {
         every { videoMock.enabled } returns MutableStateFlow(false)
+        runCurrent()
+        viewModel.toggleCamera(activity)
+        runCurrent()
+        verify(exactly = 1) { videoMock.tryEnable() }
+    }
+
+    @Test
+    fun testToggleCameraOnWithoutAvailableInput() = runTest {
+        inputs.value = setOf()
+        every { videoMock.enabled } returns MutableStateFlow(false)
         advanceUntilIdle()
-        viewModel.toggleCamera()
+        viewModel.toggleCamera(activity)
+        advanceUntilIdle()
+        coVerify(ordering = ORDERED) {
+            inputsMock.request(any(), Inputs.Type.Camera.External)
+            inputsMock.request(any(), Inputs.Type.Camera.Internal)
+        }
         verify(exactly = 1) { videoMock.tryEnable() }
     }
 
     @Test
     fun testToggleCameraOff() = runTest {
         every { videoMock.enabled } returns MutableStateFlow(true)
+        runCurrent()
+        viewModel.toggleCamera(activity)
+        runCurrent()
+        verify(exactly = 1) { videoMock.tryDisable() }
+    }
+
+    @Test
+    fun testToggleCameraOffWithoutAvailableInput() = runTest {
+        inputs.value = setOf()
+        every { videoMock.enabled } returns MutableStateFlow(true)
         advanceUntilIdle()
-        viewModel.toggleCamera()
+        viewModel.toggleCamera(activity)
+        advanceUntilIdle()
+        coVerify(ordering = ORDERED) {
+            inputsMock.request(any(), Inputs.Type.Camera.External)
+            inputsMock.request(any(), Inputs.Type.Camera.Internal)
+        }
         verify(exactly = 1) { videoMock.tryDisable() }
     }
 
@@ -435,9 +518,9 @@ class CallActionsViewModelTest {
     fun testToggleCameraWithCameraRestriction() = runTest {
         mockkObject(CallUserMessagesProvider)
         every { cameraRestrictionMock.usage } returns true
-        advanceUntilIdle()
-        viewModel.toggleCamera()
-        advanceUntilIdle()
+        runCurrent()
+        viewModel.toggleCamera(activity)
+        runCurrent()
         verify(exactly = 1) {
             CallUserMessagesProvider.sendUserMessage(withArg {
                 assertEquals(it::class, CameraRestrictionMessage::class)
@@ -522,6 +605,6 @@ class CallActionsViewModelTest {
         val isStopped = viewModel.tryStopScreenShare()
         verify(exactly = 1) { screenShareVideoMock.tryDisable() }
         verify(exactly = 1) { meMock.removeStream(myStreamMock) }
-        assertEquals(true , isStopped)
+        assertEquals(true, isStopped)
     }
 }

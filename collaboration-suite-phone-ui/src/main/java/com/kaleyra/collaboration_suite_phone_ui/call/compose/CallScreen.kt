@@ -20,12 +20,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -68,10 +66,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomshe
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.KickedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.UserFeedback
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.CameraPermission
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.MultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.RecordAudioPermission
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.findActivity
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.rememberMultiplePermissionsState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.rememberPermissionState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.RecordingLabel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
@@ -224,7 +221,8 @@ internal class CallScreenState(
                     sheetState.expand()
                 }
             }
-            else -> Unit
+
+            else                                                                                                                               -> Unit
         }
     }
 
@@ -261,14 +259,11 @@ internal fun CallScreen(
         sheetState = sheetState,
         shouldShowFileShareComponent = shouldShowFileShareComponent
     )
-    val permissions by remember(callScreenState) { getPermissions(callUiState) }
-    val permissionsState = rememberMultiplePermissionsState(permissions = permissions) { permissionsResult ->
-        permissionsResult.forEach { (permission, _) ->
-            when (permission) {
-                RecordAudioPermission -> viewModel.startMicrophone(activity)
-                CameraPermission -> viewModel.startCamera(activity)
-            }
-        }
+    val audioPermissionState = rememberPermissionState(permission = RecordAudioPermission) { isGranted ->
+        if (isGranted) viewModel.startMicrophone(activity)
+    }
+    val videoPermissionState = rememberPermissionState(permission = CameraPermission) { isGranted ->
+        if (isGranted) viewModel.startCamera(activity)
     }
     val onFinishActivity = remember(activity) {
         {
@@ -281,8 +276,11 @@ internal fun CallScreen(
             {
                 when {
                     callUiState.callState is CallStateUi.Disconnected.Ended -> onFinishActivity()
-                    callUiState.fullscreenStream != null -> { viewModel.fullscreenStream(null) }
-                    else -> onEnterPip()
+                    callUiState.fullscreenStream != null                    -> {
+                        viewModel.fullscreenStream(null)
+                    }
+
+                    else                                                    -> onEnterPip()
                 }
             }
         }
@@ -293,7 +291,7 @@ internal fun CallScreen(
             onActivityFinishing()
             when {
                 isInPipMode || !activity.isAtLeastResumed() -> activity.finishAndRemoveTask()
-                !hasFeedback && !hasBeenKicked -> {
+                !hasFeedback && !hasBeenKicked              -> {
                     val delayMs = if (hasErrorOccurred) ActivityFinishErrorDelay else ActivityFinishDelay
                     delay(delayMs)
                     activity.finishAndRemoveTask()
@@ -306,14 +304,16 @@ internal fun CallScreen(
         viewModel.setOnPipAspectRatio(onPipAspectRatio)
     }
 
-    LaunchedEffect(permissionsState) {
-        permissionsState.launchMultiplePermissionRequest()
+    LaunchedEffect(videoPermissionState, audioPermissionState) {
+        viewModel.setOnAudioOrVideoChanged { isAudioEnabled, isVideoEnabled ->
+            if (isAudioEnabled) audioPermissionState.launchPermissionRequest()
+            if (isVideoEnabled) videoPermissionState.launchPermissionRequest()
+        }
     }
 
     CallScreen(
         callUiState = callUiState,
         callScreenState = callScreenState,
-        permissionsState = permissionsState,
         onThumbnailStreamClick = viewModel::swapThumbnail,
         onThumbnailStreamDoubleClick = viewModel::fullscreenStream,
         onFullscreenStreamClick = viewModel::fullscreenStream,
@@ -327,22 +327,10 @@ internal fun CallScreen(
     )
 }
 
-private fun getPermissions(callUiState: CallUiState): State<List<String>> {
-    return derivedStateOf {
-        with(callUiState) {
-            listOfNotNull(
-                if (isMicPermissionRequired) RecordAudioPermission else null,
-                if (isCameraPermissionRequired) CameraPermission else null
-            )
-        }
-    }
-}
-
 @Composable
 internal fun CallScreen(
     callUiState: CallUiState,
     callScreenState: CallScreenState,
-    permissionsState: MultiplePermissionsState?,
     onBackPressed: () -> Unit,
     isInPipMode: Boolean = false,
     onConfigurationChange: (Boolean) -> Unit,
@@ -391,7 +379,7 @@ internal fun CallScreen(
     LaunchedEffect(callUiState) {
         when {
             callUiState.callState != CallStateUi.Dialing && callUiState.callState != CallStateUi.Connected && callUiState.callState != CallStateUi.Reconnecting && callUiState.callState != CallStateUi.Ringing(true) -> callScreenState.hideSheet()
-            callScreenState.isSheetHidden -> callScreenState.halfExpandSheet()
+            callScreenState.isSheetHidden                                                                                                                                                                             -> callScreenState.halfExpandSheet()
         }
     }
 
@@ -422,7 +410,6 @@ internal fun CallScreen(
         DefaultCallScreen(
             callUiState = callUiState,
             callScreenState = callScreenState,
-            permissionsState = permissionsState,
             onBackPressed = onBackPressed,
             onConfigurationChange = onConfigurationChange,
             onThumbnailStreamClick = onThumbnailStreamClick,
@@ -505,7 +492,6 @@ internal fun PipScreen(
 internal fun DefaultCallScreen(
     callUiState: CallUiState,
     callScreenState: CallScreenState,
-    permissionsState: MultiplePermissionsState?,
     onBackPressed: () -> Unit,
     onConfigurationChange: (Boolean) -> Unit,
     onThumbnailStreamClick: (String) -> Unit,
@@ -548,7 +534,6 @@ internal fun DefaultCallScreen(
             sheetContent = {
                 BottomSheetContent(
                     contentState = callScreenState.sheetContentState,
-                    permissionsState = permissionsState,
                     onLineClick = callScreenState::halfExpandSheetIfCollapsed,
                     onCallActionClick = callScreenState::onCallActionClick,
                     onAudioDeviceClick = callScreenState::halfExpandSheet,
@@ -681,7 +666,6 @@ fun CallScreenPreview() {
                 thumbnailStreams = ImmutableList(listOf(streamUiMock))
             ),
             callScreenState = rememberCallScreenState(),
-            permissionsState = null,
             onFileShareVisibility = {},
             onWhiteboardVisibility = {},
             onConfigurationChange = {},
@@ -690,7 +674,7 @@ fun CallScreenPreview() {
             onThumbnailStreamClick = {},
             onThumbnailStreamDoubleClick = {},
             onFinishActivity = {},
-            onUserFeedback = { _,_ -> }
+            onUserFeedback = { _, _ -> }
         )
     }
 }

@@ -65,9 +65,9 @@ class ChatUI(
             val all by lazy {
                 setOf(
                     ShowParticipants,
-                    CreateCall(preferredType = Call.PreferredType(video = Call.Video.Disabled)),
-                    CreateCall(preferredType = Call.PreferredType(video = null)),
-                    CreateCall()
+                    CreateCall(preferredType = Call.PreferredType.audioOnly()),
+                    CreateCall(preferredType = Call.PreferredType.audioUpgradable()),
+                    CreateCall(preferredType = Call.PreferredType.audioVideo())
                 )
             }
         }
@@ -79,7 +79,7 @@ class ChatUI(
          * @constructor
          */
         @Parcelize
-        data class CreateCall(val preferredType: Call.PreferredType = Call.PreferredType()) : Action()
+        data class CreateCall(val preferredType: Call.PreferredType = Call.PreferredType.audioVideo()) : Action()
 
         /**
          * Show participants action

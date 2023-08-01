@@ -124,9 +124,9 @@ class InputMapperTest {
     }
 
     @Test
-    fun preferredTypeHasVideoNull_isAudioOnly_false() = runTest {
+    fun preferredTypeHasVideoNull_isAudioOnly_true() = runTest {
         every { callMock.extras } returns mockk {
-            every { preferredType } returns Call.PreferredType(video = null)
+            every { preferredType } returns MutableStateFlow(Call.PreferredType.audioOnly())
         }
         val call = MutableStateFlow(callMock)
         val result = call.isAudioOnly()
@@ -135,9 +135,24 @@ class InputMapperTest {
     }
 
     @Test
-    fun preferredTypeHasVideo_isAudioOnly_true() = runTest {
+    fun preferredTypeChanged_isAudioOnly_changes() = runTest {
+        val preferredTypeFlow =  MutableStateFlow(Call.PreferredType.audioOnly())
         every { callMock.extras } returns mockk {
-            every { preferredType } returns Call.PreferredType()
+            every { preferredType } returns preferredTypeFlow
+        }
+        val call = MutableStateFlow(callMock)
+        val result = call.isAudioOnly()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
+        preferredTypeFlow.value = Call.PreferredType.audioVideo()
+        val new = result.first()
+        Assert.assertEquals(false, new)
+    }
+
+    @Test
+    fun preferredTypeHasVideo_isAudioOnly_false() = runTest {
+        every { callMock.extras } returns mockk {
+            every { preferredType } returns MutableStateFlow(Call.PreferredType.audioVideo())
         }
         val call = MutableStateFlow(callMock)
         val result = call.isAudioOnly()
@@ -148,7 +163,7 @@ class InputMapperTest {
     @Test
     fun preferredTypeHasVideoEnabled_isAudioVideo_true() = runTest {
         every { callMock.extras } returns mockk {
-            every { preferredType } returns Call.PreferredType(video = Call.Video.Enabled)
+            every { preferredType } returns  MutableStateFlow(Call.PreferredType.audioVideo())
         }
         val call = MutableStateFlow(callMock)
         val result = call.isAudioVideo()
@@ -157,23 +172,27 @@ class InputMapperTest {
     }
 
     @Test
-    fun preferredTypeHasVideoDisabled_isAudioVideo_false() = runTest {
+    fun preferredTypeChanged_isAudioVideo_changes() = runTest {
+        val preferredTypeFlow =  MutableStateFlow(Call.PreferredType.audioOnly())
         every { callMock.extras } returns mockk {
-            every { preferredType } returns Call.PreferredType(video = Call.Video.Disabled)
+            every { preferredType } returns preferredTypeFlow
         }
         val call = MutableStateFlow(callMock)
         val result = call.isAudioVideo()
         val actual = result.first()
         Assert.assertEquals(false, actual)
+        preferredTypeFlow.value = Call.PreferredType.audioVideo()
+        val new = result.first()
+        Assert.assertEquals(true, new)
     }
 
     @Test
-    fun preferredTypeHasAudioNull_hasAudio_false() = runTest {
+    fun preferredTypeHasVideoDisabled_isAudioVideo_false() = runTest {
         every { callMock.extras } returns mockk {
-            every { preferredType } returns Call.PreferredType(audio = null)
+            every { preferredType } returns  MutableStateFlow(Call.PreferredType.audioUpgradable())
         }
         val call = MutableStateFlow(callMock)
-        val result = call.hasAudio()
+        val result = call.isAudioVideo()
         val actual = result.first()
         Assert.assertEquals(false, actual)
     }
@@ -181,13 +200,15 @@ class InputMapperTest {
     @Test
     fun preferredTypeHasAudio_hasAudio_true() = runTest {
         every { callMock.extras } returns mockk {
-            every { preferredType } returns Call.PreferredType()
+            every { preferredType } returns  MutableStateFlow(Call.PreferredType.audioVideo())
         }
         val call = MutableStateFlow(callMock)
         val result = call.hasAudio()
         val actual = result.first()
         Assert.assertEquals(true, actual)
     }
+
+
 
     @Test
     fun inputAudioRequestMute_toMutedMessage_adminDisplayName() = runTest {
@@ -230,7 +251,7 @@ class InputMapperTest {
     @Test
     fun usbCameraInAvailableInputsAndItIsSupported_toUsbCameraMessage_usbCameraConnectedMessage() = runTest {
         mockkObject(UsbCameraUtils)
-        every { UsbCameraUtils.isSupported()  } returns true
+        every { UsbCameraUtils.isSupported() } returns true
         every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Usb>(relaxed = true)))
         val call = MutableStateFlow(callMock)
         val actual = call.toUsbCameraMessage().first()
@@ -240,7 +261,7 @@ class InputMapperTest {
     @Test
     fun usbCameraNotSupported_toUsbCameraMessage_usbCameraNotSupportedMessage() = runTest {
         mockkObject(UsbCameraUtils)
-        every { UsbCameraUtils.isSupported()  } returns false
+        every { UsbCameraUtils.isSupported() } returns false
         every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Usb>(relaxed = true)))
         val call = MutableStateFlow(callMock)
         val actual = call.toUsbCameraMessage().first()

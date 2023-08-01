@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.Call.PreferredType
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.Theme
@@ -49,7 +50,7 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
 
     protected val callMock = mockk<CallUI>(relaxed = true)
 
-    private val preferredTypeMock = mockk<Call.PreferredType>(relaxed = true)
+    private val preferredTypeMock =  MutableStateFlow(PreferredType.audioVideo())
 
     private val uriMock1 = mockk<Uri>()
 
@@ -91,6 +92,7 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
         with(callParticipantsMock) {
             every { others } returns listOf(participantMock1, participantMock2)
             every { me } returns participantMeMock
+            every { creator() } returns mockk()
         }
         with(streamMock1) {
             every { id } returns "streamId1"
@@ -141,7 +143,6 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
             every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
         }
         every { callMock.extras.preferredType } returns preferredTypeMock
-        every { preferredTypeMock.isVideoEnabled() } returns true
         every { companyMock.name } returns MutableStateFlow("Kaleyra")
         with(themeMock) {
             every { day } returns mockk {
@@ -221,7 +222,7 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
 
     @Test
     fun testPreCallUiState_isVideoIncomingUpdated() = runTest {
-        every { participantMeMock.streams } returns MutableStateFlow(listOf(mockk(relaxed = true)))
+        every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
         val current = viewModel.uiState.first().isVideoIncoming
         assertEquals(false, current)
         advanceUntilIdle()
