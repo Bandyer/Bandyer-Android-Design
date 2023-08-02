@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
+import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItem
@@ -35,6 +36,8 @@ import kotlinx.coroutines.flow.takeWhile
 internal class CallParticipantsFragment : ParticipantsFragment() {
 
     private val viewModel: CallViewModel by activityViewModels()
+
+    override val participants: List<Participant> by lazy { viewModel.participants.replayCache.firstOrNull()?.list ?: listOf() }
 
     private val args: CallParticipantsFragmentArgs by lazy {
         CallParticipantsFragmentArgs.fromBundle(

@@ -28,6 +28,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
@@ -51,8 +52,6 @@ import kotlinx.coroutines.launch
  */
 internal abstract class ParticipantsFragment : BaseFragment(), TiltListener {
 
-    private val viewModel: CallViewModel by activityViewModels()
-
     private var _binding: KaleyraGlassFragmentParticipantsBinding? = null
     override val binding: KaleyraGlassFragmentParticipantsBinding get() = _binding!!
 
@@ -61,7 +60,7 @@ internal abstract class ParticipantsFragment : BaseFragment(), TiltListener {
 
     protected var currentParticipantIndex = -1
 
-    private val participants by lazy { viewModel.call.replayCache.first().participants.value.list }
+    abstract val participants: List<Participant>
 
     /**
      * @suppress
