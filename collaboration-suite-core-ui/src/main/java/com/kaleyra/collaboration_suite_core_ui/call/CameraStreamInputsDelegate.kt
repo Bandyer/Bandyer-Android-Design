@@ -28,7 +28,7 @@ interface CameraStreamInputsDelegate {
         call.inputs.availableInputs
             .map { inputs -> inputs.lastOrNull { it is Input.Video.Camera }}
             .filterIsInstance<Input.Video.My>()
-            .combine(call.extras.preferredType) { video, preferredType ->
+            .combine(call.preferredType) { video, preferredType ->
                 val hasVideo = preferredType.hasVideo()
                 if (!hasVideo) return@combine
                 val me = call.participants.value.me

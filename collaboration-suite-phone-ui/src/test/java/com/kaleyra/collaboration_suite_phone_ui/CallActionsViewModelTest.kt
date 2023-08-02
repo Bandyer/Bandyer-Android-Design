@@ -93,7 +93,7 @@ class CallActionsViewModelTest {
             every { state } returns MutableStateFlow(mockk())
             every { participants } returns MutableStateFlow(callParticipantsMock)
             every { effects } returns effectsMock
-            every { extras.preferredType } returns MutableStateFlow(Call.PreferredType.audioVideo())
+            every { preferredType } returns MutableStateFlow(Call.PreferredType.audioVideo())
         }
         with(callParticipantsMock) {
             every { me } returns meMock

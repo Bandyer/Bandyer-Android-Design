@@ -161,7 +161,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .onEach { onPipAspectRatio?.invoke(it) }
             .launchIn(viewModelScope)
 
-        combine(call.flatMapLatest { it.extras.preferredType }, call.toMyParticipantState()) { preferredType, state ->
+        combine(call.flatMapLatest { it.preferredType }, call.toMyParticipantState()) { preferredType, state ->
             if (state !is CallParticipant.State.NotInCall.Connecting) return@combine
             onAudioOrVideoChanged?.invoke(preferredType.isAudioEnabled(), preferredType.isVideoEnabled())
         }.launchIn(viewModelScope)

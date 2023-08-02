@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.UsbCameraUtils
@@ -44,20 +43,17 @@ internal object InputMapper {
             .map { MutedMessage(it) }
 
     fun Flow<Call>.isAudioOnly(): Flow<Boolean> =
-        this.map { it.extras }
-            .flatMapLatest { it.preferredType }
+        this.flatMapLatest { it.preferredType }
             .map { !it.hasVideo() }
             .distinctUntilChanged()
 
     fun Flow<Call>.isAudioVideo(): Flow<Boolean> =
-        this.map { it.extras }
-            .flatMapLatest { it.preferredType }
+        this.flatMapLatest { it.preferredType }
             .map { it.isVideoEnabled() }
             .distinctUntilChanged()
 
     fun Flow<Call>.hasAudio(): Flow<Boolean> =
-        this.map { it.extras }
-            .flatMapLatest { it.preferredType }
+        this.flatMapLatest { it.preferredType }
             .map { it.hasAudio() }
             .distinctUntilChanged()
 

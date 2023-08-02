@@ -142,7 +142,7 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
             every { combinedDisplayImage } returns MutableStateFlow(uriMock3)
             every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
         }
-        every { callMock.extras.preferredType } returns preferredTypeMock
+        every { callMock.preferredType } returns preferredTypeMock
         every { companyMock.name } returns MutableStateFlow("Kaleyra")
         with(themeMock) {
             every { day } returns mockk {
