@@ -19,49 +19,32 @@ package com.kaleyra.demo_collaboration_suite_ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.ViewModel
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.ChatScreen
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.ChatUiViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-
-class MockChatViewModel : ViewModel(), ChatUiViewModel {
-
-    override val uiState: StateFlow<ChatUiState> = MutableStateFlow(mockUiState)
-
-    override fun sendMessage(text: String) = Unit
-
-    override fun typing() = Unit
-
-    override fun fetchMessages() = Unit
-
-    override fun onMessageScrolled(messageItem: ConversationItem.MessageItem) = Unit
-
-    override fun onAllMessagesScrolled() = Unit
-
-    override fun showCall() = Unit
-}
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockChatUiState
 
 class ChatActivity : ComponentActivity() {
-
-    private val viewModel: MockChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             MdcTheme(setDefaultFontFamily = true) {
-                ChatScreen(onBackPressed = this::onBackPressed, viewModel = viewModel)
+                ChatScreen(
+                    uiState = mockChatUiState,
+                    onBackPressed = this::onBackPressed,
+                    onMessageScrolled = { },
+                    onResetMessagesScroll = { },
+                    onFetchMessages = { },
+                    onShowCall = { },
+                    onSendMessage = { },
+                    onTyping = { }
+                )
 
                 val isSystemInDarkTheme = isSystemInDarkTheme()
                 SideEffect {

@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite.User
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.flatMapLatest
