@@ -97,7 +97,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
     val phoneBoxState: StateFlow<PhoneBox.State> = _phoneBoxState.asStateFlow()
 
     val preferredCallType: StateFlow<Call.PreferredType?> =
-        call.map { it.extras.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+        call.flatMapLatest { it.extras.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val actions: StateFlow<Set<CallUI.Action>> =
         call.flatMapLatest { it.actions }.stateIn(viewModelScope, SharingStarted.Eagerly, setOf())

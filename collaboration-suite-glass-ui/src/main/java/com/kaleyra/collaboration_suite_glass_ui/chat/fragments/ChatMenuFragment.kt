@@ -152,7 +152,7 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
             val userId = viewModel.chat.replayCache.first().participants.value.others.first().userId
             val phoneBox = viewModel.phoneBox.replayCache.firstOrNull() ?: return@also
             phoneBox.call(listOf(userId)) {
-                if (action is ChatAction.CALL) preferredType = Call.PreferredType(video = Call.Video.Disabled)
+                if (action is ChatAction.CALL) preferredType = Call.PreferredType.audioUpgradable()
             }
             findNavController().popBackStack()
         }
