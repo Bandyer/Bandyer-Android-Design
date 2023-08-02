@@ -5,7 +5,6 @@ import com.kaleyra.collaboration_suite.Contact
 import com.kaleyra.collaboration_suite.chatbox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.*
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +17,6 @@ object Mocks {
     val phoneBoxMock = mockk<PhoneBoxUI>(relaxed = true)
     val chatBoxMock = mockk<ChatBoxUI>(relaxed = true)
     val messagesUIMock = mockk<MessagesUI>(relaxed = true)
-    val usersDescriptionMock = mockk<UsersDescription>(relaxed = true)
     val callMock = mockk<CallUI>(relaxed = true)
     val chatMock = mockk<ChatUI>(relaxed = true)
 
