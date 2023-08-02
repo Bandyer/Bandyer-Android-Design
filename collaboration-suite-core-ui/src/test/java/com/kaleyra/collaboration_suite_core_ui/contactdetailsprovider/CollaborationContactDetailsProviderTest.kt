@@ -7,8 +7,9 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.Cac
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedRemoteContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.CollaborationContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.ContactDetailsTestHelper.assertEqualsContactDetails
-import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.usersDescriptionMock
-import com.kaleyra.collaboration_suite_core_ui.model.DefaultUsersDescription
+import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.usersDescriptionProviderMock
+import com.kaleyra.collaboration_suite_core_ui.model.UserDescription
+import com.kaleyra.collaboration_suite_core_ui.model.UsersDescriptionProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -54,11 +55,11 @@ class CollaborationContactDetailsProviderTest {
 
     @Test
     fun `local provider is used as primary provider`() = runTest(testDispatcher) {
-        val usersDescription = usersDescriptionMock(fetchDelay = 1500L)
-        every { CollaborationUI.usersDescription } returns usersDescription
+        val usersDescriptionProvider = usersDescriptionProviderMock(fetchDelay = 1500L)
+        every { CollaborationUI.usersDescriptionProvider } returns usersDescriptionProvider
         every { CollaborationUI.collaboration } returns mockk(relaxed = true)
         val provider = CollaborationContactDetailsProvider(testDispatcher)
-        val localProvider = CachedLocalContactDetailsProvider(usersDescription, testDispatcher)
+        val localProvider = CachedLocalContactDetailsProvider(usersDescriptionProvider, testDispatcher)
 
         val userIds = arrayOf("userId1", "userId2")
         val result = provider.fetchContactsDetails(*userIds)
@@ -68,7 +69,7 @@ class CollaborationContactDetailsProviderTest {
 
     @Test
     fun `local provider is not available, the remote provider is used as fallback`() = runTest(testDispatcher) {
-        every { CollaborationUI.usersDescription } returns null
+        every { CollaborationUI.usersDescriptionProvider } returns null
         every { CollaborationUI.collaboration } returns mockk {
             every { this@mockk.contacts } returns contactsMock
         }
@@ -83,7 +84,7 @@ class CollaborationContactDetailsProviderTest {
 
     @Test
     fun `both local and remote providers are not available, the default provider is used as fallback`() = runTest(testDispatcher) {
-        every { CollaborationUI.usersDescription } returns null
+        every { CollaborationUI.usersDescriptionProvider } returns null
         every { CollaborationUI.collaboration } returns null
         val provider = CollaborationContactDetailsProvider(testDispatcher)
         val defaultProvider = CachedDefaultContactDetailsProvider()
@@ -96,8 +97,8 @@ class CollaborationContactDetailsProviderTest {
 
     @Test
     fun `local provider provides empty results, the remote provider is used as fallback`() = runTest(testDispatcher) {
-        val usersDescription = DefaultUsersDescription(name = { throw Exception() })
-        every { CollaborationUI.usersDescription } returns usersDescription
+        val usersDescriptionProvider = usersDescriptionProviderMock(Exception())
+        every { CollaborationUI.usersDescriptionProvider } returns usersDescriptionProvider
         every { CollaborationUI.collaboration } returns mockk {
             every { this@mockk.contacts } returns contactsMock
         }
@@ -112,8 +113,8 @@ class CollaborationContactDetailsProviderTest {
 
     @Test
     fun `both local and remote providers provide empty results, the default provider is used as fallback`() = runTest(testDispatcher) {
-        val usersDescription = DefaultUsersDescription(name = { throw Exception() })
-        every { CollaborationUI.usersDescription } returns usersDescription
+        val usersDescriptionProvider = usersDescriptionProviderMock(Exception())
+        every { CollaborationUI.usersDescriptionProvider } returns usersDescriptionProvider
         every { CollaborationUI.collaboration } returns mockk(relaxed = true)
         val provider = CollaborationContactDetailsProvider(testDispatcher)
         val defaultProvider = CachedDefaultContactDetailsProvider()
@@ -125,12 +126,12 @@ class CollaborationContactDetailsProviderTest {
     }
 
     @Test
-    fun `users description changes, the local provider is updated`() = runTest(testDispatcher) {
-        val usersDescription = usersDescriptionMock()
-        every { CollaborationUI.usersDescription } returns usersDescription
+    fun `users description provider changes, the local provider is updated`() = runTest(testDispatcher) {
+        val usersDescriptionProvider = usersDescriptionProviderMock()
+        every { CollaborationUI.usersDescriptionProvider } returns usersDescriptionProvider
         every { CollaborationUI.collaboration } returns mockk(relaxed = true)
         val provider = CollaborationContactDetailsProvider(testDispatcher)
-        val localProvider = CachedLocalContactDetailsProvider(usersDescription, testDispatcher)
+        val localProvider = CachedLocalContactDetailsProvider(usersDescriptionProvider, testDispatcher)
         val userIds = arrayOf("userId1", "userId2")
 
         val result = provider.fetchContactsDetails(*userIds)
@@ -138,8 +139,11 @@ class CollaborationContactDetailsProviderTest {
         assertEqualsContactDetails(expected.toList(), result)
 
         val uriMock = mockk<Uri>()
-        val newUsersDescription = DefaultUsersDescription(name = { it.joinToString() }, image = { uriMock })
-        every { CollaborationUI.usersDescription } returns newUsersDescription
+        val newUsersDescription = object : UsersDescriptionProvider {
+            override suspend fun fetchUserDescription(userId: String): UserDescription =
+                UserDescription(userId, uriMock)
+        }
+        every { CollaborationUI.usersDescriptionProvider } returns newUsersDescription
         val newLocalProvider = CachedLocalContactDetailsProvider(newUsersDescription, testDispatcher)
 
         val newResult = provider.fetchContactsDetails(*userIds)
@@ -149,8 +153,8 @@ class CollaborationContactDetailsProviderTest {
 
     @Test
     fun `collaboration changes, the remote provider updated`() = runTest(testDispatcher) {
-        val usersDescription = DefaultUsersDescription(name = { throw Exception() })
-        every { CollaborationUI.usersDescription } returns usersDescription
+        val usersDescriptionProvider = usersDescriptionProviderMock(Exception())
+        every { CollaborationUI.usersDescriptionProvider } returns usersDescriptionProvider
         every { CollaborationUI.collaboration } returns mockk {
             every { this@mockk.contacts } returns contactsMock
         }

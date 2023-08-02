@@ -24,8 +24,8 @@ internal class CollaborationContactDetailsProvider(private val ioDispatcher: Cor
     private val defaultProvider: ContactDetailsProvider by lazy { CachedDefaultContactDetailsProvider() }
 
     private var localContactDetailsProvider: CachedLocalContactDetailsProvider? = null
-        get() = with(CollaborationUI.usersDescription) {
-            field?.takeIf { it.usersDescription == this } ?: this?.let { CachedLocalContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
+        get() = with(CollaborationUI.usersDescriptionProvider) {
+            field?.takeIf { it.usersDescriptionProvider == this } ?: this?.let { CachedLocalContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
         }
 
     private var remoteContactDetailsProvider: CachedRemoteContactDetailsProvider? = null

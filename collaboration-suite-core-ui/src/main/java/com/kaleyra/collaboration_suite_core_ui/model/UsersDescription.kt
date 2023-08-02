@@ -19,17 +19,16 @@ package com.kaleyra.collaboration_suite_core_ui.model
 import android.net.Uri
 
 /**
- * Users description
- *
- * @property name suspend function to implement which will be used to display user display name
- * @property image suspend function to implement which will be used to display user image
+ * Users description provider
  */
-class DefaultUsersDescription(
-    override val name: suspend (userIds: List<String>) -> String = { it.joinToString() },
-    override val image: suspend (userIds: List<String>) -> Uri = { Uri.EMPTY }
-) : UsersDescription
-
-interface UsersDescription {
-    val name: suspend (userIds: List<String>) -> String
-    val image: suspend (userIds: List<String>) -> Uri
+interface UsersDescriptionProvider {
+    /**
+     * Fetch the user descriptions
+     *
+     * @param userId String
+     * @return UserDescription
+     */
+    suspend fun fetchUserDescription(userId: String): UserDescription
 }
+
+data class UserDescription(val name: String, val image: Uri)
