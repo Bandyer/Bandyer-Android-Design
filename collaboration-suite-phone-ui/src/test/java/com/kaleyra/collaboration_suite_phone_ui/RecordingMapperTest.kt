@@ -36,7 +36,7 @@ class RecordingMapperTest {
 
     @Before
     fun setUp() {
-        every { callMock.extras.recording } returns recordingMock
+        every { callMock.recording } returns MutableStateFlow(recordingMock)
     }
 
     @After

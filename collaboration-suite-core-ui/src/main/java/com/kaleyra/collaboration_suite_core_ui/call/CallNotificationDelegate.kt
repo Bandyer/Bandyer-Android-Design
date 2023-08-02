@@ -77,9 +77,9 @@ interface CallNotificationDelegate {
         activityClazz: Class<*>,
         scope: CoroutineScope
     ) {
-        combine(call.state, call.participants) { callState, participants ->
+        combine(call.state, call.participants, call.recording) { callState, participants, recording ->
             ContactDetailsManager.refreshContactDetails(*participants.list.map { it.userId }.toTypedArray())
-            val notification = buildNotification(call, participants, activityClazz)
+            val notification = buildNotification(callState, participants, recording, activityClazz)
             if (notification != null) showNotification(notification)
             callState
         }
@@ -89,8 +89,9 @@ interface CallNotificationDelegate {
     }
 
     private suspend fun buildNotification(
-        call: Call,
+        callState: Call.State,
         participants: CallParticipants,
+        recording: Call.Recording,
         activityClazz: Class<*>
     ): Notification? {
         val context = ContextRetainer.context
@@ -100,16 +101,16 @@ interface CallNotificationDelegate {
         val calleeDescription = participants.others.map { it.combinedDisplayName.firstOrNull() ?: Uri.EMPTY }.joinToString()
 
         return when {
-            call.isIncoming() -> {
+            isIncoming(callState, participants) -> {
                 NotificationManager.buildIncomingCallNotification(
                     callerDescription,
                     isGroupCall,
                     activityClazz,
-                    !AppLifecycle.isInForeground.value || context.isSilent(),
+                    isHighPriority = !AppLifecycle.isInForeground.value || context.isSilent(),
                     enableCallStyle = enableCallStyle
                 )
             }
-            call.isOutgoing() -> {
+            isOutgoing(callState, participants) -> {
                 NotificationManager.buildOutgoingCallNotification(
                     calleeDescription,
                     isGroupCall,
@@ -117,14 +118,14 @@ interface CallNotificationDelegate {
                     enableCallStyle = enableCallStyle
                 )
             }
-            call.isOngoing() -> {
+            isOngoing(callState, participants) -> {
                 NotificationManager.buildOngoingCallNotification(
                     calleeDescription,
-                    participants.creator() == null,
+                    isLink = participants.creator() == null,
                     isGroupCall,
-                    call.extras.recording is Call.Recording.OnConnect,
+                    isCallRecorded = recording.type == Call.Recording.Type.OnConnect,
                     isSharingScreen = false,
-                    call.state.value is Call.State.Connecting,
+                    callState is Call.State.Connecting,
                     activityClazz,
                     enableCallStyle = enableCallStyle
                 )

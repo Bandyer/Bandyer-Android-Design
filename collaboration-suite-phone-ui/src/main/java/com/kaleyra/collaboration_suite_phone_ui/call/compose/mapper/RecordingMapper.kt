@@ -16,19 +16,18 @@ import kotlinx.coroutines.flow.map
 internal object RecordingMapper {
 
     fun Flow<Call>.toRecordingTypeUi(): Flow<RecordingTypeUi> =
-        this.map { it.extras.recording }
+        this.flatMapLatest { it.recording }
             .map { it.type.mapToRecordingTypeUi() }
             .distinctUntilChanged()
 
     fun Flow<Call>.toRecordingStateUi(): Flow<RecordingStateUi> =
-        this.map { it.extras.recording }
+        this.flatMapLatest { it.recording }
             .flatMapLatest { it.state }
             .map { it.mapToRecordingStateUi() }
             .distinctUntilChanged()
 
     fun Flow<Call>.toRecordingMessage(): Flow<RecordingMessage> =
-        this.
-            map { it.extras.recording }
+        this.flatMapLatest { it.recording }
             .flatMapLatest { it.state }
             .map { it.mapToRecordingMessage() }
             .distinctUntilChanged()
@@ -40,8 +39,8 @@ internal object RecordingMapper {
 
     fun Call.Recording.Type.mapToRecordingTypeUi(): RecordingTypeUi =
         when (this) {
-            is Call.Recording.Type.OnConnect -> RecordingTypeUi.OnConnect
-            is Call.Recording.Type.OnDemand -> RecordingTypeUi.OnDemand
+            Call.Recording.Type.OnConnect -> RecordingTypeUi.OnConnect
+            Call.Recording.Type.OnDemand -> RecordingTypeUi.OnDemand
             else -> RecordingTypeUi.Never
         }
 
@@ -52,7 +51,7 @@ internal object RecordingMapper {
             is Call.Recording.State.Stopped.Error -> RecordingStateUi.Error
         }
 
-    fun Call.Recording.State.mapToRecordingMessage(): RecordingMessage =
+    private fun Call.Recording.State.mapToRecordingMessage(): RecordingMessage =
         when (this) {
             is Call.Recording.State.Started -> RecordingMessage.Started
             Call.Recording.State.Stopped -> RecordingMessage.Stopped

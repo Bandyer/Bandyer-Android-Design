@@ -46,7 +46,7 @@ internal class RingingViewModelTest : PreCallViewModelTest<RingingViewModel, Rin
 
     @Test
     fun testPreCallUiState_recordingUpdated() = runTest {
-        every { callMock.extras.recording } returns recordingMock
+        every { callMock.recording } returns MutableStateFlow(recordingMock)
         every { recordingMock.type } returns Call.Recording.Type.OnConnect
         val current = viewModel.uiState.first().recording
         assertEquals(null, current)

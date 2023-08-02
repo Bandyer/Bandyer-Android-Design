@@ -77,6 +77,8 @@ class CallViewModelTest {
 
     private val participantMock2 = mockk<CallParticipant>()
 
+    private val recordingMock = mockk<Call.Recording>()
+
     private val companyMock = mockk<Company>()
 
     private val themeMock = mockk<Theme>()
@@ -92,11 +94,14 @@ class CallViewModelTest {
         mockkObject(CallUserMessagesProvider)
         mockkObject(ContactDetailsManager)
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
+        with(recordingMock) {
+            every { type } returns Call.Recording.Type.OnConnect
+            every { state } returns MutableStateFlow(Call.Recording.State.Started)
+        }
         with(callMock) {
             every { inputs } returns inputsMock
             every { participants } returns MutableStateFlow(callParticipantsMock)
-            every { extras.recording.state } returns MutableStateFlow(Call.Recording.State.Started)
-            every { extras.recording.type } returns Call.Recording.Type.OnConnect
+            every { recording } returns MutableStateFlow(recordingMock)
             every { preferredType } returns MutableStateFlow(Call.PreferredType.audioVideo())
             every { state } returns MutableStateFlow<Call.State>(Call.State.Disconnected)
         }

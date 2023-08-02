@@ -9,6 +9,7 @@ import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -27,14 +28,23 @@ internal class CallRecordingTextToSpeechNotifier(
         dispose()
 
         val textToSpeech = CallTextToSpeech()
-        val recording = call.extras.recording
-        if (recording is Call.Recording.OnDemand) {
-            val text = context.getString(R.string.kaleyra_utterance_recording_call_may_be_recorded)
-            if (!shouldNotify()) return
-            textToSpeech.speak(text)
-        }
 
-        currentJob = recording.state
+        currentJob = call.recording
+            .onEach { recording ->
+                if (!shouldNotify()) return@onEach
+                when (recording.type) {
+                    Call.Recording.Type.OnDemand -> {
+                        val text = context.getString(R.string.kaleyra_utterance_recording_call_may_be_recorded)
+                        textToSpeech.speak(text)
+                    }
+                    Call.Recording.Type.OnConnect -> {
+                        val text = context.getString(R.string.kaleyra_utterance_recording_call_will_be_recorded)
+                        textToSpeech.speak(text)
+                    }
+                    else -> Unit
+                }
+            }
+            .flatMapLatest { it.state }
             .dropWhile { it is Call.Recording.State.Stopped }
             .onEach { state ->
                 if (!shouldNotify()) return@onEach

@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_core_ui.utils
 
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
 
 internal object CallExtensions {
@@ -32,14 +33,14 @@ internal object CallExtensions {
 
     fun Call.isNotConnected(): Boolean = state.value !is Call.State.Connected
 
-    fun Call.isIncoming() =
-        state.value is Call.State.Disconnected && participants.value.let { it.creator() != it.me && it.creator() != null }
+    fun isIncoming(state: Call.State, participants: CallParticipants) =
+        state is Call.State.Disconnected && participants.let { it.creator() != it.me && it.creator() != null }
 
-    fun Call.isOutgoing() =
-        state.value is Call.State.Connecting && participants.value.let { it.creator() == it.me }
+    fun isOutgoing(state: Call.State, participants: CallParticipants) =
+        state is Call.State.Connecting && participants.let { it.creator() == it.me }
 
-    fun Call.isOngoing() =
-        state.value is Call.State.Connecting || state.value is Call.State.Connected || participants.value.creator() == null
+    fun isOngoing(state: Call.State, participants: CallParticipants) =
+        state is Call.State.Connecting || state is Call.State.Connected || participants.creator() == null
 
     fun Call.hasUsersWithCameraEnabled(): Boolean {
         val participants = participants.value.list

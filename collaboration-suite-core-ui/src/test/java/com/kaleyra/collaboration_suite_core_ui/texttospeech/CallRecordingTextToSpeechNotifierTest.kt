@@ -40,15 +40,26 @@ class CallRecordingTextToSpeechNotifierTest {
         every { anyConstructed<CallTextToSpeech>().speak(any()) } returns Unit
         every { ContextRetainer.context } returns contextMock
         every { contextMock.getString(any()) } returns ""
-        every { callMock.extras.recording } returns recordingMock
+        every { callMock.recording } returns MutableStateFlow(recordingMock)
         every { notifier.shouldNotify() } returns true
     }
 
     @Test
     fun `test recording on demand utterance`() = runTest(UnconfinedTestDispatcher()) {
-        every { callMock.extras.recording } returns mockk<Call.Recording.OnDemand>(relaxed = true)
+        val recordingMock = mockk<Call.Recording>(relaxed = true)
+        every { recordingMock.type } returns Call.Recording.Type.OnDemand
+        every { callMock.recording } returns MutableStateFlow(recordingMock)
         notifier.start(backgroundScope)
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_utterance_recording_call_may_be_recorded) }
+    }
+
+    @Test
+    fun `test recording on connect utterance`() = runTest(UnconfinedTestDispatcher()) {
+        val recordingMock = mockk<Call.Recording>(relaxed = true)
+        every { recordingMock.type } returns Call.Recording.Type.OnConnect
+        every { callMock.recording } returns MutableStateFlow(recordingMock)
+        notifier.start(backgroundScope)
+        verify(exactly = 1) { contextMock.getString(R.string.kaleyra_utterance_recording_call_will_be_recorded) }
     }
 
     @Test
