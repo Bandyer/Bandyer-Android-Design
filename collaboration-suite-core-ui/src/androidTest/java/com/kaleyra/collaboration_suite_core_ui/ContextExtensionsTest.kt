@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui
+package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.ContentResolver
 import android.content.Context
