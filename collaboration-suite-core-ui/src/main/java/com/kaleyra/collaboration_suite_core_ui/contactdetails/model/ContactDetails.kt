@@ -4,7 +4,7 @@ import android.net.Uri
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-data class ContactDetails(
+internal data class ContactDetails(
     val userId: String,
     val name: StateFlow<String?> = MutableStateFlow(null),
     val image: StateFlow<Uri?> = MutableStateFlow(null)
