@@ -25,7 +25,7 @@ internal class CollaborationContactDetailsProvider(private val ioDispatcher: Cor
 
     private var localContactDetailsProvider: CachedLocalContactDetailsProvider? = null
         get() = with(CollaborationUI.usersDescriptionProvider) {
-            field?.takeIf { it.usersDescriptionProvider == this } ?: this?.let { CachedLocalContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
+            field?.takeIf { it.userDetailsProvider == this } ?: this?.let { CachedLocalContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
         }
 
     private var remoteContactDetailsProvider: CachedRemoteContactDetailsProvider? = null

@@ -18,17 +18,4 @@ package com.kaleyra.collaboration_suite_core_ui.model
 
 import android.net.Uri
 
-/**
- * Users description provider
- */
-interface UsersDescriptionProvider {
-    /**
-     * Fetch the user descriptions
-     *
-     * @param userId String
-     * @return UserDescription
-     */
-    suspend fun fetchUserDescription(userId: String): UserDescription
-}
-
-data class UserDescription(val name: String, val image: Uri)
+data class UserDetails(val userId: String, val name: String, val image: Uri)

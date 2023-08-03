@@ -6,8 +6,8 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.ContactDet
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.uriUser1
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.uriUser2
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.usersDescriptionProviderMock
-import com.kaleyra.collaboration_suite_core_ui.model.UserDescription
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescriptionProvider
+import com.kaleyra.collaboration_suite_core_ui.model.UserDetails
+import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -23,7 +23,7 @@ internal open class LocalContactDetailsProviderTest {
     @Test
     fun `test contacts details empty user ids`() = runTest(testDispatcher) {
         val provider = LocalContactDetailsProvider(
-            usersDescriptionProvider = usersDescriptionProviderMock(),
+            userDetailsProvider = usersDescriptionProviderMock(),
             ioDispatcher = testDispatcher
         )
         val result = provider.fetchContactsDetails()
@@ -33,7 +33,7 @@ internal open class LocalContactDetailsProviderTest {
     @Test
     fun `test contacts details immediate fetch`() = runTest(testDispatcher) {
         val provider = LocalContactDetailsProvider(
-            usersDescriptionProvider = usersDescriptionProviderMock(fetchDelay = 0L),
+            userDetailsProvider = usersDescriptionProviderMock(fetchDelay = 0L),
             ioDispatcher = testDispatcher
         )
         val result = provider.fetchContactsDetails("userId1", "userId2")
@@ -47,7 +47,7 @@ internal open class LocalContactDetailsProviderTest {
     @Test
     fun `test contacts details delayed fetch`() = runTest(testDispatcher) {
         val provider = LocalContactDetailsProvider(
-            usersDescriptionProvider = usersDescriptionProviderMock(fetchDelay = 1500L),
+            userDetailsProvider = usersDescriptionProviderMock(fetchDelay = 1500L),
             ioDispatcher = testDispatcher
         )
         val result = provider.fetchContactsDetails("userId1", "userId2")
@@ -62,7 +62,7 @@ internal open class LocalContactDetailsProviderTest {
     fun `test contacts details fetch timed out`() = runTest(testDispatcher) {
         val timeout = 1000L
         val provider = LocalContactDetailsProvider(
-            usersDescriptionProvider = usersDescriptionProviderMock(fetchDelay = timeout),
+            userDetailsProvider = usersDescriptionProviderMock(fetchDelay = timeout),
             ioDispatcher = testDispatcher
         )
         val result = provider.fetchContactsDetails("userId1", "userId2", timeout = timeout)
@@ -73,7 +73,7 @@ internal open class LocalContactDetailsProviderTest {
     fun `test contacts details fetch timeout limit`() = runTest(testDispatcher) {
         val timeout = 1000L
         val provider = LocalContactDetailsProvider(
-            usersDescriptionProvider = usersDescriptionProviderMock(fetchDelay = timeout - 1),
+            userDetailsProvider = usersDescriptionProviderMock(fetchDelay = timeout - 1),
             ioDispatcher = testDispatcher
         )
         val result = provider.fetchContactsDetails("userId1", "userId2", timeout = timeout)
@@ -87,11 +87,25 @@ internal open class LocalContactDetailsProviderTest {
     @Test
     fun `test contacts details fetch exception occurrence`() = runTest(testDispatcher) {
         val provider = LocalContactDetailsProvider(
-            usersDescriptionProvider = usersDescriptionProviderMock(Exception()),
+            userDetailsProvider = usersDescriptionProviderMock(Exception()),
             ioDispatcher = testDispatcher
         )
         val result = provider.fetchContactsDetails("userId1", "userId2")
         assertEquals(setOf<ContactDetails>(), result)
     }
+
+    @Test
+    fun `test contacts details fetch result failure`() = runTest(testDispatcher) {
+        val provider = LocalContactDetailsProvider(
+            userDetailsProvider = object : UserDetailsProvider {
+                override suspend fun userDetailsRequested(userIds: List<String>): Result<List<UserDetails>> = Result.failure(Exception())
+            },
+            ioDispatcher = testDispatcher
+        )
+        val result = provider.fetchContactsDetails("userId1", "userId2")
+        assertEquals(setOf<ContactDetails>(), result)
+    }
+
+
 
 }

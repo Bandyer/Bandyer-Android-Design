@@ -20,7 +20,7 @@ internal class CachedLocalContactDetailsProviderTest {
     @Test
     fun `test retrieve cached user contact details`() = runTest(testDispatcher) {
         val usersDescriptionProvider = spyk(usersDescriptionProviderMock())
-        val provider = CachedLocalContactDetailsProvider(usersDescriptionProvider = usersDescriptionProvider, ioDispatcher = testDispatcher)
+        val provider = CachedLocalContactDetailsProvider(userDetailsProvider = usersDescriptionProvider, ioDispatcher = testDispatcher)
 
         val result = provider.fetchContactsDetails("userId1")
         val expected = listOf(ContactDetails("userId1", MutableStateFlow("username1"), MutableStateFlow(LocalContactDetailsProviderTestHelper.uriUser1)))
@@ -33,8 +33,8 @@ internal class CachedLocalContactDetailsProviderTest {
         )
         assertEqualsContactDetails(newExpected, newResult)
 
-        coVerify(exactly = 1) { usersDescriptionProvider.fetchUserDescription("userId1") }
-        coVerify(exactly = 1) { usersDescriptionProvider.fetchUserDescription("userId2") }
+        coVerify(exactly = 1) { usersDescriptionProvider.userDetailsRequested(listOf("userId1")) }
+        coVerify(exactly = 1) { usersDescriptionProvider.userDetailsRequested(listOf("userId2")) }
     }
 
 }

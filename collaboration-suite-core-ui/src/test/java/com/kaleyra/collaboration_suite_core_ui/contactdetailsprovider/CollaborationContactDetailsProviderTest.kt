@@ -5,11 +5,12 @@ import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedDefaultContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedLocalContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedRemoteContactDetailsProvider
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetails
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.CollaborationContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.ContactDetailsTestHelper.assertEqualsContactDetails
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.usersDescriptionProviderMock
-import com.kaleyra.collaboration_suite_core_ui.model.UserDescription
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescriptionProvider
+import com.kaleyra.collaboration_suite_core_ui.model.UserDetails
+import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -139,9 +140,11 @@ class CollaborationContactDetailsProviderTest {
         assertEqualsContactDetails(expected.toList(), result)
 
         val uriMock = mockk<Uri>()
-        val newUsersDescription = object : UsersDescriptionProvider {
-            override suspend fun fetchUserDescription(userId: String): UserDescription =
-                UserDescription(userId, uriMock)
+        val newUsersDescription = object : UserDetailsProvider {
+
+            override suspend fun userDetailsRequested(userIds: List<String>): Result<List<UserDetails>> {
+                return Result.success(userIds.map { UserDetails(it, it, uriMock) })
+            }
         }
         every { CollaborationUI.usersDescriptionProvider } returns newUsersDescription
         val newLocalProvider = CachedLocalContactDetailsProvider(newUsersDescription, testDispatcher)

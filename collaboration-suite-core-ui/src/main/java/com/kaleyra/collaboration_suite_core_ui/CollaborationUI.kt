@@ -18,7 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescriptionProvider
+import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
@@ -68,7 +68,7 @@ object CollaborationUI {
      * Users description to be used for the UI
      */
     @get:Synchronized @set:Synchronized
-    var usersDescriptionProvider: UsersDescriptionProvider? = null
+    var usersDescriptionProvider: UserDetailsProvider? = null
 
     /**
      * Phone box

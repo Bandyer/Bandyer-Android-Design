@@ -1,9 +1,9 @@
 package com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider
 
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.LocalContactDetailsProvider
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescriptionProvider
+import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
-internal class CachedLocalContactDetailsProvider(val usersDescriptionProvider: UsersDescriptionProvider, ioDispatcher: CoroutineDispatcher = Dispatchers.IO) :
-    CachedContactDetailsProvider(LocalContactDetailsProvider(usersDescriptionProvider, ioDispatcher))
+internal class CachedLocalContactDetailsProvider(val userDetailsProvider: UserDetailsProvider, ioDispatcher: CoroutineDispatcher = Dispatchers.IO) :
+    CachedContactDetailsProvider(LocalContactDetailsProvider(userDetailsProvider, ioDispatcher))
