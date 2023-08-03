@@ -74,7 +74,7 @@ class CollaborationContactDetailsProviderTest {
             every { this@mockk.contacts } returns contactsMock
         }
         val provider = CollaborationContactDetailsProvider(testDispatcher)
-        val remoteProvider = CachedRemoteContactDetailsProvider(contactsMock, testDispatcher)
+        val remoteProvider = CachedRemoteContactDetailsProvider(contactsMock)
 
         val userIds = arrayOf("userId1", "userId2")
         val result = provider.fetchContactsDetails(*userIds)
@@ -103,7 +103,7 @@ class CollaborationContactDetailsProviderTest {
             every { this@mockk.contacts } returns contactsMock
         }
         val provider = CollaborationContactDetailsProvider(testDispatcher)
-        val remoteProvider = CachedRemoteContactDetailsProvider(contactsMock, testDispatcher)
+        val remoteProvider = CachedRemoteContactDetailsProvider(contactsMock)
 
         val userIds = arrayOf("userId1", "userId2")
         val result = provider.fetchContactsDetails(*userIds)
@@ -159,7 +159,7 @@ class CollaborationContactDetailsProviderTest {
             every { this@mockk.contacts } returns contactsMock
         }
         val provider = CollaborationContactDetailsProvider(testDispatcher)
-        val remoteProvider = CachedRemoteContactDetailsProvider(contactsMock, testDispatcher)
+        val remoteProvider = CachedRemoteContactDetailsProvider(contactsMock)
         val userIds = arrayOf("userId1", "userId2")
 
         val result = provider.fetchContactsDetails(*userIds)
@@ -179,7 +179,7 @@ class CollaborationContactDetailsProviderTest {
         every { CollaborationUI.collaboration } returns mockk {
             every { this@mockk.contacts } returns newContacts
         }
-        val newRemoteProvider = CachedRemoteContactDetailsProvider(newContacts, testDispatcher)
+        val newRemoteProvider = CachedRemoteContactDetailsProvider(newContacts)
 
         val newResult = provider.fetchContactsDetails(*userIds)
         val newExpected = newRemoteProvider.fetchContactsDetails(*userIds)

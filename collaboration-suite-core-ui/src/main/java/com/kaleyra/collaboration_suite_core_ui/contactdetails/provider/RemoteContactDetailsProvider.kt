@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 
-internal class RemoteContactDetailsProvider(val contacts: Contacts, val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) : ContactDetailsProvider {
+internal class RemoteContactDetailsProvider(val contacts: Contacts) : ContactDetailsProvider {
 
     override suspend fun fetchContactsDetails(
         vararg userIds: String,

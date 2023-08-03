@@ -24,7 +24,7 @@ class CachedRemoteContactDetailsProviderTest {
         val contact1 = spyk(RemoteContactDetailsProviderTestHelper.ContactMock("userId1", MutableStateFlow("username1"), MutableStateFlow(uriUser1)))
         val contact2 = spyk(RemoteContactDetailsProviderTestHelper.ContactMock("userId2", MutableStateFlow("username2"), MutableStateFlow(uriUser2)))
         val contacts = RemoteContactDetailsProviderTestHelper.ContactsMock(hashMapOf("userId1" to contact1, "userId2" to contact2))
-        val provider = CachedRemoteContactDetailsProvider(contacts = contacts, ioDispatcher = testDispatcher)
+        val provider = CachedRemoteContactDetailsProvider(contacts = contacts)
         val result = provider.fetchContactsDetails("userId1")
         val expected = listOf(ContactDetails("userId1", MutableStateFlow("username1"), MutableStateFlow(uriUser1)))
         assertEqualsContactDetails(expected, result)

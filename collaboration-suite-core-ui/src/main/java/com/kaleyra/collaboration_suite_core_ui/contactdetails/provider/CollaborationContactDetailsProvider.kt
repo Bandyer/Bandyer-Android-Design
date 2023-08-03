@@ -30,7 +30,7 @@ internal class CollaborationContactDetailsProvider(private val ioDispatcher: Cor
 
     private var remoteContactDetailsProvider: CachedRemoteContactDetailsProvider? = null
         get() = with(CollaborationUI.collaboration?.contacts) {
-            field?.takeIf { it.contacts == this } ?: this?.let { CachedRemoteContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
+            field?.takeIf { it.contacts == this } ?: this?.let { CachedRemoteContactDetailsProvider(it) }.apply { field = this }
         }
 
     override suspend fun fetchContactsDetails(

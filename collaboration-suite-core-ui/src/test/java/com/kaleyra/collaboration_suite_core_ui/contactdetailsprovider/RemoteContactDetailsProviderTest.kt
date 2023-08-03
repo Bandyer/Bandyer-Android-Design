@@ -19,7 +19,7 @@ class RemoteContactDetailsProviderTest {
 
     @Test
     fun `test contacts details empty user ids`() = runTest(testDispatcher) {
-        val provider = RemoteContactDetailsProvider(contacts = RemoteContactDetailsProviderTestHelper.ContactsMock(HashMap()), ioDispatcher = testDispatcher)
+        val provider = RemoteContactDetailsProvider(contacts = RemoteContactDetailsProviderTestHelper.ContactsMock(HashMap()))
         val result = provider.fetchContactsDetails()
         assertEquals(setOf<ContactDetails>(), result)
     }
@@ -40,7 +40,7 @@ class RemoteContactDetailsProviderTest {
                 )
             )
         )
-        val provider = RemoteContactDetailsProvider(contacts = contacts, ioDispatcher = testDispatcher)
+        val provider = RemoteContactDetailsProvider(contacts = contacts)
         val result = provider.fetchContactsDetails("userId1", "userId2")
         val expected = listOf(
             ContactDetails("userId1", MutableStateFlow("username1"), MutableStateFlow(uriUser1)),
