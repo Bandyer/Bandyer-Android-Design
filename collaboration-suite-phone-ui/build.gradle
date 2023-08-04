@@ -27,6 +27,14 @@ apply from: '../android.gradle'
 apply from: '../publish.gradle'
 apply from: '../moveIcons.gradle'
 
+android {
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     coreLibraryDesugaring androidX.desugar
@@ -35,6 +43,9 @@ dependencies {
     testImplementation test.jUnit
     testImplementation test.mockk
     testImplementation test.robolectric
+    testImplementation test.espresso
+    testImplementation("androidx.compose.ui:ui-test-junit4:1.2.1")
+    testImplementation "androidx.test.espresso:espresso-intents:3.5.0"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
     testImplementation 'io.mockk:mockk:1.13.3'
     //    testImplementation kaleyra.collaboration
