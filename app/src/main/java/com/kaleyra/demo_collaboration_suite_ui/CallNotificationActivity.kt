@@ -65,7 +65,7 @@ class CallNotificationActivity : AppCompatActivity() {
         }
 
         binding.ongoingButton.setOnClickListener {
-            val notification = buildOutgoingCallNotification("Mario", false, this::class.java)
+            val notification = buildOngoingCallNotification("Mario", false, false, false, false, false, this::class.java)
             notificationManager.notify(2, notification)
         }
 
@@ -145,9 +145,9 @@ class CallNotificationActivity : AppCompatActivity() {
             if (isGroupCall || isLink) context.resources.getString(com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_ongoing_call) else username
         val contentText = context.resources.getString(
             when {
-                isConnecting -> com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_connecting_call
+                isConnecting   -> com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_connecting_call
                 isCallRecorded -> com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_call_recorded
-                else -> if (isGroupCall) com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_group_call else com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_call
+                else           -> if (isGroupCall) com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_group_call else com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_call
             }
         )
         val builder = CallNotification

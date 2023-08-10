@@ -38,6 +38,7 @@ dependencies {
     /** PLatform **/
     api catalog.kotlinStdLib
     api catalog.androidxCoreKtx
+    api catalog.androidxLifecycleCommonJava8
     api catalog.appcompat
     api catalog.material
     coreLibraryDesugaring catalog.desugar

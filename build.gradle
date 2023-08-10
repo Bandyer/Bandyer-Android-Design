@@ -31,6 +31,7 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${catalog.versions.jetbrainsKotlinVersion.get()}"
         classpath "com.android.tools.build:gradle:${catalog.versions.gradleVersion.get()}"
+        classpath "org.jetbrains.dokka:dokka-core:${catalog.versions.jetbrainsDokkaVersion.get()}"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions-runtime:${catalog.versions.jetbrainsKotlinVersion.get()}"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${catalog.plugins.androidxNavigationSafeArgs.get().version}"
     }
