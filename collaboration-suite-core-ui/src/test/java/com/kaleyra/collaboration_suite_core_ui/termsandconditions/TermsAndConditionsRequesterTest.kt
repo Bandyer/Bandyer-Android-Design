@@ -11,6 +11,7 @@ import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
@@ -60,7 +61,7 @@ class TermsAndConditionsRequesterTest {
 
     @Test
     fun `setUp function dispose the previous session state job`() = runTest {
-        val requester = spyk(TermsAndConditionsRequester(this::class.java, {}, {}, backgroundScope))
+        val requester = spyk(TermsAndConditionsRequester(this::class.java, {}, {}, TestScope()))
         val sessionMock = mockk<Collaboration.Session>()
         every { sessionMock.state } returns MutableStateFlow(Session.State.UnAuthenticated)
         requester.setUp(sessionMock)
