@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.ui.call.fileshare
 
 import android.net.Uri
 import android.text.format.Formatter
+import android.webkit.MimeTypeMap
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,10 +10,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
@@ -28,6 +25,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 
 @Config(instrumentedPackages = ["androidx.loader.content"])
@@ -95,14 +93,17 @@ class FileShareItemTest {
     @Test
     fun fileNameDisplayed() {
         sharedFile = mockUploadSharedFile.copy(name = "fileName")
-        Espresso.onView(withText("fileName")).check(matches(isDisplayed()))
+        // Check  the content description since this is a view
+        composeTestRule.onNodeWithContentDescription("fileName").assertIsDisplayed()
     }
 
     @Test
     fun mediaFileType_mediaFileIconDisplayed() {
+        shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypMapping("jpeg", "image/jpeg")
         val uri = Uri.parse("file.jpeg")
         sharedFile = mockUploadSharedFile.copy(uri = ImmutableUri(uri))
         val media = composeTestRule.activity.getString(R.string.kaleyra_fileshare_media)
+        composeTestRule.waitForIdle()
         composeTestRule.onNodeWithContentDescription(media).assertIsDisplayed()
     }
 
@@ -116,6 +117,7 @@ class FileShareItemTest {
 
     @Test
     fun archiveFileType_archiveFileIconDisplayed() {
+        shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypMapping("zip", "application/zip")
         val uri = Uri.parse("file.zip")
         sharedFile = mockUploadSharedFile.copy(uri = ImmutableUri(uri))
         val archive = composeTestRule.activity.getString(R.string.kaleyra_fileshare_archive)
