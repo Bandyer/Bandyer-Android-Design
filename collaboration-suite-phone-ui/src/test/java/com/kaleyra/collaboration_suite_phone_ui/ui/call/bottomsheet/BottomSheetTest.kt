@@ -92,7 +92,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Expanded,
             targetState = BottomSheetValue.Hidden,
-            swipeAmount = -0.7f
+            swipeAmount = -0.9f
         )
 
     @Test
@@ -116,7 +116,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Collapsed,
             targetState = BottomSheetValue.HalfExpanded,
-            swipeAmount = 0.1f
+            swipeAmount = 0.3f
         )
 
     @Test
@@ -148,7 +148,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Expanded,
             targetState = BottomSheetValue.HalfExpanded,
-            swipeAmount = -0.1f
+            swipeAmount = -0.3f
         )
 
     @Test
@@ -156,7 +156,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Expanded,
             targetState = BottomSheetValue.Collapsed,
-            swipeAmount = -0.4f
+            swipeAmount = -0.7f
         )
 
     @Test
