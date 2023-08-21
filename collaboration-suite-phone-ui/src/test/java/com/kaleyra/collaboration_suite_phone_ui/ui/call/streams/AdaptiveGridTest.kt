@@ -18,6 +18,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 @Config(instrumentedPackages = ["androidx.loader.content"])
 @RunWith(RobolectricTestRunner::class)
@@ -60,7 +61,7 @@ class AdaptiveGridTest {
         composeTestRule.setAdaptiveGridContent(columns, children)
         val itemWidth = composeTestRule.onNodeWithTag("adaptiveGrid").getBoundsInRoot().width / columns
         repeat(children) { index ->
-            composeTestRule.onNodeWithTag("child$index").assertWidthIsEqualTo(itemWidth)
+            composeTestRule.onNodeWithTag("child$index").getUnclippedBoundsInRoot().width.assertIsEqualTo(itemWidth, "width", Dp(1f))
         }
     }
 
@@ -72,7 +73,7 @@ class AdaptiveGridTest {
         composeTestRule.setAdaptiveGridContent(columns, children)
         val itemHeight = composeTestRule.onNodeWithTag("adaptiveGrid").getBoundsInRoot().height / rows
         repeat(children) { index ->
-            composeTestRule.onNodeWithTag("child$index").assertHeightIsEqualTo(itemHeight)
+            composeTestRule.onNodeWithTag("child$index").getUnclippedBoundsInRoot().height.assertIsEqualTo(itemHeight, "height", Dp(1f))
         }
     }
 
@@ -84,9 +85,10 @@ class AdaptiveGridTest {
         val lastRowItemsCount = children - (columns * (rows - 1))
         composeTestRule.setAdaptiveGridContent(columns, children)
         val itemWidth = composeTestRule.onNodeWithTag("adaptiveGrid").getBoundsInRoot().width / columns
+        val roundedItemWidth = Dp(itemWidth.value.toInt().toFloat())
         var column = 0
         repeat(children - lastRowItemsCount) { index ->
-            composeTestRule.onNodeWithTag("child$index").assertLeftPositionInRootIsEqualTo(itemWidth * column)
+            composeTestRule.onNodeWithTag("child$index").getUnclippedBoundsInRoot().left.assertIsEqualTo(roundedItemWidth * column, "left", Dp(1f))
             column = if (index % columns == columns - 1) 0 else column + 1
         }
     }
@@ -114,11 +116,11 @@ class AdaptiveGridTest {
         val itemWidth = parentWidth / columns
         val lastRowPadding = (parentWidth - (lastRowItemsCount * itemWidth)) / 2
         val lastRowFirstItemIndex = children - lastRowItemsCount
-        composeTestRule.onNodeWithTag("child${lastRowFirstItemIndex}").assertLeftPositionInRootIsEqualTo(lastRowPadding)
+        composeTestRule.onNodeWithTag("child${lastRowFirstItemIndex}").getUnclippedBoundsInRoot().left.assertIsEqualTo(lastRowPadding, "left", Dp(1f))
         repeat(lastRowItemsCount - 1) { index ->
-            composeTestRule.onNodeWithTag("child${lastRowFirstItemIndex + index + 1}").assertLeftPositionInRootIsEqualTo(lastRowPadding + itemWidth * (index + 1))
+            composeTestRule.onNodeWithTag("child${lastRowFirstItemIndex + index + 1}").getUnclippedBoundsInRoot().left.assertIsEqualTo(lastRowPadding + itemWidth * (index + 1), "left", Dp(1f))
         }
-        composeTestRule.onNodeWithTag("child${children - 1}").assertRightPositionInRootIsEqualTo(parentWidth - lastRowPadding)
+        composeTestRule.onNodeWithTag("child${children - 1}").getUnclippedBoundsInRoot().right.assertIsEqualTo(parentWidth - lastRowPadding, "right", Dp(1f))
     }
 
     private fun ComposeContentTestRule.setAdaptiveGridContent(columns: Int, children: Int) {
