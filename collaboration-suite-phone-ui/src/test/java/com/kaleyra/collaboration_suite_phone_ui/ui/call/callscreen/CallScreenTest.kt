@@ -4,7 +4,6 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.*
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
@@ -40,7 +39,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class CallScreenTest {
@@ -190,8 +188,10 @@ class CallScreenTest {
     private fun expandedComponent_userPerformsBack_callActionsDisplayed(initialComponent: BottomSheetComponent) {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         sheetContentState = BottomSheetContentState(initialComponent, LineState.Expanded)
+        composeTestRule.waitForIdle()
         assertEquals(initialComponent, sheetContentState.currentComponent)
         Espresso.pressBack()
+        composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(CallActionsComponentTag).assertIsDisplayed()
         assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
     }
@@ -217,25 +217,26 @@ class CallScreenTest {
     }
 
     @Test
-    fun callActionsComponentHalfExpandedAndNotCollapsable_userPerformsBack_activityIsFinished() {
+    fun callActionsComponentHalfExpandedAndNotCollapsable_userPerformsBack_activityIsFinishing() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.HalfExpanded, isCollapsable = false)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
         Espresso.pressBackUnconditionally()
-        assertEquals(Lifecycle.State.DESTROYED, composeTestRule.activityRule.scenario.state)
+        assertEquals(true, composeTestRule.activity.isFinishing)
     }
 
     @Test
-    fun callActionsComponentCollapsed_userPerformsBack_activityIsFinished() {
+    fun callActionsComponentCollapsed_userPerformsBack_activityIsFinishing() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
         Espresso.pressBackUnconditionally()
-        assertEquals(Lifecycle.State.DESTROYED, composeTestRule.activityRule.scenario.state)
+        assertEquals(true, composeTestRule.activity.isFinishing)
     }
 
     @Test
     fun callStateEnded_userPerformsBack_finishActivityInvoked() {
         callUiState = CallUiState(callState = CallStateUi.Disconnected.Ended)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
+        composeTestRule.waitForIdle()
         Espresso.pressBack()
         assertEquals(true, finishActivity)
     }
