@@ -34,8 +34,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
-
 
 @OptIn(ExperimentalMaterialApi::class)
 @RunWith(RobolectricTestRunner::class)
@@ -241,6 +239,7 @@ class WhiteboardComponentTest {
         sheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded)
         textEditorState = TextEditorState(TextEditorValue.Editing(TextFieldValue()))
         uiState = WhiteboardUiState(text = "text")
+        composeTestRule.waitForIdle()
         Espresso.pressBack()
         assertEquals(TextEditorValue.Discard, textEditorState.currentValue)
     }
@@ -250,6 +249,7 @@ class WhiteboardComponentTest {
         sheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded)
         textEditorState = TextEditorState(TextEditorValue.Discard)
         uiState = WhiteboardUiState(text = "")
+        composeTestRule.waitForIdle()
         Espresso.pressBack()
         assertEquals(TextEditorValue.Editing(TextFieldValue("")), textEditorState.currentValue)
     }
@@ -259,6 +259,7 @@ class WhiteboardComponentTest {
         sheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded)
         textEditorState = TextEditorState(TextEditorValue.Empty)
         uiState = WhiteboardUiState(text = "")
+        composeTestRule.waitForIdle()
         Espresso.pressBack()
         assert(isTextDismissed)
     }
