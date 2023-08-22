@@ -1,173 +1,139 @@
+/*
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.kaleyra.collaboration_suite_core_ui.call
 
 import android.app.Notification
-import android.content.Context
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
+import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
 /**
- * CallNotificationDelegate. It is responsible of syncing the call's notifications with the call's state.
- *
- * @property isAppInForeground Boolean
+ * CallNotificationDelegate. It is responsible of syncing the call's notifications with the call
  */
-interface CallNotificationDelegate: DefaultLifecycleObserver, LifecycleOwner {
+interface CallNotificationDelegate {
 
     /**
-     * Flag which tells if the app is in foreground
+     * @suppress
      */
-    var isAppInForeground: Boolean
+    companion object {
+        /**
+         * The global call notification id
+         */
+        const val CALL_NOTIFICATION_ID = 22
+    }
 
     /**
      * Show the notification
      *
      * @param notification The notification
-     * @param showInForeground True of the notification should be coupled to a foreground service, false otherwise
      */
-    fun showNotification(notification: Notification, showInForeground: Boolean)
+    fun showNotification(notification: Notification) =
+        NotificationManager.notify(CALL_NOTIFICATION_ID, notification)
 
     /**
      * Clear the notification
      */
-    fun clearNotification()
+    fun clearNotification() = NotificationManager.cancel(CALL_NOTIFICATION_ID)
 
     /**
-     * Move the current shown notification to foreground
+     * Sync the notifications with the call
      *
      * @param call The call
      * @param usersDescription The usersDescription
      * @param activityClazz The call activity class
+     * @param scope The coroutine scope
      */
-    suspend fun moveNotificationToForeground(
+    fun syncCallNotification(
+        call: Call,
+        usersDescription: UsersDescription,
+        activityClazz: Class<*>,
+        scope: CoroutineScope
+    ) {
+        call.state.onEach {
+            val notification =
+                buildNotification(call, usersDescription, activityClazz) ?: return@onEach
+            showNotification(notification)
+        }
+            .takeWhile { it !is Call.State.Disconnected.Ended }
+            .onCompletion { clearNotification() }
+            .launchIn(scope)
+    }
+
+    private suspend fun buildNotification(
         call: Call,
         usersDescription: UsersDescription,
         activityClazz: Class<*>
-    ) {
+    ): Notification? {
+        val context = ContextRetainer.context
         val participants = call.participants.value
         val isGroupCall = participants.others.count() > 1
+        val enableCallStyle = !DeviceUtils.isSmartGlass
         val callerDescription = usersDescription.name(listOf(participants.creator()?.userId ?: ""))
         val calleeDescription = usersDescription.name(participants.others.map { it.userId })
 
-        when {
+        return when {
             call.isIncoming() -> {
-                if (call.state.value is Call.State.Disconnected && participants.me != participants.creator()) {
-                    val notification = NotificationManager.buildIncomingCallNotification(
-                        callerDescription,
-                        participants.others.count() > 1,
-                        activityClazz,
-                        false
-                    )
-                    showNotification(notification, true)
-                }
+                NotificationManager.buildIncomingCallNotification(
+                    callerDescription,
+                    isGroupCall,
+                    activityClazz,
+                    !AppLifecycle.isInForeground.value || context.isSilent(),
+                    enableCallStyle = enableCallStyle
+                )
             }
             call.isOutgoing() -> {
-                val notification = NotificationManager.buildOutgoingCallNotification(
+                NotificationManager.buildOutgoingCallNotification(
                     calleeDescription,
                     isGroupCall,
-                    activityClazz
+                    activityClazz,
+                    enableCallStyle = enableCallStyle
                 )
-                showNotification(notification, true)
             }
             call.isOngoing() -> {
-                val notification = NotificationManager.buildOngoingCallNotification(
+                NotificationManager.buildOngoingCallNotification(
                     calleeDescription,
+                    participants.creator() == null,
                     isGroupCall,
                     call.extras.recording is Call.Recording.OnConnect,
                     isSharingScreen = false,
                     call.state.value is Call.State.Connecting,
-                    activityClazz
+                    activityClazz,
+                    enableCallStyle = enableCallStyle
                 )
-                showNotification(notification, true)
             }
+            else -> null
         }
-    }
-
-    /**
-     * Sync the notifications with the call's state
-     *
-     * @param context The context
-     * @param call The call
-     * @param usersDescription The usersDescription
-     * @param activityClazz The call activity class
-     */
-    suspend fun syncNotificationWithCallState(
-        context: Context,
-        call: Call,
-        usersDescription: UsersDescription,
-        activityClazz: Class<*>
-    ) {
-        val participants = call.participants.value
-        val isGroupCall = participants.others.count() > 1
-        val callerDescription = usersDescription.name(listOf(participants.creator()?.userId ?: ""))
-        val calleeDescription = usersDescription.name(participants.others.map { it.userId })
-
-        if (call.isIncoming()) {
-            val notification = NotificationManager.buildIncomingCallNotification(
-                callerDescription,
-                isGroupCall,
-                activityClazz,
-                !isAppInForeground || context.isSilent()
-            )
-            showNotification(notification, isAppInForeground)
-        }
-
-        call.state
-            .onEach {
-                when {
-                    call.isOutgoing() -> {
-                        val notification = NotificationManager.buildOutgoingCallNotification(
-                            calleeDescription,
-                            isGroupCall,
-                            activityClazz
-                        )
-                        showNotification(notification, isAppInForeground)
-                    }
-                    call.isOngoing() -> {
-                        val notification = NotificationManager.buildOngoingCallNotification(
-                            calleeDescription,
-                            isGroupCall,
-                            call.extras.recording is Call.Recording.OnConnect,
-                            isSharingScreen = false,
-                            it is Call.State.Connecting,
-                            activityClazz
-                        )
-                        showNotification(notification, isAppInForeground)
-                    }
-                }
-            }
-            .takeWhile { it !is Call.State.Disconnected.Ended }
-            .onCompletion { clearNotification() }
-            .launchIn(lifecycleScope)
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onStart(owner: LifecycleOwner) {
-        isAppInForeground = true
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onStop(owner: LifecycleOwner) {
-        isAppInForeground = false
     }
 
     private fun Call.isIncoming() =
-        state.value is Call.State.Disconnected && participants.value.me != participants.value.creator()
+        state.value is Call.State.Disconnected && participants.value.let { it.creator() != it.me && it.creator() != null }
 
     private fun Call.isOutgoing() =
-        state.value is Call.State.Connecting && participants.value.me == participants.value.creator()
+        state.value is Call.State.Connecting && participants.value.let { it.creator() == it.me }
 
     private fun Call.isOngoing() =
-        state.value is Call.State.Connecting || state.value is Call.State.Connected
+        state.value is Call.State.Connecting || state.value is Call.State.Connected || participants.value.creator() == null
 }

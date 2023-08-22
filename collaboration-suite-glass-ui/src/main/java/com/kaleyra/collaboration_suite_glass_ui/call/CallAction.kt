@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,6 +47,7 @@ internal abstract class CallAction(
          * Get all actions for an audio&Video call
          * @param withCamera True to add the camera action, false otherwise
          * @param withChat True to add the chat action, false otherwise
+         *
          * @return List<CallAction>
          */
         fun getActions(
@@ -55,19 +56,21 @@ internal abstract class CallAction(
             withCamera: Boolean,
             withSwitchCamera: Boolean,
             withFlashLight: Boolean,
+            withVolume: Boolean,
             withZoom: Boolean,
-            withChat: Boolean
-        ): List<CallAction> {
-            return mutableListOf<CallAction>().apply {
-                if (withMicrophone) add(MICROPHONE(ctx))
-                if (withCamera) add(CAMERA(ctx))
-                if (withSwitchCamera) add(SWITCHCAMERA(ctx))
-                add(VOLUME())
-                if (withZoom) add(ZOOM(ctx))
-                if (withFlashLight) add(FLASHLIGHT(ctx))
-                add(PARTICIPANTS())
-                if (withChat) add(CHAT())
-            }
+            withParticipants: Boolean,
+            withChat: Boolean,
+            withWhiteboard: Boolean
+        ): List<CallAction> = mutableListOf<CallAction>().apply {
+            if (withMicrophone) add(MICROPHONE(ctx))
+            if (withCamera) add(CAMERA(ctx))
+            if (withSwitchCamera) add(SWITCHCAMERA())
+            if (withVolume) add(VOLUME())
+            if (withZoom) add(ZOOM())
+            if (withFlashLight) add(FLASHLIGHT(ctx))
+            if (withParticipants) add(PARTICIPANTS())
+            if (withChat) add(CHAT())
+            if (withWhiteboard) add(WHITEBOARD())
         }
     }
 
@@ -194,30 +197,23 @@ internal abstract class CallAction(
 
     /**
      * Switch camera menu action item
-     * @property isToggled true to activate, false otherwise
      * @constructor
      */
-    class SWITCHCAMERA(ctx: Context) : ToggleableCallAction(
+    class SWITCHCAMERA : CallAction(
         R.id.id_glass_menu_switch_camera_item,
         R.layout.kaleyra_glass_menu_item_layout,
         R.attr.kaleyra_recyclerViewSwitchCameraItemStyle
-    ) {
-        override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_switch_camera)
-        override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_switch_camera)
-    }
+    )
 
     /**
      * Zoom menu action item
      * @constructor
      */
-    class ZOOM(ctx: Context) : ToggleableCallAction(
+    class ZOOM : CallAction(
         R.id.id_glass_menu_zoom_item,
         R.layout.kaleyra_glass_menu_item_layout,
         R.attr.kaleyra_recyclerViewZoomItemStyle
-    ) {
-        override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_zoom)
-        override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_zoom)
-    }
+    )
 
     /**
      * Volume menu action item
@@ -247,5 +243,15 @@ internal abstract class CallAction(
         R.id.id_glass_menu_chat_item,
         R.layout.kaleyra_glass_menu_item_layout,
         R.attr.kaleyra_recyclerViewChatItemStyle
+    )
+
+    /**
+     * Chat menu action item
+     * @constructor
+     */
+    class WHITEBOARD : CallAction(
+        R.id.id_glass_menu_whiteboard_item,
+        R.layout.kaleyra_glass_menu_item_layout,
+        R.attr.kaleyra_recyclerViewWhiteboardItemStyle
     )
 }

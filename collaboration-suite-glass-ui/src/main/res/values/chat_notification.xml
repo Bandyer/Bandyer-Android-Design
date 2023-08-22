@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,7 @@
     <style name="KaleyraCollaborationSuiteUI.ChatMessage.GlassNotification" parent="KaleyraCollaborationSuiteUI.ChatMessage">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.ChatMessage.GlassNotification.RootLayout</item>
         <item name="kaleyra_avatarStyle">@style/KaleyraCollaborationSuiteUI.Glass.Avatar</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassChat</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassChatNotification</item>
         <item name="kaleyra_messageStyle">@style/KaleyraCollaborationSuiteUI.TextView.MessageGlassChat.Notification</item>
         <item name="kaleyra_timestampStyle">@style/KaleyraCollaborationSuiteUI.TextView.TimestampGlassChat.Notification</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.ChatNotification</item>
@@ -36,7 +36,7 @@
 
     <!-- ROOT -->
     <style name="KaleyraCollaborationSuiteUI.ChatMessage.GlassNotification.RootLayout" parent="">
-        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space48</item>
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
@@ -44,7 +44,7 @@
     </style>
 
     <!-- MESSAGE -->
-    <style name="KaleyraCollaborationSuiteUI.TextView.MessageGlassChat.Notification" parent="KaleyraCollaborationSuiteUI.TextView.MessageGlassChat">
+    <style name="KaleyraCollaborationSuiteUI.TextView.MessageGlassChat.Notification" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.MessageGlassChat">
         <item name="android:minHeight">@dimen/kaleyra_dimen_space0</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:ellipsize">end</item>
@@ -52,7 +52,7 @@
     </style>
 
     <!-- TIMESTAMP -->
-    <style name="KaleyraCollaborationSuiteUI.TextView.TimestampGlassChat.Notification" parent="KaleyraCollaborationSuiteUI.TextView.TimestampGlassChat">
+    <style name="KaleyraCollaborationSuiteUI.TextView.TimestampGlassChat.Notification" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.TimestampGlassChat">
         <item name="android:text">@string/kaleyra_glass_now</item>
     </style>
 

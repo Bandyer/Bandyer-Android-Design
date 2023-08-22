@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,7 +40,6 @@
     <item name="ic_kaleyra_enter_fullscreen" type="drawable">@drawable/kaleyra_z_maximize</item>
     <item name="ic_kaleyra_exit_fullscreen" type="drawable">@drawable/kaleyra_z_minimize</item>
     <item name="ic_kaleyra_snapshot" type="drawable">@drawable/kaleyra_z_snapshot</item>
-    <item name="ic_kaleyra_chat" type="drawable">@drawable/kaleyra_z_chat</item>
     <item name="ic_kaleyra_file_share" type="drawable">@drawable/kaleyra_z_file_share</item>
     <item name="ic_kaleyra_mic_off" type="drawable">@drawable/kaleyra_z_mic_off</item>
     <item name="ic_kaleyra_participants" type="drawable">@drawable/kaleyra_z_users</item>
@@ -101,6 +100,12 @@
     <item name="ic_kaleyra_glass_cam_off" type="drawable">@drawable/kaleyra_z_camera_off</item>
     <item name="ic_kaleyra_glass_cam_on" type="drawable">@drawable/kaleyra_z_camera_on</item>
     <item name="ic_kaleyra_glass_participants" type="drawable">@drawable/kaleyra_z_users</item>
+
+    <!-- VIRTUAL BACKGROUND -->
+    <item name="ic_kaleyra_virtual_background" type="drawable">@drawable/kaleyra_z_virtual_bg</item>
+    <item name="ic_kaleyra_virtual_background_none" type="drawable">@drawable/kaleyra_z_square</item>
+    <item name="ic_kaleyra_virtual_background_blur" type="drawable">@drawable/kaleyra_z_blurred_bg</item>
+    <item name="ic_kaleyra_virtual_background_image" type="drawable">@drawable/kaleyra_z_virtual_bg</item>
 
     <!-- STILL IN PNG, NOT USED -->
     <item name="ic_kaleyra_options" type="drawable">@drawable/kaleyra_options_icon</item>

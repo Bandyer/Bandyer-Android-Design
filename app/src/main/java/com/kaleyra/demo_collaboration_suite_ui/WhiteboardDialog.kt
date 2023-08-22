@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,14 +61,13 @@ class WhiteBoardDialog : BaseKaleyraWhiteboardDialog<WhiteBoardDialog.Whiteboard
                 setInitialScale(1)
 
                 settings.apply {
-                    setAppCacheEnabled(true)
+                    cacheMode = WebSettings.LOAD_DEFAULT
                     domStorageEnabled = true
                     databaseEnabled = true
                     displayZoomControls = true
                     setSupportZoom(true)
                     builtInZoomControls = true
                     loadWithOverviewMode = true
-                    setAppCachePath(context.cacheDir.path)
                     allowFileAccess = true
                     cacheMode = WebSettings.LOAD_NO_CACHE // load online by default
                     javaScriptEnabled = true

@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,6 +29,8 @@ import com.mikepenz.fastadapter.items.AbstractItem
 
 /**
  * A menu item. If the active text is null, isActivated will always be false.
+ *
+ * @property action The action call action
  * @constructor
  */
 internal class MenuItem(val action: CallAction) : AbstractItem<MenuItem.ViewHolder>() {

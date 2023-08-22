@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,50 +14,47 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
+        android:id="@+id/kaleyra_video_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/kaleyra_live_pointers"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/kaleyra_video_wrapper"
+        app:layout_constraintEnd_toEndOf="@id/kaleyra_video_wrapper"
+        app:layout_constraintStart_toStartOf="@id/kaleyra_video_wrapper"
+        app:layout_constraintTop_toTopOf="@id/kaleyra_video_wrapper" />
+
+    <LinearLayout
+        android:id="@+id/kaleyra_info_wrapper"
+        style="?attr/kaleyra_rootLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:theme="?attr/kaleyra_recyclerViewItemStyle">
 
-        <FrameLayout
-            android:id="@+id/kaleyra_video_wrapper"
+        <com.kaleyra.collaboration_suite_glass_ui.common.AvatarView
+            android:id="@+id/kaleyra_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:theme="?attr/kaleyra_avatarStyle" />
 
-        <FrameLayout
-            android:id="@+id/kaleyra_live_pointers"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/kaleyra_video_wrapper"
-            app:layout_constraintEnd_toEndOf="@id/kaleyra_video_wrapper"
-            app:layout_constraintStart_toStartOf="@id/kaleyra_video_wrapper"
-            app:layout_constraintTop_toTopOf="@id/kaleyra_video_wrapper" />
-
-        <LinearLayout
-            android:id="@+id/kaleyra_info_wrapper"
-            style="?attr/kaleyra_rootLayoutStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:theme="?attr/kaleyra_recyclerViewItemStyle">
-
-            <com.kaleyra.collaboration_suite_glass_ui.common.AvatarView
-                android:id="@+id/kaleyra_avatar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:theme="?attr/kaleyra_avatarStyle" />
-
-            <include
-                android:id="@+id/kaleyra_subtitle_layout"
-                layout="@layout/kaleyra_glass_call_stream_subtitle_layout" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+        <include
+            android:id="@+id/kaleyra_subtitle_layout"
+            layout="@layout/kaleyra_glass_call_stream_subtitle_layout" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

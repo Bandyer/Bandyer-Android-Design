@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,10 +23,40 @@
     <string name="kaleyra_notification_stop_screen_share">Stop Screen Share</string>
     <string name="kaleyra_notification_call_channel_high_priority_name">Calls High Priority</string>
     <string name="kaleyra_notification_call_channel_low_priority_name">Calls Low Priority</string>
+    <string name="kaleyra_notification_chat_channel_name">Chat</string>
+    <string name="kaleyra_notification_terms_and_conditions_channel_name">User Data Consent Agreement</string>
     <string name="kaleyra_notification_incoming_call">Incoming call</string>
+    <string name="kaleyra_notification_incoming_group_call">Incoming group call</string>
     <string name="kaleyra_notification_outgoing_call">Outgoing call</string>
+    <string name="kaleyra_notification_outgoing_group_call">Outgoing group call</string>
     <string name="kaleyra_notification_ongoing_call">Ongoing call</string>
+    <string name="kaleyra_notification_ongoing_group_call">Ongoing group call</string>
     <string name="kaleyra_notification_connecting_call">Connecting…</string>
-    <string name="kaleyra_notification_tap_to_return">Tap to return to the call</string>
+    <string name="kaleyra_notification_tap_to_return_to_call">Tap to return to the call</string>
+    <string name="kaleyra_notification_tap_to_return_to_group_call">Tap to return to the group call</string>
     <string name="kaleyra_notification_call_recorded">This call is being recorded</string>
+    <string name="kaleyra_notification_chat_reply">Reply</string>
+    <string name="kaleyra_notification_chat_mark_as_read">Mark as read</string>
+
+    <!-- CALL PARTICIPANT REMOVED -->
+
+    <plurals name="kaleyra_call_participant_removed">
+        <item quantity="one">%s has removed you from the call</item>
+        <item quantity="other">The admin has removed you from the call</item>
+    </plurals>
+    <string name="kaleyra_call_participant_removed_understood_message">Close</string>
+
+    <!-- MUTE PARTICIPANT -->
+
+    <plurals name="kaleyra_call_participant_muted_by_admin">
+        <item quantity="one">%s has muted you</item>
+        <item quantity="other">The admin has muted you</item>
+    </plurals>
+    <string name="kaleyra_call_participant_utterance_muted_by_admin">Muted</string>
+
+    <string name="kaleyra_user_data_consent_agreement_notification_title">Terms and conditions</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_message">You have a new message</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_call">Incoming call</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_message">You need to accept terms and conditions to proceed</string>
+
 </resources>

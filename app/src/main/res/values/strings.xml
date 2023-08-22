@@ -1,11 +1,11 @@
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,7 @@
 <resources>
     <string name="app_name">Demo SDK Design</string>
     <string name="kaleyra" translatable="false">Kaleyra</string>
+    <string name="call_notifications">Call notifications</string>
     <string name="chat">Chat</string>
     <string name="call">Call</string>
     <string name="whiteboard_editor">Whiteboard text editor</string>
@@ -37,9 +38,13 @@
     <string name="screen_share_picker">Screen share picker</string>
     <string name="file_share">File share</string>
     <string name="feedback">Feedback</string>
+    <string name="kick_participant">Call participant removed dialog</string>
+    <string name="mute_participant">Call participant muted snackbar</string>
     <string name="notification">Call notification</string>
     <string name="add_upload">Add upload</string>
     <string name="add_download">Add download</string>
     <string name="add_download_available">Add download available</string>
     <string name="file_share_dialog">File Share Dialog</string>
+    <string name="user_consent_agreement_notification">Terms agreement notification</string>
+
 </resources>

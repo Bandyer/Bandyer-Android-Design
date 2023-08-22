@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,40 @@
   -->
 
 <resources>
-    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassChat" parent="KaleyraCollaborationSuiteUI.TextView.Title">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.Chat.MessageLayout">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_avatarStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_messageStyle" />
+        <attr name="kaleyra_timestampStyle" />
+    </declare-styleable>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.Chat.MessageLayout" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.MessageLayout.RootLayout</item>
+        <item name="kaleyra_avatarStyle">@style/KaleyraCollaborationSuiteUI.Glass.Avatar</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassChat.MessageLayout</item>
+        <item name="kaleyra_messageStyle">@style/KaleyraCollaborationSuiteUI.TextView.MessageGlassChat.MessageLayout</item>
+        <item name="kaleyra_timestampStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.TimestampGlassChat</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.Chat.MessageLayout.RootLayout" parent="">
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassChat.MessageLayout" parent="KaleyraCollaborationSuiteUI.TextView.Title.GlassChatNotification">
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.MessageGlassChat.MessageLayout" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.MessageGlassChat">
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space56</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_glass_chat_right_margin</item>
+    </style>
+
+    <!-- SHARED STYLES WITH CHAT NOTIFICATION -->
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassChatNotification" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:layout_height">@dimen/kaleyra_dimen_space40</item>
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:includeFontPadding">false</item>
@@ -26,13 +59,15 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.MessageGlassChat" parent="KaleyraCollaborationSuiteUI.TextView">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.MessageGlassChat" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/kaleyra_dimen_text_32sp</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.TimestampGlassChat" parent="KaleyraCollaborationSuiteUI.TextView">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.TimestampGlassChat" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:textColor">@color/kaleyra_color_white_80</item>
         <item name="android:textSize">@dimen/kaleyra_dimen_text_h1</item>
     </style>
+
+
 </resources>

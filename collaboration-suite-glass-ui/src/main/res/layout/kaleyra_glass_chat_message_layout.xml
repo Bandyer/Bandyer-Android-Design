@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,50 +14,48 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/kaleyra_rootLayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="?attr/kaleyra_chatMessageLayoutStyle">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        style="?attr/kaleyra_rootLayoutStyle"
+    <com.kaleyra.collaboration_suite_glass_ui.common.AvatarView
+        android:id="@+id/kaleyra_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="?attr/kaleyra_avatarStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/kaleyra_name"
+        style="?attr/kaleyra_titleStyle"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@id/kaleyra_time"
+        app:layout_constraintStart_toEndOf="@id/kaleyra_avatar"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Mario Rossi" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/kaleyra_time"
+        style="?attr/kaleyra_timestampStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/kaleyra_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/kaleyra_avatar"
+        tools:text="10.36" />
+
+    <com.kaleyra.collaboration_suite_glass_ui.utils.PaginatedTextView
+        android:id="@+id/kaleyra_message"
+        style="?attr/kaleyra_messageStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/kaleyra_name"
+        tools:text="Hello there" />
 
-        <com.kaleyra.collaboration_suite_glass_ui.common.AvatarView
-            android:id="@+id/kaleyra_avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:theme="?attr/kaleyra_avatarStyle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/kaleyra_name"
-            style="?attr/kaleyra_titleStyle"
-            android:layout_width="0dp"
-            app:layout_constraintEnd_toStartOf="@id/kaleyra_time"
-            app:layout_constraintStart_toEndOf="@id/kaleyra_avatar"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Mario Rossi" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/kaleyra_time"
-            style="?attr/kaleyra_timestampStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/kaleyra_avatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/kaleyra_avatar"
-            tools:text="10.36" />
-
-        <com.kaleyra.collaboration_suite_glass_ui.utils.PaginatedTextView
-            android:id="@+id/kaleyra_message"
-            style="?attr/kaleyra_messageStyle"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/kaleyra_name"
-            tools:text="Hello there" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

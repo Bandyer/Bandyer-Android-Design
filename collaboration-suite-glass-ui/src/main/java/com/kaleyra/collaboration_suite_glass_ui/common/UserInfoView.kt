@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,9 +23,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
+import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
+import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassUserInfoLayoutBinding
-import com.kaleyra.collaboration_suite_glass_ui.model.internal.UserState
 
 internal class UserInfoView @JvmOverloads constructor(
     context: Context,
@@ -42,17 +43,20 @@ internal class UserInfoView @JvmOverloads constructor(
         kaleyraAvatar.setBackground(name.parseToColor())
     }
 
-//    fun setAvatar(url: String) = binding.kaleyraAvatar.setImage(url)
-
     fun setAvatar(uri: Uri) = binding.kaleyraAvatar.setImage(uri)
 
     fun setAvatar(@DrawableRes resId: Int?) = binding.kaleyraAvatar.setImage(resId)
 
-    fun setState(state: UserState, lastSeenTime: Long = 0) = with(binding) {
-        if(state is UserState.Offline) kaleyraUserStateText.setUserState(state, lastSeenTime)
-        else kaleyraUserStateText.setUserState(state)
-        kaleyraUserStateDot.isActivated = state == UserState.Online
+    fun setState(state: ChatParticipant.State) = with(binding) {
+        kaleyraUserStateText.setUserState(state)
+        kaleyraUserStateDot.isActivated = state == ChatParticipant.State.Joined.Online
     }
 
     fun hideName(value: Boolean) { binding.kaleyraName.visibility = if (value) View.GONE else View.VISIBLE }
+
+    fun hideState(value: Boolean) {
+        val visibility = if (value) View.GONE else View.VISIBLE
+        binding.kaleyraUserStateText.visibility = visibility
+        binding.kaleyraUserStateDot.visibility = visibility
+    }
 }

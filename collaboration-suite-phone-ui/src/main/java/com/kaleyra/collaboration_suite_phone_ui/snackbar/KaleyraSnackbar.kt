@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.kaleyra.collaboration_suite_phone_ui.snackbar
 
 import android.content.Context
@@ -71,10 +87,22 @@ class KaleyraSnackbar private constructor(
             duration
         )
 
+        @JvmStatic
+        @JvmSynthetic
+        fun make(
+            view: View,
+            @Duration duration: Int
+        ): KaleyraSnackbar = makeInternal(
+            view,
+            null,
+            null,
+            duration
+        )
+
         private fun makeInternal(
             view: View,
-            title: CharSequence,
-            subtitle: CharSequence,
+            title: CharSequence?,
+            subtitle: CharSequence?,
             @Duration duration: Int
         ): KaleyraSnackbar {
             val parent = findSuitableParent(view)
@@ -167,9 +195,10 @@ class KaleyraSnackbar private constructor(
     }
 
     @JvmSynthetic
-    internal fun setTitle(text: CharSequence): KaleyraSnackbar {
+    internal fun setTitle(text: CharSequence?): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.title?.text = text
+        contentLayout.title?.visibility = if (text.isNullOrBlank()) View.GONE else View.VISIBLE
         return this
     }
 
@@ -177,7 +206,7 @@ class KaleyraSnackbar private constructor(
     internal fun setSubTitle(text: CharSequence?): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.subTitle?.text = text
-        contentLayout.subTitle?.visibility = if (text == null) View.GONE else View.VISIBLE
+        contentLayout.subTitle?.visibility = if (text.isNullOrBlank()) View.GONE else View.VISIBLE
         return this
     }
 

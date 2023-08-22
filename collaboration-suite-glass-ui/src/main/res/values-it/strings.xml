@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,6 +39,7 @@
     <string name="kaleyra_glass_online">Online</string>
     <string name="kaleyra_glass_invited">Invitato</string>
     <string name="kaleyra_glass_last_seen_pattern">Ultimo accesso: %1$s</string>
+    <string name="kaleyra_glass_last_seen_never">Ultimo accesso: mai</string>
     <string name="kaleyra_glass_call">Chiama</string>
     <string name="kaleyra_glass_videocall">Videochiama</string>
     <string name="kaleyra_glass_camera_off">La tua camera è spenta</string>
@@ -54,6 +54,7 @@
     <string name="kaleyra_glass_menu_flashlight_toggled">Abilita Torcia</string>
     <string name="kaleyra_glass_menu_flashlight">Disabilita Torcia</string>
     <string name="kaleyra_glass_menu_chat">Chat</string>
+    <string name="kaleyra_glass_menu_whiteboard">Lavagna</string>
     <string name="kaleyra_glass_rec">Rec</string>
     <string name="kaleyra_glass_call_declined">Rifiutata</string>
     <string name="kaleyra_glass_call_error_occurred">Si è verificato un errore</string>
@@ -84,11 +85,22 @@
     <string name="kaleyra_glass_participants_camera">partecipanti</string>
     <string name="kaleyra_glass_open_menu">menu</string>
     <string name="kaleyra_glass_hide_notification">nascondi</string>
-    <string name="kaleyra_glass_contact_info">contatto</string>
     <string name="kaleyra_glass_read">leggi</string>
     <string name="kaleyra_glass_scroll_right_left">scorri a destra/sinistra</string>
     <string name="kaleyra_glass_scroll_left">scorri a sinistra</string>
     <string name="kaleyra_glass_scroll_right">scorri a destra</string>
+    <string name="kaleyra_glass_no_messages">Nessun messaggio</string>
+    <string name="kaleyra_glass_loading_messages">Caricamento messaggi</string>
+
+    <plurals name="kaleyra_glass_muted_by_admin">
+        <item quantity="one">%s ha disabilitato il tuo microfono</item>
+        <item quantity="other">L\'amministratore ha disabilitato il tuo microfono</item>
+    </plurals>
+
+    <plurals name="kaleyra_glass_removed_from_call">
+        <item quantity="one">%s ti ha rimosso dalla chiamata</item>
+        <item quantity="other">L\'amministratore ti ha rimosso dalla chiamata</item>
+    </plurals>
 
     <!-- PLURALS -->
     <plurals name="kaleyra_glass_users_in_call_pattern">

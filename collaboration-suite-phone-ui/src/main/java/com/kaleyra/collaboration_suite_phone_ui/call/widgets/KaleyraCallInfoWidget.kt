@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraWidgetCallInfoBinding
 import com.kaleyra.collaboration_suite_phone_ui.extensions.*
-import com.kaleyra.collaboration_suite_phone_ui.recording.RecordingWidget
+import com.kaleyra.collaboration_suite_phone_ui.call.widgets.recording.KaleyraRecordingWidget
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
 
@@ -136,7 +136,7 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
     /**
      * Recording view
      */
-    var recordingView: RecordingWidget? = null
+    var recordingView: KaleyraRecordingWidget? = null
         private set
 
     /**

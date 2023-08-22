@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,7 @@
 package com.kaleyra.collaboration_suite_glass_ui.common
 
 import android.content.Context
+import android.net.Uri
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
@@ -45,9 +46,9 @@ internal class AvatarGroupView @JvmOverloads constructor(
     /**
      * Add an avatar
      *
-     * @param url The url remote resource for the avatar
+     * @param uri The uri for the avatar
      */
-    fun addAvatar(url: String) = addAvatar().setImage(url)
+    fun addAvatar(uri: Uri) = addAvatar().setImage(uri)
 
     /**
      * Add an avatar

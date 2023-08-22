@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,7 @@ package com.kaleyra.collaboration_suite_core_ui.call
 import androidx.fragment.app.FragmentActivity
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Call UI controller. It contains methods called when the user interacts with the ui.
@@ -26,12 +27,27 @@ import com.kaleyra.collaboration_suite_core_ui.model.Volume
 interface CallUIController {
 
     /**
+     * The mic permission flow
+     */
+    val micPermission: StateFlow<Permission>
+
+    /**
+     * The cam permission flow
+     */
+    val camPermission: StateFlow<Permission>
+
+    /**
+     * The volume
+     */
+    val volume: Volume
+
+    /**
      * On request mic permission
      *
      * @param context activity
      * @return [Permission]
      */
-    suspend fun onRequestMicPermission(context: FragmentActivity): Permission
+    fun onRequestMicPermission(context: FragmentActivity)
 
     /**
      * On request camera permission
@@ -39,7 +55,7 @@ interface CallUIController {
      * @param context activity
      * @return [Permission]
      */
-    suspend fun onRequestCameraPermission(context: FragmentActivity): Permission
+    fun onRequestCameraPermission(context: FragmentActivity)
 
 
     /**
@@ -57,29 +73,24 @@ interface CallUIController {
     /**
      * On enable camera
      *
+     * @param context Context
      * @param enable true to enable, false otherwise
      */
-    fun onEnableCamera(enable: Boolean)
+    suspend fun onEnableCamera(context: FragmentActivity, enable: Boolean)
 
     /**
      * On enable mic
      *
+     * @param context Context
      * @param enable true to enable, false otherwise
      */
-    fun onEnableMic(enable: Boolean)
+    suspend fun onEnableMic(context: FragmentActivity,enable: Boolean)
 
     /**
      * On switch camera
      *
      */
     fun onSwitchCamera()
-
-    /**
-     * On get volume
-     *
-     * @return [Volume] volume
-     */
-    fun onGetVolume(): Volume
 
     /**
      * On set volume

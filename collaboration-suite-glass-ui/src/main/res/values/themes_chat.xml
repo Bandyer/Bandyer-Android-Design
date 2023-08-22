@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,32 +17,57 @@
 <resources>
     <declare-styleable name="KaleyraCollaborationSuiteUI.Theme.Glass.Chat">
         <attr name="kaleyra_statusBarStyle" />
+        <attr name="kaleyra_chatStyle" format="reference" />
         <attr name="kaleyra_chatMenuStyle" format="reference" />
+        <attr name="kaleyra_participantsStyle" />
     </declare-styleable>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.DayNight.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.DayNight">
-        <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView</item>
-        <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem</item>
-        <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.CounterGlassChat</item>
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassChat.RootLayout</item>
+        <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Chat</item>
+        <item name="kaleyra_chatStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat</item>
         <item name="kaleyra_chatMenuStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.ChatMenu</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.Participants</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Day.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.Day">
-        <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView</item>
-        <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem</item>
-        <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.CounterGlassChat</item>
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassChat.RootLayout</item>
+        <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Chat</item>
+        <item name="kaleyra_chatStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat</item>
         <item name="kaleyra_chatMenuStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.ChatMenu</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.Participants</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Night.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.Night">
-        <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView</item>
-        <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem</item>
-        <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.CounterGlassChat</item>
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassChat.RootLayout</item>
+        <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Chat</item>
+        <item name="kaleyra_chatStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat</item>
         <item name="kaleyra_chatMenuStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.ChatMenu</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.Participants</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Theme.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.DayNight.GlassChat"/>
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassChat.RootLayout" parent="">
+        <item name="android:background">@color/kaleyra_glass_background_color</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.DayNight.GlassChat" />
+
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassChatNotification" parent="KaleyraCollaborationSuiteUI.Theme.GlassChat">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassChatNotification.Animation</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassChatNotification.Animation" parent="">
+        <item name="android:activityOpenEnterAnimation">@anim/kaleyra_notification_slide_down</item>
+        <item name="android:activityOpenExitAnimation">@anim/kaleyra_notification_slide_up</item>
+    </style>
+
+
 </resources>

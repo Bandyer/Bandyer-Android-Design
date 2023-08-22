@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,8 @@
 
 <resources>
     <item name="id_glass_chat_message_item" type="id" />
+    <item name="id_glass_terms_and_conditions_item" type="id" />
+
     <item name="id_glass_menu_mic_item" type="id" />
     <item name="id_glass_menu_camera_item" type="id" />
     <item name="id_glass_menu_switch_camera_item" type="id" />
@@ -25,9 +27,14 @@
     <item name="id_glass_menu_flashlight_item" type="id" />
     <item name="id_glass_menu_participants_item" type="id" />
     <item name="id_glass_menu_chat_item" type="id" />
+    <item name="id_glass_menu_whiteboard_item" type="id" />
+
+    <item name="id_glass_chat_menu_participants_item" type="id" />
+    <item name="id_glass_chat_menu_videocall_item" type="id" />
+    <item name="id_glass_chat_menu_call_item" type="id" />
+
     <item name="id_glass_participants_item" type="id" />
     <item name="id_glass_full_screen_dialog_item" type="id" />
-    <item name="id_glass_chat_menu_item" type="id" />
     <item name="id_glass_call_my_stream_item" type="id" />
     <item name="id_glass_call_other_stream_item" type="id" />
     <item name="id_glass_whiteboard_item" type="id" />

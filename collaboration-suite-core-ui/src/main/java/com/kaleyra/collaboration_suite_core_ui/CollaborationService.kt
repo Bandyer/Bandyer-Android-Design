@@ -1,296 +1,83 @@
+/*
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.kaleyra.collaboration_suite_core_ui
 
-import android.app.Activity
-import android.app.Application
-import android.app.Notification
+import android.annotation.SuppressLint
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
-import com.kaleyra.collaboration_suite_core_ui.call.CallController
-import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
-import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
-import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
+import android.content.ServiceConnection
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
+import android.os.IBinder
+import android.util.Log
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
-import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
-import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
-import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
-import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
-import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
-import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
-import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.launch
+import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withTimeoutOrNull
 
 /**
- * The CollaborationService
+ * Collaboration service
  */
-class CollaborationService: BoundService(),
-    CallUIDelegate,
-    CallStreamDelegate,
-    CallNotificationDelegate,
-    DeviceStatusDelegate,
-    CallController,
-    Application.ActivityLifecycleCallbacks,
-    CallNotificationActionReceiver.ActionDelegate {
-
-    private companion object {
-        const val CALL_NOTIFICATION_ID = 22
-    }
-
-    private var phoneBox: PhoneBox? = null
-
-    private var phoneBoxJob: Job? = null
-
-    private var batteryObserver: BatteryObserver? = null
-
-    private var wifiObserver: WiFiObserver? = null
-
-    private var callActivityClazz: Class<*>? = null
-
-    private var isServiceInForeground: Boolean = false
-
-    private val _call: MutableSharedFlow<Call> =
-        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
-    override val call: SharedFlow<Call> get() = _call
-
-    override var currentCall: Call? = null
-
-    private var _callAudioManager: CallAudioManager? = null
-    override val callAudioManager: CallAudioManager get() = _callAudioManager!!
-
-    override var usersDescription: UsersDescription = UsersDescription()
-
-    override var isAppInForeground: Boolean = false
-
-    override val battery: SharedFlow<BatteryInfo> get() = batteryObserver!!.observe()
-
-    override val wifi: SharedFlow<WiFiInfo> get() = wifiObserver!!.observe()
+abstract class CollaborationService : BoundService() {
 
     /**
-     * @suppress
-     */
-    override fun onCreate() {
-        super<BoundService>.onCreate()
-        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
-        application.registerActivityLifecycleCallbacks(this)
-        CallNotificationActionReceiver.actionDelegate = this
-        batteryObserver = BatteryObserver(this)
-        wifiObserver = WiFiObserver(this)
-        _callAudioManager = CallAudioManager(this)
+     * Companion
+     **/
+    companion object {
+
+        /**
+         *  A service that is used to configure collaboration.
+         **/
+        suspend fun get(): CollaborationService? = getCollaborationService()
     }
 
     /**
-     * @suppress
+     * On request new collaboration set up
      */
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        super.onStartCommand(intent, flags, startId)
-        return START_NOT_STICKY
-    }
+    abstract suspend fun onRequestNewCollaborationConfigure()
+}
 
-    /**
-     * @suppress
-     */
-    override fun onDestroy() {
-        super<BoundService>.onDestroy()
-        ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
-        application.unregisterActivityLifecycleCallbacks(this)
-        clearNotification()
-        phoneBoxJob?.cancel()
-        currentCall?.end()
-        phoneBox?.disconnect()
-        batteryObserver?.stop()
-        wifiObserver?.stop()
-        CallNotificationActionReceiver.actionDelegate = null
-        currentCall = null
-        _callAudioManager = null
-        phoneBox = null
-        phoneBoxJob = null
-        callActivityClazz = null
-        batteryObserver = null
-        wifiObserver = null
-    }
+@SuppressLint("QueryPermissionsNeeded")
+private fun getService(context: Context): ResolveInfo? {
+    val serviceIntent = Intent().setAction("kaleyra_collaboration_configure").setPackage(context.packageName)
+    val resolveInfo = context.packageManager.queryIntentServices(serviceIntent, PackageManager.GET_RESOLVED_FILTER)
+    if (resolveInfo.size < 1) return null
+    return resolveInfo[0]
+}
 
-    /**
-     * Bind the service to a phone box
-     *
-     * @param phoneBox The phonebox
-     * @param usersDescription The user description. Optional.
-     * @param activityClazz The call activity class
-     */
-    fun bind(
-        phoneBox: PhoneBox,
-        usersDescription: UsersDescription? = null,
-        activityClazz: Class<*>
-    ) {
-        this.phoneBox = phoneBox
-        this.usersDescription = usersDescription ?: UsersDescription()
-        this.callActivityClazz = activityClazz
-        phoneBoxJob?.cancel()
-        phoneBoxJob = listenToCalls(phoneBox, this.usersDescription, this.callActivityClazz!!)
-    }
-
-    private fun listenToCalls(
-        phoneBox: PhoneBox,
-        usersDescription: UsersDescription,
-        callActivityClazz: Class<*>
-    ) =
-        phoneBox.call.onEach { call ->
-            if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEach
-            currentCall = call
-            _call.emit(call)
-
-            call.state
-                .takeWhile { it !is Call.State.Disconnected.Ended }
-                .onCompletion {
-                    currentCall = null
-                    if (isAppInForeground) return@onCompletion
-                    stopSelf()
-//                    Log.e("CollaborationService", "stopping service onCompletion")
+private suspend fun getCollaborationService(): CollaborationService? = with(ContextRetainer.context) {
+    val name = getService(this)?.serviceInfo?.name ?: return null
+    val intent = Intent(this, Class.forName(name))
+    startService(intent)
+    return withTimeoutOrNull(1000L) {
+        suspendCancellableCoroutine<CollaborationService> { continuation ->
+            bindService(intent, object : ServiceConnection {
+                override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+                    val collaborationService = (service as BoundServiceBinder).getService<CollaborationService>()
+                    continuation.resumeWith(Result.success(collaborationService))
                 }
-                .launchIn(lifecycleScope)
 
-            setUpCallStreams(this@CollaborationService, call)
-            syncNotificationWithCallState(
-                this@CollaborationService,
-                call,
-                usersDescription,
-                callActivityClazz
-            )
-
-            if (!shouldShowCallUI(call)) return@onEach
-            UIProvider.showCall(callActivityClazz)
-        }.launchIn(lifecycleScope)
-
-    private fun shouldShowCallUI(call: Call): Boolean =
-        isAppInForeground && (!this@CollaborationService.isSilent() || call.participants.value.let { it.me == it.creator() })
-
-    /**
-     * @suppress
-     */
-    override fun onStop(owner: LifecycleOwner) {
-        super.onStop(owner)
-        if (currentCall != null && currentCall!!.state.value !is Call.State.Disconnected.Ended) return
-        stopSelf()
-//        Log.e("CollaborationService", "stopping service onStop")
-    }
-
-    ////////////////////////////////////////////
-    // Application.ActivityLifecycleCallbacks //
-    ////////////////////////////////////////////
-    /**
-     * @suppress
-     */
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        if (activity.javaClass != callActivityClazz) return
-        currentCall?.also { publishMyStream(activity as FragmentActivity, it) }
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onActivityStarted(activity: Activity) {
-        if (activity.javaClass != callActivityClazz || isServiceInForeground) return
-        lifecycleScope.launch {
-            currentCall ?: return@launch
-            moveNotificationToForeground(
-                currentCall!!,
-                usersDescription,
-                callActivityClazz!!
-            )
-        }
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onActivityResumed(activity: Activity) = Unit
-
-    /**
-     * @suppress
-     */
-    override fun onActivityPaused(activity: Activity) = Unit
-
-    /**
-     * @suppress
-     */
-    override fun onActivityStopped(activity: Activity) = Unit
-
-    /**
-     * @suppress
-     */
-    override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) = Unit
-
-    /**
-     * @suppress
-     */
-    override fun onActivityDestroyed(activity: Activity) = Unit
-
-    ///////////////////////////////////////////////////
-    // CallNotificationActionReceiver.ActionDelegate //
-    ///////////////////////////////////////////////////
-    /**
-     * @suppress
-     */
-    override fun onAnswerAction() {
-        currentCall?.connect()
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onHangUpAction() {
-        currentCall?.end()
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onScreenShareAction() = Unit
-
-    /////////////////////
-    // CallController //
-    ////////////////////
-    /**
-     * @suppress
-     */
-    override fun onHangup() {
-        super.onHangup()
-        clearNotification()
-    }
-
-    //////////////////////////////
-    // CallNotificationDelegate //
-    //////////////////////////////
-    /**
-     * @suppress
-     */
-    override fun showNotification(notification: Notification, showInForeground: Boolean) {
-        if (showInForeground) {
-            startForeground(CALL_NOTIFICATION_ID, notification).also {
-                isServiceInForeground = true
+                override fun onServiceDisconnected(name: ComponentName?) = Unit
+            }, 0)
+            continuation.invokeOnCancellation {
+                Log.e("Collaboration", "Collaboration was not set up, you had 1s to do it. And you didn't do it. reason = $it")
             }
-        } else NotificationManager.notify(CALL_NOTIFICATION_ID, notification)
-    }
-
-    /**
-     * @suppress
-     */
-    override fun clearNotification() {
-        stopForeground(true).also { isServiceInForeground = false }
-        NotificationManager.cancelNotification(CALL_NOTIFICATION_ID)
+        }
     }
 }

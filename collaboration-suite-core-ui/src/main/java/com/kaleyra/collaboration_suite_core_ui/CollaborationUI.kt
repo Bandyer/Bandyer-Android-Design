@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,28 +16,22 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ProcessLifecycleOwner
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
-import com.kaleyra.collaboration_suite.Collaboration.Credentials
-import com.kaleyra.collaboration_suite.User
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox.CreationOptions
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox.State.Connecting
-import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
-import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
+import com.kaleyra.collaboration_suite_utils.cached
+import com.kaleyra.collaboration_suite_utils.getValue
+import com.kaleyra.collaboration_suite_utils.setValue
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
 
 /**
  * Collaboration UI
@@ -46,115 +40,129 @@ import kotlinx.coroutines.flow.onEach
  */
 object CollaborationUI {
 
+    /**
+     * Collaboration
+     */
     private var collaboration: Collaboration? = null
 
-    private var wasPhoneBoxConnected = false
+    private val serialScope by lazy { CoroutineScope(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) }
 
-    private var lifecycleObserver = object : DefaultLifecycleObserver {
-        override fun onStart(owner: LifecycleOwner) {
-            super.onStart(owner)
-            if (wasPhoneBoxConnected) phoneBox.connect()
-        }
+    private var mainScope: CoroutineScope? = null
 
-        override fun onStop(owner: LifecycleOwner) {
-            super.onStop(owner)
-            wasPhoneBoxConnected =
-                phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
-        }
-    }
+    private lateinit var callActivityClazz: Class<*>
+    private lateinit var chatActivityClazz: Class<*>
+    private lateinit var termsAndConditionsActivityClazz: Class<*>
+    private var chatNotificationActivityClazz: Class<*>? = null
+
+    private var collaborationUIConnector: CollaborationUIConnector? = null
+    private var termsAndConditionsRequester: TermsAndConditionsRequester? = null
+
+    private var _phoneBox: PhoneBoxUI? by cached { PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz, collaboration!!.configuration.logger) }
+    private var _chatBox: ChatBoxUI? by cached { ChatBoxUI(collaboration!!.chatBox, chatActivityClazz, chatNotificationActivityClazz) }
 
     /**
      * Users description to be used for the UI
      */
-    var usersDescription: UsersDescription? = null
+    var usersDescription: UsersDescription = UsersDescription()
 
     /**
      * Phone box
      */
     val phoneBox: PhoneBoxUI
         get() {
-            require(collaboration != null) { "setUp the CollaborationUI to use the phoneBox" }
-            return PhoneBoxUI(collaboration!!.phoneBox)
+            require(collaboration != null) { "configure the CollaborationUI to use the phoneBox" }
+            return _phoneBox!!
         }
 
     /**
-     * Set up
+     * Is configured
+     */
+    val isConfigured
+        get() = collaboration != null
+
+    /**
+     * Chat box
+     */
+    val chatBox: ChatBoxUI
+        get() {
+            require(collaboration != null) { "configure the CollaborationUI to use the chatBox" }
+            return _chatBox!!
+        }
+
+    /**
+     * Configure
      *
-     * @param T activity of type [CallActivity] to be used for the UI
-     * @param credentials to use when Collaboration tools need to be connected
      * @param configuration representing a set of info necessary to instantiate the communication
-     * @param activityClazz class of the activity
+     * @param callActivityClazz class of the call activity
+     * @param chatActivityClazz class of the chat activity
+     * @param termsAndConditionsActivityClazz class of the terms and conditions activity
+     * @param chatNotificationActivityClazz class of the chat notification fullscreen activity
      * @return
      */
-    fun <T : CallActivity> setUp(
-        credentials: Credentials,
+    fun configure(
         configuration: Configuration,
-        activityClazz: Class<T>
+        callActivityClazz: Class<*>,
+        chatActivityClazz: Class<*>,
+        termsAndConditionsActivityClazz: Class<*>,
+        chatNotificationActivityClazz: Class<*>? = null
     ): Boolean {
-        if (collaboration != null) return false
-        Collaboration.create(credentials, configuration).apply { collaboration = this }
-        ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
-        phoneBox.state
-            .filter { it is Connecting }
-            .onEach { startPhoneBoxService(activityClazz) }
-            .launchIn(MainScope())
+        if (isConfigured) return false
+        Collaboration.create(configuration).apply {
+            collaboration = this
+        }
+        this.chatActivityClazz = chatActivityClazz
+        this.callActivityClazz = callActivityClazz
+        this.termsAndConditionsActivityClazz = termsAndConditionsActivityClazz
+        this.chatNotificationActivityClazz = chatNotificationActivityClazz
+        mainScope = MainScope()
+        collaborationUIConnector = CollaborationUIConnector(collaboration!!, mainScope!!)
+        termsAndConditionsRequester = TermsAndConditionsRequester(termsAndConditionsActivityClazz, ::connect, ::disconnect)
         return true
     }
 
     /**
-     * Dispose the collaboration UI
+     * Connect
      */
-    fun dispose() {
-        if (collaboration == null) return
-        ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
-        wasPhoneBoxConnected = false
-        stopPhoneBoxService()
-        phoneBox.disconnect()
-        collaboration = null
-    }
-
-    private fun <T : CallActivity> startPhoneBoxService(activityClazz: Class<T>) {
-        val serviceConnection = object : ServiceConnection {
-            override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
-                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
-                service.bind(phoneBox, usersDescription, activityClazz)
-            }
-
-            override fun onServiceDisconnected(componentName: ComponentName) = Unit
-        }
-
-        with(ContextRetainer.context) {
-            val intent = Intent(this, CollaborationService::class.java)
-            startService(intent)
-            bindService(intent, serviceConnection, 0)
+    fun connect(session: Collaboration.Session) {
+        serialScope.launch {
+            if (collaboration?.session != null && collaboration?.session?.userId != session.userId) disconnect(true)
+            collaborationUIConnector?.connect(session)
+            termsAndConditionsRequester?.setUp(session)
         }
     }
 
-    private fun stopPhoneBoxService() = with(ContextRetainer.context) {
-        stopService(Intent(this, CollaborationService::class.java))
+    /**
+     * Disconnect
+     * @param clearSavedData If true, the saved data on DB and SharedPrefs will be cleared.
+     */
+    fun disconnect(clearSavedData: Boolean = false) {
+        serialScope.launch {
+            collaborationUIConnector?.disconnect(clearSavedData)
+            termsAndConditionsRequester?.dispose()
+        }
+    }
+
+    /**
+     * Dispose the collaboration UI and optionally clear saved data.
+     */
+    fun reset() {
+        serialScope.launch {
+            collaboration ?: return@launch
+            mainScope?.cancel()
+            collaborationUIConnector?.disconnect(true)
+            termsAndConditionsRequester?.dispose()
+            collaboration = null
+            _phoneBox = null
+            _chatBox = null
+            mainScope = null
+        }
     }
 }
 
-/**
- * Phone box UI
- *
- * @param phoneBox delegated property
- */
-class PhoneBoxUI(phoneBox: PhoneBox) : PhoneBox by phoneBox {
-
-    /**
-     * Call
-     *
-     * @param users to be called
-     * @param options creation options
-     */
-    fun call(users: List<User>, options: (CreationOptions.() -> Unit)? = null) =
-        create(users, options).apply { connect() }
-
-    /**
-     * Join an url
-     *
-     * @param url to join
-     */
-    fun join(url: String) = create(url).apply { connect() }
+internal fun CollaborationUI.onCallReady(scope: CoroutineScope, block: (call: CallUI) -> Unit) {
+    phoneBox.call
+        .take(1)
+        .onEach { block.invoke(it) }
+        .launchIn(scope)
 }
+

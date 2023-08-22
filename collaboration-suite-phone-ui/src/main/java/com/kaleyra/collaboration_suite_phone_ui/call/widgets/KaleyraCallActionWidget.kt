@@ -1,12 +1,12 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *           
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,13 +25,12 @@ import androidx.annotation.Px
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
-
-import com.badoo.mobile.util.WeakHandler
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
+import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.BaseKaleyraBottomSheet
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.KaleyraActionBottomSheet
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.KaleyraBottomSheet
-import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.BaseKaleyraBottomSheet
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.OnStateChangedBottomSheetListener
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.behaviours.KaleyraBottomSheetBehaviour
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
@@ -44,7 +43,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.RingingBottomS
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.AudioRoute
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getCallThemeAttribute
-import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Widget used during a call to perform actions such as mute video/audio, change audioRoute etc.
@@ -54,8 +55,14 @@ import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
  * @constructor
  * @author kristiyan
  */
-class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordinatorLayout: CoordinatorLayout, val callActionItems: List<CallAction>) :
+class KaleyraCallActionWidget<T, F>(
+    val context: AppCompatActivity,
+    val coordinatorLayout: CoordinatorLayout,
+    private var actions: List<CallAction>) :
     HideableWidget where T : ActionItem, F : KaleyraBottomSheet {
+
+    val callActionItems: List<CallAction>
+        get() = actions
 
     /**
      * @suppress
@@ -86,6 +93,19 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
     private var isDraggingEnabled = true
 
     private var mCurrentAudioRoute: AudioRoute? = null
+
+    private var callBottomSheet: CallBottomSheet<T>? = null
+
+    private var ringingBottomSheet: RingingBottomSheet<T>? = null
+
+    private var audioRouteBottomSheet: AudioRouteBottomSheet<T>? = null
+
+    /**
+     * Returns true if the widget is collapsible, false otherwise.
+     */
+    var collapsible: Boolean = true
+
+    private var fixed: Boolean = true
 
     /**
      * Optional item decoration to be added on action items' recycler view
@@ -120,13 +140,6 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
      * Current onHiddenListener
      */
     private var onHiddenListener: OnHiddenListener? = null
-
-    /**
-     * Weak handler to safely call delayed tasks
-     */
-    private val uiHandler by lazy {
-        WeakHandler()
-    }
 
     /**
      * Widget states
@@ -254,7 +267,6 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
     }
 
     init {
-
         callActionItems.forEachIndexed { index, callAction ->
             if (index < callActionItems.size - 1) {
                 callAction.itemView?.nextFocusForwardId =
@@ -395,7 +407,10 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
      * @param millis delay factor in milliseconds
      */
     fun showDelayed(millis: Long, onShowListener: OnShowListener? = null) {
-        uiHandler.postDelayed({ show(onShowListener) }, millis)
+        MainScope().launch {
+            delay(millis)
+            show(onShowListener)
+        }
     }
 
     /**
@@ -497,6 +512,7 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
     }
 
     /**
+     * Hide call controls
      */
     fun hideCallControls(withTimer: Boolean = false) {
         if (!withTimer) {
@@ -644,17 +660,10 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
      */
     fun removeAudioRouteItem(audioRoute: AudioRoute) = audioRouteBottomSheet?.removeAudioRouteItem(audioRoute)
 
-    private var callBottomSheet: CallBottomSheet<T>? = null
-
-    private var ringingBottomSheet: RingingBottomSheet<T>? = null
-
-    private var audioRouteBottomSheet: AudioRouteBottomSheet<T>? = null
-
     private fun createCallBottomSheet(bottomSheetLayoutType: BottomSheetLayoutType) {
         currentCallBottomSheetLayoutType = bottomSheetLayoutType
-        if (bottomSheetLayoutType != callBottomSheet?.bottomSheetLayoutType)
-            disposeBottomSheet(callBottomSheet)
-        else return
+        callBottomSheet?.updateBottomSheetLayoutType(bottomSheetLayoutType)
+        callBottomSheet?.let { return }
         callBottomSheet = CallBottomSheet(
             context,
             callActionItems,
@@ -693,6 +702,17 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         audioRouteBottomSheet?.onActionBottomSheetListener = onBottomSheetAction
     }
 
+    fun replaceCallActionItems(items: List<CallAction>) {
+        items.forEachIndexed { index, callAction ->
+            if (index < items.count() - 1) {
+                callAction.itemView?.nextFocusForwardId =
+                    items[index + 1].itemView?.id!!
+            }
+        }
+        actions = items
+        callBottomSheet?.setItems(callActionItems)
+    }
+
     /**
      * Dispose the widget
      */
@@ -710,12 +730,6 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         removeAnchorFromAnchoredView()
         bottomSheet?.dispose()
     }
-
-    /**
-     * Returns true if the widget is collapsible, false otherwise.
-     */
-    var collapsible: Boolean = true
-    private var fixed: Boolean = true
 
     /**
      * Click Listener for the call action widget

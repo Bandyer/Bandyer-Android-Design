@@ -1,11 +1,11 @@
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,10 +23,10 @@
     <string name="kaleyra_call_action_audio_route_earpiece">Telefono</string>
     <string name="kaleyra_call_action_audio_route_muted">Muto</string>
     <string name="kaleyra_call_action_audio_route_bluetooth_connected">Connesso</string>
-    <string name="kaleyra_call_action_audio_route_bluetooth_deactivating">Disattivazione…</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_deactivating">Disattivazione &#8230;</string>
     <string name="kaleyra_call_action_audio_route_bluetooth_disconnected">Disconnesso</string>
     <string name="kaleyra_call_action_audio_route_bluetooth_failed">Connessione con il device fallita. Prova a spegnere e riaccendere il dispositivo.</string>
-    <string name="kaleyra_call_action_audio_route_bluetooth_activating">Attivazione…</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_activating">Attivazione &#8230;</string>
     <string name="kaleyra_call_action_audio_route_bluetooth_available">Disponibile</string>
     <string name="kaleyra_call_action_audio_route_bluetooth_battery_level">Livello batteria:</string>
 
@@ -41,6 +41,7 @@
     <string name="kaleyra_call_action_audio_route">Uscita audio</string>
     <string name="kaleyra_call_action_options">Opzioni</string>
     <string name="kaleyra_call_action_screen_share">Condividi schermo</string>
+    <string name="kaleyra_call_action_virtual_background">Sfondo Virtuale</string>
     <string name="kaleyra_call_action_video_disable">Disattiva</string>
     <string name="kaleyra_call_hangup">Chiudi</string>
 
@@ -57,8 +58,8 @@
     <string name="kaleyra_chat_user_status_last_login">ultimo accesso:</string>
     <string name="kaleyra_chat_user_status_offline">visto di recente</string>
     <string name="kaleyra_chat_user_status_typing">sta scrivendo</string>
-    <string name="kaleyra_chat_state_waiting_for_network">attendo la rete&#8230;</string>
-    <string name="kaleyra_chat_state_connecting">connessione&#8230;</string>
+    <string name="kaleyra_chat_state_waiting_for_network">attendo la rete &#8230;</string>
+    <string name="kaleyra_chat_state_connecting">connessione &#8230;</string>
     <string name="kaleyra_chat_send">Invia messaggio</string>
     <string name="kaleyra_chat_scroll_to_last_message">Scorri all\'ultimo messaggio</string>
     <string name="kaleyra_chat_msg_status_pending">Message in sospeso</string>
@@ -66,12 +67,13 @@
     <string name="kaleyra_chat_msg_status_seen">Messaggio letto</string>
 
     <!-- Call -->
-    <string name="kaleyra_call_status_connecting">Connessione in corso…</string>
-    <string name="kaleyra_call_status_dialing">Sta squillando &#8230;</string>
-    <plurals name="kaleyra_call_status_ringing">
+    <string name="kaleyra_call_status_connecting">Connessione in corso &#8230;</string>
+    <string name="kaleyra_call_status_dialing">Chiamata in corso &#8230;</string>
+    <plurals name="kaleyra_call_incoming_status_ringing">
         <item quantity="one">Ti sta chiamando &#8230;</item>
         <item quantity="other">Ti stanno chiamando &#8230;</item>
     </plurals>
+    <string name="kaleyra_call_status_ringing">Sta squillando &#8230;</string>
     <string name="kaleyra_call_status_ended">Chiamata terminata</string>
     <string name="kaleyra_call_status_user_disconnected">La connessione di rete è stata interrotta.</string>
     <string name="kaleyra_call_status_answered_on_other_device">Hai risposto su un altro dispositivo.</string>
@@ -95,6 +97,7 @@
     <string name="kaleyra_ongoing_call_label">Tocca per tornare alla chiamata</string>
     <string name="kaleyra_call_left_alone">Sei rimasto da solo</string>
     <string name="kaleyra_call_offline">Sei offline</string>
+    <string name="kaleyra_call_waiting_for_other_participants">In attesa di altri partecipanti…</string>
 
     <string name="kaleyra_error_button_reload">Riprova</string>
     <string name="kaleyra_error_title">Si è verificato un errore</string>
@@ -140,6 +143,13 @@
     <string name="kaleyra_screenshare_picker_title">Cosa vuoi condividere?</string>
     <string name="kaleyra_screenshare_app_only">Schermo app</string>
     <string name="kaleyra_screenshare_full_device">Schermo intero</string>
+
+    <!-- VIRTUAL BACKGROUND PICKER -->
+    <string name="kaleyra_virtual_background_picker_title">Seleziona sfondo virtuale</string>
+    <string name="kaleyra_virtual_background_none">Nessuno</string>
+    <string name="kaleyra_virtual_background_blur">Sfuocato</string>
+    <string name="kaleyra_virtual_background_image">Immagine</string>
+
     <!-- FILE SHARE -->
     <string name="kaleyra_fileshare_add">Carica</string>
     <string name="kaleyra_fileshare_add_description">Carica nuovo file</string>
@@ -157,7 +167,7 @@
     <string name="kaleyra_fileshare_download_descr">Avvia download</string>
     <string name="kaleyra_fileshare_success">File condiviso</string>
     <string name="kaleyra_fileshare_retry">Riprova</string>
-    <string name="kaleyra_no_file_shared">Ancora nessun file scambiato…</string>
+    <string name="kaleyra_no_file_shared">Ancora nessun file scambiato &#8230;</string>
     <string name="kaleyra_click_to_share_file">Clicca il tasto “+” per iniziare a condividere documenti e immagini</string>
     <string name="kaleyra_write_permission_dialog_descr">Permessi di memora necessari per condividere i file</string>
     <string name="kaleyra_write_permission_dialog_title">Permesso di memoria negato</string>
@@ -177,7 +187,7 @@
     <string name="kaleyra_feedback_neutral">Neutro</string>
     <string name="kaleyra_feedback_good">Buono</string>
     <string name="kaleyra_feedback_excellent">Eccellente</string>
-    <string name="kaleyra_feedback_leave_a_comment">Lascia un commento…</string>
+    <string name="kaleyra_feedback_leave_a_comment">Lascia un commento &#8230;</string>
     <string name="kaleyra_feedback_rating_bar_descr">Voto</string>
     <string name="kaleyra_feedback_see_you_soon">Speriamo di rivederti presto</string>
     <string name="kaleyra_feedback_thank_you">Ti ringraziamo per aver contribuito a migliorare il nostro servizio!</string>

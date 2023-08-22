@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -89,24 +89,69 @@ internal class BottomNavigationView @JvmOverloads constructor(
             callback.invoke()
         }
 
+
     /**
-     * Show the swipe horizontal element
+     * Set the action text on the second element
+     *
+     * @param text String
+     */
+    fun setSecondItemActionText(text: String) {
+        binding.kaleyraSecondItem.setActionText(text)
+    }
+
+    /**
+     * Set the action text on the third element
+     *
+     * @param text String
+     */
+    fun setThirdItemActionText(text: String) {
+        binding.kaleyraThirdItem.setActionText(text)
+    }
+
+    /**
+     * Set the content description on the second element. Needed for realwear glasses commands.
+     *
+     * @param text String
+     */
+    fun setSecondItemContentDescription(text: String) {
+        binding.kaleyraSecondItem.setRootContentDescription(text)
+    }
+
+    /**
+     * Set the content description on the third element. Needed for realwear glasses commands.
+     *
+     * @param text String
+     */
+    fun setThirdItemContentDescription(text: String) {
+        binding.kaleyraThirdItem.setRootContentDescription(text)
+    }
+
+    /**
+     * Show the first item
      */
     fun showFirstItem() {
         binding.kaleyraFirstItem.visibility = View.VISIBLE
     }
 
     /**
-     * Hide the swipe horizontal element
+     * Hide the first item
      */
     fun hideFirstItem() {
         binding.kaleyraFirstItem.visibility = View.GONE
     }
 
     /**
-     * Hide the tap element
+     * Hide the second item
      */
     fun hideSecondItem() {
         binding.kaleyraSecondItem.visibility = View.GONE
     }
+
+    /**
+     * Show second item
+     */
+    fun showSecondItem() {
+        binding.kaleyraSecondItem.visibility = View.VISIBLE
+    }
+
 }

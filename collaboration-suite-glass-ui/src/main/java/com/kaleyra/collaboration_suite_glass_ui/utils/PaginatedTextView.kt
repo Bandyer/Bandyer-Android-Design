@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,8 @@ import android.os.Build
 import android.text.Layout
 import android.text.StaticLayout
 import android.util.AttributeSet
+import androidx.core.view.ViewCompat
+import androidx.core.view.doOnLayout
 import com.google.android.material.textview.MaterialTextView
 
 /**
@@ -33,11 +35,12 @@ internal class PaginatedTextView @JvmOverloads constructor(
 ) : MaterialTextView(context, attrs, defStyleAttr) {
 
     /**
-     * Compute the text for each page
+     * Compute the text for each page, the view needs to be laid out before executing this method
      *
      * @return List<CharSequence>
      */
     fun paginate(): List<CharSequence> {
+        if (!ViewCompat.isLaidOut(this)) return listOf()
         val pageList = arrayListOf<CharSequence>()
 
         val layout = from(layout)

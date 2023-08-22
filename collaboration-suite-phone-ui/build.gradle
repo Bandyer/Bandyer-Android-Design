@@ -1,5 +1,7 @@
+import com.github.jk1.license.render.JsonReportRenderer
+
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,57 +15,83 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version("1.5.31")
+    alias(catalog.plugins.dokka)
+    alias(catalog.plugins.licenseReport)
 }
 
 apply from: '../versions.gradle'
 apply from: '../android.gradle'
+apply from: '../licenses.gradle'
 apply from: '../publish.gradle'
 apply from: '../moveIcons.gradle'
 
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    coreLibraryDesugaring androidX.desugar
-
-    /*** Testing ***/
-    testImplementation test.jUnit
-    testImplementation test.mockk
-    testImplementation kaleyra.utils
-
-    androidTestImplementation test.runner
-    androidTestImplementation test.mockito
-    androidTestImplementation test.espresso
 
     /*** Platform ***/
-    implementation jetbrains.reflect
+    implementation catalog.kotlinReflect
+    implementation catalog.appcompat
+    implementation catalog.androidxCoreKtx
+    implementation catalog.androidxFragment
+    implementation catalog.androidxActivity
+    implementation catalog.androidxLifecycleViewModel
+    implementation catalog.material
+    implementation catalog.androidxVectorDrawable
+    implementation catalog.androidxVectorDrawableAnimated
+    coreLibraryDesugaring catalog.desugar
 
-    implementation androidX.appCompat
-    implementation ktxExtensions.core
-    implementation ktxExtensions.fragment
-    implementation ktxExtensions.activity
-    implementation ktxExtensions.lifecycleViewModel
-    implementation google.material
-    implementation androidX.vectorDrawable
-    implementation androidX.vectorDrawableAnimated
-
-    compileOnly 'com.github.imablanco:Zoomy:1ee82834df'
+    /*** Testing ***/
+    testImplementation catalog.junit
+    testImplementation catalog.mockk
+    androidTestImplementation catalog.androidxTestRunner
+    androidTestImplementation catalog.androidxTestEspressoCore
 
     /*** UI ***/
-    api picasso.picasso
-    api androidX.constraintLayout
-    api fastAdapter.fastAdapter
-    api fastAdapter.diff
-
-    implementation androidX.recyclerView
-    api google.flexbox
-    implementation project(':collaboration-suite-core-ui')
+    api catalog.squareupPicasso
+    api catalog.androidxConstraintLayout
+    api catalog.fastadapter
+    api catalog.fastadapterExtensionsDiff
+    implementation catalog.androidxRecyclerview
+    api catalog.flexbox
+    compileOnly catalog.zoomy
+    api project(":collaboration-suite-core-ui")
 
     /** Kaleyra **/
-    compileOnly kaleyra.utils
+    compileOnly kaleyraCatalog.kaleyraCollaborationSuite
+    compileOnly kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
+}
+
+licenseReport {
+    // Set output directory for the report data.
+    // Defaults to ${project.buildDir}/reports/dependency-license.
+    outputDir = "$projectDir/build/licenses"
+
+    // Select projects to examine for dependencies.
+    // Defaults to current project and all its subprojects
+    projects = [project] + project.subprojects
+
+    // Adjust the configurations to fetch dependencies. Default is 'runtimeClasspath'
+    // For Android projects use 'releaseRuntimeClasspath' or 'yourFlavorNameReleaseRuntimeClasspath'
+    // Use 'ALL' to dynamically resolve all configurations:
+    // configurations = ALL
+    configurations = ['releaseRuntimeClasspath']
+
+    // Set custom report renderer, implementing ReportRenderer.
+    // Yes, you can write your own to support any format necessary.
+    renderers = [new JsonReportRenderer('licenses.json', false)]
+}
+
+// workaround for mockk spyk(proxy)
+// https://mockk.io/doc/md/jdk16-access-exceptions.html
+tasks.withType(Test) {
+    jvmArgs(
+            "--add-opens", "java.base/java.time=ALL-UNNAMED",
+            "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED"
+    )
 }

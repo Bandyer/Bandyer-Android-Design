@@ -1,9 +1,22 @@
+/*
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.kaleyra.collaboration_suite_core_ui.call
 
 import android.content.Context
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
@@ -22,9 +35,9 @@ import kotlinx.coroutines.plus
 /**
  * CallStreamDelegate. It is responsible of setting up the call's streams and videos.
  */
-interface CallStreamDelegate: LifecycleOwner {
+interface CallStreamDelegate {
 
-    private companion object {
+    companion object {
         const val MY_STREAM_ID = "main"
     }
 
@@ -34,27 +47,27 @@ interface CallStreamDelegate: LifecycleOwner {
      * @param context A context
      * @param call The call
      */
-    fun setUpCallStreams(context: Context, call: Call) {
+    fun setUpCallStreams(context: Context, call: Call, coroutineScope: CoroutineScope) {
         val mainScope = MainScope() + CoroutineName("Call Scope: ${call.id}")
+        publishMyStream(call)
         setUpStreamsAndVideos(call, context, mainScope)
         updateStreamInputsOnPermissions(call, mainScope)
 
         call.state
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion { mainScope.cancel() }
-            .launchIn(lifecycleScope)
+            .launchIn(coroutineScope)
     }
 
     /**
      * Publish my stream
      *
-     * @param fragmentActivity The fragment activity on which the stream will be added
      * @param call The call
      */
-    fun publishMyStream(fragmentActivity: FragmentActivity, call: Call) {
+    private fun publishMyStream(call: Call) {
         val me = call.participants.value.me
         if (me.streams.value.firstOrNull { it.id == MY_STREAM_ID } != null) return
-        me.addStream(fragmentActivity, MY_STREAM_ID).let {
+        me.addStream(MY_STREAM_ID).let {
             it.audio.value = null
             it.video.value = null
         }
@@ -63,7 +76,7 @@ interface CallStreamDelegate: LifecycleOwner {
     private fun updateStreamInputsOnPermissions(call: Call, coroutineScope: CoroutineScope) {
         val hasVideo = call.extras.preferredType.hasVideo()
 
-        call.inputs.allowList.onEach { inputs ->
+        call.inputs.availableInputs.onEach { inputs ->
             if (inputs.isEmpty()) return@onEach
 
             val videoInput = inputs.lastOrNull { it is Input.Video.My } as? Input.Video.My

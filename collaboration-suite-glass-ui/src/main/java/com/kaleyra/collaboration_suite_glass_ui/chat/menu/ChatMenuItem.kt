@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,31 +16,42 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.chat.menu
 
+import android.content.Context
+import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.chat.ChatAction
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatMenuItemLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
 /**
  * A menu option item in chat fragment.
  *
- * @property text The action text
+ * @property action The action chat action
  * @constructor
  */
-internal class ChatMenuItem(val text: String): AbstractItem<ChatMenuItem.ViewHolder>() {
+internal class ChatMenuItem(val action: ChatAction): AbstractItem<ChatMenuItem.ViewHolder>() {
 
     /**
-     * The layout for the given item
+     * Set an unique identifier for the identifiable which do not have one set already
      */
-    override val layoutRes: Int
-        get() = R.layout.kaleyra_glass_chat_menu_item_layout
+    override var identifier: Long = action.hashCode().toLong()
 
     /**
      * The type of the Item. Can be a hardcoded INT, but preferred is a defined id
      */
     override val type: Int
-        get() = R.id.id_glass_chat_menu_item
+        get() = action.hashCode()
+
+    /**
+     * The layout for the given item
+     */
+    override val layoutRes: Int
+        get() = action.layoutRes
 
     /**
      * This method returns the ViewHolder for our item, using the provided View.
@@ -48,6 +59,11 @@ internal class ChatMenuItem(val text: String): AbstractItem<ChatMenuItem.ViewHol
      * @return the ViewHolder for this Item
      */
     override fun getViewHolder(v: View) = ViewHolder(v)
+
+    override fun createView(ctx: Context, parent: ViewGroup?): View =
+        LayoutInflater.from(
+            ContextThemeWrapper(ctx, ctx.theme.getAttributeResourceId(action.styleAttr))
+        ).inflate(layoutRes, parent, false).apply { id = action.viewId }
 
     /**
      *
@@ -62,15 +78,11 @@ internal class ChatMenuItem(val text: String): AbstractItem<ChatMenuItem.ViewHol
         /**
          * Binds the data of this item onto the viewHolder
          */
-        override fun bindView(item: ChatMenuItem, payloads: List<Any>) {
-            binding.kaleyraText.text = item.text
-        }
+        override fun bindView(item: ChatMenuItem, payloads: List<Any>) = Unit
 
         /**
          * View needs to release resources when its recycled
          */
-        override fun unbindView(item: ChatMenuItem) {
-            binding.kaleyraText.text = null
-        }
+        override fun unbindView(item: ChatMenuItem) = Unit
     }
 }

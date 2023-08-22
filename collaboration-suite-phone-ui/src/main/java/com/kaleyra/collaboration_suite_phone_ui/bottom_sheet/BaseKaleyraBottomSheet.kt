@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,6 +36,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ColorIntExtensions.requiresLightColor
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
@@ -464,6 +465,12 @@ open class BaseKaleyraBottomSheet(
     override fun isVisible() = bottomSheetLayoutContent.visibility == View.VISIBLE && initialized
 
     init {
+        updateBottomSheetLayoutType(bottomSheetLayoutType)
+        recyclerView!!.adapter = fastAdapter
+        recyclerView!!.itemAnimator = null//AlphaCrossFadeAnimator()
+    }
+
+    fun updateBottomSheetLayoutType(bottomSheetLayoutType: BottomSheetLayoutType) {
         when (bottomSheetLayoutType) {
             is BottomSheetLayoutType.GRID -> {
                 recyclerView!!.layoutManager =
@@ -481,8 +488,6 @@ open class BaseKaleyraBottomSheet(
                         false)
             }
         }
-        recyclerView!!.adapter = fastAdapter
-        recyclerView!!.itemAnimator = AlphaCrossFadeAnimator()
     }
 
     final override fun onTopInsetChanged(pixels: Int) = Unit
@@ -678,6 +683,13 @@ open class BaseKaleyraBottomSheet(
 
     override fun setItems(items: List<ActionItem>) {
         this.views = items
+        fastItemAdapter.fastAdapter?.registerAdapterDataObserver(object : AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                fastItemAdapter.fastAdapter?.unregisterAdapterDataObserver(this)
+                fadeRecyclerViewLinesBelowNavigation(true)
+            }
+        })
         val diffResult = FastAdapterDiffUtil.calculateDiff(fastItemAdapter, items.map { AdapterActionItem(it) })
         FastAdapterDiffUtil[fastItemAdapter] = diffResult
     }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,7 @@
 
 <resources>
     <string name="app_name">Demo SDK Design</string>
+    <string name="call_notifications">Notifiche call</string>
     <string name="chat">Chat</string>
     <string name="call">Call</string>
     <string name="whiteboard_editor">Text editor lavagna</string>
@@ -36,9 +37,12 @@
     <string name="smart_glass_menu">Smartglass menu</string>
     <string name="file_share">File share</string>
     <string name="feedback">Feedback</string>
+    <string name="kick_participant">Dialog rimozione partecipante</string>
+    <string name="mute_participant">Call participant muted snackbar</string>
     <string name="add_upload">Aggiungi upload</string>
     <string name="add_download">Aggiungi download</string>
     <string name="add_download_available">Aggiungi download disp.</string>
     <string name="file_share_dialog">File Share Dialog</string>
     <string name="notification">Notifica chiamata</string>
+    <string name="user_consent_agreement_notification">Notifica accettazione termini</string>
 </resources>

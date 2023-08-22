@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,6 +61,10 @@
 
     <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.ScreenShare" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_screen_share</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.VirtualBackground" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_virtual_background</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Camera" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">

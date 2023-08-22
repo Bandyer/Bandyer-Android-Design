@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,7 @@
     <string name="kaleyra_glass_ringing_pattern" translatable="false">, %1$s</string>
     <string name="kaleyra_glass_ringing_rtl_pattern" translatable="false">%1$s ،</string>
     <string name="kaleyra_glass_group_contacts_pattern" translatable="false">+%1$d</string>
-    <string name="kaleyra_glass_message_counter_pattern" translatable="false">%1$d</string>
+    <string name="kaleyra_glass_message_counter_pattern" translatable="false">+%1$d</string>
     <string name="kaleyra_glass_n_of_participants_pattern">%1$d participants</string>
     <string name="kaleyra_glass_slider_volume_pattern">Volume: %1$d</string>
     <string name="kaleyra_glass_slider_zoom_pattern">Zoom: %1$d%%</string>
@@ -44,6 +44,7 @@
     <string name="kaleyra_glass_online">Online</string>
     <string name="kaleyra_glass_invited">Invited</string>
     <string name="kaleyra_glass_last_seen_pattern">Last seen: %1$s</string>
+    <string name="kaleyra_glass_last_seen_never">Last seen: never</string>
     <string name="kaleyra_glass_call">Call</string>
     <string name="kaleyra_glass_videocall">Video call</string>
     <string name="kaleyra_glass_camera_off">Your camera is off</string>
@@ -58,6 +59,7 @@
     <string name="kaleyra_glass_menu_flashlight_toggled">Enable Torch</string>
     <string name="kaleyra_glass_menu_flashlight">Disable Torch</string>
     <string name="kaleyra_glass_menu_chat">Chat</string>
+    <string name="kaleyra_glass_menu_whiteboard">Whiteboard</string>
     <string name="kaleyra_glass_rec">Rec</string>
     <string name="kaleyra_glass_call_declined">Declined</string>
     <string name="kaleyra_glass_call_error_occurred">An error occurred</string>
@@ -87,12 +89,23 @@
     <string name="kaleyra_glass_hangup">hang up</string>
     <string name="kaleyra_glass_participants_camera">participants</string>
     <string name="kaleyra_glass_open_menu">menu</string>
-    <string name="kaleyra_glass_contact_info">contact</string>
     <string name="kaleyra_glass_read">read</string>
     <string name="kaleyra_glass_hide_notification">dismiss</string>
     <string name="kaleyra_glass_scroll_right_left">swipe right/left</string>
     <string name="kaleyra_glass_scroll_left">swipe left</string>
-    <string name="kaleyra_glass_scroll_right">swipe right</string>
+    <string name="kaleyra_glass_scroll_right">swipes right</string>
+    <string name="kaleyra_glass_no_messages">No messages</string>
+    <string name="kaleyra_glass_loading_messages">Loading messages</string>
+
+    <plurals name="kaleyra_glass_muted_by_admin">
+        <item quantity="one">%s has muted you</item>
+        <item quantity="other">The admin has muted you</item>
+    </plurals>
+
+    <plurals name="kaleyra_glass_removed_from_call">
+        <item quantity="one">%s has removed you from the call</item>
+        <item quantity="other">The admin has removed you from the call</item>
+    </plurals>
 
     <!-- PLURALS -->
     <plurals name="kaleyra_glass_users_in_call_pattern">

@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -52,5 +52,13 @@ internal class BottomNavigationItemView @JvmOverloads constructor(
         val text = binding.kaleyraActionText.text.toString()
         val capitalizedText = text.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
         binding.kaleyraActionText.text = capitalizedText
+    }
+
+    fun setActionText(text: String) {
+        binding.kaleyraActionText.text = text
+    }
+
+    fun setRootContentDescription(text: String) {
+        binding.root.contentDescription = text
     }
 }

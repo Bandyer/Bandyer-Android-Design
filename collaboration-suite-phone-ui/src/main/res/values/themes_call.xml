@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing, software
   ~ distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,14 +27,21 @@
 
         <attr name="kaleyra_userInfoStyle" format="reference" />
         <attr name="kaleyra_callInfoStyle" format="reference" />
-        <attr name="kaleyra_userStatusStyle" format="reference"/>
+        <attr name="kaleyra_userStatusStyle_left_alone" format="reference"/>
+        <attr name="kaleyra_userStatusStyle_waiting" format="reference"/>
+
 
         <attr name="kaleyra_whiteboardDialogStyle" format="reference" />
 
         <attr name="kaleyra_screenShareDialogStyle" format="reference" />
+
+        <attr name="kaleyra_virtualBackgroundDialogStyle" format="reference" />
+
         <attr name="kaleyra_fileShareDialogStyle" format="reference" />
 
         <attr name="kaleyra_feedbackDialogStyle" format="reference" />
+
+        <attr name="kaleyra_callParticipantRemovedStyle" format="reference" />
 
         <attr name="kaleyra_smartGlassDialogMenuStyle" format="reference" />
     </declare-styleable>
@@ -50,11 +57,14 @@
         <item name="kaleyra_smartGlassDialogMenuStyle">@style/KaleyraCollaborationSuiteUI.SmartGlassDialogMenu</item>
         <item name="kaleyra_userInfoStyle">@style/KaleyraCollaborationSuiteUI.UserInfo</item>
         <item name="kaleyra_callInfoStyle">@style/KaleyraCollaborationSuiteUI.CallInfo</item>
-        <item name="kaleyra_userStatusStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus</item>
+        <item name="kaleyra_userStatusStyle_left_alone">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.LeftAlone</item>
+        <item name="kaleyra_userStatusStyle_waiting">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.Waiting</item>
         <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard</item>
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
         <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
         <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
+        <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Call.Day.V16" parent="KaleyraCollaborationSuiteUI.Theme.Day">
@@ -68,11 +78,14 @@
         <item name="kaleyra_smartGlassDialogMenuStyle">@style/KaleyraCollaborationSuiteUI.SmartGlassDialogMenu</item>
         <item name="kaleyra_userInfoStyle">@style/KaleyraCollaborationSuiteUI.UserInfo</item>
         <item name="kaleyra_callInfoStyle">@style/KaleyraCollaborationSuiteUI.CallInfo</item>
-        <item name="kaleyra_userStatusStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus</item>
+        <item name="kaleyra_userStatusStyle_left_alone">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.LeftAlone</item>
+        <item name="kaleyra_userStatusStyle_waiting">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.Waiting</item>
         <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard</item>
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
         <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
         <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
+        <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Call.Night.V16" parent="KaleyraCollaborationSuiteUI.Theme.Night">
@@ -86,11 +99,14 @@
         <item name="kaleyra_smartGlassDialogMenuStyle">@style/KaleyraCollaborationSuiteUI.SmartGlassDialogMenu</item>
         <item name="kaleyra_userInfoStyle">@style/KaleyraCollaborationSuiteUI.UserInfo</item>
         <item name="kaleyra_callInfoStyle">@style/KaleyraCollaborationSuiteUI.CallInfo</item>
-        <item name="kaleyra_userStatusStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus</item>
+        <item name="kaleyra_userStatusStyle_left_alone">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.LeftAlone</item>
+        <item name="kaleyra_userStatusStyle_waiting">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.Waiting</item>
         <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard</item>
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
         <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
         <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
+        <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Call.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V16"/>
@@ -102,6 +118,7 @@
     <style name="KaleyraCollaborationSuiteUI.Theme.Call" parent="KaleyraCollaborationSuiteUI.Theme.Call.Night">
         <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard.Day</item>
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
         <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Day</item>
     </style>
 

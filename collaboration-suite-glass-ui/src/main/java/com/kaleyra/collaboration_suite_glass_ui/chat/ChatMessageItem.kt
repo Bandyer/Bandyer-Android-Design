@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,9 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.chat
 
+import android.net.Uri
 import android.view.View
+import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatMessageItemLayoutBinding
@@ -26,11 +28,13 @@ import com.mikepenz.fastadapter.items.AbstractItem
 /**
  * A chat item
  *
- * @property data The data related to a chat message
+ * @property page The chat message page
  * @constructor
  */
-internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMessageItem.ViewHolder>() {
+internal class ChatMessageItem(val page: ChatMessagePage) :
+    AbstractItem<ChatMessageItem.ViewHolder>() {
 
+    override var identifier: Long = page.hashCode().toLong()
     /**
      * The layout for the given item
      */
@@ -57,7 +61,8 @@ internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMes
      */
     class ViewHolder(view: View) : FastAdapter.ViewHolder<ChatMessageItem>(view) {
 
-        private val binding: KaleyraGlassChatMessageItemLayoutBinding = KaleyraGlassChatMessageItemLayoutBinding.bind(view)
+        private val binding: KaleyraGlassChatMessageItemLayoutBinding =
+            KaleyraGlassChatMessageItemLayoutBinding.bind(view)
 
         /**
          * Binds the data of this item onto the viewHolder
@@ -65,27 +70,29 @@ internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMes
         override fun bindView(item: ChatMessageItem, payloads: List<Any>) =
             with(binding.kaleyraChatMessage) {
                 itemView.isClickable = false
-                val data = item.data
-                if (data.userAvatarId != null) setAvatar(data.userAvatarId)
-                else if (data.userAvatarUrl != null) setAvatar(data.userAvatarUrl)
-                setAvatarBackground(data.userId?.parseToColor())
-                setMessage(data.message)
-                setTime(data.time)
-                if (!data.isFirstPage) hideName()
-                else setName(data.sender)
+                val page = item.page
+                if (page.avatar != Uri.EMPTY) kaleyraAvatar.setImage(page.avatar)
+                kaleyraAvatar.setBackground(page.sender.parseToColor())
+                kaleyraAvatar.setText(page.sender.first().toString())
+                kaleyraMessage.text = page.message
+                kaleyraTime.text = Iso8601.parseTimestamp(itemView.context, page.time)
+                if (!page.isFirstPage) kaleyraName.visibility = View.GONE
+                else kaleyraName.text = page.sender
             }
 
         /**
          * View needs to release resources when its recycled
          */
-        override fun unbindView(item: ChatMessageItem) = with(binding.kaleyraChatMessage) {
-            itemView.isClickable = true
-            setAvatar(null)
-            setName(null)
-            showName()
-            setAvatarBackground(null)
-            setTime(null)
-            setMessage(null)
-        }
+        override fun unbindView(item: ChatMessageItem) =
+            with(binding.kaleyraChatMessage) {
+                itemView.isClickable = true
+                kaleyraName.text = null
+                kaleyraMessage.text = null
+                kaleyraTime.text = null
+                kaleyraAvatar.setImage(null)
+                kaleyraAvatar.setBackground(color = null)
+                kaleyraAvatar.setText(null)
+                kaleyraName.visibility = View.VISIBLE
+            }
     }
 }

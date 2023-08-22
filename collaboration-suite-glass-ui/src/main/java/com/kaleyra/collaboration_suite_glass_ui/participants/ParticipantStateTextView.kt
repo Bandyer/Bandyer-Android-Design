@@ -1,11 +1,11 @@
 /*
- * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,8 +20,8 @@ import android.content.Context
 import android.util.AttributeSet
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
-import com.kaleyra.collaboration_suite_glass_ui.model.internal.UserState
 import com.google.android.material.textview.MaterialTextView
+import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
 
 /**
  * A TextView defining the user online state
@@ -34,23 +34,26 @@ internal class ParticipantStateTextView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : MaterialTextView(context, attrs, defStyleAttr) {
 
-    private var state: UserState = UserState.Offline
+    private var state: ChatParticipant.State = ChatParticipant.State.Joined.Offline(ChatParticipant.State.Joined.Offline.LastLogin.Never)
 
     /**
      * Define the user online state
      *
      * @param state The user state
-     * @param lastSeenTime The last time the user was online. Needed only if the state value is UserState.Offline.
      */
-    fun setUserState(state: UserState, lastSeenTime: Long = 0) {
+    fun setUserState(state: ChatParticipant.State) {
         this.state = state
         text = when (state) {
-            UserState.Online    -> resources.getString(R.string.kaleyra_glass_online)
-            UserState.Offline -> resources.getString(
-                R.string.kaleyra_glass_last_seen_pattern,
-                Iso8601.parseTimestamp(context, lastSeenTime)
-            )
-            else   -> resources.getString(R.string.kaleyra_glass_invited)
+            is ChatParticipant.State.Invited   -> resources.getString(R.string.kaleyra_glass_invited)
+            is ChatParticipant.State.Joined.Online    -> resources.getString(R.string.kaleyra_glass_online)
+            is ChatParticipant.State.Joined.Offline -> {
+                val lastLogin = state.lastLogin
+                if (lastLogin is ChatParticipant.State.Joined.Offline.LastLogin.At) resources.getString(
+                    R.string.kaleyra_glass_last_seen_pattern,
+                    Iso8601.parseTimestamp(context, lastLogin.date.time)
+                )
+                else resources.getString(R.string.kaleyra_glass_last_seen_never)
+            }
         }
     }
 }
