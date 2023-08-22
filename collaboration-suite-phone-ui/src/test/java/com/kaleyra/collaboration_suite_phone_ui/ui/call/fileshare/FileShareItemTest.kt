@@ -28,7 +28,6 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 
-@Config(instrumentedPackages = ["androidx.loader.content"])
 @RunWith(RobolectricTestRunner::class)
 class FileShareItemTest {
 

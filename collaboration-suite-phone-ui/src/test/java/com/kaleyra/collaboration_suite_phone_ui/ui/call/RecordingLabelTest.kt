@@ -14,7 +14,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.util.*
 
-@Config(instrumentedPackages = ["androidx.loader.content"])
+
 @RunWith(RobolectricTestRunner::class)
 class RecordingLabelTest {
 

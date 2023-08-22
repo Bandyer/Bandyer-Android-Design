@@ -25,7 +25,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
 
-@Config(instrumentedPackages = ["androidx.loader.content"])
+
 @RunWith(RobolectricTestRunner::class)
 class ChatAppBarTest {
 

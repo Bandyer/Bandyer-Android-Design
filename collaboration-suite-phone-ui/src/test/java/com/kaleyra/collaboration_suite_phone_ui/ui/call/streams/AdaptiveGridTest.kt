@@ -20,7 +20,7 @@ import org.robolectric.annotation.Config
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
-@Config(instrumentedPackages = ["androidx.loader.content"])
+
 @RunWith(RobolectricTestRunner::class)
 class AdaptiveGridTest {
 

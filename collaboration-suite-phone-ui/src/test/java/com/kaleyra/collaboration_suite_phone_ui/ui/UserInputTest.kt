@@ -14,7 +14,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-@Config(instrumentedPackages = ["androidx.loader.content"])
+
 @RunWith(RobolectricTestRunner::class)
 class UserInputTest {
 

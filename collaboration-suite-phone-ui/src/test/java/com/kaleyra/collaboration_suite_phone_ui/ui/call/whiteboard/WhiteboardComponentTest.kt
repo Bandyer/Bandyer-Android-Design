@@ -36,7 +36,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-@Config(instrumentedPackages = ["androidx.loader.content"])
+
 @OptIn(ExperimentalMaterialApi::class)
 @RunWith(RobolectricTestRunner::class)
 class WhiteboardComponentTest {

@@ -17,7 +17,7 @@ import org.robolectric.annotation.Config
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-@Config(instrumentedPackages = ["androidx.loader.content"])
+
 @RunWith(RobolectricTestRunner::class)
 class DayHeaderTest {
 
