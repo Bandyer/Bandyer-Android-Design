@@ -31,6 +31,9 @@ class CallScreenContentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+    @get:Rule
+    val mockCallViewModelsStatesRule = MockCallViewModelsStatesRule()
+
     private var callState by mutableStateOf<CallStateUi>(CallStateUi.Disconnected)
 
     private var backPressed = false
