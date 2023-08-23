@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.ui.call
 
+import com.kaleyra.collaboration_suite_core_ui.CollaborationService
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
@@ -10,8 +11,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.m
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel.CallActionsViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.view.DialingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.viewmodel.DialingViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.viewmodel.RingingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
@@ -23,6 +22,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.v
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel.WhiteboardViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -33,6 +33,7 @@ import org.junit.runner.Description
 
 class MockCallViewModelsStatesRule : TestWatcher() {
     override fun starting(description: Description) {
+        mockkObject(CollaborationService)
         mockkObject(CallViewModel)
         mockkObject(DialingViewModel)
         mockkObject(RingingViewModel)
@@ -41,6 +42,7 @@ class MockCallViewModelsStatesRule : TestWatcher() {
         mockkObject(CallActionsViewModel)
         mockkObject(WhiteboardViewModel)
         mockkObject(VirtualBackgroundViewModel)
+        coEvery { CollaborationService.get() } returns mockk(relaxed = true)
         every { CallViewModel.provideFactory(any()) } returns mockk {
             every { create<CallViewModel>(any(), any()) } returns mockk(relaxed = true) {
                 every { uiState } returns MutableStateFlow(CallUiState())
