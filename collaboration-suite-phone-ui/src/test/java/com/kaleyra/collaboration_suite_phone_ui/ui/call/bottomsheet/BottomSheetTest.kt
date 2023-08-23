@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.min
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.ui.call.MockCallViewModelsStatesRule
+import com.kaleyra.collaboration_suite_phone_ui.ui.ComposeViewModelsMockTest
 import com.kaleyra.collaboration_suite_phone_ui.ui.performVerticalSwipe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -25,16 +25,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-class BottomSheetTest {
+class BottomSheetTest : ComposeViewModelsMockTest() {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-
-    @get:Rule
-    val mockCallViewModelsStatesRule = MockCallViewModelsStatesRule()
 
     private val peekHeight = 100.dp
     private val halfExpandedHeight = 200.dp

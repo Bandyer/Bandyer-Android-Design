@@ -21,7 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.m
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.mockVirtualBackgrounds
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.viewmodel.VirtualBackgroundViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_phone_ui.ui.call.MockCallViewModelsStatesRule
+import com.kaleyra.collaboration_suite_phone_ui.ui.ComposeViewModelsMockTest
 import com.kaleyra.collaboration_suite_phone_ui.ui.findBackButton
 import com.kaleyra.collaboration_suite_phone_ui.ui.performDoubleClick
 import com.kaleyra.collaboration_suite_phone_ui.ui.performVerticalSwipe
@@ -40,14 +40,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
+
 @RunWith(RobolectricTestRunner::class)
-class CallScreenTest {
+class CallScreenTest: ComposeViewModelsMockTest() {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-
-    @get:Rule
-    val mockCallViewModelsStatesRule = MockCallViewModelsStatesRule()
 
     private var callUiState by mutableStateOf(CallUiState())
 

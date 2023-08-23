@@ -7,21 +7,17 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.ui.call.MockCallViewModelsStatesRule
+import com.kaleyra.collaboration_suite_phone_ui.ui.ComposeViewModelsMockTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-class CallScreenRecreationTest {
+class CallScreenRecreationTest : ComposeViewModelsMockTest() {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-
-    @get:Rule
-    val mockCallViewModelsStatesRule = MockCallViewModelsStatesRule()
 
     @Test
     fun onRecreation_stateIsRestored() {

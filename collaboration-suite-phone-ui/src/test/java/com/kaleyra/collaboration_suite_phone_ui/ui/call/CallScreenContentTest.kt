@@ -12,6 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.DialingCont
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.RingingContentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.ui.ComposeViewModelsMockTest
 import com.kaleyra.collaboration_suite_phone_ui.ui.findBackButton
 import io.mockk.every
 import io.mockk.mockkConstructor
@@ -22,17 +23,13 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 
 @RunWith(RobolectricTestRunner::class)
-class CallScreenContentTest {
+class CallScreenContentTest : ComposeViewModelsMockTest() {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-
-    @get:Rule
-    val mockCallViewModelsStatesRule = MockCallViewModelsStatesRule()
 
     private var callState by mutableStateOf<CallStateUi>(CallStateUi.Disconnected)
 
