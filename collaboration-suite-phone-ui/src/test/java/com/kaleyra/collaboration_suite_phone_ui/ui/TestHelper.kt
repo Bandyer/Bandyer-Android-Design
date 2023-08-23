@@ -29,8 +29,7 @@ internal fun SemanticsNodeInteraction.performVerticalSwipe(amount: Float) {
     performTouchInput {
         val startY = top
         val endY = top - amount * height
-        println(endY)
-        swipe(
+         swipe(
             start = Offset(center.x, startY),
             end = Offset(center.x, endY),
             durationMillis = 200
