@@ -188,94 +188,68 @@ class CallExtensionsTest {
 
     @Test
     fun callDisconnectedAndIAmCallNotCreator_isIncoming_true() {
-        val call = mockk<Call>()
         val callParticipants = mockk<CallParticipants>()
-        every { call.state } returns MutableStateFlow(Call.State.Disconnected)
-        every { call.participants } returns MutableStateFlow(callParticipants)
         every { callParticipants.me } returns mockk()
         every { callParticipants.creator() } returns mockk()
-        assertEquals(true, call.isIncoming())
+        assertEquals(true, isIncoming(Call.State.Disconnected, callParticipants))
     }
 
     @Test
     fun callDisconnectedAndIAmCallCreator_isIncoming_false() {
-        val call = mockk<Call>()
         val callParticipants = mockk<CallParticipants>()
         val me = mockk<CallParticipant.Me>()
-        every { call.state } returns MutableStateFlow(Call.State.Disconnected)
-        every { call.participants } returns MutableStateFlow(callParticipants)
         every { callParticipants.me } returns me
         every { callParticipants.creator() } returns me
-        assertEquals(false, call.isIncoming())
+        assertEquals(false, isIncoming(Call.State.Disconnected, callParticipants))
     }
 
     @Test
     fun callConnecting_isIncoming_false() {
-        val call = mockk<Call>()
-        every { call.state } returns MutableStateFlow(Call.State.Connecting)
-        assertEquals(false, call.isIncoming())
+        assertEquals(false, isIncoming(Call.State.Connecting, mockk()))
     }
 
     @Test
     fun callConnectingAndIAmCallCreator_isOutgoing_true() {
-        val call = mockk<Call>()
         val callParticipants = mockk<CallParticipants>()
         val me = mockk<CallParticipant.Me>()
-        every { call.state } returns MutableStateFlow(Call.State.Connecting)
-        every { call.participants } returns MutableStateFlow(callParticipants)
         every { callParticipants.me } returns me
         every { callParticipants.creator() } returns me
-        assertEquals(true, call.isOutgoing())
+        assertEquals(true, isOutgoing(Call.State.Connecting, callParticipants))
     }
 
     @Test
     fun callConnectingAndIAmNotCallCreator_isOutgoing_false() {
-        val call = mockk<Call>()
         val callParticipants = mockk<CallParticipants>()
-        every { call.state } returns MutableStateFlow(Call.State.Connecting)
-        every { call.participants } returns MutableStateFlow(callParticipants)
         every { callParticipants.me } returns mockk()
         every { callParticipants.creator() } returns mockk()
-        assertEquals(false, call.isOutgoing())
+        assertEquals(false, isOutgoing(Call.State.Connecting, callParticipants))
     }
 
     @Test
     fun callDisconnected_isOutgoing_false() {
-        val call = mockk<Call>()
-        every { call.state } returns MutableStateFlow(Call.State.Disconnected)
-        assertEquals(false, call.isOutgoing())
+        assertEquals(false, isOutgoing(Call.State.Disconnected, mockk(relaxed = true)))
     }
 
     @Test
     fun callConnecting_isOngoing_true() {
-        val call = mockk<Call>()
-        every { call.state } returns MutableStateFlow(Call.State.Connecting)
-        assertEquals(true, call.isOngoing())
+        assertEquals(true, isOngoing(Call.State.Connecting, mockk(relaxed = true)))
     }
 
     @Test
     fun callConnected_isOngoing_true() {
-        val call = mockk<Call>()
-        every { call.state } returns MutableStateFlow(Call.State.Connected)
-        assertEquals(true, call.isOngoing())
+        assertEquals(true, isOngoing(Call.State.Connected, mockk(relaxed = true)))
     }
 
     @Test
     fun callDoesNotHaveCreator_isOngoing_true() {
-        val call = mockk<Call>()
         val callParticipants = mockk<CallParticipants>()
-        every { call.state } returns MutableStateFlow(Call.State.Disconnected)
-        every { call.participants } returns MutableStateFlow(callParticipants)
         every { callParticipants.creator() } returns null
-        assertEquals(true, call.isOngoing())
+        assertEquals(true, isOngoing(Call.State.Disconnected, callParticipants))
     }
 
     @Test
     fun callDisconnected_isOngoing_false() {
-        val call = mockk<Call>()
-        every { call.state } returns MutableStateFlow(Call.State.Disconnected)
-        every { call.participants } returns MutableStateFlow(mockk(relaxed = true))
-        assertEquals(false, call.isOngoing())
+        assertEquals(false, isOngoing(Call.State.Disconnected, mockk(relaxed = true)))
     }
 
     @Test

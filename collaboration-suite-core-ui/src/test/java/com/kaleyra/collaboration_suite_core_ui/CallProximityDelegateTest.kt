@@ -40,7 +40,7 @@ internal class CallProximityDelegateTest {
         mockkObject(CallExtensions)
         every { ProximitySensor.bind(any<LifecycleService>(), any()) } returns proximitySensorMock
         with(CallExtensions) {
-            every { callMock.isIncoming() } returns false
+            every { isIncoming(any(), any()) } returns false
         }
         proximityDelegate = spyk(
             CallProximityDelegate(

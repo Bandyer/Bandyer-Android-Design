@@ -8,6 +8,7 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetai
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
 internal class CollaborationContactDetailsProvider(private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) : ContactDetailsProvider {
@@ -24,13 +25,13 @@ internal class CollaborationContactDetailsProvider(private val ioDispatcher: Cor
     private val defaultProvider: ContactDetailsProvider by lazy { CachedDefaultContactDetailsProvider() }
 
     private var localContactDetailsProvider: CachedLocalContactDetailsProvider? = null
-        get() = with(CollaborationUI.usersDescription) {
-            field?.takeIf { it.usersDescription == this } ?: this?.let { CachedLocalContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
+        get() = with(CollaborationUI.usersDescriptionProvider) {
+            field?.takeIf { it.userDetailsProvider == this } ?: this?.let { CachedLocalContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
         }
 
     private var remoteContactDetailsProvider: CachedRemoteContactDetailsProvider? = null
         get() = with(CollaborationUI.collaboration?.contacts) {
-            field?.takeIf { it.contacts == this } ?: this?.let { CachedRemoteContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
+            field?.takeIf { it.contacts == this } ?: this?.let { CachedRemoteContactDetailsProvider(it) }.apply { field = this }
         }
 
     override suspend fun fetchContactsDetails(
@@ -40,6 +41,10 @@ internal class CollaborationContactDetailsProvider(private val ioDispatcher: Cor
         val primaryContactDetails = async(ioDispatcher) { primaryProvider.fetchContactsDetails(userIds = userIds) }
         val fallbackContactDetails = async(ioDispatcher) { fallbackProvider.fetchContactsDetails(userIds = userIds) }
         val defaultProviderContacts = async(ioDispatcher) { defaultProvider.fetchContactsDetails(userIds = userIds) }
-        primaryContactDetails.await().takeIf { it.isNotEmpty() } ?: fallbackContactDetails.await().takeIf { it.isNotEmpty() } ?: defaultProviderContacts.await()
+        val (primaryResult, fallbackResult, defaultResult) = listOf(primaryContactDetails, fallbackContactDetails, defaultProviderContacts).awaitAll()
+        val result = userIds.mapNotNull { userId ->
+            primaryResult.find { it.userId == userId } ?: fallbackResult.find { it.userId == userId } ?: defaultResult.find { it.userId == userId }
+        }
+        result.toSet()
     }
 }

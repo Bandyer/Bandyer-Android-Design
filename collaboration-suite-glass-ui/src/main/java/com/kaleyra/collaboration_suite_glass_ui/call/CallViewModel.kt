@@ -97,7 +97,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
     val phoneBoxState: StateFlow<PhoneBox.State> = _phoneBoxState.asStateFlow()
 
     val preferredCallType: StateFlow<Call.PreferredType?> =
-        call.map { it.extras.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+        call.flatMapLatest { it.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val actions: StateFlow<Set<CallUI.Action>> =
         call.flatMapLatest { it.actions }.stateIn(viewModelScope, SharingStarted.Eagerly, setOf())
@@ -109,9 +109,9 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
         call.mapLatest { it.whiteboard }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
     val duration: SharedFlow<Long> =
-        call.flatMapLatest { it.extras.duration }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+        call.flatMapLatest { it.time.elapsed }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
-    val timeToLive: SharedFlow<Long?> = call.flatMapLatest { it.constraints.timeToLive }
+    val timeToLive: SharedFlow<Long?> = call.flatMapLatest { it.time.residual }
         .shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
     val participants: SharedFlow<CallParticipants> =

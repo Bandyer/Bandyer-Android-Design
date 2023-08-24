@@ -18,8 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
-import com.kaleyra.collaboration_suite_core_ui.model.DefaultUsersDescription
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
@@ -28,9 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
@@ -71,7 +68,7 @@ object CollaborationUI {
      * Users description to be used for the UI
      */
     @get:Synchronized @set:Synchronized
-    var usersDescription: UsersDescription? = null
+    var usersDescriptionProvider: UserDetailsProvider? = null
 
     /**
      * Phone box

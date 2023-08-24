@@ -17,6 +17,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toInCallParticipants
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toMyParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.amIAlone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.hasAtLeastAVideoEnabled
@@ -160,10 +161,11 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .onEach { onPipAspectRatio?.invoke(it) }
             .launchIn(viewModelScope)
 
-        call
-            .flatMapLatest { it.extras.preferredType }
-            .onEach { onAudioOrVideoChanged?.invoke(it.isAudioEnabled(), it.isVideoEnabled()) }
-            .launchIn(viewModelScope)
+        combine(call.flatMapLatest { it.preferredType }, call.toMyParticipantState()) { preferredType, state ->
+            if (state !is CallParticipant.State.NotInCall.Connecting) return@combine
+            onAudioOrVideoChanged?.invoke(preferredType.isAudioEnabled(), preferredType.isVideoEnabled())
+        }.launchIn(viewModelScope)
+
     }
 
     override fun onCleared() {

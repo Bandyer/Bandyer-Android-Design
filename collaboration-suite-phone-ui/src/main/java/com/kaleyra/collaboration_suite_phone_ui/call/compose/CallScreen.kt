@@ -340,7 +340,8 @@ internal fun CallScreen(
     onUserFeedback: (Float, String) -> Unit,
     onFinishActivity: () -> Unit,
     onFileShareVisibility: (Boolean) -> Unit,
-    onWhiteboardVisibility: (Boolean) -> Unit
+    onWhiteboardVisibility: (Boolean) -> Unit,
+    isTesting: Boolean = false
 ) {
     FileShareVisibilityObserver(callScreenState, onFileShareVisibility)
 
@@ -416,7 +417,8 @@ internal fun CallScreen(
             onThumbnailStreamDoubleClick = onThumbnailStreamDoubleClick,
             onFullscreenStreamClick = onFullscreenStreamClick,
             onUserFeedback = onUserFeedback,
-            onFinishActivity = onFinishActivity
+            onFinishActivity = onFinishActivity,
+            isTesting = isTesting
         )
     }
 }
@@ -498,7 +500,8 @@ internal fun DefaultCallScreen(
     onThumbnailStreamDoubleClick: (String) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
-    onFinishActivity: () -> Unit
+    onFinishActivity: () -> Unit,
+    isTesting: Boolean = false
 ) {
     val configuration = LocalConfiguration.current
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
@@ -540,7 +543,8 @@ internal fun DefaultCallScreen(
                     onScreenShareTargetClick = callScreenState::halfExpandSheet,
                     onVirtualBackgroundClick = callScreenState::halfExpandSheet,
                     contentVisible = !callScreenState.isSheetCollapsed,
-                    modifier = Modifier.horizontalCutoutPadding()
+                    modifier = Modifier.horizontalCutoutPadding(),
+                    isTesting = isTesting
                 )
             },
             content = {

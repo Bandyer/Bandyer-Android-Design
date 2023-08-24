@@ -32,6 +32,23 @@ apply from: '../licenses.gradle'
 apply from: '../publish.gradle'
 apply from: '../moveIcons.gradle'
 
+android {
+    kotlinOptions {
+        freeCompilerArgs += [
+                "-Xopt-in=kotlin.RequiresOptIn"
+        ]
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            all {
+                maxParallelForks = Runtime.runtime.availableProcessors()
+                forkEvery = 100
+            }
+        }
+    }
+}
+
 dependencies {
 
     /*** Platform ***/

@@ -51,6 +51,7 @@ internal fun FileShareComponent(
         factory = FileShareViewModel.provideFactory(configure = ::requestConfiguration, filePickProvider = FilePickBroadcastReceiver)
     ),
     modifier: Modifier = Modifier,
+    isTesting: Boolean = false
 ) {
     val context = LocalContext.current
     val (showUnableToOpenFileSnackBar, setShowUnableToOpenSnackBar) = remember { mutableStateOf(false) }
@@ -58,14 +59,16 @@ internal fun FileShareComponent(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val userMessage by viewModel.userMessage.collectAsStateWithLifecycle(initialValue = null)
 
-    DisposableEffect(context) {
-        context.sendBroadcast(Intent(context, FileShareVisibilityObserver::class.java).apply {
-            action = FileShareVisibilityObserver.ACTION_FILE_SHARE_DISPLAYED
-        })
-        onDispose {
+    if (!isTesting) {
+        DisposableEffect(context) {
             context.sendBroadcast(Intent(context, FileShareVisibilityObserver::class.java).apply {
-                action = FileShareVisibilityObserver.ACTION_FILE_SHARE_NOT_DISPLAYED
+                action = FileShareVisibilityObserver.ACTION_FILE_SHARE_DISPLAYED
             })
+            onDispose {
+                context.sendBroadcast(Intent(context, FileShareVisibilityObserver::class.java).apply {
+                    action = FileShareVisibilityObserver.ACTION_FILE_SHARE_NOT_DISPLAYED
+                })
+            }
         }
     }
 

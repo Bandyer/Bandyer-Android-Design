@@ -29,7 +29,7 @@ class PointerStreamWrapperTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            PointerStreamWrapper(streamView = null , pointerList = pointerList, isTesting = false) {
+            PointerStreamWrapper(streamView = null , pointerList = pointerList, isTesting = true) {
                 Spacer(modifier = Modifier.testTag("ChildTag"))
             }
         }

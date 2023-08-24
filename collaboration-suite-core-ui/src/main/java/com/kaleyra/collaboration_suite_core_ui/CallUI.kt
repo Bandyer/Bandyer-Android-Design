@@ -181,7 +181,7 @@ private fun Call.getDefaultActions(): MutableStateFlow<Set<Action>> {
         add(CallUI.Action.ChangeVolume)
         add(CallUI.Action.ShowParticipants)
     })
-    extras.preferredType.onEach {
+    preferredType.onEach {
         actions.value = it.addActions(actions.value)
     }.launchIn(MainScope())
     return actions

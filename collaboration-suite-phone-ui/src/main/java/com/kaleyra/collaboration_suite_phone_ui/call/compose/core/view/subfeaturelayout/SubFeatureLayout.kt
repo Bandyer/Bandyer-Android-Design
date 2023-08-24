@@ -26,7 +26,6 @@ internal fun SubFeatureLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 8.dp)
-                .offset(y = (-8).dp)
         ) {
             Text(
                 text = title,

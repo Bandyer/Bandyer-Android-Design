@@ -18,14 +18,10 @@ package com.kaleyra.collaboration_suite_glass_ui.termsandconditions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite_core_ui.*
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 internal class TermsAndConditionsViewModel(configure: suspend () -> Configuration) : CollaborationViewModel(configure) {
 

@@ -56,8 +56,10 @@ dependencies {
     api project(":collaboration-suite-core-ui")
 
     /** Kaleyra **/
-    implementation kaleyraCatalog.kaleyraCollaborationSuite
-    implementation kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
+//    implementation kaleyraCatalog.kaleyraCollaborationSuite
+//    implementation kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
+    api project(":collaboration-suite")
+    api project(":collaboration-suite-extension-audio")
 }
 
 licenseReport {

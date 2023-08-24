@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetails
 import org.junit.Assert.assertEquals
 
-object ContactDetailsTestHelper {
+internal object ContactDetailsTestHelper {
     fun assertEqualsContactDetails(expected: List<ContactDetails>, actual: Set<ContactDetails>) {
         actual.forEachIndexed { index, contactDetails ->
             assertEquals(contactDetails.userId, expected[index].userId)

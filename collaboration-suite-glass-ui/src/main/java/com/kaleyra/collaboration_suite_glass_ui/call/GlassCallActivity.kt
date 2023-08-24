@@ -462,11 +462,14 @@ internal class GlassCallActivity :
                     )
                 }.launchIn(this)
 
-            viewModel.call.flatMapLatest { it.extras.recording.state }.onEach {
-                with(binding.kaleyraStatusBar) {
-                    if (it is Call.Recording.State.Started) showRec() else hideRec()
-                }
-            }.launchIn(this)
+            viewModel.call
+                .flatMapLatest { it.recording }
+                .flatMapLatest { it.state }
+                .onEach {
+                    with(binding.kaleyraStatusBar) {
+                        if (it is Call.Recording.State.Started) showRec() else hideRec()
+                    }
+                }.launchIn(this)
 
             val spJobs = mutableListOf<Job>()
             viewModel.streams
