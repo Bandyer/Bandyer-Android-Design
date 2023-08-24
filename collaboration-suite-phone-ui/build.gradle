@@ -28,6 +28,11 @@ apply from: '../publish.gradle'
 apply from: '../moveIcons.gradle'
 
 android {
+    kotlinOptions {
+        freeCompilerArgs += [
+                "-Xopt-in=kotlin.RequiresOptIn"
+        ]
+    }
     testOptions {
         unitTests {
             includeAndroidResources = true
