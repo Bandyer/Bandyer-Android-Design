@@ -91,7 +91,8 @@ class CallScreenTest: ComposeViewModelsMockTest() {
                 onFileShareVisibility = { fileShareDisplayed = it },
                 onWhiteboardVisibility = { whiteboardDisplayed = it },
                 onFinishActivity = { finishActivity = true },
-                onUserFeedback = { _,_ -> }
+                onUserFeedback = { _,_ -> },
+                isTesting = true
             )
             LaunchedEffect(sideEffect) {
                 sideEffect.invoke()

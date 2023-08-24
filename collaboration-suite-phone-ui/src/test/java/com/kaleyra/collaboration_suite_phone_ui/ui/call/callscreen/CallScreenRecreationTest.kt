@@ -22,7 +22,8 @@ class CallScreenRecreationTest : ComposeViewModelsMockTest() {
     @Test
     fun onRecreation_stateIsRestored() {
         val restorationTester = StateRestorationTester(composeTestRule)
-        restorationTester.setContent { CallScreen(
+        restorationTester.setContent {
+            CallScreen(
                 callUiState = CallUiState(callState = CallStateUi.Connected),
                 callScreenState = rememberCallScreenState(
                     sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Expanded),
@@ -39,7 +40,8 @@ class CallScreenRecreationTest : ComposeViewModelsMockTest() {
                 onConfigurationChange = { },
                 onBackPressed = { },
                 onFinishActivity = {},
-                onUserFeedback = {_,_ ->}
+                onUserFeedback = {_,_ ->},
+                isTesting = true
             )
         }
 

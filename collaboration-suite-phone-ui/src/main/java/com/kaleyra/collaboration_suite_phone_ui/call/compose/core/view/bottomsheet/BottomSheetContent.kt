@@ -87,7 +87,8 @@ internal fun BottomSheetContent(
     onAudioDeviceClick: () -> Unit = { },
     onScreenShareTargetClick: () -> Unit = { },
     onVirtualBackgroundClick: () -> Unit = {},
-    contentVisible: Boolean = true
+    contentVisible: Boolean = true,
+    isTesting: Boolean = false
 ) {
     Column(modifier) {
         Line(
@@ -144,7 +145,8 @@ internal fun BottomSheetContent(
                         FileShareComponent(
                             modifier = Modifier
                                 .padding(top = 12.dp)
-                                .testTag(FileShareComponentTag)
+                                .testTag(FileShareComponentTag),
+                            isTesting = isTesting
                         )
                     }
                     BottomSheetComponent.Whiteboard -> {

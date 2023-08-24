@@ -51,7 +51,8 @@ class BottomSheetContentTest : ComposeViewModelsMockTest() {
                 onCallActionClick = { isCallActionClicked = true },
                 onAudioDeviceClick = { isAudioDeviceClicked = true },
                 onScreenShareTargetClick = { isScreenShareTargetClicked = true },
-                onVirtualBackgroundClick = { isVirtualBackgroundClicked = true }
+                onVirtualBackgroundClick = { isVirtualBackgroundClicked = true },
+                isTesting = true
             )
         }
     }
