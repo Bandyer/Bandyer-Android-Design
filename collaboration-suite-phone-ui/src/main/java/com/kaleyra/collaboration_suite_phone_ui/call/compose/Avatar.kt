@@ -26,8 +26,13 @@ internal fun Avatar(
     size: Dp,
     modifier: Modifier = Modifier
 ) {
-    val placeholderFilter = ColorFilter.tint(color = contentColor)
-    var colorFilter by remember { mutableStateOf<ColorFilter?>(placeholderFilter) }
+    var isImageLoaded by remember { mutableStateOf(false) }
+    val placeholderFilter by rememberUpdatedState(newValue = ColorFilter.tint(color = contentColor))
+    val colorFilter by remember {
+        derivedStateOf {
+            if (isImageLoaded) null else placeholderFilter
+        }
+    }
     AsyncImage(
         model = uri?.value,
         contentDescription = contentDescription,
@@ -38,7 +43,7 @@ internal fun Avatar(
         placeholder = painterResource(id = placeholder),
         error = painterResource(id = error),
         contentScale = ContentScale.Crop,
-        onSuccess = { colorFilter = null },
+        onSuccess = { isImageLoaded = true },
         colorFilter = colorFilter
     )
 }
