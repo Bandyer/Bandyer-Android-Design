@@ -45,7 +45,10 @@ internal class PhoneChatActivity : ChatActivity() {
 
             LaunchedEffect(Unit) {
                 snapshotFlow { isDarkTheme }
-                    .onEach { systemUiController.statusBarDarkContentEnabled = !it }
+                    .onEach {
+                        systemUiController.statusBarDarkContentEnabled = !it
+                        systemUiController.navigationBarDarkContentEnabled = !it
+                    }
                     .launchIn(this)
             }
 
