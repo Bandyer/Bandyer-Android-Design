@@ -52,6 +52,7 @@ dependencies {
     api "androidx.compose.ui:ui-tooling-preview:1.2.1"
     api 'com.google.android.material:compose-theme-adapter:1.1.13'
     api 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
+    api "com.google.accompanist:accompanist-systemuicontroller:0.25.1"
 
     /** Testing **/
     testImplementation project(":collaboration-suite")

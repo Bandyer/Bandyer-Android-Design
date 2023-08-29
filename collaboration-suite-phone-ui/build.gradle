@@ -91,7 +91,6 @@ dependencies {
     compileOnly catalog.zoomy
 
     implementation("io.coil-kt:coil-compose:2.1.0")
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.25.1"
 
     api project(":collaboration-suite-core-ui")
 
