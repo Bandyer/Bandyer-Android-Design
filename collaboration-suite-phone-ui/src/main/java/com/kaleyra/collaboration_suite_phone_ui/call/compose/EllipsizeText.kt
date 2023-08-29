@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.unit.TextUnit
@@ -41,13 +42,16 @@ internal fun EllipsizeText(
     val fontFamily = LocalTextStyle.current.fontFamily
 
     AndroidView(
-        factory = { context ->
-            val tf = createFontFamilyResolver(context).resolve(
+        factory = { context -> TextView(context) },
+        update = {
+            val tf = createFontFamilyResolver(it.context).resolve(
                 fontFamily = fontFamily,
                 fontWeight = fontWeight
             ).value as Typeface
 
-            TextView(context).apply {
+            with(it) {
+                this.text = text
+
                 maxLines = 1
                 textSize = fontSize.value
                 setTextColor(color.toArgb())
@@ -61,11 +65,15 @@ internal fun EllipsizeText(
                 }
 
                 if (shadow != null) {
-                    setShadowLayer(shadow.blurRadius, shadow.offset.x, shadow.offset.y, shadow.color.toArgb())
+                    setShadowLayer(
+                        shadow.blurRadius,
+                        shadow.offset.x,
+                        shadow.offset.y,
+                        shadow.color.toArgb()
+                    )
                 }
             }
         },
-        update = { it.text = text },
         modifier = modifier.semantics { contentDescription = text }
     )
 }
