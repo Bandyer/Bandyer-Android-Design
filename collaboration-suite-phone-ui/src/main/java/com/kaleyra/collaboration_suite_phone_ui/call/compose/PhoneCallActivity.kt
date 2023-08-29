@@ -58,25 +58,23 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            MdcTheme(setDefaultFontFamily = true) {
-                CallScreen(
-                    shouldShowFileShareComponent = shouldShowFileShare.collectAsStateWithLifecycle().value,
-                    isInPipMode = isInPipMode.collectAsStateWithLifecycle().value,
-                    onEnterPip = ::onUserLeaveHint,
-                    onFileShareVisibility = {
-                        isFileShareDisplayed = it
-                        if (it) shouldShowFileShare.value = false
-                    },
-                    onWhiteboardVisibility = { isWhiteboardDisplayed = it },
-                    onPipAspectRatio = { aspectRatio ->
-                        pictureInPictureAspectRatio = if (aspectRatio == Rational.NaN) getScreenAspectRatio() else aspectRatio
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            updatePipParams()?.let { setPictureInPictureParams(it) }
-                        }
-                    },
-                    onActivityFinishing = { isActivityFinishing = true },
-                )
-            }
+            ThemedCallScreen(
+                shouldShowFileShareComponent = shouldShowFileShare.collectAsStateWithLifecycle().value,
+                isInPipMode = isInPipMode.collectAsStateWithLifecycle().value,
+                onEnterPip = ::onUserLeaveHint,
+                onFileShareVisibility = {
+                    isFileShareDisplayed = it
+                    if (it) shouldShowFileShare.value = false
+                },
+                onWhiteboardVisibility = { isWhiteboardDisplayed = it },
+                onPipAspectRatio = { aspectRatio ->
+                    pictureInPictureAspectRatio = if (aspectRatio == Rational.NaN) getScreenAspectRatio() else aspectRatio
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        updatePipParams()?.let { setPictureInPictureParams(it) }
+                    }
+                },
+                onActivityFinishing = { isActivityFinishing = true },
+            )
         }
         turnScreenOn()
     }

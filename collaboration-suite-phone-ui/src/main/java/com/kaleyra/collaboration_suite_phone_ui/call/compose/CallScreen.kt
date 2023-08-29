@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
-import android.content.res.Configuration
 import android.util.Rational
 import android.view.View
 import androidx.activity.ComponentActivity
@@ -40,7 +39,6 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,7 +46,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.kaleyra.collaboration_suite_core_ui.Theme
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
+import com.kaleyra.collaboration_suite_core_ui.theme.CollaborationTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeDevice
@@ -74,8 +75,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.RecordingLa
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamContainer
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
@@ -232,6 +231,33 @@ internal class CallScreenState(
 
     companion object {
         private val FullScreenThreshold = 64.dp
+    }
+}
+
+@Composable
+internal fun ThemedCallScreen(
+    viewModel: CallViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = CallViewModel.provideFactory(::requestConfiguration)
+    ),
+    shouldShowFileShareComponent: Boolean,
+    isInPipMode: Boolean,
+    onEnterPip: () -> Unit,
+    onPipAspectRatio: (Rational) -> Unit,
+    onFileShareVisibility: (Boolean) -> Unit,
+    onWhiteboardVisibility: (Boolean) -> Unit,
+    onActivityFinishing: () -> Unit
+) {
+    val theme by viewModel.theme.collectAsStateWithLifecycle(Theme())
+    CollaborationTheme(theme = theme, adjustSystemBarsContentColor = false) {
+        CallScreen(
+            shouldShowFileShareComponent = shouldShowFileShareComponent,
+            isInPipMode = isInPipMode,
+            onEnterPip = onEnterPip,
+            onPipAspectRatio = onPipAspectRatio ,
+            onFileShareVisibility = onFileShareVisibility,
+            onWhiteboardVisibility = onWhiteboardVisibility,
+            onActivityFinishing = onActivityFinishing
+        )
     }
 }
 
