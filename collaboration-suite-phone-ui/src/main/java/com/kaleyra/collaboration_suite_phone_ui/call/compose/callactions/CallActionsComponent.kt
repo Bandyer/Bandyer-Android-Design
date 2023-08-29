@@ -8,8 +8,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.app.ComponentActivity
-import androidx.fragment.app.FragmentActivity
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
@@ -18,7 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.m
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.view.CallActionsContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel.CallActionsViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.findActivity
-import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 @Composable

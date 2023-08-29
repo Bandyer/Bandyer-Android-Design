@@ -31,7 +31,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 
 const val StreamViewTestTag = "StreamTestTag"
 val DefaultStreamAvatarSize = 128.dp

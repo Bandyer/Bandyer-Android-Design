@@ -20,12 +20,10 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOu
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.CallActionsComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.MultiplePermissionsState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.PermissionState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.VirtualBackgroundComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardComponent
-import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 
 const val CallActionsComponentTag = "CallActionsComponentTag"
 const val AudioOutputComponentTag = "AudioOutputComponentTag"

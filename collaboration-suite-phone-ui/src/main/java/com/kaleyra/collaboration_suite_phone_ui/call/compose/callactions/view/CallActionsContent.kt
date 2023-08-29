@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.mockCallActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.fadeBelowOfRootBottomBound
 
 @Composable

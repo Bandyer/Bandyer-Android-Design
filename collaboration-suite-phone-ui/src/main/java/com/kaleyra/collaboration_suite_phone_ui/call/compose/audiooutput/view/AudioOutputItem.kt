@@ -19,7 +19,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.A
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.isConnectedOrPlaying
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.isConnecting
-import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 
 @Composable
 internal fun AudioOutputItem(

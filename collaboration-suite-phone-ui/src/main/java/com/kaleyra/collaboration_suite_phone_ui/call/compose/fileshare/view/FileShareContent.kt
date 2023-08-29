@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.Divider
 import androidx.compose.material.LocalContentColor
@@ -22,7 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.Sha
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 
 const val FileShareItemTag = "FileShareItemTag"
 const val FileShareItemDividerTag = "FileShareItemDividerTag"

@@ -16,7 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.m
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.mockVirtualBackgrounds
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.view.VirtualBackgroundContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.viewmodel.VirtualBackgroundViewModel
-import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 @Composable

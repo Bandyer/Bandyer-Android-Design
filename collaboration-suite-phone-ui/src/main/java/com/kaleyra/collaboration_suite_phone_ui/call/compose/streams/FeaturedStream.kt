@@ -31,7 +31,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamViewSettings.
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
-import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 
 const val FeaturedStreamTag = "FeaturedStreamTag"
 const val HeaderAutoHideMs = 5000L

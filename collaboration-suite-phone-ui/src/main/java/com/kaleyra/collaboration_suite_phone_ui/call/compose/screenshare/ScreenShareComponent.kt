@@ -17,7 +17,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.S
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.view.ScreenShareContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 @Composable

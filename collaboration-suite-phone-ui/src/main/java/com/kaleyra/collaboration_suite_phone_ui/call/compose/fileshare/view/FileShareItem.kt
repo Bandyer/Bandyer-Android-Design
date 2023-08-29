@@ -36,7 +36,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.ProgressI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
-import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.extensions.isArchiveMimeType
 import com.kaleyra.collaboration_suite_phone_ui.extensions.isImageMimeType
 import kotlin.math.roundToInt

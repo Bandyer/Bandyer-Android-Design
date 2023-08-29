@@ -38,7 +38,7 @@ import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.model.TermsAndConditionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.viewmodel.TermsAndConditionsViewModel
-import com.kaleyra.collaboration_suite_phone_ui.chat.theme.TermsAndConditionsTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.TermsAndConditionsTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 internal const val TermsProgressIndicatorTag = "TermsProgressIndicatorTag"
