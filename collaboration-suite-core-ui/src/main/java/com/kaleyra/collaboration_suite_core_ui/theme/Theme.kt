@@ -6,12 +6,20 @@ import androidx.compose.material.Typography
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontFamily
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.material.color.MaterialColors
 import com.kaleyra.collaboration_suite_core_ui.KaleyraFontFamily
 import com.kaleyra.collaboration_suite_core_ui.Theme
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 private val KaleyraLightColorTheme = lightColors(
     primary = kaleyra_theme_light_primary,
@@ -110,19 +118,26 @@ private val KaleyraDarkColorTheme = darkColors(
 //)
 
 @Composable
-fun KaleyraTheme(
-    lightColors: Theme.Colors = Theme.Colors(
-        primary = kaleyra_theme_light_primary,
-        secondary = kaleyra_theme_light_secondary
-    ),
-    darkColors: Theme.Colors = Theme.Colors(
-        primary = kaleyra_theme_dark_primary,
-        secondary = kaleyra_theme_dark_secondary
-    ),
-    fontFamily: FontFamily = KaleyraFontFamily.fontFamily,
-    isDarkTheme: Boolean = isSystemInDarkTheme(),
+fun CollaborationTheme(
+    theme: Theme,
+    adjustSystemBarsContentColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    val systemUiController = rememberSystemUiController()
+
+    val lightColors = theme.day.colors
+    val darkColors = theme.night.colors
+    val isSystemDarkTheme = isSystemInDarkTheme()
+    val isDarkTheme by remember(theme) {
+        derivedStateOf {
+            when (theme.defaultStyle) {
+                Theme.DefaultStyle.Day -> false
+                Theme.DefaultStyle.Night -> true
+                else -> isSystemDarkTheme
+            }
+        }
+    }
+
     val colors = when {
         isDarkTheme -> KaleyraDarkColorTheme.copy(
             primary = darkColors.primary,
@@ -138,9 +153,37 @@ fun KaleyraTheme(
         )
     }
 
+    if (adjustSystemBarsContentColor) {
+        LaunchedEffect(Unit) {
+            snapshotFlow { isDarkTheme }
+                .onEach {
+                    systemUiController.statusBarDarkContentEnabled = !it
+                    systemUiController.navigationBarDarkContentEnabled = !it
+                }
+                .launchIn(this)
+        }
+    }
+
     MaterialTheme(
         colors = colors,
-        typography = Typography(defaultFontFamily = fontFamily),
+        typography = Typography(defaultFontFamily = theme.fontFamily),
+        content = content
+    )
+}
+
+@Composable
+fun KaleyraTheme(
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val colors = when {
+        isDarkTheme -> KaleyraDarkColorTheme
+        else -> KaleyraLightColorTheme
+    }
+
+    MaterialTheme(
+        colors = colors,
+        typography = Typography(defaultFontFamily = KaleyraFontFamily.fontFamily),
         content = content
     )
 }
