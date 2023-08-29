@@ -6,11 +6,10 @@ import androidx.compose.material.Typography
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontFamily
@@ -18,8 +17,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.material.color.MaterialColors
 import com.kaleyra.collaboration_suite_core_ui.KaleyraFontFamily
 import com.kaleyra.collaboration_suite_core_ui.Theme
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 private val KaleyraLightColorTheme = lightColors(
     primary = kaleyra_theme_light_primary,
@@ -154,13 +151,9 @@ fun CollaborationTheme(
     }
 
     if (adjustSystemBarsContentColor) {
-        LaunchedEffect(Unit) {
-            snapshotFlow { isDarkTheme }
-                .onEach {
-                    systemUiController.statusBarDarkContentEnabled = !it
-                    systemUiController.navigationBarDarkContentEnabled = !it
-                }
-                .launchIn(this)
+        SideEffect {
+            systemUiController.statusBarDarkContentEnabled = !isDarkTheme
+            systemUiController.navigationBarDarkContentEnabled = !isDarkTheme
         }
     }
 
