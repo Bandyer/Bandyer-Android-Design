@@ -40,6 +40,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_core_ui.Theme
+import com.kaleyra.collaboration_suite_core_ui.theme.CollaborationTheme
 import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
@@ -57,6 +59,17 @@ import kotlinx.coroutines.launch
 
 
 internal const val MessagesTag = "MessagesTag"
+
+@Composable
+fun ThemedChatScreen(
+    onBackPressed: () -> Unit,
+    viewModel: PhoneChatViewModel
+) {
+    val theme by viewModel.theme.collectAsStateWithLifecycle(Theme())
+    CollaborationTheme(theme = theme) {
+        ChatScreen(onBackPressed = onBackPressed, viewModel = viewModel)
+    }
+}
 
 @Composable
 fun ChatScreen(
