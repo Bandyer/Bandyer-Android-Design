@@ -168,19 +168,3 @@ internal fun BottomSheetContent(
     }
 }
 
-@Preview(name = "Light Mode")
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
-@Composable
-fun BottomSheetContentPreview() {
-    KaleyraTheme {
-        Surface {
-            BottomSheetContent(
-                contentState = rememberBottomSheetContentState(
-                    initialSheetComponent = BottomSheetComponent.CallActions,
-                    initialLineState = LineState.Expanded
-                ),
-                onLineClick = { }
-            )
-        }
-    }
-}

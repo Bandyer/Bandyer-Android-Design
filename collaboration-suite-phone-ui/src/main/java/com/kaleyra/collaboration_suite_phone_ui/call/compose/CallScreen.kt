@@ -657,28 +657,3 @@ internal fun WhiteboardVisibilityObserver(
 
 private fun ComponentActivity.isAtLeastResumed() =
     lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
-
-@Preview(name = "Light Mode")
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
-@Composable
-fun CallScreenPreview() {
-    KaleyraTheme {
-        CallScreen(
-            callUiState = CallUiState(
-                callState = CallStateUi.Connected,
-                featuredStreams = ImmutableList(listOf(streamUiMock)),
-                thumbnailStreams = ImmutableList(listOf(streamUiMock))
-            ),
-            callScreenState = rememberCallScreenState(),
-            onFileShareVisibility = {},
-            onWhiteboardVisibility = {},
-            onConfigurationChange = {},
-            onBackPressed = {},
-            onFullscreenStreamClick = {},
-            onThumbnailStreamClick = {},
-            onThumbnailStreamDoubleClick = {},
-            onFinishActivity = {},
-            onUserFeedback = { _, _ -> }
-        )
-    }
-}
