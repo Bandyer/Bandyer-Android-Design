@@ -8,11 +8,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -36,6 +40,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarHandler
@@ -44,7 +49,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.input.UserInput
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockChatUiState
-import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.ChatAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
@@ -104,11 +108,17 @@ fun ChatScreen(
         modifier = Modifier
             .background(color = MaterialTheme.colors.background)
             .fillMaxSize()
-            .systemBarsPadding()
+            .navigationBarsPadding()
             .imePadding()
             .semantics {
                 testTagsAsResourceId = true
             }) {
+        Spacer(
+            modifier = Modifier
+                .background(MaterialTheme.colors.primaryVariant)
+                .fillMaxWidth()
+                .windowInsetsTopHeight(WindowInsets.statusBars)
+        )
         Box(Modifier.focusRequester(topBarRef)){
             ChatAppBar(
                 state = uiState.state,
