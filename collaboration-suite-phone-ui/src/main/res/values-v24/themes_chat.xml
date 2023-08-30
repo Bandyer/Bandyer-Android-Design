@@ -14,8 +14,9 @@
   ~ limitations under the License.
   -->
 <resources>
-    <style name="KaleyraCollaborationSuiteUI.Theme.Chat" steparent="android:Theme.Material.NoActionBar">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat.V24" parent="KaleyraCollaborationSuiteUI.Theme.Chat.V21">
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/black</item>
     </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat" parent="KaleyraCollaborationSuiteUI.Theme.Chat.V24" />
 </resources>

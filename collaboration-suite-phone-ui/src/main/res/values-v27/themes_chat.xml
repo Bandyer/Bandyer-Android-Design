@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="KaleyraCollaborationSuiteUI.Theme.Chat" parent="android:Theme.Material.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat.V27" parent="KaleyraCollaborationSuiteUI.Theme.Chat.V24">
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat" parent="KaleyraCollaborationSuiteUI.Theme.Chat.V27" />
 </resources>
