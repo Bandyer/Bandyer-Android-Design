@@ -49,7 +49,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_core_ui.Theme
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.theme.CollaborationTheme
-import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ConfigurationExtensions.isAtLeastMediumSizeDevice
@@ -248,7 +247,7 @@ internal fun ThemedCallScreen(
     onActivityFinishing: () -> Unit
 ) {
     val theme by viewModel.theme.collectAsStateWithLifecycle(Theme())
-    CollaborationTheme(theme = theme, adjustSystemBarsContentColor = false) {
+    CollaborationTheme(theme = theme, adjustStatusBarContentColor = false) {
         CallScreen(
             shouldShowFileShareComponent = shouldShowFileShareComponent,
             isInPipMode = isInPipMode,
@@ -554,7 +553,7 @@ internal fun DefaultCallScreen(
             sheetHalfExpandedHeight = HalfExpandedHeight + navBarsBottomPadding,
             sheetElevation = 0.dp,
             anchor = {
-                BottomSheetAnchor(callUiState, callScreenState, onThumbnailStreamClick, onThumbnailStreamDoubleClick)
+                BottomSheetAnchor(callUiState, callScreenState, onThumbnailStreamClick, onThumbnailStreamDoubleClick, modifier = Modifier.horizontalCutoutPadding())
             },
             sheetBackgroundColor = MaterialTheme.colors.surface.copy(alpha = backgroundAlpha),
             sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
@@ -594,7 +593,7 @@ internal fun DefaultCallScreen(
         CallScreenAppBar(
             currentSheetComponent = callScreenState.sheetContentState.currentComponent,
             visible = callScreenState.shouldShowAppBar,
-            onBackPressed = callScreenState::navigateToCallActionsComponent,
+            onBackPressed = callScreenState::navigateToCallActionsComponent
         )
 
         val callState = callUiState.callState
@@ -619,7 +618,8 @@ internal fun BottomSheetAnchor(
     callUiState: CallUiState,
     callScreenState: CallScreenState,
     onThumbnailStreamClick: (String) -> Unit,
-    onThumbnailStreamDoubleClick: (String) -> Unit
+    onThumbnailStreamDoubleClick: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val shouldShowThumbnailStreams = !callScreenState.isSheetHidden && callUiState.fullscreenStream == null
     val shouldShowRecordingHint = callUiState.recording != null && callUiState.recording.type != RecordingTypeUi.Never && callUiState.callState == CallStateUi.Dialing
@@ -627,7 +627,8 @@ internal fun BottomSheetAnchor(
     AnimatedVisibility(
         visible = shouldShowThumbnailStreams,
         enter = fadeIn(),
-        exit = fadeOut()
+        exit = fadeOut(),
+        modifier = modifier
     ) {
         ThumbnailStreams(
             streams = callUiState.thumbnailStreams,

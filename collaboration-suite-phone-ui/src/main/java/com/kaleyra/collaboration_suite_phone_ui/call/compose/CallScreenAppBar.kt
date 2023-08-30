@@ -20,13 +20,14 @@ const val CallScreenAppBarTag = "CallScreenAppBarTag"
 internal fun CallScreenAppBar(
     currentSheetComponent: BottomSheetComponent,
     visible: Boolean,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn() + slideInVertically(),
         exit = fadeOut() + slideOutVertically(),
-        modifier = Modifier.testTag(CallScreenAppBarTag)
+        modifier = modifier.testTag(CallScreenAppBarTag)
     ) {
         Surface(elevation = AppBarDefaults.TopAppBarElevation) {
             Spacer(
@@ -36,8 +37,6 @@ internal fun CallScreenAppBar(
                     .windowInsetsTopHeight(WindowInsets.statusBars)
             )
             Box(modifier = Modifier.statusBarsPadding()) {
-                // TODO check if this modifier is needed
-                val appBarsModifier = Modifier.horizontalCutoutPadding()
                 when (currentSheetComponent) {
                     BottomSheetComponent.FileShare -> FileShareAppBar(onBackPressed = onBackPressed)
                     BottomSheetComponent.Whiteboard -> WhiteboardAppBar(onBackPressed = onBackPressed)

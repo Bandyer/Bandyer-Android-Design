@@ -32,6 +32,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStre
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 
 const val FeaturedStreamTag = "FeaturedStreamTag"
 const val HeaderAutoHideMs = 5000L
@@ -70,7 +71,9 @@ internal fun FeaturedStream(
                 fullscreen = isFullscreen,
                 onBackPressed = onBackPressed,
                 onFullscreenClick = onFullscreenClick,
-                modifier = Modifier.then(headerModifier)
+                modifier = Modifier
+                    .horizontalCutoutPadding()
+                    .then(headerModifier)
             )
         }
     }
