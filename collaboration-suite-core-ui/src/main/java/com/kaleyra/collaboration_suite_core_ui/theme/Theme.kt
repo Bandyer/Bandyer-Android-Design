@@ -117,7 +117,7 @@ private val KaleyraDarkColorTheme = darkColors(
 @Composable
 fun CollaborationTheme(
     theme: Theme,
-    adjustSystemBarsContentColor: Boolean = true,
+    adjustStatusBarContentColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val systemUiController = rememberSystemUiController()
@@ -150,11 +150,14 @@ fun CollaborationTheme(
         )
     }
 
-    if (adjustSystemBarsContentColor) {
+    if (adjustStatusBarContentColor) {
         SideEffect {
             systemUiController.statusBarDarkContentEnabled = !isDarkTheme
-            systemUiController.navigationBarDarkContentEnabled = !isDarkTheme
         }
+    }
+
+    SideEffect {
+        systemUiController.navigationBarDarkContentEnabled = !isDarkTheme
     }
 
     MaterialTheme(
