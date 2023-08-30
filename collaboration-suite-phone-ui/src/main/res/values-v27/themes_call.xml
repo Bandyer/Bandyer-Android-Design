@@ -16,35 +16,10 @@
   -->
 
 <resources>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V27" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V16">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.V27" parent="KaleyraCollaborationSuiteUI.Theme.Call.V21">
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Day.V27" parent="KaleyraCollaborationSuiteUI.Theme.Call.Day.V16">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightNavigationBar">true</item>
-        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Night.V27" parent="KaleyraCollaborationSuiteUI.Theme.Call.Night.V16">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightNavigationBar">false</item>
-        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V27"/>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Day" parent="KaleyraCollaborationSuiteUI.Theme.Call.Day.V27"/>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Night" parent="KaleyraCollaborationSuiteUI.Theme.Call.Night.V27"/>
-
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call" parent="KaleyraCollaborationSuiteUI.Theme.Call.V27" />
 </resources>

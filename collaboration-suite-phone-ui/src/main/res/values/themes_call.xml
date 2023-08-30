@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <declare-styleable name="KaleyraCollaborationSuiteUI.Theme.Call">
         <attr name="kaleyra_bottomSheetCallStyle" format="reference" />
@@ -46,80 +46,11 @@
         <attr name="kaleyra_smartGlassDialogMenuStyle" format="reference" />
     </declare-styleable>
 
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V16" parent="KaleyraCollaborationSuiteUI.Theme.DayNight">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="kaleyra_answerHelperTextStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.AnswerCallHelperText</item>
-        <item name="kaleyra_bottomSheetCallStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.Call</item>
-        <item name="kaleyra_bottomSheetAudioRouteStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute</item>
-        <item name="kaleyra_bottomSheetRingingStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.Ringing</item>
-        <item name="kaleyra_livePointerStyle">@style/KaleyraCollaborationSuiteUI.LivePointer</item>
-        <item name="kaleyra_smartGlassDialogMenuStyle">@style/KaleyraCollaborationSuiteUI.SmartGlassDialogMenu</item>
-        <item name="kaleyra_userInfoStyle">@style/KaleyraCollaborationSuiteUI.UserInfo</item>
-        <item name="kaleyra_callInfoStyle">@style/KaleyraCollaborationSuiteUI.CallInfo</item>
-        <item name="kaleyra_userStatusStyle_left_alone">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.LeftAlone</item>
-        <item name="kaleyra_userStatusStyle_waiting">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.Waiting</item>
-        <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard</item>
-        <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
-        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
-        <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
-        <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
-        <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.V21" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Day.V16" parent="KaleyraCollaborationSuiteUI.Theme.Day">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="kaleyra_answerHelperTextStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.AnswerCallHelperText</item>
-        <item name="kaleyra_bottomSheetCallStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.Call</item>
-        <item name="kaleyra_bottomSheetAudioRouteStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute</item>
-        <item name="kaleyra_bottomSheetRingingStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.Ringing</item>
-        <item name="kaleyra_livePointerStyle">@style/KaleyraCollaborationSuiteUI.LivePointer</item>
-        <item name="kaleyra_smartGlassDialogMenuStyle">@style/KaleyraCollaborationSuiteUI.SmartGlassDialogMenu</item>
-        <item name="kaleyra_userInfoStyle">@style/KaleyraCollaborationSuiteUI.UserInfo</item>
-        <item name="kaleyra_callInfoStyle">@style/KaleyraCollaborationSuiteUI.CallInfo</item>
-        <item name="kaleyra_userStatusStyle_left_alone">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.LeftAlone</item>
-        <item name="kaleyra_userStatusStyle_waiting">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.Waiting</item>
-        <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard</item>
-        <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
-        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
-        <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
-        <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
-        <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Night.V16" parent="KaleyraCollaborationSuiteUI.Theme.Night">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="kaleyra_answerHelperTextStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.AnswerCallHelperText</item>
-        <item name="kaleyra_bottomSheetCallStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.Call</item>
-        <item name="kaleyra_bottomSheetAudioRouteStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute</item>
-        <item name="kaleyra_bottomSheetRingingStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.Ringing.Night</item>
-        <item name="kaleyra_livePointerStyle">@style/KaleyraCollaborationSuiteUI.LivePointer</item>
-        <item name="kaleyra_smartGlassDialogMenuStyle">@style/KaleyraCollaborationSuiteUI.SmartGlassDialogMenu</item>
-        <item name="kaleyra_userInfoStyle">@style/KaleyraCollaborationSuiteUI.UserInfo</item>
-        <item name="kaleyra_callInfoStyle">@style/KaleyraCollaborationSuiteUI.CallInfo</item>
-        <item name="kaleyra_userStatusStyle_left_alone">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.LeftAlone</item>
-        <item name="kaleyra_userStatusStyle_waiting">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserStatus.Waiting</item>
-        <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard</item>
-        <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
-        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
-        <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
-        <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
-        <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V16"/>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Day" parent="KaleyraCollaborationSuiteUI.Theme.Call.Day.V16"/>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Night" parent="KaleyraCollaborationSuiteUI.Theme.Call.Night.V16"/>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight">
-        <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard.Day</item>
-        <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
-        <item name="kaleyra_virtualBackgroundDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.VirtualBackgroundPicker</item>
-        <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Day</item>
-    </style>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call" parent="KaleyraCollaborationSuiteUI.Theme.Call.V21" />
 
 </resources>
