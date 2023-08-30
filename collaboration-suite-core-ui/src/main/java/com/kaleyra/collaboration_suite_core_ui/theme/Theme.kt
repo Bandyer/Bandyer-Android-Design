@@ -140,11 +140,15 @@ fun CollaborationTheme(
     val colors = when {
         isDarkTheme -> KaleyraDarkColorTheme.copy(
             primary = darkColors.primary,
-            secondary = darkColors.secondary
+            onPrimary = onColorFor(darkColors.primary),
+            secondary = darkColors.secondary,
+            onSecondary = onColorFor(darkColors.secondary)
         )
         else -> KaleyraLightColorTheme.copy(
             primary = lightColors.primary,
-            secondary = lightColors.secondary
+            onPrimary = onColorFor(lightColors.primary),
+            secondary = lightColors.secondary,
+            onSecondary = onColorFor(lightColors.secondary)
         )
     }
 
@@ -168,6 +172,8 @@ fun CollaborationTheme(
         content = { content(isDarkTheme) }
     )
 }
+
+private fun onColorFor(color: Color) = if (color.luminance() > .5f) Color.Black else Color.White
 
 @Composable
 fun KaleyraTheme(

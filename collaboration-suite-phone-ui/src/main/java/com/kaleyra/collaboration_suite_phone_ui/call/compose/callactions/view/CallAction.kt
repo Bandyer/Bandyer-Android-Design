@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -56,7 +57,7 @@ internal object CallActionDefaults {
         disabledIconColor: Color = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
         disabledTextColor: Color = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
         toggledBackgroundColor: Color = MaterialTheme.colors.secondaryVariant,
-        toggledIconColor: Color = contentColorFor(toggledBackgroundColor)
+        toggledIconColor: Color = if (toggledBackgroundColor.luminance() > .5f) Color.Black else Color.White
     ): CallActionColors = DefaultColors(
         backgroundColor = backgroundColor,
         iconColor = iconColor,
