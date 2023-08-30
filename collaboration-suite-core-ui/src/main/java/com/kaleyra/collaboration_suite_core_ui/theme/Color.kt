@@ -1,6 +1,9 @@
 package com.kaleyra.collaboration_suite_core_ui.theme
 import androidx.compose.ui.graphics.Color
 
+val kaleyra_hang_up_light_color = Color(0xffff0000)
+val kaleyra_hang_up_dark_color = Color(0xffc20000)
+
 // KALEYRA MATERIAL M2 THEME
 val kaleyra_theme_light_primary = Color.White
 val kaleyra_theme_light_primaryVariant = Color(0xFFEFEFEF)

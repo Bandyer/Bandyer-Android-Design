@@ -25,12 +25,14 @@ internal fun CallActionsComponent(
         factory = CallActionsViewModel.provideFactory(::requestConfiguration)
     ),
     onItemClick: (action: CallAction) -> Unit,
+    isDarkTheme: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val activity = LocalContext.current.findActivity()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     CallActionsComponent(
         uiState = uiState,
+        isDarkTheme = isDarkTheme,
         onItemClick = { action ->
             // TODO revise this
             when (action) {
@@ -55,12 +57,14 @@ internal fun CallActionsComponent(
 internal fun CallActionsComponent(
     uiState: CallActionsUiState,
     onItemClick: (action: CallAction) -> Unit,
+    isDarkTheme: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Column(modifier) {
         CallActionsContent(
             items = uiState.actionList,
             itemsPerRow = uiState.actionList.count().coerceIn(1, 4),
+            isDarkTheme = isDarkTheme,
             onItemClick = onItemClick
         )
         NavigationBarsSpacer()

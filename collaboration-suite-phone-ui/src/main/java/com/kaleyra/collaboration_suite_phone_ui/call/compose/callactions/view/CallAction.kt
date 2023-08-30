@@ -24,6 +24,8 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_hang_up_dark_color
+import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_hang_up_light_color
 
 @Stable
 internal interface CallActionColors {
@@ -138,9 +140,10 @@ private class DefaultColors(
 internal fun CallAction(
     action: CallAction,
     onToggle: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isDarkTheme: Boolean = false
 ) {
-    val colors = colorsFor(action)
+    val colors = colorsFor(action, isDarkTheme)
     val toggled by remember(action) {
         derivedStateOf {
             action is CallAction.Toggleable && action.isToggled
@@ -241,9 +244,9 @@ private fun painterFor(action: CallAction): Painter = painterResource(
 )
 
 @Composable
-private fun colorsFor(action: CallAction): CallActionColors {
+private fun colorsFor(action: CallAction, isDarkTheme: Boolean): CallActionColors {
     return if (action is CallAction.HangUp) {
-        val backgroundColor = colorResource(id = R.color.kaleyra_color_hang_up_button)
+        val backgroundColor = if (isDarkTheme) kaleyra_hang_up_dark_color else kaleyra_hang_up_light_color
         CallActionDefaults.colors(
             backgroundColor = backgroundColor,
             iconColor = Color.White,

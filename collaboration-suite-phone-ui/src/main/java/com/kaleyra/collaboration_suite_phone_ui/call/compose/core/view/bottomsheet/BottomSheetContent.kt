@@ -86,6 +86,7 @@ internal fun BottomSheetContent(
     onScreenShareTargetClick: () -> Unit = { },
     onVirtualBackgroundClick: () -> Unit = {},
     contentVisible: Boolean = true,
+    isDarkTheme: Boolean = false,
     isTesting: Boolean = false
 ) {
     Column(modifier) {
@@ -122,6 +123,7 @@ internal fun BottomSheetContent(
                                 )
                                 onCallActionClick(action)
                             },
+                            isDarkTheme = isDarkTheme,
                             modifier = Modifier.testTag(CallActionsComponentTag)
                         )
                     }

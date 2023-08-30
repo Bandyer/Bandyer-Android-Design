@@ -22,6 +22,7 @@ internal fun CallActionsContent(
     items: ImmutableList<CallAction>,
     itemsPerRow: Int,
     onItemClick: (action: CallAction) -> Unit,
+    isDarkTheme: Boolean = false,
     enableBottomFade: Boolean = true,
     modifier: Modifier = Modifier
 ) {
@@ -29,6 +30,7 @@ internal fun CallActionsContent(
         items(items = items.value, key = { it::class.java.name }) { action ->
             CallAction(
                 action = action,
+                isDarkTheme = isDarkTheme,
                 onToggle = { onItemClick(action) },
                 modifier = Modifier
                     .fillMaxSize()

@@ -247,10 +247,11 @@ internal fun ThemedCallScreen(
     onActivityFinishing: () -> Unit
 ) {
     val theme by viewModel.theme.collectAsStateWithLifecycle(Theme())
-    CollaborationTheme(theme = theme, transparentSystemBars = true) {
+    CollaborationTheme(theme = theme, transparentSystemBars = true) { isDarkTheme ->
         CallScreen(
             shouldShowFileShareComponent = shouldShowFileShareComponent,
             isInPipMode = isInPipMode,
+            isDarkTheme = isDarkTheme,
             onEnterPip = onEnterPip,
             onPipAspectRatio = onPipAspectRatio ,
             onFileShareVisibility = onFileShareVisibility,
@@ -267,6 +268,7 @@ internal fun CallScreen(
     ),
     shouldShowFileShareComponent: Boolean,
     isInPipMode: Boolean,
+    isDarkTheme: Boolean,
     onEnterPip: () -> Unit,
     onPipAspectRatio: (Rational) -> Unit,
     onFileShareVisibility: (Boolean) -> Unit,
@@ -347,6 +349,7 @@ internal fun CallScreen(
         onBackPressed = onBackPressed,
         onFinishActivity = onFinishActivity,
         isInPipMode = isInPipMode,
+        isDarkTheme = isDarkTheme,
         onFileShareVisibility = onFileShareVisibility,
         onWhiteboardVisibility = onWhiteboardVisibility
     )
@@ -358,6 +361,7 @@ internal fun CallScreen(
     callScreenState: CallScreenState,
     onBackPressed: () -> Unit,
     isInPipMode: Boolean = false,
+    isDarkTheme: Boolean = false,
     onConfigurationChange: (Boolean) -> Unit,
     onThumbnailStreamClick: (String) -> Unit,
     onThumbnailStreamDoubleClick: (String) -> Unit,
@@ -443,6 +447,7 @@ internal fun CallScreen(
             onFullscreenStreamClick = onFullscreenStreamClick,
             onUserFeedback = onUserFeedback,
             onFinishActivity = onFinishActivity,
+            isDarkTheme = isDarkTheme,
             isTesting = isTesting
         )
     }
@@ -526,6 +531,7 @@ internal fun DefaultCallScreen(
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
     onFinishActivity: () -> Unit,
+    isDarkTheme: Boolean,
     isTesting: Boolean = false
 ) {
     val configuration = LocalConfiguration.current
@@ -568,6 +574,7 @@ internal fun DefaultCallScreen(
                     onScreenShareTargetClick = callScreenState::halfExpandSheet,
                     onVirtualBackgroundClick = callScreenState::halfExpandSheet,
                     contentVisible = !callScreenState.isSheetCollapsed,
+                    isDarkTheme = isDarkTheme,
                     modifier = Modifier.horizontalCutoutPadding(),
                     isTesting = isTesting
                 )

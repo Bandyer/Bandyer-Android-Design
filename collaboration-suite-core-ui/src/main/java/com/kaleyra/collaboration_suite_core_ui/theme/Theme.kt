@@ -119,7 +119,7 @@ private val KaleyraDarkColorTheme = darkColors(
 fun CollaborationTheme(
     theme: Theme,
     transparentSystemBars: Boolean = false,
-    content: @Composable () -> Unit
+    content: @Composable (isDarkTheme: Boolean) -> Unit
 ) {
     val systemUiController = rememberSystemUiController()
 
@@ -168,7 +168,7 @@ fun CollaborationTheme(
     MaterialTheme(
         colors = colors,
         typography = Typography(defaultFontFamily = theme.fontFamily),
-        content = content
+        content = { content(isDarkTheme) }
     )
 }
 
