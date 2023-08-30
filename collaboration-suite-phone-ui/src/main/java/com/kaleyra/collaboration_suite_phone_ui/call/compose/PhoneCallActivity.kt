@@ -9,9 +9,12 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Rational
 import android.view.WindowManager
+import android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.composethemeadapter.MdcTheme
@@ -57,6 +60,9 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
         }
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes.layoutInDisplayCutoutMode = LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        }
         setContent {
             ThemedCallScreen(
                 shouldShowFileShareComponent = shouldShowFileShare.collectAsStateWithLifecycle().value,

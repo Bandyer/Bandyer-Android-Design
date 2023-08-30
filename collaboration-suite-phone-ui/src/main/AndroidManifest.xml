@@ -45,13 +45,12 @@
             android:turnScreenOn="true"
             android:supportsPictureInPicture="true"
             android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.compose.PhoneCallActivity"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call"
             tools:targetApi="o_mr1" />
         <activity
             android:name=".chat.PhoneChatActivity"
             android:launchMode="singleTop"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".call.compose.fileshare.filepick.FilePickActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"

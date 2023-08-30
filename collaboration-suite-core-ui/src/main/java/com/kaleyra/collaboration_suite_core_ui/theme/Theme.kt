@@ -11,6 +11,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontFamily
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -117,7 +118,7 @@ private val KaleyraDarkColorTheme = darkColors(
 @Composable
 fun CollaborationTheme(
     theme: Theme,
-    adjustStatusBarContentColor: Boolean = true,
+    transparentSystemBars: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val systemUiController = rememberSystemUiController()
@@ -150,14 +151,18 @@ fun CollaborationTheme(
         )
     }
 
-    if (adjustStatusBarContentColor) {
-        SideEffect {
-            systemUiController.statusBarDarkContentEnabled = !isDarkTheme
-        }
-    }
-
     SideEffect {
-        systemUiController.navigationBarDarkContentEnabled = !isDarkTheme
+        systemUiController.setStatusBarColor(
+            color = if (transparentSystemBars) Color.Transparent else colors.primaryVariant,
+            darkIcons = !transparentSystemBars && !isDarkTheme,
+            transformColorForLightContent = { Color.Black }
+        )
+        systemUiController.setNavigationBarColor(
+            color = if (transparentSystemBars) Color.Transparent else colors.primaryVariant,
+            darkIcons = !isDarkTheme,
+            navigationBarContrastEnforced = false,
+            transformColorForLightContent = { Color.Black }
+        )
     }
 
     MaterialTheme(

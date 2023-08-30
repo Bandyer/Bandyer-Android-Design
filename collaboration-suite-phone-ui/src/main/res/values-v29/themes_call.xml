@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.V29" parent="KaleyraCollaborationSuiteUI.Theme.Call.V27">
-        <item name="android:enforceNavigationBarContrast">false</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call" parent="KaleyraCollaborationSuiteUI.Theme.Call.V29" />
-
-</resources>

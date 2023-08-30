@@ -216,12 +216,7 @@ fun Context.getRingingActionItemStyle(@StyleableRes styleAttribute: Int): Int {
  * @param styleAttribute the attribute for which you want to retrieve the style
  * @return The style relative to the styleAttribute
  */
-fun Context.getCallThemeAttribute(@StyleableRes styleAttribute: Int): Int =
-    this.getThemeAttribute(
-        R.style.KaleyraCollaborationSuiteUI_Theme_Call,
-        R.styleable.KaleyraCollaborationSuiteUI_Theme_Call,
-        styleAttribute
-    )
+fun Context.getCallThemeAttribute(@StyleableRes styleAttribute: Int): Int = 0
 
 /**
  * Get the style related to a whiteboard dialog attribute

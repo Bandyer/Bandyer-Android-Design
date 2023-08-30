@@ -46,11 +46,4 @@
         <attr name="kaleyra_smartGlassDialogMenuStyle" format="reference" />
     </declare-styleable>
 
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call.V21" parent="android:Theme.Material.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/black</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call" parent="KaleyraCollaborationSuiteUI.Theme.Call.V21" />
-
 </resources>

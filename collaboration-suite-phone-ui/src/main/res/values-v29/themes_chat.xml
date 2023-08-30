@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="KaleyraCollaborationSuiteUI.Theme.Chat.V29" parent="KaleyraCollaborationSuiteUI.Theme.Chat.V27">
-        <item name="android:enforceNavigationBarContrast">false</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Theme.Chat" parent="KaleyraCollaborationSuiteUI.Theme.Chat.V29" />
-</resources>

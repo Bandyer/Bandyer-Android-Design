@@ -247,7 +247,7 @@ internal fun ThemedCallScreen(
     onActivityFinishing: () -> Unit
 ) {
     val theme by viewModel.theme.collectAsStateWithLifecycle(Theme())
-    CollaborationTheme(theme = theme, adjustStatusBarContentColor = false) {
+    CollaborationTheme(theme = theme, transparentSystemBars = true) {
         CallScreen(
             shouldShowFileShareComponent = shouldShowFileShareComponent,
             isInPipMode = isInPipMode,
