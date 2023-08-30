@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontFamily
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -139,15 +140,11 @@ fun CollaborationTheme(
     val colors = when {
         isDarkTheme -> KaleyraDarkColorTheme.copy(
             primary = darkColors.primary,
-            onPrimary = onColorFor(darkColors.primary),
-            secondary = darkColors.secondary,
-            onSecondary = onColorFor(darkColors.secondary)
+            secondary = darkColors.secondary
         )
         else -> KaleyraLightColorTheme.copy(
             primary = lightColors.primary,
-            onPrimary = onColorFor(lightColors.primary),
-            secondary = lightColors.secondary,
-            onSecondary = onColorFor(lightColors.secondary)
+            secondary = lightColors.secondary
         )
     }
 
@@ -187,11 +184,6 @@ fun KaleyraTheme(
         typography = Typography(defaultFontFamily = KaleyraFontFamily.fontFamily),
         content = content
     )
-}
-
-private fun onColorFor(color: Color): Color {
-    val argb = color.toArgb()
-    return if (MaterialColors.isColorLight(argb)) Color.Black else Color.White
 }
 
 private val TermsDarkColorTheme = darkColors(
