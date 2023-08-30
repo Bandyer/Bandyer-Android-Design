@@ -41,6 +41,10 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_answer_dark_color
+import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_answer_light_color
+import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_hang_up_dark_color
+import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_hang_up_light_color
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 const val RingingContentTag = "RingingContentTag"
@@ -53,6 +57,7 @@ internal fun RingingComponent(
     viewModel: RingingViewModel = viewModel(
         factory = RingingViewModel.provideFactory(::requestConfiguration)
     ),
+    isDarkTheme: Boolean = false,
     onBackPressed: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -64,6 +69,7 @@ internal fun RingingComponent(
         onBackPressed = onBackPressed,
         onAnswerClick = viewModel::accept,
         onDeclineClick = viewModel::decline,
+        isDarkTheme = isDarkTheme,
         modifier = modifier
     )
 }
@@ -74,13 +80,12 @@ internal fun RingingComponent(
     uiState: RingingUiState,
     modifier: Modifier = Modifier,
     userMessage: UserMessage? = null,
+    isDarkTheme: Boolean = false,
     tapToAnswerTimerMillis: Long = TapToAnswerTimerMillis,
     onBackPressed: () -> Unit,
     onAnswerClick: () -> Unit,
     onDeclineClick: () -> Unit
 ) {
-    val isDarkTheme = isSystemInDarkTheme()
-
     PreCallComponent(
         uiState = uiState,
         userMessage = userMessage,
@@ -130,13 +135,13 @@ internal fun RingingComponent(
                     RingingActionButton(
                         painter = painterResource(id = R.drawable.ic_kaleyra_decline),
                         text = stringResource(id = R.string.kaleyra_ringing_decline),
-                        backgroundColor = colorResource(id = if (isDarkTheme) R.color.kaleyra_color_hang_up_button_night else R.color.kaleyra_color_hang_up_button),
+                        backgroundColor = if (isDarkTheme) kaleyra_hang_up_dark_color else kaleyra_hang_up_light_color,
                         onClick = onDeclineClick
                     )
                     RingingActionButton(
                         painter = painterResource(id = R.drawable.ic_kaleyra_answer),
                         text = stringResource(id = R.string.kaleyra_ringing_answer),
-                        backgroundColor = colorResource(id = if (isDarkTheme) R.color.kaleyra_color_answer_button_night else R.color.kaleyra_color_answer_button),
+                        backgroundColor = if (isDarkTheme) kaleyra_answer_dark_color else kaleyra_answer_light_color,
                         onClick = onAnswerClick
                     )
                 }

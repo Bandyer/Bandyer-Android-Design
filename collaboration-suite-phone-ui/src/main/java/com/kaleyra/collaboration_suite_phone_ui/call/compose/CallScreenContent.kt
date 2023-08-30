@@ -20,6 +20,7 @@ internal fun CallScreenContent(
     onBackPressed: () -> Unit,
     onStreamFullscreenClick: (String?) -> Unit,
     shouldShowUserMessages: Boolean = true,
+    isDarkTheme: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(
@@ -37,7 +38,7 @@ internal fun CallScreenContent(
             }
         }
         when (targetState) {
-            0 -> RingingComponent(onBackPressed = onBackPressed)
+            0 -> RingingComponent(onBackPressed = onBackPressed, isDarkTheme = isDarkTheme)
             1 -> DialingComponent(onBackPressed = onBackPressed)
             else -> CallComponent(
                 shouldShowUserMessages = shouldShowUserMessages,

@@ -1,6 +1,10 @@
 package com.kaleyra.collaboration_suite_core_ui.theme
 import androidx.compose.ui.graphics.Color
 
+// CUSTOM COLORS
+val kaleyra_answer_light_color = Color(0xff7ed321)
+val kaleyra_answer_dark_color = Color(0xff48a100)
+
 val kaleyra_hang_up_light_color = Color(0xffff0000)
 val kaleyra_hang_up_dark_color = Color(0xffc20000)
 

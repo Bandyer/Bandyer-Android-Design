@@ -592,7 +592,8 @@ internal fun DefaultCallScreen(
                     maxWidth = maxWidth,
                     onBackPressed = onBackPressed,
                     onStreamFullscreenClick = onFullscreenStreamClick,
-                    shouldShowUserMessages = shouldShowUserMessages
+                    shouldShowUserMessages = shouldShowUserMessages,
+                    isDarkTheme = isDarkTheme
                 )
             }
         )
