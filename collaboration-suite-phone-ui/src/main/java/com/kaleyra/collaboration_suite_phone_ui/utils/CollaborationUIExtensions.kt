@@ -27,7 +27,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.PhoneChatActivity
  *
  * @param configuration representing a set of info necessary to instantiate the communication
  */
-fun CollaborationUI.configurePhoneUI(
+fun CollaborationUI.configure(
     configuration: Collaboration.Configuration
 ) = configure(
     configuration,

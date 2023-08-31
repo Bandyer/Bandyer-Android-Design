@@ -29,7 +29,7 @@ import com.kaleyra.collaboration_suite_glass_ui.termsandconditions.GlassTermsAnd
  *
  * @param configuration representing a set of info necessary to instantiate the communication
  */
-fun CollaborationUI.configureGlassUI(
+fun CollaborationUI.configure(
     configuration: Collaboration.Configuration
 ) = configure(
     configuration,
