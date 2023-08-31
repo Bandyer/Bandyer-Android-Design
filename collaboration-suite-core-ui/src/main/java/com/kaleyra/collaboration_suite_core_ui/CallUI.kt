@@ -21,15 +21,11 @@ import androidx.annotation.Keep
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Call.PreferredType
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.mapToStateFlow
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.parcelize.Parcelize
-import java.io.File
 
 /**
  * The Call UI
@@ -88,6 +84,16 @@ class CallUI(
                     ShowParticipants,
                     OpenWhiteboard.ViewOnly,
                     OpenWhiteboard.Full
+                )
+            }
+
+            val default by lazy {
+                setOf(
+                    ToggleMicrophone,
+                    ToggleCamera,
+                    SwitchCamera,
+                    HangUp,
+                    Audio
                 )
             }
         }

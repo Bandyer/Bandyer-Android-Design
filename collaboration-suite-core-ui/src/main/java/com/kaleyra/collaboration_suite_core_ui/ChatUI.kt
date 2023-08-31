@@ -70,6 +70,14 @@ class ChatUI(
                     CreateCall(preferredType = Call.PreferredType.audioVideo())
                 )
             }
+
+            val default by lazy {
+                setOf(
+                    ShowParticipants,
+                    CreateCall(preferredType = Call.PreferredType.audioUpgradable()),
+                    CreateCall(preferredType = Call.PreferredType.audioVideo())
+                )
+            }
         }
 
         /**
