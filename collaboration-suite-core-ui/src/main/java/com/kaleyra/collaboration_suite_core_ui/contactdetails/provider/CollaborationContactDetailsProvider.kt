@@ -5,6 +5,8 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.Cac
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedLocalContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedRemoteContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetails
+import com.kaleyra.collaboration_suite_core_ui.model.UserDetails
+import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -25,7 +27,7 @@ internal class CollaborationContactDetailsProvider(private val ioDispatcher: Cor
     private val defaultProvider: ContactDetailsProvider by lazy { CachedDefaultContactDetailsProvider() }
 
     private var localContactDetailsProvider: CachedLocalContactDetailsProvider? = null
-        get() = with(CollaborationUI.usersDescriptionProvider) {
+        get() = with(CollaborationUI.userDetailsProvider) {
             field?.takeIf { it.userDetailsProvider == this } ?: this?.let { CachedLocalContactDetailsProvider(it, ioDispatcher) }.apply { field = this }
         }
 

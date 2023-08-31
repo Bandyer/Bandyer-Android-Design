@@ -33,8 +33,8 @@ internal class CachedLocalContactDetailsProviderTest {
         )
         assertEqualsContactDetails(newExpected, newResult)
 
-        coVerify(exactly = 1) { usersDescriptionProvider.userDetailsRequested(listOf("userId1")) }
-        coVerify(exactly = 1) { usersDescriptionProvider.userDetailsRequested(listOf("userId2")) }
+        coVerify(exactly = 1) { usersDescriptionProvider(listOf("userId1")) }
+        coVerify(exactly = 1) { usersDescriptionProvider(listOf("userId2")) }
     }
 
 }

@@ -21,7 +21,7 @@ internal class LocalContactDetailsProvider(
         runCatching {
             withTimeout(timeout) {
                 withContext(ioDispatcher) {
-                    val userDetails = userDetailsProvider.userDetailsRequested(userIds.toList()).getOrNull()
+                    val userDetails = userDetailsProvider(userIds.toList()).getOrNull()
                     val contactsDetails = userDetails?.map { (userId, name, image) ->
                         ContactDetails(
                             userId = userId,

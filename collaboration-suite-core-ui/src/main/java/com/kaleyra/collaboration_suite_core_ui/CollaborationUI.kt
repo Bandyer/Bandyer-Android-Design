@@ -68,7 +68,7 @@ object CollaborationUI {
      * Users description to be used for the UI
      */
     @get:Synchronized @set:Synchronized
-    var usersDescriptionProvider: UserDetailsProvider? = null
+    var userDetailsProvider: UserDetailsProvider? = null
 
     /**
      * Phone box

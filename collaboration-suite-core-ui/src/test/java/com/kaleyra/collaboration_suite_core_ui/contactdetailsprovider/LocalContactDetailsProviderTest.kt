@@ -6,8 +6,6 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.ContactDet
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.uriUser1
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.uriUser2
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.usersDescriptionProviderMock
-import com.kaleyra.collaboration_suite_core_ui.model.UserDetails
-import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -97,9 +95,7 @@ internal open class LocalContactDetailsProviderTest {
     @Test
     fun `test contacts details fetch result failure`() = runTest(testDispatcher) {
         val provider = LocalContactDetailsProvider(
-            userDetailsProvider = object : UserDetailsProvider {
-                override suspend fun userDetailsRequested(userIds: List<String>): Result<List<UserDetails>> = Result.failure(Exception())
-            },
+            userDetailsProvider = { Result.failure(Exception()) },
             ioDispatcher = testDispatcher
         )
         val result = provider.fetchContactsDetails("userId1", "userId2")
