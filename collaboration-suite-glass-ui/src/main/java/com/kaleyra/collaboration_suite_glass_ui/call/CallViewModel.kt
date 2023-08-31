@@ -111,7 +111,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
     val duration: SharedFlow<Long> =
         call.flatMapLatest { it.time.elapsed }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
-    val timeToLive: SharedFlow<Long?> = call.flatMapLatest { it.time.residual }
+    val timeToLive: SharedFlow<Long?> = call.flatMapLatest { it.time.remaining }
         .shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
     val participants: SharedFlow<CallParticipants> =
