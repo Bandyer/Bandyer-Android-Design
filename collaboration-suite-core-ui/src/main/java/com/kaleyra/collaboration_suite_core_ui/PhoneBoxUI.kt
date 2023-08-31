@@ -114,7 +114,7 @@ class PhoneBoxUI(
      *
      * @param url to join
      */
-    fun join(url: String): Result<CallUI> = create(url).onSuccess { it.connect() }
+    fun joinUrl(url: String): Result<CallUI> = create(url).onSuccess { it.connect() }
 
     /**
      * @suppress
