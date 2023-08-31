@@ -15,16 +15,28 @@
  */
 android {
 
-    compileSdkVersion catalog.versions.sdkVersion.get().toInteger()
-    buildToolsVersion catalog.versions.toolsVersion.get()
+    // TODO restore the previous code when the compileSdkVersion will be updated
+    compileSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
+    buildToolsVersion sampleAppCatalog.versions.sampleAppToolsVersion.get()
 
     defaultConfig {
-        minSdkVersion catalog.versions.minSdkVersion.get()
-        targetSdkVersion catalog.versions.sdkVersion.get().toInteger()
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdkVersion sampleAppCatalog.versions.sampleAppMinSdkVersion.get().toInteger()
+        targetSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
         versionCode 1
-        versionName moduleVersion
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
+//
+//    compileSdkVersion catalog.versions.sdkVersion.get().toInteger()
+//    buildToolsVersion catalog.versions.toolsVersion.get()
+//
+//    defaultConfig {
+//        minSdkVersion catalog.versions.minSdkVersion.get()
+//        targetSdkVersion catalog.versions.sdkVersion.get().toInteger()
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        versionCode 1
+//        versionName moduleVersion
+//    }
 
     buildTypes {
         release {
