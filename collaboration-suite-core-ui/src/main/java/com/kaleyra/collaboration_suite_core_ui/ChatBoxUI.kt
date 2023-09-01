@@ -61,10 +61,6 @@ class ChatBoxUI(
         it.map { chat -> getOrCreateChatUI(chat) }
     }.shareIn(chatScope, SharingStarted.Eagerly, 1)
 
-    override val activeChats: SharedFlow<List<ChatUI>> = chatBox.activeChats.map {
-        it.map { chat -> getOrCreateChatUI(chat) }
-    }.shareIn(chatScope, SharingStarted.Eagerly, 1)
-
     /**
      * WithUI flag, set to true to show the chat notifications, false otherwise
      */
