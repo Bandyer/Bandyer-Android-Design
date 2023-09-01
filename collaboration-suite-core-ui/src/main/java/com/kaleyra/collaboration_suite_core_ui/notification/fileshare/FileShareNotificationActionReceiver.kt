@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_core_ui.notification.fileshare
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.CollaborationBroadcastReceiver
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate.Companion.EXTRA_DOWNLOAD_ID
 import com.kaleyra.collaboration_suite_core_ui.onCallReady
@@ -33,7 +33,7 @@ class FileShareNotificationActionReceiver internal constructor(val dispatcher: C
         CoroutineScope(dispatcher).launch {
             requestConfigure().let {
                 if (!it) return@let context.goToLaunchingActivity()
-                CollaborationUI.onCallReady(this) { call ->
+                KaleyraVideo.onCallReady(this) { call ->
                     when (intent.action) {
                         ACTION_DOWNLOAD -> {
                             val downloadId = intent.getStringExtra(EXTRA_DOWNLOAD_ID) ?: return@onCallReady

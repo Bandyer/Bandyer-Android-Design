@@ -46,10 +46,10 @@ sealed class Configuration {
 }
 
 suspend fun requestConfiguration(): Configuration {
-    if (!CollaborationUI.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
-    return if (CollaborationUI.isConfigured) Configuration.Success(CollaborationUI.phoneBox,
-                                                                   CollaborationUI.chatBox,
-                                                                   CollaborationUI.collaboration?.company ?: NoOpCompany(),
-                                                                   CollaborationUI.theme)
+    if (!KaleyraVideo.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
+    return if (KaleyraVideo.isConfigured) Configuration.Success(KaleyraVideo.phoneBox,
+                                                                   KaleyraVideo.chatBox,
+                                                                   KaleyraVideo.collaboration?.company ?: NoOpCompany(),
+                                                                   KaleyraVideo.companyTheme)
     else Configuration.Failure
 }

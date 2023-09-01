@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedDefaultContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedLocalContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedRemoteContactDetailsProvider
@@ -9,7 +9,6 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.Collabora
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.ContactDetailsTestHelper.assertEqualsContactDetails
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.usersDescriptionProviderMock
 import com.kaleyra.collaboration_suite_core_ui.model.UserDetails
-import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -45,7 +44,7 @@ class CollaborationContactDetailsProviderTest {
 
     @Before
     fun setUp() {
-        mockkObject(CollaborationUI)
+        mockkObject(KaleyraVideo)
     }
 
     @After
@@ -56,8 +55,8 @@ class CollaborationContactDetailsProviderTest {
     @Test
     fun `local provider is used as primary provider`() = runTest(testDispatcher) {
         val usersDescriptionProvider = usersDescriptionProviderMock(fetchDelay = 1500L)
-        every { CollaborationUI.userDetailsProvider } returns usersDescriptionProvider
-        every { CollaborationUI.collaboration } returns mockk(relaxed = true)
+        every { KaleyraVideo.userDetailsProvider } returns usersDescriptionProvider
+        every { KaleyraVideo.collaboration } returns mockk(relaxed = true)
         val provider = CollaborationContactDetailsProvider(testDispatcher)
         val localProvider = CachedLocalContactDetailsProvider(usersDescriptionProvider, testDispatcher)
 
@@ -69,8 +68,8 @@ class CollaborationContactDetailsProviderTest {
 
     @Test
     fun `local provider is not available, the remote provider is used as fallback`() = runTest(testDispatcher) {
-        every { CollaborationUI.userDetailsProvider } returns null
-        every { CollaborationUI.collaboration } returns mockk {
+        every { KaleyraVideo.userDetailsProvider } returns null
+        every { KaleyraVideo.collaboration } returns mockk {
             every { this@mockk.contacts } returns contactsMock
         }
         val provider = CollaborationContactDetailsProvider(testDispatcher)
@@ -84,8 +83,8 @@ class CollaborationContactDetailsProviderTest {
 
     @Test
     fun `both local and remote providers are not available, the default provider is used as fallback`() = runTest(testDispatcher) {
-        every { CollaborationUI.userDetailsProvider } returns null
-        every { CollaborationUI.collaboration } returns null
+        every { KaleyraVideo.userDetailsProvider } returns null
+        every { KaleyraVideo.collaboration } returns null
         val provider = CollaborationContactDetailsProvider(testDispatcher)
         val defaultProvider = CachedDefaultContactDetailsProvider()
 
@@ -109,8 +108,8 @@ class CollaborationContactDetailsProviderTest {
             }
             Result.success(result)
         }
-        every { CollaborationUI.userDetailsProvider } returns usersDescriptionProvider
-        every { CollaborationUI.collaboration } returns mockk {
+        every { KaleyraVideo.userDetailsProvider } returns usersDescriptionProvider
+        every { KaleyraVideo.collaboration } returns mockk {
             every { this@mockk.contacts } returns contactsMock
         }
         val provider = CollaborationContactDetailsProvider(testDispatcher)
@@ -140,8 +139,8 @@ class CollaborationContactDetailsProviderTest {
             Result.success(result)
         }
 
-        every { CollaborationUI.userDetailsProvider } returns usersDescriptionProvider
-        every { CollaborationUI.collaboration } returns mockk {
+        every { KaleyraVideo.userDetailsProvider } returns usersDescriptionProvider
+        every { KaleyraVideo.collaboration } returns mockk {
             every { this@mockk.contacts } returns contactsMock
         }
         val provider = CollaborationContactDetailsProvider(testDispatcher)
@@ -161,8 +160,8 @@ class CollaborationContactDetailsProviderTest {
     @Test
     fun `users description provider changes, the local provider is updated`() = runTest(testDispatcher) {
         val usersDescriptionProvider = usersDescriptionProviderMock()
-        every { CollaborationUI.userDetailsProvider } returns usersDescriptionProvider
-        every { CollaborationUI.collaboration } returns mockk(relaxed = true)
+        every { KaleyraVideo.userDetailsProvider } returns usersDescriptionProvider
+        every { KaleyraVideo.collaboration } returns mockk(relaxed = true)
         val provider = CollaborationContactDetailsProvider(testDispatcher)
         val localProvider = CachedLocalContactDetailsProvider(usersDescriptionProvider, testDispatcher)
         val userIds = arrayOf("userId1", "userId2")
@@ -175,7 +174,7 @@ class CollaborationContactDetailsProviderTest {
         val newUsersDescription = { ids: List<String> ->
             Result.success(ids.map { UserDetails(it, it, uriMock) })
         }
-        every { CollaborationUI.userDetailsProvider } returns newUsersDescription
+        every { KaleyraVideo.userDetailsProvider } returns newUsersDescription
         val newLocalProvider = CachedLocalContactDetailsProvider(newUsersDescription, testDispatcher)
 
         val newResult = provider.fetchContactsDetails(*userIds)
@@ -186,8 +185,8 @@ class CollaborationContactDetailsProviderTest {
     @Test
     fun `collaboration changes, the remote provider updated`() = runTest(testDispatcher) {
         val usersDescriptionProvider = usersDescriptionProviderMock(Exception())
-        every { CollaborationUI.userDetailsProvider } returns usersDescriptionProvider
-        every { CollaborationUI.collaboration } returns mockk {
+        every { KaleyraVideo.userDetailsProvider } returns usersDescriptionProvider
+        every { KaleyraVideo.collaboration } returns mockk {
             every { this@mockk.contacts } returns contactsMock
         }
         val provider = CollaborationContactDetailsProvider(testDispatcher)
@@ -213,7 +212,7 @@ class CollaborationContactDetailsProviderTest {
                 )
             )
         )
-        every { CollaborationUI.collaboration } returns mockk {
+        every { KaleyraVideo.collaboration } returns mockk {
             every { this@mockk.contacts } returns newContacts
         }
         val newRemoteProvider = CachedRemoteContactDetailsProvider(newContacts)

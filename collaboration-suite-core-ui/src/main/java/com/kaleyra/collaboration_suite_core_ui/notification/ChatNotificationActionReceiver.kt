@@ -23,7 +23,7 @@ import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.Message.Content.Text
 import com.kaleyra.collaboration_suite.chatbox.Message.State.Received
 import com.kaleyra.collaboration_suite_core_ui.CollaborationBroadcastReceiver
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
@@ -76,7 +76,7 @@ class ChatNotificationActionReceiver : CollaborationBroadcastReceiver() {
 
     private suspend fun getChat(intent: Intent): Chat? =
         intent.extras?.getString("chatId")?.let { chatId ->
-            CollaborationUI.chatBox.chats.first().firstOrNull { it.id == chatId }
+            KaleyraVideo.chatBox.chats.first().firstOrNull { it.id == chatId }
         }
 
     private fun getReply(intent: Intent): CharSequence? =

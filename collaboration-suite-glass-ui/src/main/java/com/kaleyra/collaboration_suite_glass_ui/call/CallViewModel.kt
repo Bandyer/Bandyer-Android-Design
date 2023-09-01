@@ -35,7 +35,7 @@ import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
@@ -302,7 +302,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
     private val chat: StateFlow<ChatUI?> =
         participants
             .filter { it.others.isNotEmpty() }
-            .map { CollaborationUI.chatBox.create(it.others.map { it.userId }).getOrNull() }
+            .map { KaleyraVideo.chatBox.create(it.others.map { it.userId }).getOrNull() }
             .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val areThereNewMessages = chat
@@ -399,7 +399,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
         currentLens.zoom.value?.tryZoom(value)
     }
 
-    fun showChat(context: Context) = chat.value?.let { CollaborationUI.chatBox.show(context, it) }
+    fun showChat(context: Context) = chat.value?.let { KaleyraVideo.chatBox.show(context, it) }
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,

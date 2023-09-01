@@ -35,11 +35,11 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 /**
- * Collaboration UI
+ * KaleyraVideo
  *
- * This object allows the usage of a Collaboration UI
+ * This object allows the usage of a KaleyraVideo
  */
-object CollaborationUI {
+object KaleyraVideo {
 
     /**
      * Collaboration
@@ -96,9 +96,12 @@ object CollaborationUI {
 
     val companyName: SharedFlow<String> by lazy { _company.name }
 
-    val theme: SharedFlow<Theme> by lazy { _company.theme }
+    val companyTheme: SharedFlow<Theme> by lazy { _company.theme }
 
-    fun setTheme(theme: Theme) = _company.setTheme(theme)
+    var theme: Theme? = null
+        set(value) {
+            field = value?.apply { _company.setTheme(this) }
+        }
 
     /**
      * Configure
@@ -170,7 +173,7 @@ object CollaborationUI {
     }
 }
 
-internal fun CollaborationUI.onCallReady(scope: CoroutineScope, block: (call: CallUI) -> Unit) {
+internal fun KaleyraVideo.onCallReady(scope: CoroutineScope, block: (call: CallUI) -> Unit) {
     phoneBox.call
         .take(1)
         .onEach { block.invoke(it) }

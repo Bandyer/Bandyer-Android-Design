@@ -32,7 +32,7 @@ import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
@@ -201,7 +201,7 @@ internal class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEv
             isLayoutExpanded = true
             binding.kaleyraMessage.maxLines = Int.MAX_VALUE
             val chat = getChat(intent)
-            chat?.let { CollaborationUI.chatBox.show(this@GlassChatNotificationActivity, it) }
+            chat?.let { KaleyraVideo.chatBox.show(this@GlassChatNotificationActivity, it) }
             finishAndRemoveTask()
         }
     }
@@ -225,7 +225,7 @@ internal class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEv
     private fun getLastReceivedMessage(chat: Chat): OtherMessage? = chat.messages.replayCache[0].other.firstOrNull { it.state.value is Message.State.Received }
 
     private fun getChat(intent: Intent): ChatUI? = intent.extras?.getString("chatId")?.let { chatID ->
-        CollaborationUI.chatBox.chats.replayCache.flatten().firstOrNull { it.id == chatID }
+        KaleyraVideo.chatBox.chats.replayCache.flatten().firstOrNull { it.id == chatID }
     }
 
     private companion object {

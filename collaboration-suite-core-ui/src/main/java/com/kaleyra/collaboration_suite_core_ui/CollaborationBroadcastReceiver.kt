@@ -28,7 +28,7 @@ abstract class CollaborationBroadcastReceiver : BroadcastReceiver() {
      * @return true if is configured, false otherwise
      **/
     suspend fun requestConfigure(): Boolean {
-        if (!CollaborationUI.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
-        return CollaborationUI.isConfigured
+        if (!KaleyraVideo.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
+        return KaleyraVideo.isConfigured
     }
 }

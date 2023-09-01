@@ -19,7 +19,7 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.CollaborationBroadcastReceiver
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Companion.CALL_NOTIFICATION_ID
 import com.kaleyra.collaboration_suite_core_ui.onCallReady
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
@@ -67,7 +67,7 @@ class CallNotificationActionReceiver : CollaborationBroadcastReceiver() {
                     NotificationManager.cancel(CALL_NOTIFICATION_ID)
                     return@let ContextRetainer.context.goToLaunchingActivity()
                 }
-                CollaborationUI.onCallReady(this) { call ->
+                KaleyraVideo.onCallReady(this) { call ->
                     when (intent.action) {
                         ACTION_ANSWER            -> call.connect()
                         ACTION_HANGUP            -> call.end()

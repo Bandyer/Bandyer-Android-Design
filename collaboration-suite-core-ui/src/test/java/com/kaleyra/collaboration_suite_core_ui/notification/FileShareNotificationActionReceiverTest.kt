@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationActionReceiver.Companion.ACTION_DOWNLOAD
@@ -48,7 +48,7 @@ internal class FileShareNotificationActionReceiverTest {
         mockkObject(ContextExtensions)
         mockkObject(NotificationManager)
         mockkStatic("com.kaleyra.collaboration_suite_core_ui.CollaborationUIKt")
-        every { CollaborationUI.onCallReady(any(), captureLambda()) } answers { lambda<(CallUI) -> Unit>().invoke(callMock) }
+        every { KaleyraVideo.onCallReady(any(), captureLambda()) } answers { lambda<(CallUI) -> Unit>().invoke(callMock) }
         every { contextMock.goToLaunchingActivity() } returns Unit
         every { callMock.sharedFolder.download(any()) } returns mockk(relaxed = true)
         every { NotificationManager.cancel(any()) } returns Unit

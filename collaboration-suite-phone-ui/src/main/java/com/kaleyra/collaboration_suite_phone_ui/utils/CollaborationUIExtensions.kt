@@ -17,7 +17,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.utils
 
 import com.kaleyra.collaboration_suite.Collaboration
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.PhoneCallActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.PhoneTermsAndConditionsActivity
 import com.kaleyra.collaboration_suite_phone_ui.chat.PhoneChatActivity
@@ -27,7 +27,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.PhoneChatActivity
  *
  * @param configuration representing a set of info necessary to instantiate the communication
  */
-fun CollaborationUI.configure(
+fun KaleyraVideo.configure(
     configuration: Collaboration.Configuration
 ) = configure(
     configuration,

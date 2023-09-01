@@ -134,7 +134,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
      * @param callActivityClazz The call activity class
      */
     private fun setUpCall(callActivityClazz: Class<*>) {
-        CollaborationUI.onCallReady(lifecycleScope) { call ->
+        KaleyraVideo.onCallReady(lifecycleScope) { call ->
             val callScope = MainScope() + CoroutineName("CallScope(callId = ${call.id})")
 
             addCameraStream(call)
