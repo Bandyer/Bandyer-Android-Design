@@ -93,21 +93,21 @@ sealed interface Message {
     }
 
     companion object {
-        fun com.kaleyra.collaboration_suite.chatbox.Message.toUiMessage(): Message {
-            val text = (content as? com.kaleyra.collaboration_suite.chatbox.Message.Content.Text)?.message ?: ""
+        fun com.kaleyra.collaboration_suite.conversation.Message.toUiMessage(): Message {
+            val text = (content as? com.kaleyra.collaboration_suite.conversation.Message.Content.Text)?.message ?: ""
             val time = TimestampUtils.parseTime(creationDate.time)
 
-            return if (this is com.kaleyra.collaboration_suite.chatbox.OtherMessage)
+            return if (this is com.kaleyra.collaboration_suite.conversation.OtherMessage)
                 OtherMessage(id, text, time)
              else
                 MyMessage(id, text, time, state.map { state -> mapToUiState(state) })
         }
 
 
-        private fun mapToUiState(state: com.kaleyra.collaboration_suite.chatbox.Message.State): State =
+        private fun mapToUiState(state: com.kaleyra.collaboration_suite.conversation.Message.State): State =
             when (state) {
-                is com.kaleyra.collaboration_suite.chatbox.Message.State.Sending -> State.Sending
-                is com.kaleyra.collaboration_suite.chatbox.Message.State.Sent -> State.Sent
+                is com.kaleyra.collaboration_suite.conversation.Message.State.Sending -> State.Sending
+                is com.kaleyra.collaboration_suite.conversation.Message.State.Sent -> State.Sent
                 else -> State.Read
             }
     }

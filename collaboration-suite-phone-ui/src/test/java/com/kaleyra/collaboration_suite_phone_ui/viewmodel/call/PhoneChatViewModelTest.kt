@@ -1,9 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 
-import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatBoxMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.conversationMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatParticipantsMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.messagesUIMock
@@ -37,7 +37,7 @@ class PhoneChatViewModelTest {
     @Before
     fun setUp() {
         mockkObject(CallUserMessagesProvider)
-        viewModel = spyk(PhoneChatViewModel { Configuration.Success(conferenceMock, chatBoxMock,  mockk(relaxed = true)) })
+        viewModel = spyk(PhoneChatViewModel { Configuration.Success(conferenceMock, conversationMock,  mockk(relaxed = true)) })
         every { viewModel.chat } returns MutableStateFlow(chatMock)
         every { viewModel.messages } returns MutableStateFlow(messagesUIMock)
         every { messagesUIMock.other } returns listOf(otherUnreadMessageMock2, otherUnreadMessageMock1, otherReadMessageMock)

@@ -154,12 +154,12 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
     }
 
     fun showChat(context: Context) {
-        val chatBox = chatBox.getValue()
+        val conversation = conversation.getValue()
         val call = call.getValue()
         val participants = call?.participants?.getValue()
-        if (chatBox == null || participants == null) return
+        if (conversation == null || participants == null) return
         val companyId = company.getValue()?.id?.getValue()
-        chatBox.chat(
+        conversation.chat(
             context = context,
             userIDs = participants.others.filter { it.userId != companyId }.map { it.userId }
         )

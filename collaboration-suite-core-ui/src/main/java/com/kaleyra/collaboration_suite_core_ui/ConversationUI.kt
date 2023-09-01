@@ -17,9 +17,9 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.Context
-import com.kaleyra.collaboration_suite.chatbox.Chat
-import com.kaleyra.collaboration_suite.chatbox.ChatBox
-import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.conversation.Chat
+import com.kaleyra.collaboration_suite.conversation.Conversation
+import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,18 +35,18 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
 /**
- * The chat box UI
+ * The conversation UI
  *
- * @property chatBox The ChatBox delegate
+ * @property conversation The Conversation delegate
  * @property chatActivityClazz The chat activity Class<*>
  * @property chatCustomNotificationActivityClazz The custom chat notification activity Class<*>
  * @constructor
  */
-class ChatBoxUI(
-    private val chatBox: ChatBox,
+class ConversationUI(
+    private val conversation: Conversation,
     private val chatActivityClazz: Class<*>,
     private val chatCustomNotificationActivityClazz: Class<*>? = null
-) : ChatBox by chatBox {
+) : Conversation by conversation {
 
     private var chatScope = CoroutineScope(Dispatchers.IO)
 
@@ -57,7 +57,7 @@ class ChatBoxUI(
     /**
      * @suppress
      */
-    override val chats: SharedFlow<List<ChatUI>> = chatBox.chats.map {
+    override val chats: SharedFlow<List<ChatUI>> = conversation.chats.map {
         it.map { chat -> getOrCreateChatUI(chat) }
     }.shareIn(chatScope, SharingStarted.Eagerly, 1)
 
@@ -79,12 +79,12 @@ class ChatBoxUI(
     /**
      * @suppress
      */
-    override fun connect() = chatBox.connect()
+    override fun connect() = conversation.connect()
 
     /**
      * @suppress
      */
-    override fun disconnect(clearSavedData: Boolean) = chatBox.disconnect(clearSavedData)
+    override fun disconnect(clearSavedData: Boolean) = conversation.disconnect(clearSavedData)
 
     internal fun dispose(clearSavedData: Boolean) {
         disconnect(clearSavedData)
@@ -107,7 +107,7 @@ class ChatBoxUI(
     /**
      * @suppress
      */
-    override fun create(userIDs: List<String>): Result<ChatUI> = chatBox.create(userIDs).map { getOrCreateChatUI(it) }
+    override fun create(userIDs: List<String>): Result<ChatUI> = conversation.create(userIDs).map { getOrCreateChatUI(it) }
 
     /**
      * Given a user, open a chat ui.

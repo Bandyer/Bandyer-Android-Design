@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.conversation.Conversation
 import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
@@ -21,9 +21,9 @@ class TermsAndConditionsViewModel(configure: suspend () -> Configuration) : Base
 
     init {
         val conferenceState = conference.flatMapLatest { it.state }
-        val chatBoxState = chatBox.flatMapLatest { it.state }
-        combine(conferenceState, chatBoxState) { pbState, cbState ->
-            pbState != Conference.State.Connecting && cbState != ChatBox.State.Connecting
+        val conversationState = conversation.flatMapLatest { it.state }
+        combine(conferenceState, conversationState) { pbState, cbState ->
+            pbState != Conference.State.Connecting && cbState != Conversation.State.Connecting
         }
             .takeWhile { !it }
             .onCompletion { _uiState.update { it.copy(isConnected = true) } }

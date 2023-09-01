@@ -13,7 +13,7 @@ class GlassChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
 
     private val deviceStatusObserver = DeviceStatusObserver().apply { start() }
 
-    val chatBoxState = chatBox.flatMapLatest { it.state }.shareInEagerly(viewModelScope)
+    val conversationState = conversation.flatMapLatest { it.state }.shareInEagerly(viewModelScope)
 
     val battery: SharedFlow<BatteryInfo> = deviceStatusObserver.battery
 

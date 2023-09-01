@@ -8,7 +8,7 @@ import com.kaleyra.collaboration_suite.Contact
 import com.kaleyra.collaboration_suite.conference.*
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.ChatBoxUI
+import com.kaleyra.collaboration_suite_core_ui.ConversationUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
@@ -45,7 +45,7 @@ class CallActionsViewModelTest {
 
     private val conferenceMock = mockk<ConferenceUI>()
 
-    private val chatBoxMock = mockk<ChatBoxUI>(relaxed = true)
+    private val conversationMock = mockk<ConversationUI>(relaxed = true)
 
     private val companyMock = mockk<Company>(relaxed = true)
 
@@ -84,7 +84,7 @@ class CallActionsViewModelTest {
     @Before
     fun setUp() {
         viewModel = spyk(CallActionsViewModel {
-            Configuration.Success(conferenceMock, chatBoxMock, companyMock)
+            Configuration.Success(conferenceMock, conversationMock, companyMock)
         })
         every { conferenceMock.call } returns MutableStateFlow(callMock)
         every { companyMock.id } returns MutableStateFlow("companyId")
@@ -555,12 +555,12 @@ class CallActionsViewModelTest {
     @Test
     fun testShowChat() = runTest {
         val contextMock = mockk<Context>()
-        every { chatBoxMock.chat(any(), any()) } returns Result.success(mockk())
+        every { conversationMock.chat(any(), any()) } returns Result.success(mockk())
         advanceUntilIdle()
         viewModel.showChat(contextMock)
         val expectedUserIds = listOf(otherParticipantMock.userId)
         verify(exactly = 1) {
-            chatBoxMock.chat(
+            conversationMock.chat(
                 context = contextMock,
                 userIDs = withArg { assertEquals(it, expectedUserIds) }
             )
@@ -573,13 +573,13 @@ class CallActionsViewModelTest {
         val companyParticipant = mockk<CallParticipant> {
             every { userId } returns "companyId"
         }
-        every { chatBoxMock.chat(any(), any()) } returns Result.success(mockk())
+        every { conversationMock.chat(any(), any()) } returns Result.success(mockk())
         every { callParticipantsMock.others } returns listOf(otherParticipantMock, companyParticipant)
         advanceUntilIdle()
         viewModel.showChat(contextMock)
         val expectedUserIds = listOf(otherParticipantMock.userId)
         verify(exactly = 1) {
-            chatBoxMock.chat(
+            conversationMock.chat(
                 context = contextMock,
                 userIDs = withArg { assertEquals(it, expectedUserIds) }
             )

@@ -21,7 +21,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.conversation.Conversation
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
@@ -57,9 +57,9 @@ internal class GlassChatActivity : ChatActivity(), GlassTouchEventManager.Listen
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
 
-        viewModel.chatBoxState
+        viewModel.conversationState
             .onEach {
-                if (it !is ChatBox.State.Disconnecting) return@onEach
+                if (it !is Conversation.State.Disconnecting) return@onEach
                 finishAndRemoveTask()
             }
             .launchIn(lifecycleScope)

@@ -19,9 +19,9 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.RemoteInput
-import com.kaleyra.collaboration_suite.chatbox.Chat
-import com.kaleyra.collaboration_suite.chatbox.Message.Content.Text
-import com.kaleyra.collaboration_suite.chatbox.Message.State.Received
+import com.kaleyra.collaboration_suite.conversation.Chat
+import com.kaleyra.collaboration_suite.conversation.Message.Content.Text
+import com.kaleyra.collaboration_suite.conversation.Message.State.Received
 import com.kaleyra.collaboration_suite_core_ui.CollaborationBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
@@ -76,7 +76,7 @@ class ChatNotificationActionReceiver : CollaborationBroadcastReceiver() {
 
     private suspend fun getChat(intent: Intent): Chat? =
         intent.extras?.getString("chatId")?.let { chatId ->
-            KaleyraVideo.chatBox.chats.first().firstOrNull { it.id == chatId }
+            KaleyraVideo.conversation.chats.first().firstOrNull { it.id == chatId }
         }
 
     private fun getReply(intent: Intent): CharSequence? =

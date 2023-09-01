@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.Participant
-import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.CallParticipant
 import com.kaleyra.collaboration_suite.conference.CallParticipants
@@ -302,7 +302,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
     private val chat: StateFlow<ChatUI?> =
         participants
             .filter { it.others.isNotEmpty() }
-            .map { KaleyraVideo.chatBox.create(it.others.map { it.userId }).getOrNull() }
+            .map { KaleyraVideo.conversation.create(it.others.map { it.userId }).getOrNull() }
             .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val areThereNewMessages = chat
@@ -399,7 +399,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
         currentLens.zoom.value?.tryZoom(value)
     }
 
-    fun showChat(context: Context) = chat.value?.let { KaleyraVideo.chatBox.show(context, it) }
+    fun showChat(context: Context) = chat.value?.let { KaleyraVideo.conversation.show(context, it) }
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,

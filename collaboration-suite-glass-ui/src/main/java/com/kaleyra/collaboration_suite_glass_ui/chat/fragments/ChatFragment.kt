@@ -29,8 +29,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite.chatbox.Chat.State.Active
-import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.conversation.Chat.State.Active
+import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName

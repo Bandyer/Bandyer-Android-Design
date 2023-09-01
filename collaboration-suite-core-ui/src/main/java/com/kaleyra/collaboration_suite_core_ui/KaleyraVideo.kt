@@ -62,7 +62,7 @@ object KaleyraVideo {
     private var termsAndConditionsRequester: TermsAndConditionsRequester? = null
 
     private var _conference: ConferenceUI? by cached { ConferenceUI(collaboration!!.conference, callActivityClazz, collaboration!!.configuration.logger) }
-    private var _chatBox: ChatBoxUI? by cached { ChatBoxUI(collaboration!!.chatBox, chatActivityClazz, chatNotificationActivityClazz) }
+    private var _conversation: ConversationUI? by cached { ConversationUI(collaboration!!.conversation, chatActivityClazz, chatNotificationActivityClazz) }
 
     /**
      * Users description to be used for the UI
@@ -86,12 +86,12 @@ object KaleyraVideo {
         get() = collaboration != null
 
     /**
-     * Chat box
+     * Conversation
      */
-    val chatBox: ChatBoxUI
+    val conversation: ConversationUI
         get() {
-            require(collaboration != null) { "configure the CollaborationUI to use the chatBox" }
-            return _chatBox!!
+            require(collaboration != null) { "configure the CollaborationUI to use the conversation" }
+            return _conversation!!
         }
 
     val companyName: SharedFlow<String> by lazy { collaboration?.company?.name ?: MutableSharedFlow() }
@@ -164,7 +164,7 @@ object KaleyraVideo {
             termsAndConditionsRequester?.dispose()
             collaboration = null
             _conference = null
-            _chatBox = null
+            _conversation = null
             mainScope = null
         }
     }

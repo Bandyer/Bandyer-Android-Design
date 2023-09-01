@@ -17,10 +17,10 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
-import com.kaleyra.collaboration_suite.chatbox.Message
-import com.kaleyra.collaboration_suite.chatbox.Messages
-import com.kaleyra.collaboration_suite.chatbox.OtherMessage
+import com.kaleyra.collaboration_suite.conversation.ChatParticipants
+import com.kaleyra.collaboration_suite.conversation.Message
+import com.kaleyra.collaboration_suite.conversation.Messages
+import com.kaleyra.collaboration_suite.conversation.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName

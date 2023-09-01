@@ -16,7 +16,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.mapper.chat
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite.chatbox.*
+import com.kaleyra.collaboration_suite.conversation.*
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.*
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
@@ -24,8 +24,8 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.callMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.callState
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatBoxMock
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatBoxState
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.conversationMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.conversationState
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatParticipantsMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.messagesUIMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.myMessageMock
@@ -69,7 +69,7 @@ class UiModelMapperTest {
     fun setUp() {
         every { conferenceMock.call } returns MutableStateFlow(callMock)
         every { callMock.state } returns callState
-        every { chatBoxMock.state } returns chatBoxState
+        every { conversationMock.state } returns conversationState
         every { messagesUIMock.my } returns listOf(myMessageMock)
         every { messagesUIMock.other } returns listOf(otherUnreadMessageMock1)
         every { messagesUIMock.list } returns messagesUIMock.other + messagesUIMock.my
@@ -79,7 +79,7 @@ class UiModelMapperTest {
     fun tearDown() {
         unmockkAll()
         callState.value = Call.State.Connected
-        chatBoxState.value = ChatBox.State.Connected
+        conversationState.value = Conversation.State.Connected
         otherParticipantState.value = ChatParticipant.State.Invited
         otherParticipantEvents.value = ChatParticipant.Event.Typing.Idle
     }
@@ -129,46 +129,46 @@ class UiModelMapperTest {
     }
 
     @Test
-    fun chatBoxConnecting_getChatState_networkConnecting() = runTest {
-        chatBoxState.value = ChatBox.State.Connecting
-        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.NetworkState.Connecting)
+    fun conversationConnecting_getChatState_networkConnecting() = runTest {
+        conversationState.value = Conversation.State.Connecting
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(conversationMock)).first(), ChatState.NetworkState.Connecting)
     }
 
     @Test
-    fun chatBoxDisconnecting_getChatState_none() = runTest {
-        chatBoxState.value = ChatBox.State.Disconnecting
-        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.None)
+    fun conversationDisconnecting_getChatState_none() = runTest {
+        conversationState.value = Conversation.State.Disconnecting
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(conversationMock)).first(), ChatState.None)
     }
 
     @Test
-    fun chatBoxDisconnected_getChatState_none() = runTest {
-        chatBoxState.value = ChatBox.State.Disconnected
-        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.None)
+    fun conversationDisconnected_getChatState_none() = runTest {
+        conversationState.value = Conversation.State.Disconnected
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(conversationMock)).first(), ChatState.None)
     }
 
     @Test
-    fun chatBoxStateUserInactive_getChatState_none() = runTest {
-        chatBoxState.value = ChatBox.State.Disconnected.UserInactive
-        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.None)
+    fun conversationStateUserInactive_getChatState_none() = runTest {
+        conversationState.value = Conversation.State.Disconnected.UserInactive
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(conversationMock)).first(), ChatState.None)
     }
 
     @Test
-    fun chatBoxStateUnsupportedVersion_getChatState_none() = runTest {
-        chatBoxState.value = ChatBox.State.Disconnected.UnsupportedVersion
-        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.None)
+    fun conversationStateUnsupportedVersion_getChatState_none() = runTest {
+        conversationState.value = Conversation.State.Disconnected.UnsupportedVersion
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(conversationMock)).first(), ChatState.None)
     }
 
     @Test
-    fun chatBoxStateUnknown_getChatState_none() = runTest {
-        chatBoxState.value = ChatBox.State.Disconnected.Unknown
-        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.None)
+    fun conversationStateUnknown_getChatState_none() = runTest {
+        conversationState.value = Conversation.State.Disconnected.Unknown
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(conversationMock)).first(), ChatState.None)
     }
 
     @Test
-    fun chatBoxReconnecting_getChatState_networkOffline() = runTest {
-        with(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock))) {
+    fun conversationReconnecting_getChatState_networkOffline() = runTest {
+        with(getChatState(flowOf(chatParticipantsMock), flowOf(conversationMock))) {
             first()
-            chatBoxState.value = ChatBox.State.Connecting
+            conversationState.value = Conversation.State.Connecting
             assertEquals(first(), ChatState.NetworkState.Offline)
         }
     }
@@ -176,26 +176,26 @@ class UiModelMapperTest {
     @Test
     fun participantOnline_getChatState_userOnline() = runTest {
         otherParticipantState.value = ChatParticipant.State.Joined.Online
-        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.UserState.Online)
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(conversationMock)).first(), ChatState.UserState.Online)
     }
 
     @Test
     fun participantOfflineAt_getChatState_userOfflineTimestamp() = runTest {
         val nowMillis = now.toEpochMilli()
         otherParticipantState.value = ChatParticipant.State.Joined.Offline(ChatParticipant.State.Joined.Offline.LastLogin.At(Date(nowMillis)))
-        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.UserState.Offline(nowMillis))
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(conversationMock)).first(), ChatState.UserState.Offline(nowMillis))
     }
 
     @Test
     fun participantOffline_getChatState_userOffline() = runTest {
         otherParticipantState.value = ChatParticipant.State.Joined.Offline(ChatParticipant.State.Joined.Offline.LastLogin.Never)
-        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.UserState.Offline(null))
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(conversationMock)).first(), ChatState.UserState.Offline(null))
     }
 
     @Test
     fun participantTyping_getChatState_userTyping() = runTest {
         otherParticipantEvents.value = ChatParticipant.Event.Typing.Started
-        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.UserState.Typing)
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(conversationMock)).first(), ChatState.UserState.Typing)
     }
 
     @Test

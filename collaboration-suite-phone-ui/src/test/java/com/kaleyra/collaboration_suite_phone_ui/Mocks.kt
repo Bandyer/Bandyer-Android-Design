@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.Contact
-import com.kaleyra.collaboration_suite.chatbox.*
+import com.kaleyra.collaboration_suite.conversation.*
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.*
 import io.mockk.mockk
@@ -15,13 +15,13 @@ import java.util.*
 
 object Mocks {
     val conferenceMock = mockk<ConferenceUI>(relaxed = true)
-    val chatBoxMock = mockk<ChatBoxUI>(relaxed = true)
+    val conversationMock = mockk<ConversationUI>(relaxed = true)
     val messagesUIMock = mockk<MessagesUI>(relaxed = true)
     val callMock = mockk<CallUI>(relaxed = true)
     val chatMock = mockk<ChatUI>(relaxed = true)
 
     val callState = MutableStateFlow<Call.State>(Call.State.Connected)
-    val chatBoxState = MutableStateFlow<ChatBox.State>(ChatBox.State.Connected)
+    val conversationState = MutableStateFlow<Conversation.State>(Conversation.State.Connected)
     val otherParticipantState = MutableStateFlow<ChatParticipant.State>(ChatParticipant.State.Invited)
     val otherParticipantEvents =
         MutableStateFlow<ChatParticipant.Event>(ChatParticipant.Event.Typing.Idle)

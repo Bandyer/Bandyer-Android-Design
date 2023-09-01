@@ -19,8 +19,8 @@ open class ChatViewModel(configure: suspend () -> Configuration) : Collaboration
     val participants = chat.flatMapLatest { it.participants }.shareInEagerly(viewModelScope)
 
     fun setChat(userId: String): ChatUI? {
-        val chatBox = chatBox.getValue() ?: return null
-        val chat = chatBox.create(listOf(userId)).getOrNull() ?: return null
+        val conversation = conversation.getValue() ?: return null
+        val chat = conversation.create(listOf(userId)).getOrNull() ?: return null
         _chat.tryEmit(chat)
         return chat
     }

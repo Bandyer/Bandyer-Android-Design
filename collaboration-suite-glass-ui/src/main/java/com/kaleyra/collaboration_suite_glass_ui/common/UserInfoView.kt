@@ -23,7 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
+import com.kaleyra.collaboration_suite.conversation.ChatParticipant
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassUserInfoLayoutBinding
 

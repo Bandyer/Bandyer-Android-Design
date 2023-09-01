@@ -17,7 +17,7 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite.Collaboration
-import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.conversation.Conversation
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
@@ -53,7 +53,7 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     private var lastAction: Action? = null
 
     private var wasConferenceConnected = false
-    private var wasChatBoxConnected = false
+    private var wasConversationConnected = false
 
     private var endedCallIds = mutableSetOf<String>()
 
@@ -77,16 +77,16 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     fun disconnect(clearSavedData: Boolean = false) {
         collaboration.disconnect(clearSavedData)
         wasConferenceConnected = false
-        wasChatBoxConnected = false
+        wasConversationConnected = false
         scope.coroutineContext.cancelChildren()
         if (clearSavedData) NotificationManager.cancelAll()
     }
 
     private fun pause() {
         wasConferenceConnected = collaboration.conference.state.value.let { it !is Conference.State.Disconnected && it !is Conference.State.Disconnecting }
-        wasChatBoxConnected = collaboration.chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
+        wasConversationConnected = collaboration.conversation.state.value.let { it !is Conversation.State.Disconnected && it !is Conversation.State.Disconnecting }
         collaboration.conference.disconnect()
-        collaboration.chatBox.disconnect()
+        collaboration.conversation.disconnect()
         scope.coroutineContext.cancelChildren()
     }
 
@@ -95,7 +95,7 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
         syncWithCallState(scope)
         syncWithChatMessages(scope)
         if (wasConferenceConnected) collaboration.conference.connect()
-        if (wasChatBoxConnected) collaboration.chatBox.connect()
+        if (wasConversationConnected) collaboration.conversation.connect()
     }
 
     private fun syncWithAppLifecycle(scope: CoroutineScope) {
@@ -128,8 +128,8 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     }
 
     private fun syncWithChatMessages(scope: CoroutineScope) {
-        collaboration.chatBox.state
-            .dropWhile { it !is ChatBox.State.Connected.Synchronized }
+        collaboration.conversation.state
+            .dropWhile { it !is Conversation.State.Connected.Synchronized }
             .onEach {
                 val conference = collaboration.conference
                 val call = conference.call.replayCache.firstOrNull()

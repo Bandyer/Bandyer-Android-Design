@@ -20,7 +20,7 @@ import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.Participant
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
+import com.kaleyra.collaboration_suite.conversation.ChatParticipant
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItemData

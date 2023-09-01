@@ -2,7 +2,7 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
+import com.kaleyra.collaboration_suite.conversation.ChatParticipants
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,7 +24,7 @@ class ChatViewModelTest {
 
     private val conference = mockk<ConferenceUI>()
 
-    private val chatBox = mockk<ChatBoxUI>()
+    private val conversation = mockk<ConversationUI>()
 
     private val call = mockk<CallUI>()
 
@@ -32,8 +32,8 @@ class ChatViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = ChatViewModel { Configuration.Success(conference, chatBox, mockk()) }
-        every { chatBox.create(any()) } returns Result.success(chat)
+        viewModel = ChatViewModel { Configuration.Success(conference, conversation, mockk()) }
+        every { conversation.create(any()) } returns Result.success(chat)
         every { conference.call } returns MutableStateFlow(call)
     }
 

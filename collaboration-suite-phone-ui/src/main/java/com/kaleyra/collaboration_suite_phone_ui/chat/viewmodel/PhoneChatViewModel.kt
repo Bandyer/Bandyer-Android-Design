@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
@@ -41,7 +41,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
         get() = company.flatMapLatest { it.combinedTheme }
 
     init {
-        getChatState(participants, chatBox).onEach { state ->
+        getChatState(participants, conversation).onEach { state ->
             _uiState.update { it.copy(state = state) }
         }.launchIn(viewModelScope)
 
