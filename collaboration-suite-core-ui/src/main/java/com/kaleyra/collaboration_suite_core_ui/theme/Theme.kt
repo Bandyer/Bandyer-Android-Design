@@ -11,15 +11,11 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontFamily
-import androidx.core.graphics.ColorUtils
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.google.android.material.color.MaterialColors
+import com.kaleyra.collaboration_suite_core_ui.CompanyUI.Theme
 import com.kaleyra.collaboration_suite_core_ui.KaleyraFontFamily
-import com.kaleyra.collaboration_suite_core_ui.Theme
 
 private val KaleyraLightColorTheme = lightColors(
     primary = kaleyra_theme_light_primary,

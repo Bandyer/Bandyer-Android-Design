@@ -46,7 +46,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.kaleyra.collaboration_suite_core_ui.Theme
+import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.theme.CollaborationTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -246,7 +246,7 @@ internal fun ThemedCallScreen(
     onWhiteboardVisibility: (Boolean) -> Unit,
     onActivityFinishing: () -> Unit
 ) {
-    val theme by viewModel.theme.collectAsStateWithLifecycle(Theme())
+    val theme by viewModel.theme.collectAsStateWithLifecycle(CompanyUI.Theme())
     CollaborationTheme(theme = theme, transparentSystemBars = true) { isDarkTheme ->
         CallScreen(
             shouldShowFileShareComponent = shouldShowFileShareComponent,

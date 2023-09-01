@@ -19,6 +19,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.*
@@ -271,7 +272,7 @@ internal fun DayHeader(timestamp: Long, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.Center
     ) {
         val text = TimestampUtils.parseDay(LocalContext.current, timestamp)
-        Text(text = text, fontSize = 12.sp, style = MaterialTheme.typography.body2)
+        Text(text = text, fontSize = 12.sp, style = MaterialTheme.typography.body2, color = MaterialTheme.colors.onBackground)
     }
 }
 

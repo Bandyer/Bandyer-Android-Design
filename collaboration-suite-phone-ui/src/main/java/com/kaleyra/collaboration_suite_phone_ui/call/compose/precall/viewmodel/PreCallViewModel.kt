@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.UserMessageViewModel
@@ -32,7 +33,8 @@ internal abstract class PreCallViewModel<T : PreCallUiState<T>>(configure: suspe
         get() = CallUserMessagesProvider.userMessage
 
     init {
-        theme
+        company
+            .flatMapLatest { it.combinedTheme }
             .toWatermarkInfo(company.flatMapLatest { it.name })
             .onEach { watermarkInfo -> _uiState.update { it.clone(watermarkInfo = watermarkInfo) } }
             .launchIn(viewModelScope)

@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.phonebox.*
+import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.toMyCameraStream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.UserMessageViewModel
@@ -37,6 +39,9 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
     override val userMessage: Flow<UserMessage>
         get() = CallUserMessagesProvider.userMessage
+
+    val theme: Flow<CompanyUI.Theme>
+        get() = company.flatMapLatest { it.combinedTheme }
 
     private val streams: Flow<List<StreamUi>> =
         combine(call.toInCallParticipants(), call.toStreamsUi()) { participants, streams -> participants to streams }
@@ -95,7 +100,8 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             _uiState.update { it.copy(fullscreenStream = stream) }
         }.launchIn(viewModelScope)
 
-        theme
+        company
+            .flatMapLatest { it.combinedTheme }
             .toWatermarkInfo(company.flatMapLatest { it.name })
             .onEach { watermarkInfo -> _uiState.update { it.copy(watermarkInfo = watermarkInfo) } }
             .launchIn(viewModelScope)

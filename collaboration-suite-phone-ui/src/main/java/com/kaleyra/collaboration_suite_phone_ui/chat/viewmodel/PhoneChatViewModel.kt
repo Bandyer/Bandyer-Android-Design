@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
+import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
@@ -34,6 +36,9 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
 
     val userMessage: Flow<UserMessage>
         get() = CallUserMessagesProvider.userMessage
+
+    val theme: Flow<CompanyUI.Theme>
+        get() = company.flatMapLatest { it.combinedTheme }
 
     init {
         getChatState(participants, chatBox).onEach { state ->
