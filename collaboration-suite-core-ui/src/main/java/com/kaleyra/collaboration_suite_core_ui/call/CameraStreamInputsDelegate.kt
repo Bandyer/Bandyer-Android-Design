@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_core_ui.call
 
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.Input
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterIsInstance

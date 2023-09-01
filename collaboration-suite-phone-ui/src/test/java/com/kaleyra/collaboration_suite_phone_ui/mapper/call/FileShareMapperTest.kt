@@ -2,8 +2,8 @@ package com.kaleyra.collaboration_suite_phone_ui.mapper.call
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.Participant
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
+import com.kaleyra.collaboration_suite.conference.CallParticipant
+import com.kaleyra.collaboration_suite.conference.CallParticipants
 import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
 import com.kaleyra.collaboration_suite.sharedfolder.SharedFolder
 import com.kaleyra.collaboration_suite_core_ui.CallUI

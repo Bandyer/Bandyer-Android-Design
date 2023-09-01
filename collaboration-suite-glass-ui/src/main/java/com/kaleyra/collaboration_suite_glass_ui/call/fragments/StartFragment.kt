@@ -23,7 +23,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentStartBinding

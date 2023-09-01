@@ -3,11 +3,11 @@ package com.kaleyra.collaboration_suite_phone_ui.ui
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.*
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.unit.Dp
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import java.lang.Float.max
 
 internal fun SemanticsNodeInteraction.performDoubleClick() {
     performTouchInput {

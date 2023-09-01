@@ -2,12 +2,12 @@ package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.Participant
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
+import com.kaleyra.collaboration_suite.conference.CallParticipant
 import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
 import com.kaleyra.collaboration_suite.sharedfolder.SharedFolder
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions
@@ -40,7 +40,7 @@ class FileShareViewModelTest {
 
     private lateinit var viewModel: FileShareViewModel
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>(relaxed = true)
+    private val conferenceMock = mockk<ConferenceUI>(relaxed = true)
 
     private val callMock = mockk<CallUI>(relaxed = true)
 
@@ -71,12 +71,12 @@ class FileShareViewModelTest {
         every { any<Uri>().getFileSize() } returns 0
         mockkObject(CallUserMessagesProvider)
         viewModel = FileShareViewModel(
-            configure = { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true)) },
+            configure = { Configuration.Success(conferenceMock, mockk(), mockk(relaxed = true)) },
             filePickProvider = object : FilePickProvider {
                 override val fileUri: Flow<Uri> = MutableStateFlow(uriMock)
             }
         )
-        every { phoneBoxMock.call } returns MutableStateFlow(callMock)
+        every { conferenceMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { sharedFolder } returns sharedFolderMock
             every { participants } returns MutableStateFlow(mockk {
@@ -157,7 +157,7 @@ class FileShareViewModelTest {
     fun testUploadOnFilePick() = runTest {
         advanceUntilIdle()
         verify { sharedFolderMock.upload(uriMock) }
-        verify { phoneBoxMock.showCall() }
+        verify { conferenceMock.showCall() }
     }
 
     @Test

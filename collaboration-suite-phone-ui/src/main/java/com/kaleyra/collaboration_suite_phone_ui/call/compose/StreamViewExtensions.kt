@@ -2,8 +2,8 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.graphics.Matrix
 import androidx.compose.ui.unit.IntSize
-import com.kaleyra.collaboration_suite.phonebox.StreamView
-import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
+import com.kaleyra.collaboration_suite.conference.StreamView
+import com.kaleyra.collaboration_suite.conference.VideoStreamView
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest

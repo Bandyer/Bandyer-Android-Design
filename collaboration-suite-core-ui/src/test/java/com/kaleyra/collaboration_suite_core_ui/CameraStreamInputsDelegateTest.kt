@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_core_ui
 
-import com.kaleyra.collaboration_suite.phonebox.*
-import com.kaleyra.collaboration_suite.phonebox.Call.PreferredType
+import com.kaleyra.collaboration_suite.conference.*
+import com.kaleyra.collaboration_suite.conference.Call.PreferredType
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamInputsDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import io.mockk.every

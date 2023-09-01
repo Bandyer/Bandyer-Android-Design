@@ -13,7 +13,7 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
 
     val isCollaborationConfigured = _configuration.map { it is Configuration.Success }.shareInEagerly(viewModelScope)
 
-    val phoneBox = _configuration.mapSuccess { it.phoneBox }.shareInEagerly(viewModelScope)
+    val conference = _configuration.mapSuccess { it.conference }.shareInEagerly(viewModelScope)
 
     val chatBox = _configuration.mapSuccess { it.chatBoxUI }.shareInEagerly(viewModelScope)
 
@@ -36,12 +36,12 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
 }
 
 sealed class Configuration {
-    data class Success(val phoneBox: PhoneBoxUI, val chatBoxUI: ChatBoxUI, val company: Company) : Configuration()
+    data class Success(val conference: ConferenceUI, val chatBoxUI: ChatBoxUI, val company: Company) : Configuration()
     object Failure : Configuration()
 }
 
 suspend fun requestConfiguration(): Configuration {
     if (!KaleyraVideo.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
-    return if (KaleyraVideo.isConfigured) Configuration.Success(KaleyraVideo.phoneBox, KaleyraVideo.chatBox, KaleyraVideo.collaboration?.company ?: NoOpCompany())
+    return if (KaleyraVideo.isConfigured) Configuration.Success(KaleyraVideo.conference, KaleyraVideo.chatBox, KaleyraVideo.collaboration?.company ?: NoOpCompany())
     else Configuration.Failure
 }

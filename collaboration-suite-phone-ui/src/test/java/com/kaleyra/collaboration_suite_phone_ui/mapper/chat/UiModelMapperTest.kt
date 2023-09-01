@@ -17,7 +17,7 @@ package com.kaleyra.collaboration_suite_phone_ui.mapper.chat
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.chatbox.*
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.*
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
@@ -36,7 +36,7 @@ import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherReadMessageMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherUnreadMessageMock1
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherUnreadMessageMock2
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.phoneBoxMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.conferenceMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.yesterday
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
@@ -67,7 +67,7 @@ class UiModelMapperTest {
 
     @Before
     fun setUp() {
-        every { phoneBoxMock.call } returns MutableStateFlow(callMock)
+        every { conferenceMock.call } returns MutableStateFlow(callMock)
         every { callMock.state } returns callState
         every { chatBoxMock.state } returns chatBoxState
         every { messagesUIMock.my } returns listOf(myMessageMock)
@@ -101,31 +101,31 @@ class UiModelMapperTest {
     @Test
     fun callEnded_hasActiveCall_false() = runTest {
         callState.value = Call.State.Disconnected.Ended
-        assert(!flowOf(phoneBoxMock).hasActiveCall().first())
+        assert(!flowOf(conferenceMock).hasActiveCall().first())
     }
 
     @Test
     fun callDisconnected_hasActiveCall_true() = runTest {
         callState.value = Call.State.Disconnected
-        assert(flowOf(phoneBoxMock).hasActiveCall().first())
+        assert(flowOf(conferenceMock).hasActiveCall().first())
     }
 
     @Test
     fun callConnecting_hasActiveCall_true() = runTest {
         callState.value = Call.State.Connecting
-        assert(flowOf(phoneBoxMock).hasActiveCall().first())
+        assert(flowOf(conferenceMock).hasActiveCall().first())
     }
 
     @Test
     fun callConnected_hasActiveCall_true() = runTest {
         callState.value = Call.State.Connected
-        assert(flowOf(phoneBoxMock).hasActiveCall().first())
+        assert(flowOf(conferenceMock).hasActiveCall().first())
     }
 
     @Test
     fun callReconnecting_hasActiveCall_true() = runTest {
         callState.value = Call.State.Reconnecting
-        assert(flowOf(phoneBoxMock).hasActiveCall().first())
+        assert(flowOf(conferenceMock).hasActiveCall().first())
     }
 
     @Test

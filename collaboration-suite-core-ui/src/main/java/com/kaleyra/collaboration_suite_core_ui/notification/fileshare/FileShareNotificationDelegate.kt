@@ -2,10 +2,9 @@ package com.kaleyra.collaboration_suite_core_ui.notification.fileshare
 
 import android.app.Notification
 import android.content.Context
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn

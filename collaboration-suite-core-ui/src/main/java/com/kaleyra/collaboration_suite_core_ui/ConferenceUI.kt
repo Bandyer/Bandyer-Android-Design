@@ -21,8 +21,8 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isDND
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
@@ -47,18 +47,18 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 /**
- * Phone box UI
+ * Conference UI
  *
- * @property phoneBox The PhoneBox delegate
+ * @property conference The Conference delegate
  * @property callActivityClazz The call activity Class<*>
  * @property logger The PriorityLogger
  * @constructor
  */
-class PhoneBoxUI(
-    private val phoneBox: PhoneBox,
+class ConferenceUI(
+    private val conference: Conference,
     private val callActivityClazz: Class<*>,
     private val logger: PriorityLogger? = null,
-) : PhoneBox by phoneBox {
+) : Conference by conference {
 
     private val callScope = CoroutineScope(Dispatchers.IO)
 
@@ -68,12 +68,12 @@ class PhoneBoxUI(
      * @suppress
      */
 
-    override val call: SharedFlow<CallUI> = phoneBox.call.map { getOrCreateCallUI(it) }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
+    override val call: SharedFlow<CallUI> = conference.call.map { getOrCreateCallUI(it) }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
 
     /**
      * @suppress
      */
-    override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { getOrCreateCallUI(it) } }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
+    override val callHistory: SharedFlow<List<CallUI>> = conference.callHistory.map { it.map { getOrCreateCallUI(it) } }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
 
 
     /**
@@ -93,12 +93,12 @@ class PhoneBoxUI(
     /**
      * @suppress
      */
-    override fun connect() = phoneBox.connect()
+    override fun connect() = conference.connect()
 
     /**
      * @suppress
      */
-    override fun disconnect(clearSavedData: Boolean) = phoneBox.disconnect(clearSavedData)
+    override fun disconnect(clearSavedData: Boolean) = conference.disconnect(clearSavedData)
 
     internal fun dispose() {
         disconnect()
@@ -112,7 +112,7 @@ class PhoneBoxUI(
      * @param userIDs to be called
      * @param options creation options
      */
-    fun call(userIDs: List<String>, options: (PhoneBox.CreationOptions.() -> Unit)? = null): Result<CallUI> = create(userIDs, options).onSuccess { it.connect() }
+    fun call(userIDs: List<String>, options: (Conference.CreationOptions.() -> Unit)? = null): Result<CallUI> = create(userIDs, options).onSuccess { it.connect() }
 
     /**
      * Join an url
@@ -124,13 +124,13 @@ class PhoneBoxUI(
     /**
      * @suppress
      */
-    override fun create(url: String): Result<CallUI> = synchronized(this) { phoneBox.create(url).map { createCallUI(it) } }
+    override fun create(url: String): Result<CallUI> = synchronized(this) { conference.create(url).map { createCallUI(it) } }
 
     /**
      * @suppress
      */
-    override fun create(userIDs: List<String>, conf: (PhoneBox.CreationOptions.() -> Unit)?): Result<CallUI> = synchronized(this) {
-        phoneBox.create(userIDs, conf).map {
+    override fun create(userIDs: List<String>, conf: (Conference.CreationOptions.() -> Unit)?): Result<CallUI> = synchronized(this) {
+        conference.create(userIDs, conf).map {
             createCallUI(it)
         }
     }

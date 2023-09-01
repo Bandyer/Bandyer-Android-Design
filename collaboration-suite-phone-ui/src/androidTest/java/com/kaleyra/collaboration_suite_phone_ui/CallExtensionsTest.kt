@@ -1,9 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
-import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.CallParticipant
+import com.kaleyra.collaboration_suite.conference.CallParticipants
+import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.toMyCameraStream
 import io.mockk.every

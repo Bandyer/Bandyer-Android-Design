@@ -1,6 +1,6 @@
 package com.kaleyra.collaboration_suite_core_ui.call
 
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.Call
 
 interface CameraStreamPublisher {
 

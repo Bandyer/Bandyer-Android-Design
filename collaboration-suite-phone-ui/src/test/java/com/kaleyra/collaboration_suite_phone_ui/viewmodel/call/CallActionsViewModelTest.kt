@@ -5,12 +5,12 @@ import androidx.fragment.app.FragmentActivity
 import com.bandyer.android_audiosession.model.AudioOutputDevice
 import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.Contact
-import com.kaleyra.collaboration_suite.phonebox.*
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.*
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.ChatBoxUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.currentAudioOutputDevice
@@ -43,7 +43,7 @@ class CallActionsViewModelTest {
 
     private lateinit var viewModel: CallActionsViewModel
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>()
+    private val conferenceMock = mockk<ConferenceUI>()
 
     private val chatBoxMock = mockk<ChatBoxUI>(relaxed = true)
 
@@ -84,9 +84,9 @@ class CallActionsViewModelTest {
     @Before
     fun setUp() {
         viewModel = spyk(CallActionsViewModel {
-            Configuration.Success(phoneBoxMock, chatBoxMock, companyMock, mockk(relaxed = true))
+            Configuration.Success(conferenceMock, chatBoxMock, companyMock)
         })
-        every { phoneBoxMock.call } returns MutableStateFlow(callMock)
+        every { conferenceMock.call } returns MutableStateFlow(callMock)
         every { companyMock.id } returns MutableStateFlow("companyId")
         with(callMock) {
             every { inputs } returns inputsMock

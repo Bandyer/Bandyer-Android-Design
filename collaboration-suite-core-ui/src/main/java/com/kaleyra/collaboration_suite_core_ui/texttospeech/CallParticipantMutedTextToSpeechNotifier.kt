@@ -1,11 +1,10 @@
 package com.kaleyra.collaboration_suite_core_ui.texttospeech
 
 import android.content.Context
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
 import kotlinx.coroutines.CoroutineScope

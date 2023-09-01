@@ -1,6 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
-import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.PointerUi

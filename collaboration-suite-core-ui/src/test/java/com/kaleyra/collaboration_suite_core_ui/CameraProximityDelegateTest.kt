@@ -1,6 +1,6 @@
 package com.kaleyra.collaboration_suite_core_ui
 
-import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite_core_ui.proximity.CameraProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.CameraProximityDelegateImpl
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions

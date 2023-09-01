@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.mapper.call
 
 import com.bandyer.android_audiosession.model.AudioOutputDevice
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.audioOutputDevicesList

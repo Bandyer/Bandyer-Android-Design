@@ -1,8 +1,8 @@
 package com.kaleyra.collaboration_suite_core_ui.utils
 
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
-import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.CallParticipants
+import com.kaleyra.collaboration_suite.conference.Input
 
 internal object CallExtensions {
 

@@ -22,7 +22,7 @@ class ChatViewModelTest {
 
     private lateinit var viewModel: ChatViewModel
 
-    private val phoneBox = mockk<PhoneBoxUI>()
+    private val conference = mockk<ConferenceUI>()
 
     private val chatBox = mockk<ChatBoxUI>()
 
@@ -32,9 +32,9 @@ class ChatViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = ChatViewModel { Configuration.Success(phoneBox, chatBox, mockk()) }
+        viewModel = ChatViewModel { Configuration.Success(conference, chatBox, mockk()) }
         every { chatBox.create(any()) } returns Result.success(chat)
-        every { phoneBox.call } returns MutableStateFlow(call)
+        every { conference.call } returns MutableStateFlow(call)
     }
 
     @Test

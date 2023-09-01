@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.mapper.call
 
-import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
+import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite.conference.VideoStreamView
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule

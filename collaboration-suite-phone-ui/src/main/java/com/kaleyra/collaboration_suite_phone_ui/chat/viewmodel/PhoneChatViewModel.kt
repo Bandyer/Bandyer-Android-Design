@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.chatbox.Message
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
@@ -53,7 +53,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
             _uiState.update { it.copy(actions = ImmutableSet(actions)) }
         }.launchIn(viewModelScope)
 
-        phoneBox.hasActiveCall().onEach { hasActiveCall ->
+        conference.hasActiveCall().onEach { hasActiveCall ->
             _uiState.update { it.copy(isInCall = hasActiveCall) }
         }.launchIn(viewModelScope)
 
@@ -113,15 +113,15 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
     }
 
     fun showCall() {
-        val phoneBox = phoneBox.getValue() ?: return
-        phoneBox.showCall()
+        val conference = conference.getValue() ?: return
+        conference.showCall()
     }
 
     private fun call(preferredType: Call.PreferredType) {
-        val phoneBox = phoneBox.getValue() ?: return
+        val conference = conference.getValue() ?: return
         val chat = chat.getValue() ?: return
         val userId = chat.participants.value.others.first().userId
-        phoneBox.call(listOf(userId)) {
+        conference.call(listOf(userId)) {
             this.preferredType = preferredType
         }
     }

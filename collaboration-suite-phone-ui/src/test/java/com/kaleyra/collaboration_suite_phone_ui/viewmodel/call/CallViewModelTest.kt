@@ -3,16 +3,18 @@ package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity
 import com.kaleyra.collaboration_suite.Company
-import com.kaleyra.collaboration_suite.phonebox.*
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.*
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration.Success
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
-import com.kaleyra.collaboration_suite_core_ui.Theme
+import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
+import com.kaleyra.collaboration_suite_core_ui.CompanyUI.Theme
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
+import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager
+import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
@@ -46,7 +48,7 @@ class CallViewModelTest {
 
     private lateinit var viewModel: CallViewModel
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>()
+    private val conferenceMock = mockk<ConferenceUI>()
     
     private val callMock = mockk<CallUI>(relaxed = true)
 
@@ -94,7 +96,8 @@ class CallViewModelTest {
         every { anyConstructed<StreamsHandler>().swapThumbnail(any()) } returns Unit
         mockkObject(CallUserMessagesProvider)
         mockkObject(ContactDetailsManager)
-        every { phoneBoxMock.call } returns MutableStateFlow(callMock)
+        mockkObject(CompanyThemeManager)
+        every { conferenceMock.call } returns MutableStateFlow(callMock)
         with(recordingMock) {
             every { type } returns Call.Recording.Type.OnConnect
             every { state } returns MutableStateFlow(Call.Recording.State.Started)
@@ -177,7 +180,8 @@ class CallViewModelTest {
                 every { logo } returns nightLogo
             }
         }
-        viewModel = spyk(CallViewModel { Success(phoneBoxMock, mockk(), companyMock, MutableStateFlow(themeMock)) })
+        every { companyMock.combinedTheme } returns flowOf(themeMock)
+        viewModel = spyk(CallViewModel { Success(conferenceMock, mockk(), companyMock) })
     }
 
     @After

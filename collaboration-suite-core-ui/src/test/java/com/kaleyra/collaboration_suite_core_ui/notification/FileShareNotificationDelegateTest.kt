@@ -1,9 +1,9 @@
 package com.kaleyra.collaboration_suite_core_ui.notification
 
 import android.content.Context
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.CallParticipant
+import com.kaleyra.collaboration_suite.conference.CallParticipants
 import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
 import com.kaleyra.collaboration_suite.sharedfolder.SharedFolder
 import com.kaleyra.collaboration_suite_core_ui.MainDispatcherRule

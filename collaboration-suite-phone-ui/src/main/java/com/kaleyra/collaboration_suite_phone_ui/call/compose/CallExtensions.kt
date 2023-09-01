@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 
 internal object CallExtensions {

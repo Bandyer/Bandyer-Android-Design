@@ -1,11 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.mapper.call
 
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
-import com.kaleyra.collaboration_suite.phonebox.Effect
-import com.kaleyra.collaboration_suite.phonebox.Effects
-import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite.conference.CallParticipant
+import com.kaleyra.collaboration_suite.conference.CallParticipants
+import com.kaleyra.collaboration_suite.conference.Effect
+import com.kaleyra.collaboration_suite.conference.Effects
+import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule

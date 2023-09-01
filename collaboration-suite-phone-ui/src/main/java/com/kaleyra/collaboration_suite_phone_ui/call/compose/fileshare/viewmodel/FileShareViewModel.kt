@@ -34,7 +34,7 @@ internal class FileShareViewModel(configure: suspend () -> Configuration, filePi
                 if (uri.getFileSize() > MaxFileUploadBytes) _uiState.update { it.copy(showFileSizeLimit = true) }
                 else {
                     upload(uri)
-                    phoneBox.getValue()?.showCall()
+                    conference.getValue()?.showCall()
                 }
             }
             .launchIn(viewModelScope)

@@ -25,13 +25,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite.chatbox.Message
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
-import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite.phonebox.Inputs
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
-import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.CallParticipant
+import com.kaleyra.collaboration_suite.conference.CallParticipants
+import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite.conference.Inputs
+import com.kaleyra.collaboration_suite.conference.Conference
+import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
@@ -91,10 +91,10 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
         deviceStatusObserver.stop()
     }
 
-    val call: SharedFlow<CallUI> = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
+    val call: SharedFlow<CallUI> = conference.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
-    private val _phoneBoxState: MutableStateFlow<PhoneBox.State> = MutableStateFlow(PhoneBox.State.Disconnected)
-    val phoneBoxState: StateFlow<PhoneBox.State> = _phoneBoxState.asStateFlow()
+    private val _conferenceState: MutableStateFlow<Conference.State> = MutableStateFlow(Conference.State.Disconnected)
+    val conferenceState: StateFlow<Conference.State> = _conferenceState.asStateFlow()
 
     val preferredCallType: StateFlow<Call.PreferredType?> =
         call.flatMapLatest { it.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)

@@ -26,7 +26,7 @@ abstract class BaseViewModel<UI_STATE: UiState>(configure: suspend () -> Configu
 
     init {
         viewModelScope.launch {
-            val currentCall = phoneBox.flatMapLatest { it.call }.first()
+            val currentCall = conference.flatMapLatest { it.call }.first()
             _call.emit(currentCall)
         }
     }

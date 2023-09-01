@@ -1,14 +1,14 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
-import com.kaleyra.collaboration_suite.phonebox.Effect
-import com.kaleyra.collaboration_suite.phonebox.Effects
-import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite.conference.CallParticipant
+import com.kaleyra.collaboration_suite.conference.CallParticipants
+import com.kaleyra.collaboration_suite.conference.Effect
+import com.kaleyra.collaboration_suite.conference.Effects
+import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
@@ -36,7 +36,7 @@ class VirtualBackgroundViewModelTest {
 
     private lateinit var viewModel: VirtualBackgroundViewModel
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>()
+    private val conferenceMock = mockk<ConferenceUI>()
 
     private val callMock = mockk<CallUI>(relaxed = true)
 
@@ -53,8 +53,8 @@ class VirtualBackgroundViewModelTest {
     @Before
     fun setUp() {
         viewModel =
-            VirtualBackgroundViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true)) }
-        every { phoneBoxMock.call } returns MutableStateFlow(callMock)
+            VirtualBackgroundViewModel { Configuration.Success(conferenceMock, mockk(), mockk(relaxed = true)) }
+        every { conferenceMock.call } returns MutableStateFlow(callMock)
         every { callMock.participants } returns MutableStateFlow(participantsMock)
         every { participantsMock.me } returns meMock
         every { meMock.streams } returns MutableStateFlow(listOf(myStreamMock))

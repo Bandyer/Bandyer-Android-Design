@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.mapper.call
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite.phonebox.*
+import com.kaleyra.collaboration_suite.conference.*
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName

@@ -70,7 +70,10 @@ dependencies {
     testImplementation catalog.roboelectric
     testImplementation catalog.junit
     testImplementation catalog.mockk
+    testImplementation("androidx.compose.ui:ui-test-junit4:1.2.1")
+    testImplementation "androidx.test.espresso:espresso-intents:3.5.0"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
+    testImplementation 'io.mockk:mockk:1.13.3'
 
     androidTestImplementation catalog.androidxTestRunner
     androidTestImplementation catalog.androidxTestEspressoCore

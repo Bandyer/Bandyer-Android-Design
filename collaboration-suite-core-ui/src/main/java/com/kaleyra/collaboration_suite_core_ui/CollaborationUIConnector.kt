@@ -18,8 +18,8 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import kotlinx.coroutines.CoroutineScope
@@ -52,7 +52,7 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
 
     private var lastAction: Action? = null
 
-    private var wasPhoneBoxConnected = false
+    private var wasConferenceConnected = false
     private var wasChatBoxConnected = false
 
     private var endedCallIds = mutableSetOf<String>()
@@ -76,16 +76,16 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
      */
     fun disconnect(clearSavedData: Boolean = false) {
         collaboration.disconnect(clearSavedData)
-        wasPhoneBoxConnected = false
+        wasConferenceConnected = false
         wasChatBoxConnected = false
         scope.coroutineContext.cancelChildren()
         if (clearSavedData) NotificationManager.cancelAll()
     }
 
     private fun pause() {
-        wasPhoneBoxConnected = collaboration.phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
+        wasConferenceConnected = collaboration.conference.state.value.let { it !is Conference.State.Disconnected && it !is Conference.State.Disconnecting }
         wasChatBoxConnected = collaboration.chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
-        collaboration.phoneBox.disconnect()
+        collaboration.conference.disconnect()
         collaboration.chatBox.disconnect()
         scope.coroutineContext.cancelChildren()
     }
@@ -94,7 +94,7 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
         scope.coroutineContext.cancelChildren()
         syncWithCallState(scope)
         syncWithChatMessages(scope)
-        if (wasPhoneBoxConnected) collaboration.phoneBox.connect()
+        if (wasConferenceConnected) collaboration.conference.connect()
         if (wasChatBoxConnected) collaboration.chatBox.connect()
     }
 
@@ -103,21 +103,21 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
             .dropWhile { !it }
             .onEach { isInForeground ->
                 if (isInForeground) performAction(Action.RESUME)
-                else if (collaboration.phoneBox.call.replayCache.isEmpty()) performAction(Action.PAUSE)
+                else if (collaboration.conference.call.replayCache.isEmpty()) performAction(Action.PAUSE)
             }
             .launchIn(scope)
     }
 
     private fun syncWithCallState(scope: CoroutineScope) {
-        val phoneBoxState = collaboration.phoneBox.state
-        val callState = collaboration.phoneBox.call.flatMapLatest { it.state }
+        val conferenceState = collaboration.conference.state
+        val callState = collaboration.conference.call.flatMapLatest { it.state }
         scope.launch {
-            combine(phoneBoxState, callState, AppLifecycle.isInForeground) { phoneBoxState, callState, isInForeground ->
-                phoneBoxState is PhoneBox.State.Connected && callState is Call.State.Disconnected.Ended && !isInForeground
+            combine(conferenceState, callState, AppLifecycle.isInForeground) { conferenceState, callState, isInForeground ->
+                conferenceState is Conference.State.Connected && callState is Call.State.Disconnected.Ended && !isInForeground
             }.collectLatest {
                 if (!it) return@collectLatest
 
-                val endedCallId = collaboration.phoneBox.call.replayCache.firstOrNull()?.id
+                val endedCallId = collaboration.conference.call.replayCache.firstOrNull()?.id
                 if (endedCallId in endedCallIds) return@collectLatest
                 endedCallId?.let { endedCallIds.add(it) }
 
@@ -131,11 +131,11 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
         collaboration.chatBox.state
             .dropWhile { it !is ChatBox.State.Connected.Synchronized }
             .onEach {
-                val phoneBox = collaboration.phoneBox
-                val call = phoneBox.call.replayCache.firstOrNull()
+                val conference = collaboration.conference
+                val call = conference.call.replayCache.firstOrNull()
                 if (AppLifecycle.isInForeground.value ||
                     (call != null && call.state.value !is Call.State.Disconnected.Ended) ||
-                    phoneBox.state.value !is PhoneBox.State.Connected) return@onEach
+                    conference.state.value !is Conference.State.Connected) return@onEach
                 performAction(Action.PAUSE)
             }.launchIn(scope)
     }

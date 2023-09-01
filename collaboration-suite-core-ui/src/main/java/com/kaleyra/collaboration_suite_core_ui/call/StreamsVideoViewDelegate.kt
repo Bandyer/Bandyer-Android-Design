@@ -1,11 +1,11 @@
 package com.kaleyra.collaboration_suite_core_ui.call
 
 import android.content.Context
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
-import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite.phonebox.Stream
-import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
+import com.kaleyra.collaboration_suite.conference.CallParticipant
+import com.kaleyra.collaboration_suite.conference.CallParticipants
+import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite.conference.Stream
+import com.kaleyra.collaboration_suite.conference.VideoStreamView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 

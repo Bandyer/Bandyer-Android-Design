@@ -1,9 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.model.UiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
@@ -36,20 +36,20 @@ class BaseViewModelTest {
 
     private lateinit var viewModel: BaseViewModelImpl
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>()
+    private val conferenceMock = mockk<ConferenceUI>()
 
 
     @Before
     fun setUp() {
-        viewModel = BaseViewModelImpl { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true)) }
+        viewModel = BaseViewModelImpl { Configuration.Success(conferenceMock, mockk(), mockk(relaxed = true)) }
     }
 
     @Test
-    fun testCallNotUpdatedOnNewPhoneBoxCall() = runTest {
+    fun testCallNotUpdatedOnNewConferenceCall() = runTest {
         val callMock1 = mockk<CallUI>()
         val callMock2 = mockk<CallUI>()
         val call = MutableStateFlow(callMock1)
-        every { phoneBoxMock.call } returns call
+        every { conferenceMock.call } returns call
 
         val viewModelCall = viewModel.getCall()
         val actual = viewModelCall.first()

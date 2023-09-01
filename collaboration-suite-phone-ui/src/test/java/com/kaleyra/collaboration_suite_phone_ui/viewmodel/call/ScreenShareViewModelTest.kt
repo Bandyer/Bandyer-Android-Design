@@ -1,10 +1,10 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 
 import androidx.fragment.app.FragmentActivity
-import com.kaleyra.collaboration_suite.phonebox.*
+import com.kaleyra.collaboration_suite.conference.*
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
 import io.mockk.*
@@ -26,7 +26,7 @@ class ScreenShareViewModelTest {
 
     private lateinit var viewModel: ScreenShareViewModel
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>()
+    private val conferenceMock = mockk<ConferenceUI>()
 
     private val callMock = mockk<CallUI>()
 
@@ -40,8 +40,8 @@ class ScreenShareViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = spyk(ScreenShareViewModel { Configuration.Success(phoneBoxMock, mockk(),  mockk(relaxed = true), mockk(relaxed = true)) })
-        every { phoneBoxMock.call } returns MutableStateFlow(callMock)
+        viewModel = spyk(ScreenShareViewModel { Configuration.Success(conferenceMock, mockk(),  mockk(relaxed = true)) })
+        every { conferenceMock.call } returns MutableStateFlow(callMock)
         with(callMock) {
             every { inputs } returns inputsMock
             every { participants } returns MutableStateFlow(mockk {

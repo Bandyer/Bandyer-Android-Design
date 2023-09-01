@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
+import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.accept
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.decline
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
@@ -158,10 +158,10 @@ internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
             kaleyraMessageRecyclerView.visibility = View.GONE
             kaleyraProgress.visibility = View.VISIBLE
         }
-        combine(viewModel.phoneBox
+        combine(viewModel.conference
             .flatMapLatest { it.state }, viewModel.chatBox
             .flatMapLatest { it.state }) { pbState, cbState ->
-            pbState != PhoneBox.State.Connecting && cbState != ChatBox.State.Connecting
+            pbState != Conference.State.Connecting && cbState != ChatBox.State.Connecting
         }
             .takeWhile { !it }
             .onCompletion { activity.finishAndRemoveTask() }

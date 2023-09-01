@@ -2,14 +2,17 @@ package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.Company
-import com.kaleyra.collaboration_suite.phonebox.*
-import com.kaleyra.collaboration_suite.phonebox.Call.PreferredType
+import com.kaleyra.collaboration_suite.conference.*
+import com.kaleyra.collaboration_suite.conference.Call.PreferredType
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
-import com.kaleyra.collaboration_suite_core_ui.Theme
+import com.kaleyra.collaboration_suite_core_ui.CompanyUI
+import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
+import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager
+import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
@@ -41,13 +44,13 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
 
     protected lateinit var viewModel: VM
 
-    protected val phoneBoxMock = mockk<PhoneBoxUI>()
+    protected val conferenceMock = mockk<ConferenceUI>()
 
     protected val companyMock = mockk<Company>()
 
-    protected val themeMock = mockk<Theme>()
-
     protected val callMock = mockk<CallUI>(relaxed = true)
+
+    private val themeMock = mockk<CompanyUI.Theme>()
 
     private val preferredTypeMock =  MutableStateFlow(PreferredType.audioVideo())
 
@@ -86,7 +89,8 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
     open fun setUp() {
         mockkObject(CallUserMessagesProvider)
         mockkObject(ContactDetailsManager)
-        every { phoneBoxMock.call } returns MutableStateFlow(callMock)
+        mockkObject(CompanyThemeManager)
+        every { conferenceMock.call } returns MutableStateFlow(callMock)
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
         with(callParticipantsMock) {
             every { others } returns listOf(participantMock1, participantMock2)
@@ -151,6 +155,7 @@ internal abstract class PreCallViewModelTest<VM: PreCallViewModel<T>, T: PreCall
                 every { logo } returns nightLogo
             }
         }
+        every { companyMock.combinedTheme } returns flowOf(themeMock)
     }
 
     open fun tearDown() {

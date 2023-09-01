@@ -1,12 +1,12 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 
 import com.bandyer.android_audiosession.model.AudioOutputDevice
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite.conference.CallParticipant
+import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.audioOutputDevicesList
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.currentAudioOutputDevice
@@ -41,7 +41,7 @@ class AudioOutputViewModelTest {
 
     private lateinit var viewModel: AudioOutputViewModel
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>()
+    private val conferenceMock = mockk<ConferenceUI>()
 
     private val callMock = mockk<CallUI>(relaxed = true)
 
@@ -59,9 +59,9 @@ class AudioOutputViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = AudioOutputViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true))}
+        viewModel = AudioOutputViewModel { Configuration.Success(conferenceMock, mockk(), mockk(relaxed = true))}
         mockkObject(CollaborationAudioExtensions)
-        every { phoneBoxMock.call } returns MutableStateFlow(callMock)
+        every { conferenceMock.call } returns MutableStateFlow(callMock)
         every { callMock.audioOutputDevicesList } returns MutableStateFlow(listOf(AudioOutputDevice.Loudspeaker(), AudioOutputDevice.WiredHeadset(), AudioOutputDevice.Earpiece(), AudioOutputDevice.Bluetooth("bluetoothId1"), AudioOutputDevice.Bluetooth("bluetoothId2"), AudioOutputDevice.None()))
         every { callMock.participants } returns MutableStateFlow(mockk {
             every { others } returns listOf(participantMock1, participantMock2)

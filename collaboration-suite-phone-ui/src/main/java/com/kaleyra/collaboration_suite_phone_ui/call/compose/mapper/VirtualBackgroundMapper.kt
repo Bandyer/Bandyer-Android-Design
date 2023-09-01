@@ -1,6 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
-import com.kaleyra.collaboration_suite.phonebox.Effect
+import com.kaleyra.collaboration_suite.conference.Effect
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi

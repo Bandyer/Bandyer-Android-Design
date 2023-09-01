@@ -47,7 +47,7 @@ internal class FileShareNotificationActionReceiverTest {
     fun setUp() {
         mockkObject(ContextExtensions)
         mockkObject(NotificationManager)
-        mockkStatic("com.kaleyra.collaboration_suite_core_ui.CollaborationUIKt")
+        mockkStatic("com.kaleyra.collaboration_suite_core_ui.KaleyraVideoKt")
         every { KaleyraVideo.onCallReady(any(), captureLambda()) } answers { lambda<(CallUI) -> Unit>().invoke(callMock) }
         every { contextMock.goToLaunchingActivity() } returns Unit
         every { callMock.sharedFolder.download(any()) } returns mockk(relaxed = true)

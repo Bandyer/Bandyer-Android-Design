@@ -1,6 +1,6 @@
 package com.kaleyra.collaboration_suite_core_ui.call
 
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
+import com.kaleyra.collaboration_suite.conference.CallParticipants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 

@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 import android.net.Uri
 import com.kaleyra.collaboration_suite.Contact
 import com.kaleyra.collaboration_suite.chatbox.*
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.*
 import io.mockk.mockk
 import io.mockk.spyk
@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 
 object Mocks {
-    val phoneBoxMock = mockk<PhoneBoxUI>(relaxed = true)
+    val conferenceMock = mockk<ConferenceUI>(relaxed = true)
     val chatBoxMock = mockk<ChatBoxUI>(relaxed = true)
     val messagesUIMock = mockk<MessagesUI>(relaxed = true)
     val callMock = mockk<CallUI>(relaxed = true)

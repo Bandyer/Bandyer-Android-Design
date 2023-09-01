@@ -1,8 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.mapToRecordingStateUi
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingUi

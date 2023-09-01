@@ -28,7 +28,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.*
@@ -150,8 +150,8 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
         }
         is ChatAction.VIDEOCALL, is ChatAction.CALL -> true.also {
             val userId = viewModel.chat.replayCache.first().participants.value.others.first().userId
-            val phoneBox = viewModel.phoneBox.replayCache.firstOrNull() ?: return@also
-            phoneBox.call(listOf(userId)) {
+            val conference = viewModel.conference.replayCache.firstOrNull() ?: return@also
+            conference.call(listOf(userId)) {
                 if (action is ChatAction.CALL) preferredType = Call.PreferredType.audioUpgradable()
             }
             findNavController().popBackStack()

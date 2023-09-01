@@ -61,7 +61,7 @@ object KaleyraVideo {
     private var collaborationUIConnector: CollaborationUIConnector? = null
     private var termsAndConditionsRequester: TermsAndConditionsRequester? = null
 
-    private var _phoneBox: PhoneBoxUI? by cached { PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz, collaboration!!.configuration.logger) }
+    private var _conference: ConferenceUI? by cached { ConferenceUI(collaboration!!.conference, callActivityClazz, collaboration!!.configuration.logger) }
     private var _chatBox: ChatBoxUI? by cached { ChatBoxUI(collaboration!!.chatBox, chatActivityClazz, chatNotificationActivityClazz) }
 
     /**
@@ -71,12 +71,12 @@ object KaleyraVideo {
     var userDetailsProvider: UserDetailsProvider? = null
 
     /**
-     * Phone box
+     * Conference
      */
-    val phoneBox: PhoneBoxUI
+    val conference: ConferenceUI
         get() {
-            require(collaboration != null) { "configure the CollaborationUI to use the phoneBox" }
-            return _phoneBox!!
+            require(collaboration != null) { "configure the CollaborationUI to use the conference" }
+            return _conference!!
         }
 
     /**
@@ -163,7 +163,7 @@ object KaleyraVideo {
             collaborationUIConnector?.disconnect(true)
             termsAndConditionsRequester?.dispose()
             collaboration = null
-            _phoneBox = null
+            _conference = null
             _chatBox = null
             mainScope = null
         }
@@ -171,7 +171,7 @@ object KaleyraVideo {
 }
 
 internal fun KaleyraVideo.onCallReady(scope: CoroutineScope, block: (call: CallUI) -> Unit) {
-    phoneBox.call
+    conference.call
         .take(1)
         .onEach { block.invoke(it) }
         .launchIn(scope)

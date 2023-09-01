@@ -11,8 +11,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
+import com.kaleyra.collaboration_suite.conference.VideoStreamView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamViewExtensions.getScale

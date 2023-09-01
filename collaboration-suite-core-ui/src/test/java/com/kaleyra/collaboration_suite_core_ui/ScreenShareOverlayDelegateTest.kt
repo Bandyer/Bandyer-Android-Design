@@ -1,9 +1,9 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.Context
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite.phonebox.Inputs
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite.conference.Inputs
 import com.kaleyra.collaboration_suite_core_ui.call.ScreenShareOverlayDelegate
 import com.kaleyra.collaboration_suite_core_ui.overlay.AppViewOverlay
 import com.kaleyra.collaboration_suite_core_ui.overlay.StatusBarOverlayView

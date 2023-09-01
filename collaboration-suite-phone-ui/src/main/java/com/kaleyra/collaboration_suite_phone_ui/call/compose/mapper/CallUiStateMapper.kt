@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import android.util.Rational
-import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
+import com.kaleyra.collaboration_suite.conference.VideoStreamView
 import com.kaleyra.collaboration_suite_core_ui.utils.MathUtils
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallUiState
 import kotlinx.coroutines.flow.Flow

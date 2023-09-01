@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite.phonebox.Effect
+import com.kaleyra.collaboration_suite.conference.Effect
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
@@ -12,7 +12,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackg
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update

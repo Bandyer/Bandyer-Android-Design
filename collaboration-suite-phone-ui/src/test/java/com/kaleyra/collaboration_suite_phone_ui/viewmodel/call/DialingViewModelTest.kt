@@ -14,7 +14,7 @@ internal class DialingViewModelTest: PreCallViewModelTest<DialingViewModel, Dial
     @Before
     override fun setUp() {
         super.setUp()
-        viewModel = spyk(DialingViewModel { Configuration.Success(phoneBoxMock, mockk(), companyMock, MutableStateFlow(themeMock)) })
+        viewModel = spyk(DialingViewModel { Configuration.Success(conferenceMock, mockk(), companyMock) })
     }
 
     @After

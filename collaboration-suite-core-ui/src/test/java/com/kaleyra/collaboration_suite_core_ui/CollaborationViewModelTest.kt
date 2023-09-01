@@ -27,10 +27,10 @@ class CollaborationViewModelTest {
     }
 
     @Test
-    fun configurationSuccessful_getPhoneBox_getPhoneBoxInstance() = runTest {
-        val phoneBox = mockk<PhoneBoxUI>()
-        val viewModel = object : CollaborationViewModel({ Configuration.Success(phoneBox, mockk(), mockk()) }) {}
-        assertEquals(viewModel.phoneBox.first(), phoneBox)
+    fun configurationSuccessful_getConference_getConferenceInstance() = runTest {
+        val conference = mockk<ConferenceUI>()
+        val viewModel = object : CollaborationViewModel({ Configuration.Success(conference, mockk(), mockk()) }) {}
+        assertEquals(viewModel.conference.first(), conference)
     }
 
     @Test

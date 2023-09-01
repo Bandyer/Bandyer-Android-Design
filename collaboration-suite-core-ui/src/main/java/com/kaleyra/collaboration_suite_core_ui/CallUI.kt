@@ -18,8 +18,8 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import android.os.Parcelable
 import androidx.annotation.Keep
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.Call.PreferredType
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.Call.PreferredType
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow

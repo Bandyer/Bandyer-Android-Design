@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
+import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.model.TermsAndConditionsUiState
@@ -20,10 +20,10 @@ class TermsAndConditionsViewModel(configure: suspend () -> Configuration) : Base
     override fun initialState() = TermsAndConditionsUiState()
 
     init {
-        val phoneBoxState = phoneBox.flatMapLatest { it.state }
+        val conferenceState = conference.flatMapLatest { it.state }
         val chatBoxState = chatBox.flatMapLatest { it.state }
-        combine(phoneBoxState, chatBoxState) { pbState, cbState ->
-            pbState != PhoneBox.State.Connecting && cbState != ChatBox.State.Connecting
+        combine(conferenceState, chatBoxState) { pbState, cbState ->
+            pbState != Conference.State.Connecting && cbState != ChatBox.State.Connecting
         }
             .takeWhile { !it }
             .onCompletion { _uiState.update { it.copy(isConnected = true) } }

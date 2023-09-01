@@ -17,8 +17,8 @@
 package com.kaleyra.collaboration_suite_glass_ui.call.model
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite.conference.CallParticipant
+import com.kaleyra.collaboration_suite.conference.Stream
 
 internal data class StreamParticipant(
     val participant: CallParticipant,

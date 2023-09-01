@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.mapper.call
 
 import android.util.Rational
 import android.util.Size
-import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
+import com.kaleyra.collaboration_suite.conference.VideoStreamView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi

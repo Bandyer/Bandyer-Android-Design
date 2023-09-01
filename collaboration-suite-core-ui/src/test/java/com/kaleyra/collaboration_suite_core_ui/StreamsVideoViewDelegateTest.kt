@@ -1,6 +1,6 @@
 package com.kaleyra.collaboration_suite_core_ui
 
-import com.kaleyra.collaboration_suite.phonebox.*
+import com.kaleyra.collaboration_suite.conference.*
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsVideoViewDelegate
 import io.mockk.every
 import io.mockk.mockk

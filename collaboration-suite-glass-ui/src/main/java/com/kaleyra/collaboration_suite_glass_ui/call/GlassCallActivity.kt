@@ -34,9 +34,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard.LoadOptions
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -247,9 +247,9 @@ internal class GlassCallActivity :
             }
             .launchIn(lifecycleScope)
 
-        viewModel.phoneBoxState
+        viewModel.conferenceState
             .onEach {
-                if (it !is PhoneBox.State.Disconnecting) return@onEach
+                if (it !is Conference.State.Disconnecting) return@onEach
                 finishAndRemoveTask()
             }
             .launchIn(lifecycleScope)

@@ -1,8 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conference.CallParticipant
+import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
@@ -31,10 +31,9 @@ internal class RingingViewModelTest : PreCallViewModelTest<RingingViewModel, Rin
         super.setUp()
         viewModel = spyk(RingingViewModel {
             Configuration.Success(
-                phoneBoxMock,
+                conferenceMock,
                 mockk(),
-                companyMock,
-                MutableStateFlow(themeMock)
+                companyMock
             )
         })
     }

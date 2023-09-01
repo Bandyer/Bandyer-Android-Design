@@ -10,7 +10,7 @@ open class ChatViewModel(configure: suspend () -> Configuration) : Collaboration
     private val _chat = MutableSharedFlow<ChatUI>(replay = 1, extraBufferCapacity = 1)
     val chat = _chat.asSharedFlow()
 
-    val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
+    val call = conference.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
     val messages = chat.flatMapLatest { it.messages }.shareInEagerly(viewModelScope)
 

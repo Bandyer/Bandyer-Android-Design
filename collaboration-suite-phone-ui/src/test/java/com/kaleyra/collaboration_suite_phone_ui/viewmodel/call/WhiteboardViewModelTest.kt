@@ -1,12 +1,12 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
@@ -34,7 +34,7 @@ class WhiteboardViewModelTest {
 
     private lateinit var viewModel: WhiteboardViewModel
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>()
+    private val conferenceMock = mockk<ConferenceUI>()
 
     private val callMock = mockk<CallUI>(relaxed = true)
 
@@ -46,10 +46,9 @@ class WhiteboardViewModelTest {
 
     @Before
     fun setUp() {
-        mockkConstructor(CallUserMessagesProvider::class)
         mockkObject(CallUserMessagesProvider)
-        viewModel = spyk(WhiteboardViewModel(configure = { Configuration.Success(phoneBoxMock, mockk(), mockk(relaxed = true), mockk(relaxed = true)) }, whiteboardView = mockk(relaxed = true)))
-        every { phoneBoxMock.call } returns MutableStateFlow(callMock)
+        viewModel = spyk(WhiteboardViewModel(configure = { Configuration.Success(conferenceMock, mockk(), mockk(relaxed = true)) }, whiteboardView = mockk(relaxed = true)))
+        every { conferenceMock.call } returns MutableStateFlow(callMock)
         every { callMock.whiteboard } returns whiteboardMock
         with(sharedFileMock) {
             every { size } returns 1000L

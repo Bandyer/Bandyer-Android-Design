@@ -1,10 +1,10 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.termsandconditions
 
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
+import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite_core_ui.ChatBoxUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.viewmodel.TermsAndConditionsViewModel
 import io.mockk.every
@@ -29,13 +29,13 @@ class TermsAndConditionsViewModelTest {
 
     private lateinit var viewModel: TermsAndConditionsViewModel
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>(relaxed = true)
+    private val conferenceMock = mockk<ConferenceUI>(relaxed = true)
 
     private val chatBoxMock = mockk<ChatBoxUI>(relaxed = true)
 
     @Before
     fun setUp() {
-        viewModel = TermsAndConditionsViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk(relaxed = true), mockk(relaxed = true)) }
+        viewModel = TermsAndConditionsViewModel { Configuration.Success(conferenceMock, chatBoxMock, mockk(relaxed = true)) }
     }
 
     @After
@@ -45,7 +45,7 @@ class TermsAndConditionsViewModelTest {
 
     @Test
     fun testTermsAndConditionsUiState_isConnectedUpdated() = runTest {
-        every { phoneBoxMock.state } returns MutableStateFlow(PhoneBox.State.Connected)
+        every { conferenceMock.state } returns MutableStateFlow(Conference.State.Connected)
         every { chatBoxMock.state } returns MutableStateFlow(ChatBox.State.Connected)
         val actual = viewModel.uiState.first()
         assertEquals(false, actual.isConnected)
