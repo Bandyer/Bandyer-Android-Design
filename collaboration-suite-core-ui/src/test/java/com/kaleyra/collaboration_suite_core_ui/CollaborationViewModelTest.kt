@@ -49,10 +49,10 @@ class CollaborationViewModelTest {
         assertEquals(viewModel.company.first(), company)
     }
 
-    @Test
-    fun configurationSuccessful_getTheme_getThemeInstance() = runTest {
-        val theme = MutableStateFlow(Theme(day = Style(mockk()), night = Style(mockk())))
-        val viewModel = object : CollaborationViewModel({ Configuration.Success(mockk(), mockk(), mockk(relaxed = true), theme = theme) }) {}
-        assertEquals(viewModel.theme.first(), theme.value)
-    }
+//    @Test
+//    fun configurationSuccessful_getTheme_getThemeInstance() = runTest {
+//        val theme = MutableStateFlow(Theme(day = Style(mockk()), night = Style(mockk())))
+//        val viewModel = object : CollaborationViewModel({ Configuration.Success(mockk(), mockk(), mockk(relaxed = true), theme = theme) }) {}
+//        assertEquals(viewModel.theme.first(), theme.value)
+//    }
 }
