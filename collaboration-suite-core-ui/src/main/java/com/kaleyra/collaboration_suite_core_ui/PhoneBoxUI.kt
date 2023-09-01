@@ -81,6 +81,11 @@ class PhoneBoxUI(
      */
     var withUI = true
 
+    /**
+     * The call actions that will be set on every call
+     */
+    var callActions: Set<CallUI.Action>? = null
+
     init {
         listenToCalls()
     }
@@ -148,6 +153,7 @@ class PhoneBoxUI(
         var currentCall: CallUI? = null
         val mutex = Mutex()
         call.onEach { call ->
+            callActions?.let { call.actions.value = it }
             when {
                 mutex.withLock { currentCall == null } -> {
                     if (call.state.value is Call.State.Disconnected.Ended || !withUI) return@onEach
