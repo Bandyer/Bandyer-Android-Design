@@ -66,6 +66,12 @@ class ChatBoxUI(
      */
     var withUI: Boolean = true
 
+    /**
+     * The chat actions that will be set on every chat
+     */
+    var chatActions: Set<ChatUI.Action> = ChatUI.Action.default
+
+
     init {
         listenToMessages()
     }
@@ -131,6 +137,6 @@ class ChatBoxUI(
 
     private fun getOrCreateChatUI(chat: Chat): ChatUI = synchronized(this) { mappedChats.firstOrNull { it.id == chat.id } ?: createChatUI(chat) }
 
-    private fun createChatUI(chat: Chat): ChatUI = ChatUI(chat, chatActivityClazz = chatActivityClazz, chatCustomNotificationActivityClazz = chatCustomNotificationActivityClazz).apply { mappedChats = mappedChats + this }
+    private fun createChatUI(chat: Chat): ChatUI = ChatUI(chat = chat, chatActivityClazz = chatActivityClazz, chatCustomNotificationActivityClazz = chatCustomNotificationActivityClazz).apply { mappedChats = mappedChats + this }
 }
 
