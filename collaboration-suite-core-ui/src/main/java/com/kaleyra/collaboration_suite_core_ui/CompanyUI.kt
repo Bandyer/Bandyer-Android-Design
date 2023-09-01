@@ -49,8 +49,8 @@ internal class NoOpCompany(
 data class Theme(
     val fontFamily: FontFamily = KaleyraFontFamily.fontFamily,
     val defaultStyle: DefaultStyle = DefaultStyle.System,
-    override val day: Style = Style(colors = Colors(primary = kaleyra_theme_light_primary, secondary = kaleyra_theme_light_secondary)),
-    override val night: Style = Style(colors =  Colors(primary = kaleyra_theme_dark_primary, secondary = kaleyra_theme_dark_secondary))
+    override val day: Style = Style(colors = Colors(secondary = kaleyra_theme_light_secondary)),
+    override val night: Style = Style(colors =  Colors(secondary = kaleyra_theme_dark_secondary))
 ) : Company.Theme {
 
     sealed class DefaultStyle {
@@ -63,6 +63,6 @@ data class Theme(
 
     data class Style(override val logo: Uri = Uri.EMPTY, val colors: Colors) : Company.Theme.Style
 
-    data class Colors(val primary: Color, val secondary: Color)
+    data class Colors(val secondary: Color)
 }
 

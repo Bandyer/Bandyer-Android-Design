@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontFamily
+import androidx.core.graphics.ColorUtils
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.material.color.MaterialColors
 import com.kaleyra.collaboration_suite_core_ui.KaleyraFontFamily
@@ -139,17 +140,15 @@ fun CollaborationTheme(
 
     val colors = when {
         isDarkTheme -> KaleyraDarkColorTheme.copy(
-            primary = darkColors.primary,
-            onPrimary = onColorFor(darkColors.primary),
             secondary = darkColors.secondary,
             onSecondary = onColorFor(darkColors.secondary)
         )
-        else -> KaleyraLightColorTheme.copy(
-            primary = lightColors.primary,
-            onPrimary = onColorFor(lightColors.primary),
-            secondary = lightColors.secondary,
-            onSecondary = onColorFor(lightColors.secondary)
-        )
+        else -> {
+            KaleyraLightColorTheme.copy(
+                secondary = lightColors.secondary,
+                onSecondary = onColorFor(lightColors.secondary)
+            )
+        }
     }
 
     SideEffect {
