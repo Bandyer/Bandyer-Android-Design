@@ -26,8 +26,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         style="?attr/kaleyra_rootLayoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="?attr/kaleyra_callParticipantRemovedStyle">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/kaleyra_title"

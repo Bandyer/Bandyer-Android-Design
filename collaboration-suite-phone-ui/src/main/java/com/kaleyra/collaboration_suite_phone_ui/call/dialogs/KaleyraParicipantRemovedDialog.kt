@@ -25,7 +25,6 @@ import androidx.core.view.postDelayed
 import androidx.fragment.app.DialogFragment
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraCallParticipantRemovedDialogLayoutBinding
-import com.kaleyra.collaboration_suite_phone_ui.extensions.getCallThemeAttribute
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 /**
@@ -44,11 +43,12 @@ class KaleyraParicipantRemovedDialog(private val adminDisplayName: String? = nul
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireContext().obtainStyledAttributes(R.style.KaleyraCollaborationSuiteUI_FragmentDialog, R.styleable.KaleyraCollaborationSuiteUI_FragmentDialog).apply {
-            autoDismissTime = getInt(R.styleable.KaleyraCollaborationSuiteUI_FragmentDialog_kaleyra_autoDismissTime, -1)
-            recycle()
-        }
-        setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_callParticipantRemovedStyle))
+//        requireContext().obtainStyledAttributes(R.style.KaleyraCollaborationSuiteUI_FragmentDialog, R.styleable.KaleyraCollaborationSuiteUI_FragmentDialog).apply {
+//            autoDismissTime = getInt(R.styleable.KaleyraCollaborationSuiteUI_FragmentDialog_kaleyra_autoDismissTime, -1)
+//            recycle()
+//        }
+        // TODO apply right style
+//        setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_callParticipantRemovedStyle))
     }
 
     /**
