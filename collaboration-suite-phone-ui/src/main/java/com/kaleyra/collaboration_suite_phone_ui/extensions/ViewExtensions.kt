@@ -38,7 +38,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.InputDeviceCompat
 import com.kaleyra.collaboration_suite_utils.FieldProperty
 import com.kaleyra.collaboration_suite_utils.LifecycleEvents
-import com.kaleyra.collaboration_suite_phone_ui.buttons.KaleyraActionButton
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.dp2px
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 import java.lang.reflect.InvocationTargetException
@@ -820,24 +819,6 @@ fun View.performNestedClick(): Boolean {
             }
     }
     return false
-}
-
-/**
- * Let focusable views be also focusable in touch mode for single finger navigation gestures on google glass
- * @receiver View
- */
-fun View.setAllViewsFocusableInTouchMode() {
-    when {
-        this is ViewGroup && !isFocusable -> {
-            (0 until childCount).forEach {
-                val child = getChildAt(it)
-                child.setAllViewsFocusableInTouchMode()
-            }
-        }
-        else -> if (isFocusable || this is KaleyraActionButton) {
-            isFocusableInTouchMode = true
-        }
-    }
 }
 
 
