@@ -35,7 +35,7 @@ import kotlinx.parcelize.Parcelize
  */
 class CallUI(
     private val call: Call,
-    val actions: MutableStateFlow<Set<Action>> = call.getDefaultActions()
+    val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(Action.default)
 ) : Call by call {
 
     /**
@@ -93,7 +93,9 @@ class CallUI(
                     ToggleCamera,
                     SwitchCamera,
                     HangUp,
-                    Audio
+                    Audio,
+                    ChangeVolume,
+                    ShowParticipants
                 )
             }
         }
@@ -180,25 +182,5 @@ class CallUI(
             object Full : OpenChat()
         }
     }
-}
-
-private fun Call.getDefaultActions(): MutableStateFlow<Set<Action>> {
-    val actions = MutableStateFlow(buildSet {
-        add(CallUI.Action.ChangeVolume)
-        add(CallUI.Action.ShowParticipants)
-    })
-    preferredType.onEach {
-        actions.value = it.addActions(actions.value)
-    }.launchIn(MainScope())
-    return actions
-}
-
-private fun PreferredType.addActions(actions: Set<Action>) = buildSet {
-    if (this@addActions.hasAudio()) add(CallUI.Action.ToggleMicrophone)
-    if (this@addActions.hasVideo()) {
-        add(CallUI.Action.ToggleCamera)
-        add(CallUI.Action.SwitchCamera)
-    }
-    addAll(actions)
 }
 

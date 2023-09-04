@@ -224,7 +224,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         requireContext(),
         withMicrophone = actions.any { it is ToggleMicrophone && viewModel.preferredCallType.value?.hasAudio() == true },
         withCamera = actions.any { it is ToggleCamera && viewModel.preferredCallType.value?.hasVideo() == true },
-        withSwitchCamera = actions.any { it is SwitchCamera },
+        withSwitchCamera = actions.any { it is SwitchCamera && viewModel.preferredCallType.value?.hasVideo() == true },
         withFlashLight = actions.any { it is ToggleFlashlight },
         withVolume = actions.any { it is ChangeVolume },
         withZoom = actions.any { it is ChangeZoom },
