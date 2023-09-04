@@ -52,16 +52,14 @@ internal class BaseRatingBarElement : FrameLayout {
             layoutParams = params
             adjustViewBounds = true
             scaleType = ImageView.ScaleType.FIT_CENTER
-            if(progressDrawable.constantState == null) return@with
-            setImageDrawable(ClipDrawable(progressDrawable.constantState!!.newDrawable(), Gravity.START, ClipDrawable.HORIZONTAL))
+            setImageDrawable(ClipDrawable(progressDrawable, Gravity.START, ClipDrawable.HORIZONTAL))
         }
 
         with(binding.kaleyraBackgroundImage)  {
             layoutParams = params
             adjustViewBounds = true
             scaleType = ImageView.ScaleType.FIT_CENTER
-            if(backgroundDrawable.constantState == null) return@with
-            setImageDrawable(ClipDrawable(backgroundDrawable.constantState!!.newDrawable(), Gravity.END, ClipDrawable.HORIZONTAL))
+            setImageDrawable(ClipDrawable(backgroundDrawable, Gravity.END, ClipDrawable.HORIZONTAL))
         }
 
         setProgress(0f)

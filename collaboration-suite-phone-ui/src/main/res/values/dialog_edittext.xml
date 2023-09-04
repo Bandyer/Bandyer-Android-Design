@@ -24,26 +24,9 @@
         <item name="editTextStyle">@style/KaleyraCollaborationSuiteUI.TextInputEditText.Dialog</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextInputLayoutDialogMaterialThemeOverlay.Day" parent="KaleyraCollaborationSuiteUI.TextInputLayoutDialogMaterialThemeOverlay">
-        <item name="editTextStyle">@style/KaleyraCollaborationSuiteUI.TextInputEditText.Dialog.Day</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.TextInputEditText.Dialog.Day" parent="KaleyraCollaborationSuiteUI.TextInputEditText.Dialog">
-        <item name="android:background">@color/kaleyra_colorSurface</item>
-        <item name="android:textColorHint">@color/kaleyra_color_on_surface_50_day</item>
-        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance.TextInputEditText.Dialog.Day</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.TextAppearance.TextInputEditText.Dialog.Day" parent="KaleyraCollaborationSuiteUI.TextAppearance.TextInputEditText">
-        <item name="android:textColor">@color/kaleyra_colorOnSurface</item>
-    </style>
-
     <style name="KaleyraCollaborationSuiteUI.TextInputLayout.Dialog" parent="KaleyraCollaborationSuiteUI.TextInputLayout">
         <item name="materialThemeOverlay">@style/KaleyraCollaborationSuiteUI.TextInputLayoutDialogMaterialThemeOverlay</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextInputLayout.Dialog.Day" parent="KaleyraCollaborationSuiteUI.TextInputLayout">
-        <item name="materialThemeOverlay">@style/KaleyraCollaborationSuiteUI.TextInputLayoutDialogMaterialThemeOverlay.Day</item>
-    </style>
 
 </resources>

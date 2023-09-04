@@ -18,23 +18,36 @@ package com.kaleyra.collaboration_suite_phone_ui.feedback
 
 import android.animation.LayoutTransition
 import android.content.DialogInterface
+import android.content.res.ColorStateList
+import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.compose.material.Colors
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.createFontFamilyResolver
+import androidx.core.graphics.ColorUtils
 import androidx.core.view.postDelayed
 import androidx.fragment.app.DialogFragment
-
-
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraFeedbackDialogLayoutBinding
+import java.lang.reflect.Field
+
 
 /**
  * FeedbackDialog
  */
-class FeedbackDialog : DialogFragment() {
+class FeedbackDialog(val colors: Colors, val fontFamily: FontFamily) : DialogFragment() {
 
     private lateinit var binding: KaleyraFeedbackDialogLayoutBinding
 
@@ -50,12 +63,11 @@ class FeedbackDialog : DialogFragment() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // TODO apply the right style
-//        requireContext().obtainStyledAttributes(R.style.KaleyraCollaborationSuiteUI_FragmentDialog, R.styleable.KaleyraCollaborationSuiteUI_FragmentDialog).apply {
-//            autoDismissTime = getInt(R.styleable.KaleyraCollaborationSuiteUI_FragmentDialog_kaleyra_autoDismissTime, -1)
-//            recycle()
-//        }
-//        setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_feedbackDialogStyle))
+        requireContext().obtainStyledAttributes(R.style.KaleyraCollaborationSuiteUI_FragmentDialog, R.styleable.KaleyraCollaborationSuiteUI_FragmentDialog).apply {
+            autoDismissTime = getInt(R.styleable.KaleyraCollaborationSuiteUI_FragmentDialog_kaleyra_autoDismissTime, -1)
+            recycle()
+        }
+        setStyle(STYLE_NO_TITLE, R.style.KaleyraCollaborationSuiteUI_FragmentDialog_Feedback)
     }
 
     /**
@@ -68,6 +80,69 @@ class FeedbackDialog : DialogFragment() {
     ): View {
         binding = KaleyraFeedbackDialogLayoutBinding.inflate(inflater, container, false).apply {
             with(kaleyraFragmentFeedbackLayout) {
+                val normalTypeFace = createFontFamilyResolver(requireContext()).resolve(
+                    fontFamily = fontFamily,
+                    fontWeight = FontWeight.Normal
+                ).value as Typeface
+                val boldTypeFace = createFontFamilyResolver(requireContext()).resolve(
+                    fontFamily = fontFamily,
+                    fontWeight = FontWeight.SemiBold
+                ).value as Typeface
+                kaleyraTitle.typeface = normalTypeFace
+                kaleyraSubtitle.typeface = boldTypeFace
+                kaleyraEdittext.typeface = normalTypeFace
+
+                val surface = colors.surface.toArgb()
+                val onSurface = colors.onSurface.toArgb()
+                val secondary = colors.secondary.toArgb()
+                root.setBackgroundColor(surface)
+                kaleyraClose.iconTint = ColorStateList.valueOf(onSurface)
+                kaleyraVote.setBackgroundColor(secondary)
+                kaleyraTitle.setTextColor(ColorUtils.setAlphaComponent(onSurface, (.8f * 255).toInt()))
+                kaleyraSubtitle.setTextColor(onSurface)
+                kaleyraRating.setDrawableBackgroundTint(secondary)
+                kaleyraRating.setDrawableProgressTint(secondary)
+                val editTextBackgroundDrawable = kaleyraEdittext.background as GradientDrawable
+                editTextBackgroundDrawable.mutate()
+                editTextBackgroundDrawable.color = ColorStateList(
+                    arrayOf(
+                        intArrayOf(android.R.attr.state_focused),
+                        intArrayOf()
+                    ),
+                    intArrayOf(
+                        ColorUtils.setAlphaComponent(onSurface, (.12f * 255).toInt()),
+                        Color.Transparent.toArgb()
+                    )
+                )
+                val strokeWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1.5f, resources.displayMetrics)
+                editTextBackgroundDrawable.setStroke(
+                    strokeWidth.toInt(),
+                    ColorStateList(
+                        arrayOf(
+                            intArrayOf(android.R.attr.state_focused),
+                            intArrayOf()
+                        ),
+                        intArrayOf(
+                            Color.Transparent.toArgb(),
+                            ColorUtils.setAlphaComponent(onSurface, (.3f * 255).toInt())
+                        )
+                    )
+                )
+                kaleyraEdittext.setHintTextColor(ColorUtils.setAlphaComponent(onSurface, (.5f * 255).toInt()))
+                kaleyraEdittext.setTextColor(onSurface)
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                    kaleyraEdittext.setTextCursorDrawable(secondary)
+//                } else {
+//                    try {
+//                        val f: Field = TextView::class.java.getDeclaredField("mCursorDrawableRes")
+//                        f.isAccessible = true
+////                        f.set(kaleyraEdittext, R.drawable.cursor)
+//                    } catch (ignored: Exception) {
+//                    }
+//                }
+
+
+
                 kaleyraRating.onRatingChangeListener = object : RatingBar.OnRatingChangeListener {
                     override fun onRatingChange(rating: Float) {
                         val ratingText = resources.getString(
@@ -78,6 +153,7 @@ class FeedbackDialog : DialogFragment() {
                                 rating <= 4f -> R.string.kaleyra_feedback_good
                                 else -> R.string.kaleyra_feedback_excellent
                             })
+
                         with(kaleyraSubtitle) {
                             text = ratingText
                             contentDescription = ratingText

@@ -22,7 +22,6 @@
     </declare-styleable>
 
     <style name="KaleyraCollaborationSuiteUI.FragmentDialog.Feedback" parent="KaleyraCollaborationSuiteUI.FragmentDialog">
-        <item name="colorOnSecondary">@color/kaleyra_colorOnSecondary</item>
         <item name="kaleyra_feedbackLayoutStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout</item>
         <item name="kaleyra_feedbackSentLayoutStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout</item>
     </style>

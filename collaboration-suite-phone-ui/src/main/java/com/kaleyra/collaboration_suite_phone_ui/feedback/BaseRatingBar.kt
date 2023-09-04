@@ -18,7 +18,9 @@ package com.kaleyra.collaboration_suite_phone_ui.feedback
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.ColorFilter
 import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -31,6 +33,8 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.LinearLayout
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.children
@@ -87,8 +91,8 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         drawableBackground = if (a.hasValue(R.styleable.BaseRatingBar_android_drawable)) ContextCompat.getDrawable(context, a.getResourceId(R.styleable.BaseRatingBar_android_drawable, NO_ID)) else ContextCompat.getDrawable(context, R.drawable.ic_kaleyra_empty_star)
         drawableProgress = if (a.hasValue(R.styleable.BaseRatingBar_android_progressDrawable)) ContextCompat.getDrawable(context, a.getResourceId(R.styleable.BaseRatingBar_android_progressDrawable, NO_ID)) else ContextCompat.getDrawable(context, R.drawable.ic_kaleyra_full_star)
         if (a.hasValue(R.styleable.BaseRatingBar_drawableTint)) a.getColor(R.styleable.BaseRatingBar_drawableTint, NO_ID).apply {
-            drawableBackground = drawableBackground?.applyTint(this)
-            drawableProgress = drawableProgress?.applyTint(this)
+            setDrawableBackgroundTint(this)
+            setDrawableProgressTint(this)
         }
 
         a.recycle()
@@ -198,11 +202,20 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         return (childIndex + 1 - (1 - steps)).round(2)
     }
 
-    private fun Drawable.applyTint(drawableTint: Int): Drawable =
-        DrawableCompat.wrap(this).apply {
+    fun setDrawableBackgroundTint(drawableTint: Int) {
+        drawableBackground?.applyTint(drawableTint)
+    }
+
+    fun setDrawableProgressTint(drawableTint: Int) {
+        drawableProgress?.applyTint(drawableTint)
+    }
+
+    private fun Drawable.applyTint(drawableTint: Int): Drawable {
+        return DrawableCompat.wrap(this).apply {
             setTintMode(PorterDuff.Mode.SRC_IN)
             setTint(drawableTint)
         }
+    }
 
     override fun getAccessibilityClassName(): CharSequence =
         BaseRatingBar::class.java.name
