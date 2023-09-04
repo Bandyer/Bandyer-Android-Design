@@ -85,7 +85,7 @@ class ConferenceUI(
     /**
      * The call actions that will be set on every call
      */
-    var callActions: Set<CallUI.Action>? = null
+    var callActions: Set<CallUI.Action> = CallUI.Action.default
 
     init {
         listenToCalls()
