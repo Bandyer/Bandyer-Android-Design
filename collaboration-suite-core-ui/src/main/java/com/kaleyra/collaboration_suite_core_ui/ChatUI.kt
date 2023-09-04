@@ -37,7 +37,7 @@ import kotlinx.parcelize.Parcelize
  */
 class ChatUI(
     chat: Chat,
-    val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(setOf()),
+    val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(Action.default),
     private val chatActivityClazz: Class<*>,
     private val chatCustomNotificationActivityClazz: Class<*>? = null
 ) : Chat by chat {
