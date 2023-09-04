@@ -34,6 +34,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.dropWhile
@@ -153,7 +154,6 @@ class ConferenceUI(
         var currentCall: CallUI? = null
         val mutex = Mutex()
         call.onEach { call ->
-            callActions?.let { call.actions.value = it }
             when {
                 mutex.withLock { currentCall == null } -> {
                     if (call.state.value is Call.State.Disconnected.Ended || !withUI) return@onEach
@@ -211,5 +211,5 @@ class ConferenceUI(
 
     private fun getOrCreateCallUI(call: Call): CallUI = synchronized(this) { mappedCalls.firstOrNull { it.id == call.id } ?: createCallUI(call) }
 
-    private fun createCallUI(call: Call): CallUI = CallUI(call).apply { mappedCalls = mappedCalls + this }
+    private fun createCallUI(call: Call): CallUI = CallUI(call = call, actions = MutableStateFlow(callActions ?: CallUI.Action.default)).apply { mappedCalls = mappedCalls + this }
 }
