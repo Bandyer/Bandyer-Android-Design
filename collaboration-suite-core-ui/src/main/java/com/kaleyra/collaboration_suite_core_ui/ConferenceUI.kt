@@ -211,5 +211,5 @@ class ConferenceUI(
 
     private fun getOrCreateCallUI(call: Call): CallUI = synchronized(this) { mappedCalls.firstOrNull { it.id == call.id } ?: createCallUI(call) }
 
-    private fun createCallUI(call: Call): CallUI = CallUI(call = call, actions = MutableStateFlow(callActions ?: CallUI.Action.default)).apply { mappedCalls = mappedCalls + this }
+    private fun createCallUI(call: Call): CallUI = CallUI(call = call, actions = MutableStateFlow(callActions)).apply { mappedCalls = mappedCalls + this }
 }
