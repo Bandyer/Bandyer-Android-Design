@@ -56,7 +56,7 @@ internal fun CallInfoWidget(
                 .fillMaxWidth()
                 .heightIn(min = 56.dp)
                 .padding(horizontal = 4.dp),
-            verticalAlignment = if (watermarkInfo != null) Alignment.Top else Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically
         ) {
             BackIconButton(onClick = onBackPressed)
 

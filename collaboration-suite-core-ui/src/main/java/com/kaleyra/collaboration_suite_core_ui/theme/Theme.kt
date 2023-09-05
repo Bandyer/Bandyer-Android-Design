@@ -135,15 +135,13 @@ fun CollaborationTheme(
     }
 
     val colors = when {
-        isDarkTheme -> KaleyraDarkColorTheme.copy(
-            secondary = darkColors.secondary,
-            onSecondary = onColorFor(darkColors.secondary)
-        )
+        isDarkTheme -> {
+            if (darkColors != null) KaleyraDarkColorTheme.copy(secondary = darkColors.secondary, onSecondary = onColorFor(darkColors.secondary))
+            else KaleyraDarkColorTheme
+        }
         else -> {
-            KaleyraLightColorTheme.copy(
-                secondary = lightColors.secondary,
-                onSecondary = onColorFor(lightColors.secondary)
-            )
+            if (lightColors != null) KaleyraLightColorTheme.copy(secondary = lightColors.secondary, onSecondary = onColorFor(lightColors.secondary))
+            else KaleyraLightColorTheme
         }
     }
 

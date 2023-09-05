@@ -14,8 +14,8 @@ class CompanyUI(company: Company): Company by company {
     data class Theme(
         val fontFamily: FontFamily = KaleyraFontFamily.fontFamily,
         val defaultStyle: DefaultStyle = DefaultStyle.System,
-        override val day: Style = Style(colors = Colors(secondary = kaleyra_theme_light_secondary)),
-        override val night: Style = Style(colors =  Colors(secondary = kaleyra_theme_dark_secondary))
+        override val day: Style = Style(),
+        override val night: Style = Style()
     ) : Company.Theme {
 
         sealed class DefaultStyle {
@@ -26,7 +26,7 @@ class CompanyUI(company: Company): Company by company {
             object System: DefaultStyle()
         }
 
-        data class Style(override val logo: Uri = Uri.EMPTY, val colors: Colors) : Company.Theme.Style
+        data class Style(override val logo: Uri? = null, val colors: Colors? = null) : Company.Theme.Style
 
         data class Colors(val secondary: Color)
     }
