@@ -66,4 +66,18 @@ class CompanyThemeManagerTest {
         every { KaleyraVideo.theme } returns companyUITheme
         assertEquals(companyUITheme, company.combinedTheme.first())
     }
+
+    @Test
+    fun `theme uses remote logo if local logo is not defined`() = runTest {
+        val companyUITheme = CompanyUI.Theme(
+            fontFamily = FontFamily.SansSerif,
+            defaultStyle = CompanyUI.Theme.DefaultStyle.System
+        )
+        every { KaleyraVideo.theme } returns companyUITheme
+        val expected = companyUITheme.copy(
+            day = companyUITheme.day.copy(logo = dayStyle.logo),
+            night = companyUITheme.night.copy(logo = nightStyle.logo)
+        )
+        assertEquals(expected, company.combinedTheme.first())
+    }
 }
