@@ -34,10 +34,11 @@ internal fun Watermark(watermarkInfo: WatermarkInfo, modifier: Modifier = Modifi
         modifier = modifier.testTag(WatermarkTag),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        val isDarkTheme = isSystemInDarkTheme()
         when {
-            watermarkInfo.logo != null && (watermarkInfo.logo.dark != Uri.EMPTY || watermarkInfo.logo.light != Uri.EMPTY) -> {
+            watermarkInfo.logo != null && (isDarkTheme && watermarkInfo.logo.dark != Uri.EMPTY || !isDarkTheme && watermarkInfo.logo.light != Uri.EMPTY) -> {
                 AsyncImage(
-                    model = watermarkInfo.logo.let { if (!isSystemInDarkTheme()) it.light else it.dark },
+                    model = watermarkInfo.logo.let { if (!isDarkTheme) it.light else it.dark },
                     contentDescription = stringResource(id = R.string.kaleyra_company_logo),
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
