@@ -46,7 +46,7 @@ dependencies {
     api catalog.squareupPicasso
     implementation catalog.androidxConstraintLayout
     api 'androidx.activity:activity-compose:1.5.1'
-    api "androidx.compose.material:material:1.2.1"
+    api "androidx.compose.material:material:1.4.0-alpha02"
     api "androidx.compose.foundation:foundation:1.2.1"
     api "androidx.compose.runtime:runtime:1.2.1"
     api "androidx.compose.ui:ui-tooling-preview:1.2.1"
