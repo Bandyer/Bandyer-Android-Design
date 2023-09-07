@@ -116,7 +116,7 @@ class BottomSheetTest : ComposeViewModelsMockTest() {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Collapsed,
             targetState = BottomSheetValue.HalfExpanded,
-            swipeAmount = 0.3f
+            swipeAmount = 0.2f
         )
 
     @Test
