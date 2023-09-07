@@ -63,7 +63,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomshe
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.LineState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.rememberBottomSheetContentState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.rememberBottomSheetState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.KickedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.kicked.KickedMessageDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.UserFeedbackDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.CameraPermission
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.RecordAudioPermission
@@ -615,7 +615,7 @@ internal fun DefaultCallScreen(
         if (callState is CallStateUi.Disconnected.Ended.Kicked) {
             val activity = LocalContext.current.findActivity() as ComponentActivity
             if (activity.isAtLeastResumed()) {
-                KickedMessage(adminName = callState.adminName, onDismiss = onFinishActivity)
+                KickedMessageDialog(adminName = callState.adminName, onDismiss = onFinishActivity)
             }
         }
     }
