@@ -6,20 +6,42 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.espresso.Espresso
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.mockAudioDevices
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.viewmodel.AudioOutputViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.mockVirtualBackgrounds
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.viewmodel.VirtualBackgroundViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.CallScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.CallScreenAppBarTag
+import com.kaleyra.collaboration_suite_phone_ui.call.CallScreenState
+import com.kaleyra.collaboration_suite_phone_ui.call.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailTag
+import com.kaleyra.collaboration_suite_phone_ui.call.*
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioOutputUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.mockAudioDevices
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.viewmodel.AudioOutputViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareTargetUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.VirtualBackgroundUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.mockVirtualBackgrounds
+import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.viewmodel.VirtualBackgroundViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.AudioOutputComponentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetContentState
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetValue
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.CallActionsComponentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.CollapsedLineWidth
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.ExpandedLineWidth
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.FileShareComponentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineState
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineTag
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.ScreenShareComponentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.VirtualBackgroundComponentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.WhiteboardComponentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.rememberCallScreenState
+import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.ui.ComposeViewModelsMockTest
 import com.kaleyra.collaboration_suite_phone_ui.ui.findBackButton
@@ -119,7 +141,9 @@ class CallScreenTest: ComposeViewModelsMockTest() {
     fun sheetCollapsed_lineIsCollapsed() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded)
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(
+            CollapsedLineWidth
+        )
         assertEquals(LineState.Collapsed::class, sheetContentState.currentLineState::class)
     }
 
@@ -127,7 +151,9 @@ class CallScreenTest: ComposeViewModelsMockTest() {
     fun sheetNotCollapsed_lineIsExpanded() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(
+            ExpandedLineWidth
+        )
         assertEquals(LineState.Expanded, sheetContentState.currentLineState)
     }
 
@@ -135,7 +161,9 @@ class CallScreenTest: ComposeViewModelsMockTest() {
     fun sheetNotCollapsableAndHalfExpanded_lineIsCollapsed() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.HalfExpanded, isCollapsable = false)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded)
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(
+            CollapsedLineWidth
+        )
         assertEquals(LineState.Collapsed::class, sheetContentState.currentLineState::class)
     }
 
@@ -143,7 +171,9 @@ class CallScreenTest: ComposeViewModelsMockTest() {
     fun sheetNotCollapsableAndExpanded_lineIsExpanded() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded, isCollapsable = false)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(
+            ExpandedLineWidth
+        )
         assertEquals(LineState.Expanded, sheetContentState.currentLineState)
     }
 

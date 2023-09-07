@@ -2,7 +2,6 @@ package com.kaleyra.collaboration_suite_phone_ui.call.pointer
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,8 +13,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.unit.IntSize
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.PointerUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.MovablePointer
+import com.kaleyra.collaboration_suite_phone_ui.call.PointerUi
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

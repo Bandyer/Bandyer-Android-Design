@@ -8,19 +8,18 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.AudioConnectionFailureMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UsbCameraMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarHandler
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.AudioConnectionFailureMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.CameraRestrictionMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UsbCameraMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.view.UserMessageSnackbarHandler
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class UserMessageSnackbarHandlerTest {

@@ -9,10 +9,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.Stream
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamViewTestTag
 import com.kaleyra.collaboration_suite_phone_ui.ui.findAvatar
 import org.junit.After
 import org.junit.Before
@@ -20,7 +20,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 
 @RunWith(RobolectricTestRunner::class)

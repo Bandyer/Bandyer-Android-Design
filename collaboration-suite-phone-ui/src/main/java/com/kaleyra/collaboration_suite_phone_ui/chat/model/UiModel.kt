@@ -3,8 +3,8 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.model
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.model.UiState
+import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.core.model.UiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.UUID

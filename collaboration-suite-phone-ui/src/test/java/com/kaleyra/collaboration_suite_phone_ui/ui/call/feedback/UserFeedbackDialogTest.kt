@@ -9,11 +9,10 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.FeedbackFormTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.FeedbackSentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.UserFeedbackDialog
+import com.kaleyra.collaboration_suite_phone_ui.call.feedback.FeedbackFormTag
+import com.kaleyra.collaboration_suite_phone_ui.call.feedback.FeedbackSentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.feedback.UserFeedbackDialog
 import junit.framework.TestCase
 import org.junit.After
 import org.junit.Before

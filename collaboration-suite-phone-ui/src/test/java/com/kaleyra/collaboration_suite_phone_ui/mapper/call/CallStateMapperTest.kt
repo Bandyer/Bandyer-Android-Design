@@ -6,10 +6,10 @@ import com.kaleyra.collaboration_suite.conference.CallParticipants
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.isConnected
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.toCallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper
+import com.kaleyra.collaboration_suite_phone_ui.call.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallStateMapper.isConnected
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallStateMapper.toCallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject

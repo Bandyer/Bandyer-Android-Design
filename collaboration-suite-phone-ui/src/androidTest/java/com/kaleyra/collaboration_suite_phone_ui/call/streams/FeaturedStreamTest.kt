@@ -8,8 +8,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStream
+import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.findBackButton
 import org.junit.After
 import org.junit.Assert.assertEquals

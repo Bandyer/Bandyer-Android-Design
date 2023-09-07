@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
@@ -25,10 +24,9 @@ import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.findRoot
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.findRoot
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.math.pow
 
 private val FocusHighlightStroke = 2.dp
 private val FocusHighlightColor = Color.Red

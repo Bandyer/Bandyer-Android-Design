@@ -20,8 +20,8 @@ import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.FeedbackForm
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback.StarSliderTag
+import com.kaleyra.collaboration_suite_phone_ui.call.feedback.FeedbackForm
+import com.kaleyra.collaboration_suite_phone_ui.call.feedback.StarSliderTag
 import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Before

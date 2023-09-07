@@ -8,8 +8,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.ChatScreen
 import com.kaleyra.collaboration_suite_phone_ui.chat.MessagesTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.TextFieldTag
@@ -23,7 +23,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 
 @RunWith(RobolectricTestRunner::class)

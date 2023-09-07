@@ -13,8 +13,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.min
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.*
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.AnchorTag
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetScaffold
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetTag
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetValue
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.rememberBottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.performVerticalSwipe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking

@@ -7,8 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStream
+import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.FeaturedStream
 import com.kaleyra.collaboration_suite_phone_ui.ui.findBackButton
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -17,7 +17,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 
 @RunWith(RobolectricTestRunner::class)

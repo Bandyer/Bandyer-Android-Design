@@ -18,8 +18,8 @@ package com.kaleyra.collaboration_suite_phone_ui.utils
 
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.PhoneCallActivity
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.PhoneTermsAndConditionsActivity
+import com.kaleyra.collaboration_suite_phone_ui.call.PhoneCallActivity
+import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.PhoneTermsAndConditionsActivity
 import com.kaleyra.collaboration_suite_phone_ui.chat.PhoneChatActivity
 
 /**

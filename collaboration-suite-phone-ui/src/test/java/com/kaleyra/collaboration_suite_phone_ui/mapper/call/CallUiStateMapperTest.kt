@@ -3,11 +3,11 @@ package com.kaleyra.collaboration_suite_phone_ui.mapper.call
 import android.util.Rational
 import android.util.Size
 import com.kaleyra.collaboration_suite.conference.VideoStreamView
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallUiStateMapper.toPipAspectRatio
+import com.kaleyra.collaboration_suite_phone_ui.call.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallUiStateMapper.toPipAspectRatio
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.every
 import io.mockk.mockk

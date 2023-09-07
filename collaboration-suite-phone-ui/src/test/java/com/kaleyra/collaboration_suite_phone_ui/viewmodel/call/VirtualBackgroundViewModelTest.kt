@@ -11,8 +11,8 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.viewmodel.VirtualBackgroundViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.VirtualBackgroundUi
+import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.viewmodel.VirtualBackgroundViewModel
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll

@@ -44,8 +44,8 @@ import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.theme.CollaborationTheme
 import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.view.UserMessageSnackbarHandler
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.Messages
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.UserInput
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState

@@ -9,9 +9,9 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.view.AudioOutputContent
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.BluetoothDeviceState
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.view.AudioOutputContent
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -20,7 +20,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class AudioOutputContentTest {

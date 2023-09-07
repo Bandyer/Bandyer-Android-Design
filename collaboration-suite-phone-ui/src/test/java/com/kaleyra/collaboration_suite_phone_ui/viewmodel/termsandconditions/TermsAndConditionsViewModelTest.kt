@@ -6,7 +6,7 @@ import com.kaleyra.collaboration_suite_core_ui.ConversationUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.viewmodel.TermsAndConditionsViewModel
+import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.viewmodel.TermsAndConditionsViewModel
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll

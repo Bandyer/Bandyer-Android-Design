@@ -10,11 +10,11 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.FileShareMapper.mapToSharedFileUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.FileShareMapper.mapToSharedFileUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.FileShareMapper.toSharedFilesUi
+import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileUi
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.FileShareMapper.mapToSharedFileUi
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.FileShareMapper.mapToSharedFileUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.FileShareMapper.toSharedFilesUi
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject

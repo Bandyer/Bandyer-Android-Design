@@ -5,8 +5,8 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.model.UiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.core.model.UiState
+import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.BaseViewModel
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

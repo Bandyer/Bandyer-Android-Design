@@ -11,8 +11,8 @@ import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherReadMessageMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherUnreadMessageMock1
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherUnreadMessageMock2
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.conferenceMock
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.PhoneChatViewModel
 import io.mockk.*

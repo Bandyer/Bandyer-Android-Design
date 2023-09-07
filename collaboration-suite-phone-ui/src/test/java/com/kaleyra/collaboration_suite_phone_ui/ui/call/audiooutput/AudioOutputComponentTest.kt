@@ -7,9 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutputComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.AudioOutputComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -18,7 +18,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class AudioOutputComponentTest {

@@ -12,10 +12,10 @@ import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationA
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.currentAudioOutputDevice
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.setAudioOutputDevice
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.viewmodel.AudioOutputViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.BluetoothDeviceState
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.viewmodel.AudioOutputViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject

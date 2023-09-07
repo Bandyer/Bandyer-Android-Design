@@ -6,8 +6,13 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.*
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.CollapsedLineWidth
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.ExpandedLineWidth
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.Line
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineState
+import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineTag
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -29,7 +34,9 @@ class BottomSheetLineTest {
     @Test
     fun lineStateCollapsed_lineIsCollapsed() {
         composeTestRule.setUpLineTest(LineState.Collapsed(Color.White.toArgb()))
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(
+            CollapsedLineWidth
+        )
     }
 
     @Test

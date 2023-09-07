@@ -9,9 +9,9 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.model.TermsAndConditionsUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.screen.TermsAndConditionsScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.screen.TermsProgressIndicatorTag
+import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.model.TermsAndConditionsUiState
+import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.screen.TermsAndConditionsScreen
+import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.screen.TermsProgressIndicatorTag
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -19,7 +19,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 
 @RunWith(RobolectricTestRunner::class)

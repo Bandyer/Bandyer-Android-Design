@@ -11,10 +11,10 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithTag
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailStreams
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailStreamsTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailStreams
+import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailStreamsTag
+import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailTag
+import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.ui.performDoubleClick
 import org.junit.After
@@ -24,7 +24,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 
 @RunWith(RobolectricTestRunner::class)

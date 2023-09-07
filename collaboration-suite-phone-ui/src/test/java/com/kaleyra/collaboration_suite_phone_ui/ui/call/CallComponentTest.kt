@@ -15,16 +15,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStreamTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.CallComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.CallComponentState
+import com.kaleyra.collaboration_suite_phone_ui.call.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.StreamsGridTag
+import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.WatermarkTag
+import com.kaleyra.collaboration_suite_phone_ui.call.*
+import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.CallInfoWidgetTag
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.FeaturedStreamTag
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.Logo
+import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.WatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.ui.findBackButton
 import io.mockk.mockk
@@ -35,7 +44,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 
 @RunWith(RobolectricTestRunner::class)

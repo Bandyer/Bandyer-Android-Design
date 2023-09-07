@@ -10,8 +10,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.view.CallActionsContent
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.view.CallActionsContent
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -20,7 +20,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class CallActionsContentTest {

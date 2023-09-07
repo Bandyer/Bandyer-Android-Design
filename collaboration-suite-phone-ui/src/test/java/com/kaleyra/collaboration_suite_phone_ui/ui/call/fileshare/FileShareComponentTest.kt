@@ -15,16 +15,16 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.tryToOpenFile
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick.FilePickActivity
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItemTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.FileShareComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.filepick.FilePickActivity
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.FileShareUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileUi
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockDownloadSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockUploadSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareItemTag
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import org.junit.After
@@ -34,7 +34,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class FileShareComponentTest {

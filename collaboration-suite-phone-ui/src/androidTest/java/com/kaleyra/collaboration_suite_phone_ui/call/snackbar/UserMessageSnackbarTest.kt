@@ -8,7 +8,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onParent
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.snackbar.UserMessageSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.performHorizontalSwipe
 import org.junit.Rule
 import org.junit.Test

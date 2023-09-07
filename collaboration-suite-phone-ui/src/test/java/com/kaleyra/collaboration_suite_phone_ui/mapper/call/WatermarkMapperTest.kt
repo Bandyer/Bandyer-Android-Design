@@ -2,9 +2,9 @@ package com.kaleyra.collaboration_suite_phone_ui.mapper.call
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI.Theme
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WatermarkMapper.toWatermarkInfo
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WatermarkMapper.toWatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.Logo
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.WatermarkInfo
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll

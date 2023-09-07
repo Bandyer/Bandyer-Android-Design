@@ -4,9 +4,9 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.*
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailStream
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ThumbnailTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailStream
+import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailTag
+import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.ui.performDoubleClick
 import org.junit.After
 import org.junit.Before
@@ -14,7 +14,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 
 @RunWith(RobolectricTestRunner::class)

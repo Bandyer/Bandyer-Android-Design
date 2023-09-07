@@ -16,12 +16,11 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.ProgressIndicatorTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItem
+import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileUi
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockDownloadSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockUploadSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareItem
 import io.mockk.mockk
 import org.junit.After
 import org.junit.Before

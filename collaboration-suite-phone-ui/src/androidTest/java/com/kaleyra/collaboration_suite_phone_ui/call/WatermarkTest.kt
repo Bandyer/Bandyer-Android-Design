@@ -10,9 +10,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.Watermark
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Logo
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.Logo
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.WatermarkInfo
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

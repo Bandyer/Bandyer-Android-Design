@@ -10,15 +10,12 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.AdaptiveGrid
-import com.kaleyra.collaboration_suite_phone_ui.ui.assertRightPositionInRootIsEqualTo
+import com.kaleyra.collaboration_suite_phone_ui.call.streams.AdaptiveGrid
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import kotlin.math.ceil
-import kotlin.math.roundToInt
 
 
 @RunWith(RobolectricTestRunner::class)
