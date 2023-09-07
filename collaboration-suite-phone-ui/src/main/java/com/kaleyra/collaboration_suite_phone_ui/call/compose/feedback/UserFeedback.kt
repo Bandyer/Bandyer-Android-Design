@@ -17,6 +17,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,18 +47,21 @@ private const val SliderLevels = 5
 internal fun UserFeedback(onUserFeedback: (Float, String) -> Unit, onDismiss: () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
         var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
+        var isEditTextFocused by remember { mutableStateOf(false) }
+        var sliderValue by remember { mutableStateOf(DefaultRating) }
+
         Surface(
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(4.dp)) {
-                var isEditTextFocused by remember { mutableStateOf(false) }
                 IconButton(
                     icon = painterResource(id = R.drawable.ic_kaleyra_close),
                     iconDescription = stringResource(id = R.string.kaleyra_close),
                     onClick = onDismiss,
                     modifier = Modifier.align(Alignment.End)
                 )
+
                 AnimatedVisibility(visible = !isEditTextFocused) {
                     Text(
                         text = stringResource(id = R.string.kaleyra_feedback_evaluate_call),
@@ -69,13 +73,21 @@ internal fun UserFeedback(onUserFeedback: (Float, String) -> Unit, onDismiss: ()
                             .padding(horizontal = 28.dp)
                     )
                 }
-                var rating by remember { mutableStateOf(DefaultRating) }
+
+                Spacer(modifier = Modifier.height(10.dp))
                 StarSlider(
-                    value = rating,
-                    onValueChange = { rating = it },
+                    value = sliderValue,
+                    onValueChange = { sliderValue = it },
                     levels = SliderLevels,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
+                Text(
+                    text = ratingTextFor(sliderValue),
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 28.dp))
+
                 OutlinedTextField(
                     value = textFieldValue,
                     onValueChange = { textFieldValue = it },
@@ -89,7 +101,7 @@ internal fun UserFeedback(onUserFeedback: (Float, String) -> Unit, onDismiss: ()
                         }
                     },
                     modifier = Modifier
-                        .padding(all = 16.dp)
+                        .padding(start = 16.dp, end = 16.dp, top = 24.dp)
                         .fillMaxWidth()
                         .onFocusChanged {
                             isEditTextFocused = it.hasFocus
@@ -101,17 +113,17 @@ internal fun UserFeedback(onUserFeedback: (Float, String) -> Unit, onDismiss: ()
                         fontSize = 14.sp
                     ),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        backgroundColor = if (isEditTextFocused) MaterialTheme.colors.onSurface.copy(
-                            .12f
-                        ) else Color.Transparent,
+                        backgroundColor = if (isEditTextFocused) MaterialTheme.colors.onSurface.copy(.12f) else Color.Transparent,
                         cursorColor = MaterialTheme.colors.secondary,
                         unfocusedBorderColor = MaterialTheme.colors.onSurface.copy(.3f),
                         focusedBorderColor = Color.Transparent
                     )
                 )
+
                 Spacer(modifier = Modifier.height(8.dp))
+
                 Button(
-                    onClick = { },
+                    onClick = { onUserFeedback(sliderValue, textFieldValue.text) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -123,10 +135,27 @@ internal fun UserFeedback(onUserFeedback: (Float, String) -> Unit, onDismiss: ()
                         fontWeight = FontWeight.SemiBold
                     )
                 }
+
                 Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }
+}
+
+@Composable
+private fun ratingTextFor(sliderValue: Float): String {
+    val stringId by remember(sliderValue) {
+        derivedStateOf {
+            when {
+                sliderValue < 2f -> R.string.kaleyra_feedback_bad
+                sliderValue < 3f -> R.string.kaleyra_feedback_poor
+                sliderValue < 4f -> R.string.kaleyra_feedback_neutral
+                sliderValue < 5f -> R.string.kaleyra_feedback_good
+                else -> R.string.kaleyra_feedback_excellent
+            }
+        }
+    }
+    return stringResource(id = stringId)
 }
 
 @Preview(name = "Light Mode")
