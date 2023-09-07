@@ -41,7 +41,7 @@ sealed class Configuration {
 }
 
 suspend fun requestConfiguration(): Configuration {
-    if (!KaleyraVideo.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
+    if (!KaleyraVideo.isConfigured) KaleyraVideoService.get()?.onRequestKaleyraVideoConfigure()
     return if (KaleyraVideo.isConfigured) Configuration.Success(KaleyraVideo.conference, KaleyraVideo.conversation, KaleyraVideo.collaboration?.company ?: NoOpCompany())
     else Configuration.Failure
 }

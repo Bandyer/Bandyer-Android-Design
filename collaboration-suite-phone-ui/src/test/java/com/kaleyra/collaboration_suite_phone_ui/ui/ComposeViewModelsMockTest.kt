@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.ui
 
 import androidx.lifecycle.ViewModelProvider
-import com.kaleyra.collaboration_suite_core_ui.CollaborationService
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideoService
 import com.kaleyra.collaboration_suite_phone_ui.call.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioOutputUiState
@@ -71,7 +71,7 @@ abstract class ComposeViewModelsMockTest {
         @BeforeClass
         @JvmStatic
         fun setup() {
-            mockkObject(CollaborationService)
+            mockkObject(KaleyraVideoService)
             mockkObject(CallViewModel)
             mockkObject(DialingViewModel)
             mockkObject(RingingViewModel)
@@ -81,7 +81,7 @@ abstract class ComposeViewModelsMockTest {
             mockkObject(WhiteboardViewModel)
             mockkObject(VirtualBackgroundViewModel)
 
-            coEvery { CollaborationService.get() } returns mockk(relaxed = true)
+            coEvery { KaleyraVideoService.get() } returns mockk(relaxed = true)
 
             every { CallViewModel.provideFactory(any()) } returns callViewModelFactory
             every { callViewModelFactory.create<CallViewModel>(any(), any()) } returns callViewModel

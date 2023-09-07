@@ -34,7 +34,7 @@ import kotlinx.coroutines.withTimeoutOrNull
 /**
  * Collaboration service
  */
-abstract class CollaborationService : BoundService() {
+abstract class KaleyraVideoService : BoundService() {
 
     /**
      * Companion
@@ -44,13 +44,13 @@ abstract class CollaborationService : BoundService() {
         /**
          *  A service that is used to configure collaboration.
          **/
-        suspend fun get(): CollaborationService? = getCollaborationService()
+        suspend fun get(): KaleyraVideoService? = getKaleyraVideoService()
     }
 
     /**
      * On request new collaboration set up
      */
-    abstract suspend fun onRequestNewCollaborationConfigure()
+    abstract suspend fun onRequestKaleyraVideoConfigure()
 }
 
 @SuppressLint("QueryPermissionsNeeded")
@@ -61,16 +61,16 @@ private fun getService(context: Context): ResolveInfo? {
     return resolveInfo[0]
 }
 
-private suspend fun getCollaborationService(): CollaborationService? = with(ContextRetainer.context) {
+private suspend fun getKaleyraVideoService(): KaleyraVideoService? = with(ContextRetainer.context) {
     val name = getService(this)?.serviceInfo?.name ?: return null
     val intent = Intent(this, Class.forName(name))
     startService(intent)
     return withTimeoutOrNull(1000L) {
-        suspendCancellableCoroutine<CollaborationService> { continuation ->
+        suspendCancellableCoroutine<KaleyraVideoService> { continuation ->
             bindService(intent, object : ServiceConnection {
                 override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                    val collaborationService = (service as BoundServiceBinder).getService<CollaborationService>()
-                    continuation.resumeWith(Result.success(collaborationService))
+                    val kaleyraVideoService = (service as BoundServiceBinder).getService<KaleyraVideoService>()
+                    continuation.resumeWith(Result.success(kaleyraVideoService))
                 }
 
                 override fun onServiceDisconnected(name: ComponentName?) = Unit

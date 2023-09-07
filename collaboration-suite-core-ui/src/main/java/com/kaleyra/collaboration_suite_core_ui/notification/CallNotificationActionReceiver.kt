@@ -18,7 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 
 import android.content.Context
 import android.content.Intent
-import com.kaleyra.collaboration_suite_core_ui.CollaborationBroadcastReceiver
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideoBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Companion.CALL_NOTIFICATION_ID
 import com.kaleyra.collaboration_suite_core_ui.onCallReady
@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 /**
  * The call notification broadcast receiver, it handles the answer and hang up events
  */
-class CallNotificationActionReceiver : CollaborationBroadcastReceiver() {
+class CallNotificationActionReceiver : KaleyraVideoBroadcastReceiver() {
 
     /**
      * @suppress

@@ -22,7 +22,7 @@ import androidx.core.app.RemoteInput
 import com.kaleyra.collaboration_suite.conversation.Chat
 import com.kaleyra.collaboration_suite.conversation.Message.Content.Text
 import com.kaleyra.collaboration_suite.conversation.Message.State.Received
-import com.kaleyra.collaboration_suite_core_ui.CollaborationBroadcastReceiver
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideoBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 /**
  * ChatNotificationActionReceiver
  */
-class ChatNotificationActionReceiver : CollaborationBroadcastReceiver() {
+class ChatNotificationActionReceiver : KaleyraVideoBroadcastReceiver() {
 
     /**
      * @suppress

@@ -21,14 +21,14 @@ import android.content.BroadcastReceiver
 /**
  * Collaboration broadcast receiver
  */
-abstract class CollaborationBroadcastReceiver : BroadcastReceiver() {
+abstract class KaleyraVideoBroadcastReceiver : BroadcastReceiver() {
 
     /**
      * Checking if the CollaborationUI is configured. If it is not, it is requesting a new configuration.
      * @return true if is configured, false otherwise
      **/
     suspend fun requestConfigure(): Boolean {
-        if (!KaleyraVideo.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
+        if (!KaleyraVideo.isConfigured) KaleyraVideoService.get()?.onRequestKaleyraVideoConfigure()
         return KaleyraVideo.isConfigured
     }
 }

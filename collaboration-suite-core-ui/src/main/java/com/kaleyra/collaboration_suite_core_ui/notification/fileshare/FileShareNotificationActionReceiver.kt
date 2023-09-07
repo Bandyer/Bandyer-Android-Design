@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_core_ui.notification.fileshare
 
 import android.content.Context
 import android.content.Intent
-import com.kaleyra.collaboration_suite_core_ui.CollaborationBroadcastReceiver
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideoBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate.Companion.EXTRA_DOWNLOAD_ID
@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FileShareNotificationActionReceiver internal constructor(val dispatcher: CoroutineDispatcher = Dispatchers.IO): CollaborationBroadcastReceiver() {
+class FileShareNotificationActionReceiver internal constructor(val dispatcher: CoroutineDispatcher = Dispatchers.IO): KaleyraVideoBroadcastReceiver() {
 
     /**
      * @suppress
