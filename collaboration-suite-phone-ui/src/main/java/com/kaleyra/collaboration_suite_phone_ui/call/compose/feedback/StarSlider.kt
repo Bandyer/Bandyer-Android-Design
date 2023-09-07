@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,7 @@ private val ThumbRadius = 10.dp
 private val StarSize = 28.dp
 // Adjust the padding for the layout placement
 private val LayoutModifier = Modifier.padding(horizontal = ThumbRadius / 2)
+val StarSliderTag = "StarSliderTag"
 
 @Composable
 internal fun StarSlider(
@@ -44,7 +46,7 @@ internal fun StarSlider(
                 onValueChange = onValueChange,
                 steps = levels - 2,
                 valueRange = 1f.rangeTo(levels.toFloat()),
-                modifier = Modifier.alpha(0f)
+                modifier = Modifier.alpha(0f).testTag(StarSliderTag)
             )
             repeat(levels) { index ->
                 val scale by animateFloatAsState(targetValue = if (index <= value - 1) 1f else .75f)

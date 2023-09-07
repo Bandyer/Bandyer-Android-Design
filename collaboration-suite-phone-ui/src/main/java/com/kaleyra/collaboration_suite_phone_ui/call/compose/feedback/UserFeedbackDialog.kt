@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.feedback
 
+import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,8 +12,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
 import kotlinx.coroutines.delay
 
 private const val AutoDismissMs = 3000L
@@ -46,4 +49,11 @@ internal fun UserFeedbackDialog(onUserFeedback: (Float, String) -> Unit, onDismi
             } else FeedbackSent(onDismiss)
         }
     }
+}
+
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+internal fun UserFeedbackDialogPreview() = KaleyraTheme {
+    UserFeedbackDialog(onUserFeedback = { _, _ -> }, onDismiss = {})
 }

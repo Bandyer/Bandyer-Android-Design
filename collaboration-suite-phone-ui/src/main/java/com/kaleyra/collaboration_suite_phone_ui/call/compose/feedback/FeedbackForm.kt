@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -41,6 +42,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 private const val DefaultRating = 5f
 private const val SliderLevels = 5
 
+const val FeedbackFormTag = "FeedbackFormTag"
+
 @Composable
 internal fun FeedbackForm(onUserFeedback: (Float, String) -> Unit, onDismiss: () -> Unit) {
     var textFieldValue by remember { mutableStateOf(TextFieldValue()) }
@@ -51,7 +54,8 @@ internal fun FeedbackForm(onUserFeedback: (Float, String) -> Unit, onDismiss: ()
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp),
+            .padding(4.dp)
+            .testTag(FeedbackFormTag),
     ) {
         IconButton(
             icon = painterResource(id = R.drawable.ic_kaleyra_close),
