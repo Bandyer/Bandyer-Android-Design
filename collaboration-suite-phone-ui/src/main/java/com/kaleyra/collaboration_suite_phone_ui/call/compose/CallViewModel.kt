@@ -70,7 +70,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
     private var onPipAspectRatio: ((Rational) -> Unit)? = null
 
-    private var onAudioOrVideoChanged: ((Boolean, Boolean) -> Unit)? = null
+    private var onAudioOrVideoChanged: MutableSharedFlow<(Boolean, Boolean) -> Unit> = MutableSharedFlow(replay = 1)
 
     init {
         viewModelScope.launch {
@@ -167,11 +167,12 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .onEach { onPipAspectRatio?.invoke(it) }
             .launchIn(viewModelScope)
 
-        combine(call.flatMapLatest { it.preferredType }, call.toMyParticipantState()) { preferredType, state ->
-            if (state !is CallParticipant.State.NotInCall.Connecting) return@combine
-            onAudioOrVideoChanged?.invoke(preferredType.isAudioEnabled(), preferredType.isVideoEnabled())
+        combine(
+            call.flatMapLatest { it.preferredType },
+            onAudioOrVideoChanged
+        ) { preferredType, onAudioOrVideoChanged ->
+            onAudioOrVideoChanged.invoke(preferredType.isAudioEnabled(), preferredType.isVideoEnabled())
         }.launchIn(viewModelScope)
-
     }
 
     override fun onCleared() {
@@ -226,7 +227,9 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     }
 
     fun setOnAudioOrVideoChanged(block: (isAudioEnabled: Boolean, isVideoEnabled: Boolean) -> Unit) {
-        onAudioOrVideoChanged = block
+        viewModelScope.launch {
+            onAudioOrVideoChanged.emit(block)
+        }
     }
 
     companion object {
