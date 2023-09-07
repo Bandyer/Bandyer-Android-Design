@@ -116,7 +116,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
                 _uiState.update { it.copy(callState = callState) }
                 when (callState) {
                     is CallStateUi.Disconnected.Ended -> onCallEnded?.invoke(
-                        call.getValue()?.withFeedback == true,
+                        uiState.value.showFeedback,
                         callState is CallStateUi.Disconnected.Ended.Error,
                         callState is CallStateUi.Disconnected.Ended.Kicked
                     )
