@@ -39,6 +39,7 @@ internal fun CallScreenAppBar(
                 when (currentSheetComponent) {
                     BottomSheetComponent.FileShare -> FileShareAppBar(onBackPressed = onBackPressed)
                     BottomSheetComponent.Whiteboard -> WhiteboardAppBar(onBackPressed = onBackPressed)
+                    else -> Unit
                 }
             }
         }
