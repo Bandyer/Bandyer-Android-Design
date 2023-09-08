@@ -21,7 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileU
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
 const val FileShareItemTag = "FileShareItemTag"
 const val FileShareItemDividerTag = "FileShareItemDividerTag"

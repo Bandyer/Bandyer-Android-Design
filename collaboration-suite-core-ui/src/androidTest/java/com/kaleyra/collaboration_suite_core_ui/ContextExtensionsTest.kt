@@ -7,8 +7,8 @@ import android.net.Uri
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.doesFileExists
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.tryToOpenFile

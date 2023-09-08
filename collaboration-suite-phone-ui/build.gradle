@@ -50,17 +50,9 @@ android {
 }
 
 dependencies {
-
     /*** Platform ***/
-    implementation catalog.kotlinReflect
-    implementation catalog.appcompat
     implementation catalog.androidxCoreKtx
-    implementation catalog.androidxFragment
     implementation catalog.androidxActivity
-    implementation catalog.androidxLifecycleViewModel
-    implementation catalog.material
-    implementation catalog.androidxVectorDrawable
-    implementation catalog.androidxVectorDrawableAnimated
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     coreLibraryDesugaring catalog.desugar
 
@@ -69,7 +61,6 @@ dependencies {
     testImplementation project(":collaboration-suite")
     testImplementation catalog.roboelectric
     testImplementation catalog.junit
-    testImplementation catalog.mockk
     testImplementation("androidx.compose.ui:ui-test-junit4:1.2.1")
     testImplementation "androidx.test.espresso:espresso-intents:3.5.0"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
@@ -83,15 +74,6 @@ dependencies {
 
     debugImplementation("androidx.compose.ui:ui-tooling:1.2.1")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.1")
-
-    /*** UI ***/
-    api catalog.squareupPicasso
-    api catalog.androidxConstraintLayout
-    api catalog.fastadapter
-    api catalog.fastadapterExtensionsDiff
-    implementation catalog.androidxRecyclerview
-    api catalog.flexbox
-    compileOnly catalog.zoomy
 
     implementation("io.coil-kt:coil-compose:2.1.0")
 

@@ -9,7 +9,7 @@ import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.Ter
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.decline
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
 import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.screen.TermsAndConditionsScreen
-import com.kaleyra.collaboration_suite_core_ui.theme.TermsAndConditionsTheme
+import com.kaleyra.collaboration_suite_phone_ui.theme.TermsAndConditionsTheme
 
 class PhoneTermsAndConditionsActivity : ComponentActivity() {
 

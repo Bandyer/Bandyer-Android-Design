@@ -38,11 +38,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.streams.DefaultStreamAvatar
 import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_answer_dark_color
-import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_answer_light_color
-import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_hang_up_dark_color
-import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_hang_up_light_color
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_answer_dark_color
+import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_answer_light_color
+import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_hang_up_dark_color
+import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_hang_up_light_color
 import com.kaleyra.collaboration_suite_phone_ui.call.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.rememberCountdownTimerState
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock

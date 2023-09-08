@@ -42,7 +42,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.streams.*
 import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.AdaptiveGrid
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.CallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.DefaultStreamAvatarSize

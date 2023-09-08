@@ -16,7 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.appbar.CallAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.viewmodel.WhiteboardViewModel
-import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
 @Composable
 internal fun WhiteboardAppBar(

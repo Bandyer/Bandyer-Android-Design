@@ -24,7 +24,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.Whiteboard
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.*
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.viewmodel.WhiteboardViewModel
-import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.TextEditorState
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.TextEditorValue
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardContent

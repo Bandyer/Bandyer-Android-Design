@@ -36,15 +36,8 @@ apply from: '../moveIcons.gradle'
 dependencies {
 
     /** Platform **/
-    api catalog.kotlinStdLib
-    api catalog.androidxCoreKtx
     api catalog.appcompat
     api catalog.material
-    coreLibraryDesugaring catalog.desugar
-
-    /** UI **/
-    api catalog.squareupPicasso
-    implementation catalog.androidxConstraintLayout
     api 'androidx.activity:activity-compose:1.5.1'
     api "androidx.compose.material:material:1.4.0-alpha02"
     api "androidx.compose.foundation:foundation:1.2.1"
@@ -53,11 +46,15 @@ dependencies {
     api 'com.google.android.material:compose-theme-adapter:1.1.13'
     api 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
     api "com.google.accompanist:accompanist-systemuicontroller:0.25.1"
+    coreLibraryDesugaring catalog.desugar
+
+    /** UI **/
+    api catalog.squareupPicasso
+    implementation catalog.androidxConstraintLayout
 
     /** Testing **/
-    testImplementation project(":collaboration-suite")
     testImplementation catalog.junit
-    testImplementation catalog.mockk
+    testImplementation "io.mockk:mockk-android:1.13.3"
     testImplementation catalog.roboelectric
     testImplementation catalog.coroutines
     testImplementation catalog.coroutinesTest
@@ -65,15 +62,12 @@ dependencies {
     testImplementation project(":collaboration-suite-extension-audio")
     testImplementation project(":collaboration-suite")
 
-    androidTestImplementation catalog.androidxTestEspressoCore
     androidTestImplementation "io.mockk:mockk-android:1.13.3"
     androidTestImplementation "androidx.test.espresso:espresso-intents:3.4.0"
-
-    debugImplementation "androidx.compose.ui:ui-tooling:1.2.1"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
 
     /** Kaleyra **/
     implementation project(':collaboration-suite-utils')
-
     compileOnly project(":collaboration-suite")
     compileOnly project(":collaboration-suite-extension-audio")
 //    compileOnly kaleyraCatalog.kaleyraCollaborationSuite

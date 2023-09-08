@@ -30,7 +30,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewSettings.featured
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
-import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 
 const val FeaturedStreamTag = "FeaturedStreamTag"

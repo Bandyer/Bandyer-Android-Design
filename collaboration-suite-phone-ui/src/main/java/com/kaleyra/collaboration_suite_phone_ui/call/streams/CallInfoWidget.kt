@@ -24,7 +24,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.Ellipsize
 import com.kaleyra.collaboration_suite_phone_ui.call.EllipsizeText
 import com.kaleyra.collaboration_suite_phone_ui.call.Watermark
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
-import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.verticalGradientScrim
 

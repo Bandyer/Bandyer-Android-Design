@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_core_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_hang_up_dark_color
-import com.kaleyra.collaboration_suite_core_ui.theme.kaleyra_hang_up_light_color
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_hang_up_dark_color
+import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_hang_up_light_color
 
 @Stable
 internal interface CallActionColors {
