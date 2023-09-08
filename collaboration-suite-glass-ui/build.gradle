@@ -37,6 +37,7 @@ dependencies {
     coreLibraryDesugaring catalog.desugar
 
     testImplementation catalog.junit
+    androidTestImplementation catalog.androidxTestEspressoCore
 
     // Platform
     implementation catalog.coroutines
