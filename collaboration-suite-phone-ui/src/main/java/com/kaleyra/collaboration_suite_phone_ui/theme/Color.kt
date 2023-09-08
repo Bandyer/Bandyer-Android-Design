@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_core_ui.theme
+package com.kaleyra.collaboration_suite_phone_ui.theme
 import androidx.compose.ui.graphics.Color
 
 // CUSTOM COLORS

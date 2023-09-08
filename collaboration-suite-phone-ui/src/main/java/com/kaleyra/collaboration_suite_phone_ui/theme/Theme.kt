@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_core_ui.theme
+package com.kaleyra.collaboration_suite_phone_ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -180,7 +180,7 @@ fun KaleyraTheme(
 
     MaterialTheme(
         colors = colors,
-        typography = Typography(defaultFontFamily = KaleyraFontFamily.fontFamily),
+        typography = Typography(defaultFontFamily = KaleyraFontFamily.default),
         content = content
     )
 }
@@ -203,7 +203,7 @@ private val TermsLightColorTheme = lightColors(
 
 @Composable
 fun TermsAndConditionsTheme(
-    fontFamily: FontFamily = KaleyraFontFamily.fontFamily,
+    fontFamily: FontFamily = KaleyraFontFamily.default,
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
