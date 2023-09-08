@@ -78,7 +78,7 @@ class CallUserMessagesProviderTest {
         with(RecordingMapper) {
             every { callFlow.toRecordingMessage() } returns flowOf(RecordingMessage.Started)
         }
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         val actual = CallUserMessagesProvider.userMessage.first()
         assert(actual is RecordingMessage.Started)
     }
@@ -88,7 +88,7 @@ class CallUserMessagesProviderTest {
         with(RecordingMapper) {
             every { callFlow.toRecordingMessage() } returns flowOf(RecordingMessage.Stopped)
         }
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         val result = withTimeoutOrNull(100) {
             CallUserMessagesProvider.userMessage.first()
         }
@@ -101,7 +101,7 @@ class CallUserMessagesProviderTest {
         with(RecordingMapper) {
             every { callFlow.toRecordingMessage() } returns messageFlow
         }
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         backgroundScope.launch(UnconfinedTestDispatcher()) {
             val actual = CallUserMessagesProvider.userMessage.drop(1).first()
             assert(actual is RecordingMessage.Stopped)
@@ -114,7 +114,7 @@ class CallUserMessagesProviderTest {
         with(RecordingMapper) {
             every { callFlow.toRecordingMessage() } returns flowOf(RecordingMessage.Failed)
         }
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         val actual = CallUserMessagesProvider.userMessage.first()
         assert(actual is RecordingMessage.Failed)
     }
@@ -124,7 +124,7 @@ class CallUserMessagesProviderTest {
         with(InputMapper) {
             every { callFlow.toMutedMessage() } returns flowOf(MutedMessage(null))
         }
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         withTimeout(100) {
             CallUserMessagesProvider.userMessage.first()
         }
@@ -133,9 +133,9 @@ class CallUserMessagesProviderTest {
     @Test
     fun testUsbConnectedUserMessage() = runTest {
         with(InputMapper) {
-            every { callFlow.toUsbCameraMessage() } returns flowOf(com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UsbCameraMessage.Connected(""))
+            every { callFlow.toUsbCameraMessage() } returns flowOf(UsbCameraMessage.Connected(""))
         }
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         val actual = CallUserMessagesProvider.userMessage.first()
         assert(actual is UsbCameraMessage.Connected)
     }
@@ -145,7 +145,7 @@ class CallUserMessagesProviderTest {
         with(InputMapper) {
             every { callFlow.toUsbCameraMessage() } returns flowOf(com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UsbCameraMessage.Disconnected)
         }
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         val result = withTimeoutOrNull(100) {
             CallUserMessagesProvider.userMessage.first()
         }
@@ -158,7 +158,7 @@ class CallUserMessagesProviderTest {
         with(InputMapper) {
             every { callFlow.toUsbCameraMessage() } returns messageFlow
         }
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         backgroundScope.launch(UnconfinedTestDispatcher()) {
             val actual = CallUserMessagesProvider.userMessage.drop(1).first()
             assert(actual is UsbCameraMessage.Disconnected)
@@ -171,7 +171,7 @@ class CallUserMessagesProviderTest {
         with(InputMapper) {
             every { callFlow.toUsbCameraMessage() } returns flowOf(com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UsbCameraMessage.NotSupported)
         }
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         val actual = CallUserMessagesProvider.userMessage.first()
         assert(actual is UsbCameraMessage.NotSupported)
     }
@@ -182,7 +182,7 @@ class CallUserMessagesProviderTest {
             every { callFlow.toAudioConnectionFailureMessage() } returns flowOf(
                 AudioConnectionFailureMessage.Generic)
         }
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         val actual = CallUserMessagesProvider.userMessage.first()
         assert(actual is AudioConnectionFailureMessage.Generic)
     }
@@ -193,14 +193,14 @@ class CallUserMessagesProviderTest {
             every { callFlow.toAudioConnectionFailureMessage() } returns flowOf(
                 AudioConnectionFailureMessage.InSystemCall)
         }
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         val actual = CallUserMessagesProvider.userMessage.first()
         assert(actual is AudioConnectionFailureMessage.InSystemCall)
     }
 
     @Test
     fun testSendUserMessage() = runTest {
-        CallUserMessagesProvider.start(callFlow)
+        CallUserMessagesProvider.start(callFlow, backgroundScope)
         CallUserMessagesProvider.sendUserMessage(CameraRestrictionMessage())
         val actual = CallUserMessagesProvider.userMessage.first()
         assert(actual is CameraRestrictionMessage)

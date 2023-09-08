@@ -35,17 +35,18 @@ apply from: '../moveIcons.gradle'
 
 dependencies {
 
+    api platform('androidx.compose:compose-bom:2023.09.00')
+
     /** Platform **/
     api catalog.appcompat
     api catalog.material
-    api 'androidx.activity:activity-compose:1.5.1'
-    api "androidx.compose.material:material:1.4.0-alpha02"
-    api "androidx.compose.foundation:foundation:1.2.1"
-    api "androidx.compose.runtime:runtime:1.2.1"
-    api "androidx.compose.ui:ui-tooling-preview:1.2.1"
-    api 'com.google.android.material:compose-theme-adapter:1.1.13'
-    api 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
-    api "com.google.accompanist:accompanist-systemuicontroller:0.25.1"
+    api 'androidx.activity:activity-compose'
+    api 'androidx.compose.material:material'
+    api 'androidx.compose.foundation:foundation'
+    api 'androidx.compose.runtime:runtime'
+    api 'androidx.compose.ui:ui-tooling-preview'
+    api 'androidx.lifecycle:lifecycle-viewmodel-compose'
+    api "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
     coreLibraryDesugaring catalog.desugar
 
     /** UI **/
@@ -63,8 +64,8 @@ dependencies {
     testImplementation project(":collaboration-suite")
 
     androidTestImplementation "io.mockk:mockk-android:1.13.3"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:3.4.0"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation "androidx.test.espresso:espresso-intents:3.5.1"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
 
     /** Kaleyra **/
     implementation project(':collaboration-suite-utils')

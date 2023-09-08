@@ -16,8 +16,7 @@
 android {
 
     // TODO restore the previous code when the compileSdkVersion will be updated
-    compileSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
-    buildToolsVersion sampleAppCatalog.versions.sampleAppToolsVersion.get()
+    compileSdkVersion 34
 
     defaultConfig {
         minSdkVersion sampleAppCatalog.versions.sampleAppMinSdkVersion.get().toInteger()
@@ -79,7 +78,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0-rc02'
+        kotlinCompilerExtensionVersion '1.5.3'
     }
 
     aaptOptions.cruncherEnabled = false

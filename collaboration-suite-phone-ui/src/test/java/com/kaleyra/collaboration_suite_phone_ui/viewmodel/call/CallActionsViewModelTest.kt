@@ -311,7 +311,7 @@ class CallActionsViewModelTest {
         val current = result.first().actionList.value
         assertEquals(listOf<CallAction>(), current)
 
-        every { callMock.state } returns MutableStateFlow(mockk())
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.FileShare))
 
         advanceUntilIdle()
@@ -326,7 +326,7 @@ class CallActionsViewModelTest {
         val current = result.first().actionList.value
         assertEquals(listOf<CallAction>(), current)
 
-        every { callMock.state } returns MutableStateFlow(mockk())
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.ScreenShare))
 
         advanceUntilIdle()
@@ -341,7 +341,7 @@ class CallActionsViewModelTest {
         val current = result.first().actionList.value
         assertEquals(listOf<CallAction>(), current)
 
-        every { callMock.state } returns MutableStateFlow(mockk())
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.OpenWhiteboard.Full))
 
         advanceUntilIdle()
