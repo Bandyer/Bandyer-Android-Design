@@ -20,7 +20,7 @@ import androidx.compose.ui.semantics.collapse
 import androidx.compose.ui.semantics.expand
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.*
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.PreUpPostDownNestedScrollConnection
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.PreUpPostDownNestedScrollConnection
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 

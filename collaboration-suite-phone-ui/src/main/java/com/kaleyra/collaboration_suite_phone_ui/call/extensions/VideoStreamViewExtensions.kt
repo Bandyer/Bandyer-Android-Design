@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
-internal object StreamViewExtensions {
+internal object VideoStreamViewExtensions {
 
     fun VideoStreamView.getSize(): Flow<IntSize> = videoSize.map {
         IntSize(it.width, it.height)

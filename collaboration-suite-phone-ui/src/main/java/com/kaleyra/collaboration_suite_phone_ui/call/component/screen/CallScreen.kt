@@ -58,7 +58,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.extensions.ConfigurationExtensions.isAtLeastMediumSizeDevice
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewSettings.pipSettings
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewSettings.pipSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetComponent
@@ -70,12 +70,12 @@ import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.Botto
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineState
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.rememberBottomSheetContentState
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.rememberBottomSheetState
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.isCollapsed
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.isCollapsing
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.isHalfExpanding
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.isHidden
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.isNotDraggableDown
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.isSheetFullScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isCollapsed
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isCollapsing
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isHalfExpanding
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isHidden
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isNotDraggableDown
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isSheetFullScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.component.kicked.KickedMessageDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.component.feedback.UserFeedbackDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.permission.CameraPermission

@@ -3,9 +3,9 @@ package com.kaleyra.collaboration_suite_phone_ui
 import com.kaleyra.collaboration_suite.conference.StreamView
 import com.kaleyra.collaboration_suite.conference.VideoStreamView
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewSettings.featuredSettings
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewSettings.pipSettings
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewSettings.thumbnailSettings
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewSettings.featuredSettings
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewSettings.pipSettings
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewSettings.thumbnailSettings
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

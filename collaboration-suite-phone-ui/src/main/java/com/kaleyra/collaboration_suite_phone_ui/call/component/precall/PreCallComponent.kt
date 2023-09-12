@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewSettings.featuredSettings
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewSettings.featuredSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.component.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.CallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.Stream

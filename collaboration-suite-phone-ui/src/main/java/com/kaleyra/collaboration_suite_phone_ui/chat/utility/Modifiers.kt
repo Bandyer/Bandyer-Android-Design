@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.findRoot
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.LayoutCoordinatesExtensions.findRoot
 import kotlin.math.max
 import kotlin.math.min
 
