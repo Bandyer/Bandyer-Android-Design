@@ -19,8 +19,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDevi
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.viewmodel.CallActionsViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.CameraRestrictionMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.provider.CallUserMessagesProvider
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.CameraRestrictionMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import io.mockk.*
 import io.mockk.Ordering.ORDERED
 import kotlinx.coroutines.ExperimentalCoroutinesApi

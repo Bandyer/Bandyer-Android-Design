@@ -39,16 +39,12 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.ConfigurationExtensions.isAtLeastMediumSizeWidth
 import com.kaleyra.collaboration_suite_phone_ui.call.ConfigurationExtensions.isOrientationPortrait
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.*
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.AdaptiveGrid
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.CallInfoWidget
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.DefaultStreamAvatarSize
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.FeaturedStream
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.HeaderAutoHideMs
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
 const val CallComponentTag = "CallComponentTag"
 const val StreamsGridTag = "StreamsGridTag"

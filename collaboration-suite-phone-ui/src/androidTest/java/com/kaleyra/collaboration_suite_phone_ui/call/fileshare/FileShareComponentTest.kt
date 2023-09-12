@@ -17,14 +17,14 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtension
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.tryToOpenFile
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.filepick.FilePickActivity
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareItemTag
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.*
 import org.junit.After

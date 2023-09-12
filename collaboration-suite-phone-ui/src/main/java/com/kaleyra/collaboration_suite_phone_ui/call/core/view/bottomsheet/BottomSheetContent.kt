@@ -100,7 +100,8 @@ internal fun BottomSheetContent(
                 targetState = contentState.currentComponent,
                 transitionSpec = {
                     fadeIn(animationSpec = tween(220, delayMillis = 90)) with fadeOut(animationSpec = tween(90))
-                }
+                },
+                label = "bottomSheetContent"
             ) { target ->
                 when (target) {
                     BottomSheetComponent.CallActions -> {

@@ -12,8 +12,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.UserMessageV
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.filepick.FilePickProvider
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.FileShareMapper.toSharedFilesUi
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.provider.CallUserMessagesProvider
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 

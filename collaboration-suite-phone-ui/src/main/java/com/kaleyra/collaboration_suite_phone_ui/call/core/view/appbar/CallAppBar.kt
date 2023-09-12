@@ -17,8 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.IconButton
-import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.TopAppBar
+import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
+import com.kaleyra.collaboration_suite_phone_ui.common.topappbar.TopAppBar
 
 @Composable
 internal fun CallAppBar(

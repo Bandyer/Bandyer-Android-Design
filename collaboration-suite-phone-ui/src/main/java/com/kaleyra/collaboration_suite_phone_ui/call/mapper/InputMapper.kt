@@ -8,9 +8,9 @@ import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationA
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toMe
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.doIHaveStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.AudioConnectionFailureMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UsbCameraMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.AudioConnectionFailureMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UsbCameraMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged

@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model
 
 import android.view.View
 import androidx.compose.runtime.Immutable
-import com.kaleyra.collaboration_suite_phone_ui.call.core.model.UiState
+import com.kaleyra.collaboration_suite_phone_ui.common.uistate.UiState
 
 @Immutable
 internal data class WhiteboardUiState(

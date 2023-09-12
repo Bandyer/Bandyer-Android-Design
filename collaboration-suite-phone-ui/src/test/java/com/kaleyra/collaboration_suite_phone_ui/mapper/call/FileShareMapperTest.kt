@@ -10,7 +10,7 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.FileShareMapper.mapToSharedFileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.FileShareMapper.mapToSharedFileUiState

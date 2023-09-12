@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.common.text
 
 import android.graphics.Typeface
 import android.text.TextUtils
@@ -26,7 +26,6 @@ enum class Ellipsize(val value: TextUtils.TruncateAt) {
     Marquee(TextUtils.TruncateAt.MARQUEE)
 }
 
-// TODO move to a common package between chat and call
 // Replace this when compose Text will support overflow middle ellipsize
 @Composable
 internal fun EllipsizeText(

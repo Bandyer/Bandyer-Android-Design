@@ -1,13 +1,13 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.usermessages.provider
+package com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider
 
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.toAudioConnectionFailureMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.toMutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.toUsbCameraMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UsbCameraMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UsbCameraMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope

@@ -183,7 +183,6 @@ internal fun BottomSheetScaffold(
     }
 }
 
-// TODO Pass a State outside??
 private fun sheetPadding(fullHeight: Float, sheetOffset: State<Float>) = object : WindowInsets {
     override fun getBottom(density: Density) = (fullHeight - sheetOffset.value).roundToInt()
     override fun getLeft(density: Density, layoutDirection: LayoutDirection) = 0

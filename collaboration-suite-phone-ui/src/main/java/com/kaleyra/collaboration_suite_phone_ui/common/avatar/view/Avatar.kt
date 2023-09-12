@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.common.avatar.view
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -13,8 +13,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import coil.compose.AsyncImage
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 
-// TODO move common package between chat and call
 @Composable
 internal fun Avatar(
     uri: ImmutableUri?,

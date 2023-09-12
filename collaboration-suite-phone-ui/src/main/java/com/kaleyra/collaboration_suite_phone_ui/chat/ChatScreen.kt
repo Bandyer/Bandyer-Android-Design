@@ -41,13 +41,9 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
-import com.kaleyra.collaboration_suite_phone_ui.theme.CollaborationTheme
-import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.Messages
-import com.kaleyra.collaboration_suite_phone_ui.chat.input.UserInput
+import com.kaleyra.collaboration_suite_phone_ui.chat.input.ChatUserInput
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockChatUiState
@@ -55,8 +51,11 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.ChatAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.PhoneChatViewModel
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
+import com.kaleyra.collaboration_suite_phone_ui.theme.CollaborationTheme
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import kotlinx.coroutines.launch
-
 
 internal const val MessagesTag = "MessagesTag"
 
@@ -163,7 +162,7 @@ fun ChatScreen(
                     color = colorResource(id = R.color.kaleyra_color_grey_light),
                     modifier = Modifier.fillMaxWidth()
                 )
-                UserInput(
+                ChatUserInput(
                     onTextChanged = onTyping,
                     onMessageSent = onMessageSent,
                     onDirectionLeft = topBarRef::requestFocus

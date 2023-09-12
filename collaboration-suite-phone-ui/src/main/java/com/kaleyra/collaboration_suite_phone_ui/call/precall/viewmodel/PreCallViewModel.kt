@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.precall.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.isVideoIncoming
@@ -13,8 +13,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.to
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.toMyStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WatermarkMapper.toWatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.precall.model.PreCallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.provider.CallUserMessagesProvider
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

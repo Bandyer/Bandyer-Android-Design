@@ -19,17 +19,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.Avatar
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.view.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.call.BackIconButton
-import com.kaleyra.collaboration_suite_phone_ui.call.Ellipsize
-import com.kaleyra.collaboration_suite_phone_ui.call.EllipsizeText
-import com.kaleyra.collaboration_suite_phone_ui.call.IconButton
+import com.kaleyra.collaboration_suite_phone_ui.common.text.Ellipsize
+import com.kaleyra.collaboration_suite_phone_ui.common.text.EllipsizeText
+import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.chat.custom.TypingDots
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockActions
+import com.kaleyra.collaboration_suite_phone_ui.common.topappbar.TopAppBar
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
 internal const val SubtitleTag = "SubtitleTag"

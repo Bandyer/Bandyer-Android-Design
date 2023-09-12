@@ -1,8 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.precall.model
 
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.call.core.model.UiState
+import com.kaleyra.collaboration_suite_phone_ui.common.uistate.UiState
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 

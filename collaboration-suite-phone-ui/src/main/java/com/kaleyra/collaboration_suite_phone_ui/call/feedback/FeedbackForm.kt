@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.IconButton
+import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
 
 private const val DefaultRating = 5f
 private const val SliderLevels = 5

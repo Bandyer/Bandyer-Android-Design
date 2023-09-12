@@ -26,8 +26,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.toUsbCam
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.doIHaveStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.AudioConnectionFailureMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UsbCameraMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.AudioConnectionFailureMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UsbCameraMessage
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject

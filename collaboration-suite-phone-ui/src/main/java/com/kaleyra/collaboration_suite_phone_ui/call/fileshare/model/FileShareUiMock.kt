@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 
 val mockUploadSharedFile = SharedFileUi(
     id = "1",

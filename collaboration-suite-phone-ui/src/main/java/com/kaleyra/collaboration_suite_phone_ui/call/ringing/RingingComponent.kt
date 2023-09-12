@@ -35,7 +35,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.viewmodel.RingingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.DefaultStreamAvatarSize
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
@@ -43,7 +43,7 @@ import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_answer_dark_color
 import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_answer_light_color
 import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_hang_up_dark_color
 import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_hang_up_light_color
-import com.kaleyra.collaboration_suite_phone_ui.call.IconButton
+import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.rememberCountdownTimerState
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle

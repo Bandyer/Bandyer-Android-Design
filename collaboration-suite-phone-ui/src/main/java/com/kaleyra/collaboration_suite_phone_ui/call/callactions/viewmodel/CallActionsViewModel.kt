@@ -23,8 +23,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.isMyMicE
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.isSharingScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VirtualBackgroundMapper.isVirtualBackgroundEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.CameraRestrictionMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.provider.CallUserMessagesProvider
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.CameraRestrictionMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*

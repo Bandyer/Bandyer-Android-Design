@@ -14,8 +14,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.UserMessageV
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.getWhiteboardTextEvents
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.isWhiteboardLoading
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.toWhiteboardUploadUi
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.provider.CallUserMessagesProvider
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUploadUi
 import kotlinx.coroutines.delay

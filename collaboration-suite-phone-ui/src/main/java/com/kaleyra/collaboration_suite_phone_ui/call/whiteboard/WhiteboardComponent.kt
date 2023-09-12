@@ -18,20 +18,14 @@ import com.kaleyra.collaboration_suite.whiteboard.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.NavigationBarsSpacer
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.*
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.viewmodel.WhiteboardViewModel
-import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.TextEditorState
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.TextEditorValue
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardContent
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardModalBottomSheetContent
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardOfflineContent
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.rememberTextEditorState
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import kotlinx.coroutines.flow.*
 
 @OptIn(ExperimentalMaterialApi::class)

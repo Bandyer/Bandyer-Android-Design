@@ -16,8 +16,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.test.espresso.Espresso
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.WhiteboardComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUploadUi

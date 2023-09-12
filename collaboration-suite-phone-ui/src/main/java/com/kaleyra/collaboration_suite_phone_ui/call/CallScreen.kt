@@ -75,6 +75,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamContainer
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
+import com.kaleyra.collaboration_suite_phone_ui.common.text.Ellipsize
+import com.kaleyra.collaboration_suite_phone_ui.common.text.EllipsizeText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine

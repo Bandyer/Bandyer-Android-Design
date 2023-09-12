@@ -3,12 +3,12 @@ package com.kaleyra.collaboration_suite_phone_ui
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.AudioConnectionFailureMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.CameraRestrictionMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UsbCameraMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.provider.CallUserMessagesProvider
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.AudioConnectionFailureMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.CameraRestrictionMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UsbCameraMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -143,7 +143,7 @@ class CallUserMessagesProviderTest {
     @Test
     fun usbInitiallyDisconnected_usbDisconnectedUserMessageNotReceived() = runTest {
         with(InputMapper) {
-            every { callFlow.toUsbCameraMessage() } returns flowOf(com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UsbCameraMessage.Disconnected)
+            every { callFlow.toUsbCameraMessage() } returns flowOf(UsbCameraMessage.Disconnected)
         }
         CallUserMessagesProvider.start(callFlow, backgroundScope)
         val result = withTimeoutOrNull(100) {
@@ -169,7 +169,7 @@ class CallUserMessagesProviderTest {
     @Test
     fun testUsbNotSupportedUserMessage() = runTest {
         with(InputMapper) {
-            every { callFlow.toUsbCameraMessage() } returns flowOf(com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UsbCameraMessage.NotSupported)
+            every { callFlow.toUsbCameraMessage() } returns flowOf(UsbCameraMessage.NotSupported)
         }
         CallUserMessagesProvider.start(callFlow, backgroundScope)
         val actual = CallUserMessagesProvider.userMessage.first()

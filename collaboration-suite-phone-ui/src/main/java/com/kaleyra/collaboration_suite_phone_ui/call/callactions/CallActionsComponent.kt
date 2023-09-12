@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,20 +34,21 @@ internal fun CallActionsComponent(
     CallActionsComponent(
         uiState = uiState,
         isDarkTheme = isDarkTheme,
-        onItemClick = { action ->
-            // TODO revise this
-            when (action) {
-                is CallAction.Microphone -> viewModel.toggleMic(activity)
-                is CallAction.Camera -> viewModel.toggleCamera(activity)
-                is CallAction.SwitchCamera -> viewModel.switchCamera()
-                is CallAction.HangUp -> viewModel.hangUp()
-                is CallAction.ScreenShare -> {
-                    if (!viewModel.tryStopScreenShare()) {
-                        onItemClick(action)
+        onItemClick = remember(onItemClick) {
+            { action ->
+                when (action) {
+                    is CallAction.Microphone -> viewModel.toggleMic(activity)
+                    is CallAction.Camera -> viewModel.toggleCamera(activity)
+                    is CallAction.SwitchCamera -> viewModel.switchCamera()
+                    is CallAction.HangUp -> viewModel.hangUp()
+                    is CallAction.ScreenShare -> {
+                        if (!viewModel.tryStopScreenShare()) {
+                            onItemClick(action)
+                        }
                     }
+                    is CallAction.Chat -> viewModel.showChat(activity.baseContext)
+                    else -> onItemClick(action)
                 }
-                is CallAction.Chat -> viewModel.showChat(activity.baseContext)
-                else -> onItemClick(action)
             }
         },
         modifier = modifier

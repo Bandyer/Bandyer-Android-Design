@@ -13,6 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.*
+import com.kaleyra.collaboration_suite_phone_ui.common.topappbar.ActionsTag
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

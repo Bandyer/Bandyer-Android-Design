@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model
+package com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model
 
 import java.util.UUID
 

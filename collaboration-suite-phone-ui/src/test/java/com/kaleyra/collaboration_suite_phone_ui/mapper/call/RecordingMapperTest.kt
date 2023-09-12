@@ -11,7 +11,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRe
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingUi
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll

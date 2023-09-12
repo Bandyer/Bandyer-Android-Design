@@ -560,17 +560,6 @@ internal class GlassCallActivity :
                     }.launchIn(this@repeatOnStarted)
                 }
                 .launchIn(this)
-
-            // TODO rethink the logic to remove the whiteboard when the user is no longer on it
-//            rvStreams.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                    if (newState != SCROLL_STATE_IDLE) return
-//                    val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
-//                    if (viewModel.actions.value.any { it is CallUI.Action.OpenWhiteboard } || whiteboardItemAdapter?.adapterItemCount == 0 || linearLayoutManager.findFirstVisibleItemPosition() == 0) return
-//                    currentWhiteboard?.unload()
-//                    whiteboardItemAdapter!!.clear()
-//                }
-//            })
         }
         lifecycleScope.launch {
             if (wasPausedForBackground) {

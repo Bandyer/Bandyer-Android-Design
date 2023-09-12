@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.usermessages.view
+package com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.SnackbarHost
@@ -11,22 +11,22 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.AudioOutputGenericFailureSnackbar
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.AudioOutputInSystemCallFailureSnackbar
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.CameraRestrictionSnackbar
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.MutedSnackbar
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.RecordingEndedSnackbar
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.RecordingErrorSnackbar
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.RecordingStartedSnackbar
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.UsbConnectedSnackbar
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.UsbDisconnectedSnackbar
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.UsbNotSupportedSnackbar
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.AudioConnectionFailureMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.CameraRestrictionMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UsbCameraMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.AudioOutputGenericFailureSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.AudioOutputInSystemCallFailureSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.CameraRestrictionSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.MutedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.RecordingEndedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.RecordingErrorSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.RecordingStartedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.UsbConnectedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.UsbDisconnectedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.UsbNotSupportedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.AudioConnectionFailureMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.CameraRestrictionMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UsbCameraMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.filterNotNull
 
@@ -41,7 +41,6 @@ const val AudioOutputGenericFailure = "AudioOutputGenericFailure"
 const val AudioOutputInSystemCallFailure = "AudioOutputInSystemCallFailure"
 const val MutedByAdmin = "MutedByAdmin"
 
-// TODO move to common package between call and chat
 @Composable
 internal fun UserMessageSnackbarHandler(
     userMessage: UserMessage?,

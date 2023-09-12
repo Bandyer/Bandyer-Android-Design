@@ -12,7 +12,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.ProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockDownloadSharedFile

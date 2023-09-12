@@ -12,13 +12,13 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.*
+import com.kaleyra.collaboration_suite_phone_ui.common.topappbar.ActionsTag
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter

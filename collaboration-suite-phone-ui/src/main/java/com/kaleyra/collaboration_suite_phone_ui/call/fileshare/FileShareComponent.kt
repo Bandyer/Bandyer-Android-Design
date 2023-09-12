@@ -38,10 +38,10 @@ import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareEmp
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareFab
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.MaxFileSizeDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.viewmodel.FileShareViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.usermessages.view.UserMessageSnackbarHandler
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
 
 const val ProgressIndicatorTag = "ProgressIndicatorTag"
 

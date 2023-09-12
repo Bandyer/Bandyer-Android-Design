@@ -6,6 +6,9 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.RecordingEndedSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.RecordingErrorSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.RecordingStartedSnackbar
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

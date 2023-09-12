@@ -5,8 +5,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.AudioOutputGenericFailureSnackbar
-import com.kaleyra.collaboration_suite_phone_ui.call.snackbar.AudioOutputInSystemCallFailureSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.AudioOutputGenericFailureSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.common.snackbar.AudioOutputInSystemCallFailureSnackbar
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

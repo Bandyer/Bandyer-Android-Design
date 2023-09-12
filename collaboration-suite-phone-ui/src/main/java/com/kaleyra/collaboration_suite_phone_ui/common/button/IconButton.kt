@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.common.button
 
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.clickable
@@ -25,7 +25,6 @@ private const val DisabledAlpha = 0.25f
 private val MinSize = 48.dp
 private val IconSize = 24.dp
 
-// TODO move in a common package for call and chat
 @Composable
 internal fun IconButton(
     icon: Painter,

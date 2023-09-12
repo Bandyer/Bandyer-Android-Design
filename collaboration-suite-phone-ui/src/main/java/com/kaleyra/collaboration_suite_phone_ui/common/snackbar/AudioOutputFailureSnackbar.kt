@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.snackbar
+package com.kaleyra.collaboration_suite_phone_ui.common.snackbar
 
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
