@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.permission
+package com.kaleyra.collaboration_suite_phone_ui.call.utils
 
 import android.Manifest
 

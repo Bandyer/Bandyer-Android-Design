@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.extensions
+package com.kaleyra.collaboration_suite_phone_ui.call.utils
 
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Stream

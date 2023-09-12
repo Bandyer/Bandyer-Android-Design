@@ -9,7 +9,7 @@ import com.kaleyra.collaboration_suite.conference.*
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.CallExtensions.toMyCameraStream
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.CallExtensions.toMyCameraStream
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi

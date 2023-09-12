@@ -57,8 +57,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.CallS
 import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.ConfigurationExtensions.isAtLeastMediumSizeDevice
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewSettings.pipSettings
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.ConfigurationExtensions.isAtLeastMediumSizeDevice
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.StreamViewSettings.pipSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetComponent
@@ -70,16 +70,16 @@ import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.Botto
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineState
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.rememberBottomSheetContentState
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.rememberBottomSheetState
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isCollapsed
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isCollapsing
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isHalfExpanding
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isHidden
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isNotDraggableDown
-import com.kaleyra.collaboration_suite_phone_ui.call.extensions.BottomSheetStateExtensions.isSheetFullScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.BottomSheetStateExtensions.isCollapsed
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.BottomSheetStateExtensions.isCollapsing
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.BottomSheetStateExtensions.isHalfExpanding
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.BottomSheetStateExtensions.isHidden
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.BottomSheetStateExtensions.isNotDraggableDown
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.BottomSheetStateExtensions.isSheetFullScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.component.kicked.KickedMessageDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.component.feedback.UserFeedbackDialog
-import com.kaleyra.collaboration_suite_phone_ui.call.permission.CameraPermission
-import com.kaleyra.collaboration_suite_phone_ui.call.permission.RecordAudioPermission
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.CameraPermission
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.RecordAudioPermission
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ContextExtensions.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.rememberCountdownTimerState
@@ -305,7 +305,9 @@ internal fun CallScreen(
         sheetState = sheetState,
         shouldShowFileShareComponent = shouldShowFileShareComponent
     )
-    val inputPermissionsState = rememberMultiplePermissionsState(permissions = listOf(RecordAudioPermission, CameraPermission)) { permissionsResult ->
+    val inputPermissionsState = rememberMultiplePermissionsState(permissions = listOf(
+        RecordAudioPermission, CameraPermission
+    )) { permissionsResult ->
         permissionsResult.forEach { (permission, isGranted) ->
             when {
                 permission == RecordAudioPermission && isGranted -> viewModel.startMicrophone(activity)
