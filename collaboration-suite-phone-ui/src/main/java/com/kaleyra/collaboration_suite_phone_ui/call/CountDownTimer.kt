@@ -11,7 +11,7 @@ fun rememberCountdownTimerState(
     step: Long = 1000,
     enable: Boolean = true,
     reset: Boolean = false
-): MutableState<Long> {
+): State<Long> {
     val timeLeft = remember(initialMillis, enable) { mutableStateOf(initialMillis) }
     if (enable) {
         LaunchedEffect(initialMillis, step, reset) {

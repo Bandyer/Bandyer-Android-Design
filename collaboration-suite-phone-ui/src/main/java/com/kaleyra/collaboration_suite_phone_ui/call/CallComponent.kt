@@ -135,9 +135,13 @@ internal fun CallComponent(
     }
 
     val density = LocalDensity.current
+    val insets = WindowInsets.statusBars
     var callInfoWidgetHeight by remember { mutableStateOf(0) }
     val streamHeaderHeight = remember { with(density) { FeaturedStreamHeaderHeight.toPx() } }
     val snackbarTopPadding = remember { with(density) { SnackbarPadding.toPx() } }
+    val statusBarPadding = remember {
+        with(density) { insets.asPaddingValues(this).calculateTopPadding().toPx() }
+    }
 
     var streamsHeaderAutoHideResetFlag by remember { mutableStateOf(true) }
 
@@ -147,13 +151,17 @@ internal fun CallComponent(
         }
     }
     val snackbarHeaderPaddingTimer by rememberCountdownTimerState(initialMillis = HeaderAutoHideMs, enable = !shouldAddSnackbarHeaderPadding)
-    val snackbarOffsetValue by derivedStateOf {
-        snackbarTopPadding +
-                (if (shouldShowCallInfo) callInfoWidgetHeight else 0) +
-                (if (snackbarHeaderPaddingTimer > 0L) streamHeaderHeight else 0f)
+    val snackbarOffsetValue by remember(snackbarTopPadding, callInfoWidgetHeight, snackbarHeaderPaddingTimer, streamHeaderHeight, shouldShowCallInfo) {
+        derivedStateOf {
+            statusBarPadding + when {
+                shouldShowCallInfo -> callInfoWidgetHeight.toFloat()
+                snackbarHeaderPaddingTimer > 0L -> streamHeaderHeight
+                else -> 0f
+            }
+        }
     }
-    val streamHeaderOffset by animateIntAsState(targetValue = if (shouldShowCallInfo) callInfoWidgetHeight else 0)
-    val snackbarOffset by animateIntAsState(targetValue = snackbarOffsetValue.toInt())
+    val streamHeaderOffset by animateIntAsState(targetValue = if (shouldShowCallInfo) callInfoWidgetHeight else 0, label = "headerOffset")
+    val snackbarOffset by animateIntAsState(targetValue = snackbarOffsetValue.toInt(), label = "snackbarOffset")
 
     CompositionLocalProvider(LocalContentColor provides Color.White) {
         Box(modifier.testTag(CallComponentTag)) {
@@ -179,12 +187,11 @@ internal fun CallComponent(
                                     reset = streamsHeaderAutoHideResetFlag,
                                     enable = stream.video?.view != null && stream.video.isEnabled
                                 )
-                                val headerAlpha by animateFloatAsState(targetValue = if (autoHideHeaderTimer > 0L) 1f else 0f)
+                                val headerAlpha by animateFloatAsState(targetValue = if (autoHideHeaderTimer > 0L) 1f else 0f, label = "headerAlpha")
                                 FeaturedStream(
                                     stream = stream,
                                     isFullscreen = callUiState.fullscreenStream != null,
-                                    onBackPressed = if (index == 0 && !shouldShowCallInfo) onBackPressed else null,
-                                    // TODO optimize recomposition
+                                    onBackPressed = if (index == 0 && !(shouldShowCallInfo)) onBackPressed else null,
                                     onFullscreenClick = remember(onStreamFullscreenClick, callUiState.fullscreenStream) {
                                         { if (callUiState.fullscreenStream != null) onStreamFullscreenClick(null) else onStreamFullscreenClick(stream.id) }
                                     },
@@ -204,7 +211,7 @@ internal fun CallComponent(
                                 )
 
                                 if (callUiState.amIAlone) {
-                                    val padding by animateDpAsState(targetValue = if (stream.video?.view == null || !stream.video.isEnabled) YouAreAloneAvatarPadding else 0.dp)
+                                    val padding by animateDpAsState(targetValue = if (stream.video?.view == null || !stream.video.isEnabled) YouAreAloneAvatarPadding else 0.dp, label = "avatarPadding")
                                     Text(
                                         text = stringResource(id = R.string.kaleyra_call_left_alone),
                                         style = LocalTextStyle.current.shadow(),
