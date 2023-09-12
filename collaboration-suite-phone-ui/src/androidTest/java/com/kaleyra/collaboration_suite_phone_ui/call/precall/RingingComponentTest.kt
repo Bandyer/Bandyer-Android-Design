@@ -12,7 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.RingingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock

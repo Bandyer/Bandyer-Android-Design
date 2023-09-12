@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.component.recording
+package com.kaleyra.collaboration_suite_phone_ui.call.component.recording.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row

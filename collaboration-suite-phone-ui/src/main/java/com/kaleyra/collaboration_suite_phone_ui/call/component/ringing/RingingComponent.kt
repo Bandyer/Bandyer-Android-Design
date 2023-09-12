@@ -31,7 +31,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.*
 import com.kaleyra.collaboration_suite_phone_ui.call.component.precall.PreCallComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.viewmodel.RingingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.DefaultStreamAvatarSize

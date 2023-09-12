@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.model
+package com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model
 
 data class RecordingUi(
     val type: RecordingTypeUi,

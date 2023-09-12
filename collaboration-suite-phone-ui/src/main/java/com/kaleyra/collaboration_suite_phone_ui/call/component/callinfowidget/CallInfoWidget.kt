@@ -24,7 +24,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.text.Ellipsize
 import com.kaleyra.collaboration_suite_phone_ui.common.text.EllipsizeText
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.model.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.view.Watermark
-import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.RecordingLabel
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.view.RecordingLabel
 import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding

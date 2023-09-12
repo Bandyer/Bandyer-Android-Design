@@ -16,7 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.PipScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.RecordingDotTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.view.RecordingDotTestTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamViewTestTag
 import org.junit.After
 import org.junit.Before

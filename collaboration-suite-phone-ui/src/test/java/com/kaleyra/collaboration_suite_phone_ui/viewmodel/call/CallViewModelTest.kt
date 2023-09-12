@@ -21,8 +21,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.viewmodel.
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.viewmodel.CallViewModel.Companion.SINGLE_STREAM_DEBOUNCE_MILLIS
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamsHandler
-import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.model.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.model.WatermarkInfo

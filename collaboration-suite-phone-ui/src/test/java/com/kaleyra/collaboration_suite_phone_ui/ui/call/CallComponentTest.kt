@@ -24,9 +24,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.Strea
 import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.view.WatermarkTag
 import com.kaleyra.collaboration_suite_phone_ui.call.*
-import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
-import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.FeaturedStreamTag
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.model.Logo

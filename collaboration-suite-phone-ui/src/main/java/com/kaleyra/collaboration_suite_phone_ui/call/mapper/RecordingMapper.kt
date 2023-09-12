@@ -1,9 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.mapper
 
 import com.kaleyra.collaboration_suite.conference.Call
-import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
-import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
