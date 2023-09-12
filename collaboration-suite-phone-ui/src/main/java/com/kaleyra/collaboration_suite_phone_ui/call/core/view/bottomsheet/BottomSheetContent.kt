@@ -107,7 +107,6 @@ internal fun BottomSheetContent(
                     BottomSheetComponent.CallActions -> {
                         CallActionsComponent(
                             onItemClick = { action ->
-                                // TODO move this out to callScreen onCallActionClick?
                                 contentState.navigateToComponent(
                                     component = when (action) {
                                         is CallAction.Audio -> BottomSheetComponent.AudioOutput
