@@ -44,6 +44,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
@@ -66,9 +68,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.kicked.KickedMessageDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.feedback.UserFeedbackDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.permission.CameraPermission
 import com.kaleyra.collaboration_suite_phone_ui.call.permission.RecordAudioPermission
-import com.kaleyra.collaboration_suite_phone_ui.call.permission.findActivity
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ContextExtensions.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
-import com.kaleyra.collaboration_suite_phone_ui.call.permission.rememberMultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.RecordingLabel
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamContainer
@@ -261,6 +262,7 @@ internal fun ThemedCallScreen(
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 internal fun CallScreen(
     viewModel: CallViewModel = androidx.lifecycle.viewmodel.compose.viewModel(

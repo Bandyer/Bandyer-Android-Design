@@ -16,9 +16,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallActio
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.mockCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.view.CallActionsContent
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.viewmodel.CallActionsViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.permission.findActivity
-import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ContextExtensions.findActivity
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
 @Composable
 internal fun CallActionsComponent(
