@@ -19,11 +19,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kaleyra.collaboration_suite_phone_ui.call.BackIconButton
+import com.kaleyra.collaboration_suite_phone_ui.common.button.BackIconButton
 import com.kaleyra.collaboration_suite_phone_ui.common.text.Ellipsize
 import com.kaleyra.collaboration_suite_phone_ui.common.text.EllipsizeText
 import com.kaleyra.collaboration_suite_phone_ui.call.Watermark
-import com.kaleyra.collaboration_suite_phone_ui.call.shadow
+import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.verticalGradientScrim

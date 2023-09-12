@@ -85,6 +85,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow
 
 private val PeekHeight = 48.dp
 private val HalfExpandedHeight = 166.dp

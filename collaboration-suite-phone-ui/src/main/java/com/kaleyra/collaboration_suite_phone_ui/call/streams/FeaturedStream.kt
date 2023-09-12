@@ -29,7 +29,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewSettings.featuredSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.call.shadow
+import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 

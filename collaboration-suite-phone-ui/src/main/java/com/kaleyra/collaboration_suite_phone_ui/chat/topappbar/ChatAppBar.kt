@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.view.Avatar
-import com.kaleyra.collaboration_suite_phone_ui.call.BackIconButton
+import com.kaleyra.collaboration_suite_phone_ui.common.button.BackIconButton
 import com.kaleyra.collaboration_suite_phone_ui.common.text.Ellipsize
 import com.kaleyra.collaboration_suite_phone_ui.common.text.EllipsizeText
 import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton

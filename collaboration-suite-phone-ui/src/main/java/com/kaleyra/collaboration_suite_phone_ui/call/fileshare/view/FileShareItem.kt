@@ -37,8 +37,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileU
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockUploadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.extensions.isArchiveMimeType
-import com.kaleyra.collaboration_suite_phone_ui.extensions.isImageMimeType
+import com.kaleyra.collaboration_suite_phone_ui.extensions.MimeTypeExtensions.isArchiveMimeType
+import com.kaleyra.collaboration_suite_phone_ui.extensions.MimeTypeExtensions.isImageMimeType
 import kotlin.math.roundToInt
 
 private const val FileMediaType = "MediaType"
