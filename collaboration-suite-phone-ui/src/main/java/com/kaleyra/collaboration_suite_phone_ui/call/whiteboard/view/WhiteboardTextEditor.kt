@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
-import com.kaleyra.collaboration_suite_phone_ui.common.textfield.UserInputText
+import com.kaleyra.collaboration_suite_phone_ui.common.userinput.UserInputText
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
 @Immutable

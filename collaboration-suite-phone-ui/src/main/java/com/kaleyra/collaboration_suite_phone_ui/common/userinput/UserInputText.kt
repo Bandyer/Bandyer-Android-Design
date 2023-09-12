@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.common.textfield
+package com.kaleyra.collaboration_suite_phone_ui.common.userinput
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
