@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.screen.model
+package com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model
 
 import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi

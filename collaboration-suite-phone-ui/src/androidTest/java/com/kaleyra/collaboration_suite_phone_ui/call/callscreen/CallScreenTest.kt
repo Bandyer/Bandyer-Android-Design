@@ -9,11 +9,11 @@ import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.MockCallViewModelsStatesRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.CallScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenAppBarTag
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.CallScreenState
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.CallScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.CallScreenAppBarTag
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.CallScreenState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailTag
 import com.kaleyra.collaboration_suite_phone_ui.call.*
 import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.model.AudioOutputUiState
@@ -43,7 +43,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineT
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.ScreenShareComponentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.VirtualBackgroundComponentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.WhiteboardComponentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.rememberCallScreenState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.rememberCallScreenState
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.findBackButton

@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.viewmodel.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.viewmodel.AudioOutputViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.CallActionsUiState

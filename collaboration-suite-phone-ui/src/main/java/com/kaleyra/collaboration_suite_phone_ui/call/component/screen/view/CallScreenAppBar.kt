@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.screen.view
+package com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background

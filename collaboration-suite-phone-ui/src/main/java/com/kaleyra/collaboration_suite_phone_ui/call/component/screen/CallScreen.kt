@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.screen
+package com.kaleyra.collaboration_suite_phone_ui.call.component.screen
 
 import android.util.Rational
 import android.view.View
@@ -52,8 +52,8 @@ import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.theme.CollaborationTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenAppBar
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenContent
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.CallScreenAppBar
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.CallScreenContent
 import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
@@ -83,9 +83,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.permission.RecordAudioPermi
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ContextExtensions.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.rememberCountdownTimerState
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.viewmodel.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.RecordingLabel
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamContainer

@@ -5,11 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.WhiteboardVisibilityObserver
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.WhiteboardVisibilityObserver
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetContentState
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineState
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.rememberCallScreenState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.rememberCallScreenState
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule

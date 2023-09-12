@@ -5,9 +5,9 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.CallScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.CallScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.*
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetComponent
@@ -16,7 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.FileS
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineState
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.rememberBottomSheetContentState
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.rememberBottomSheetState
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.rememberCallScreenState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.rememberCallScreenState
 import com.kaleyra.collaboration_suite_phone_ui.ui.ComposeViewModelsMockTest
 import org.junit.Rule
 import org.junit.Test

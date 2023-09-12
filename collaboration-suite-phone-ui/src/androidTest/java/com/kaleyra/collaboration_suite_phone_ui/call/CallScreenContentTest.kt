@@ -11,11 +11,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.*
 import com.kaleyra.collaboration_suite_phone_ui.call.component.dialing.DialingContentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.RingingContentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallComponentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenContent
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.CallComponentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.CallScreenContent
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.viewmodel.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.findBackButton
