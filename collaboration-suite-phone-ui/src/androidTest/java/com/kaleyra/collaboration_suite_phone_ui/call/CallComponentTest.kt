@@ -17,6 +17,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.*
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.view.WatermarkTag
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingUi
@@ -25,10 +26,10 @@ import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.Call
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.CallComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.CallComponentState
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.StreamsGridTag
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.CallInfoWidgetTag
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.FeaturedStreamTag
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.Logo
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.WatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.model.Logo
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.model.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList

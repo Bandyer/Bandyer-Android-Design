@@ -86,7 +86,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.rememberCountdownTimerState
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.viewmodel.CallViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.RecordingLabel
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.RecordingLabel
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamContainer
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle

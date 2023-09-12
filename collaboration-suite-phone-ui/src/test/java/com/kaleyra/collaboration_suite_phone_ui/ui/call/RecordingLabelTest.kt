@@ -5,7 +5,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.RecordingLabel
+import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.RecordingLabel
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

@@ -10,7 +10,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.*
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.AdaptiveGrid
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.AdaptiveGrid
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

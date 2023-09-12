@@ -18,7 +18,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.component.dialing.DialingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.component.dialing.view.DialingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.CallInfoWidgetTag
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamViewTestTag
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage

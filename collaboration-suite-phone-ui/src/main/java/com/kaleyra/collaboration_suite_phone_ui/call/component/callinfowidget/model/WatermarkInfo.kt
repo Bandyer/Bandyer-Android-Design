@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.streams
+package com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.model
 
 import androidx.compose.runtime.Immutable
 

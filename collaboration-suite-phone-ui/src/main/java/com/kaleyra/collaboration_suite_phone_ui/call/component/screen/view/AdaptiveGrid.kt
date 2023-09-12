@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.streams
+package com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

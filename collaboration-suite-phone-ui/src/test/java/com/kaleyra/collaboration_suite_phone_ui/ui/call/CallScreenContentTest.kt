@@ -15,7 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.viewmodel.
 import com.kaleyra.collaboration_suite_phone_ui.call.*
 import com.kaleyra.collaboration_suite_phone_ui.call.component.dialing.DialingContentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.RingingContentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.CallInfoWidgetTag
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.ui.ComposeViewModelsMockTest

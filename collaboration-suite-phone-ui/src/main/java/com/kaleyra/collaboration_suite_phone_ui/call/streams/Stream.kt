@@ -52,7 +52,8 @@ internal fun Stream(
             transitionSpec = {
                 if (targetState) fadeIn(tween(500)) with fadeOut(tween(500))
                 else EnterTransition.None with ExitTransition.None
-            }
+            },
+            label = "avatarVisibility"
         ) {
             if (it) {
                 key(streamView) {

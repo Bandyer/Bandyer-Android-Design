@@ -16,7 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.Call
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.CallComponentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.CallScreenContent
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.viewmodel.CallViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.CallInfoWidgetTag
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callinfowidget.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.findBackButton
 import io.mockk.every
