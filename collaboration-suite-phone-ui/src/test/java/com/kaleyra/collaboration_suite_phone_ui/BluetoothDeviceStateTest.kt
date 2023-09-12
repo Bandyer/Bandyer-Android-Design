@@ -1,8 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
-import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.BluetoothDeviceState
-import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.isConnectedOrPlaying
-import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.isConnecting
+import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.model.BluetoothDeviceState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.model.isConnectedOrPlaying
+import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.model.isConnecting
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertEquals
 import org.junit.Rule

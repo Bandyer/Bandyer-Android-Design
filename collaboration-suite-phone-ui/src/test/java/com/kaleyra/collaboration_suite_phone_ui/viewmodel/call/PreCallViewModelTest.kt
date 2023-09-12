@@ -16,8 +16,8 @@ import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.call.precall.model.PreCallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.precall.viewmodel.PreCallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.component.precall.model.PreCallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.Logo
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage

@@ -10,8 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import com.kaleyra.collaboration_suite_phone_ui.call.dialing.DialingComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.ringing.RingingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.component.dialing.DialingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.RingingComponent
 
 @Composable
 internal fun CallScreenContent(

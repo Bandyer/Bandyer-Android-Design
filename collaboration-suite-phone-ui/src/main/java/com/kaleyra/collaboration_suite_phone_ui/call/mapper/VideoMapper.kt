@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.mapper
 import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.pointer.model.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.Flow

@@ -9,8 +9,9 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallActionsUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.CallActionsUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.CallActionsComponent
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
 import org.junit.Assert.assertEquals

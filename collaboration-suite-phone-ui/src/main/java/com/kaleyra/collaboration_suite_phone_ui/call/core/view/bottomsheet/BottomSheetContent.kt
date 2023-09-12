@@ -13,13 +13,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.AudioOutputComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.callactions.CallActionsComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.FileShareComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.ScreenShareComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.VirtualBackgroundComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.WhiteboardComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.AudioOutputComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.CallActionsComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.FileShareComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.ScreenShareComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.component.virtualbackground.VirtualBackgroundComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.component.whiteboard.WhiteboardComponent
 
 const val CallActionsComponentTag = "CallActionsComponentTag"
 const val AudioOutputComponentTag = "AudioOutputComponentTag"

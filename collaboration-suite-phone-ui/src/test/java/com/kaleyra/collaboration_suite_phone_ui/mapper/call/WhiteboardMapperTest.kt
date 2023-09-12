@@ -7,7 +7,7 @@ import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.getWhiteboardTextEvents
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.isWhiteboardLoading
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.toWhiteboardUploadUi
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUploadUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.whiteboard.model.WhiteboardUploadUi
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

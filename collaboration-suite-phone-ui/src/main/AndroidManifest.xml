@@ -28,7 +28,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".call.fileshare.filepick.FilePickBroadcastReceiver"
+            android:name=".call.component.fileshare.filepick.FilePickBroadcastReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.kaleyra.collaboration_suite_phone_ui.FILE_PICK_EVENT_ACTION" />
@@ -52,7 +52,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".call.fileshare.filepick.FilePickActivity"
+            android:name=".call.component.fileshare.filepick.FilePickActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
             android:launchMode="singleInstance"
             android:resizeableActivity="false"

@@ -7,8 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.callactions.view.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.view.CallAction
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

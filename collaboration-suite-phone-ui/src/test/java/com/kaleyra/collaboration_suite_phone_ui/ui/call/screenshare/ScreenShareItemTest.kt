@@ -8,8 +8,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareTargetUi
-import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.view.ScreenShareItem
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.model.ScreenShareTargetUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.view.ScreenShareItem
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

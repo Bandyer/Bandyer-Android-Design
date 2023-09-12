@@ -9,7 +9,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareFab
+import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.view.FileShareFab
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

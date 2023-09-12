@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareAppBar
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardAppBar
+import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.view.FileShareAppBar
+import com.kaleyra.collaboration_suite_phone_ui.call.component.whiteboard.view.WhiteboardAppBar
 import com.kaleyra.collaboration_suite_phone_ui.common.spacer.StatusBarsSpacer
 
 const val CallScreenAppBarTag = "CallScreenAppBarTag"

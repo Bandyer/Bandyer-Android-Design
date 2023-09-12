@@ -24,7 +24,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.amIAlon
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.hasAtLeastAVideoEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WatermarkMapper.toWatermarkInfo
-import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList

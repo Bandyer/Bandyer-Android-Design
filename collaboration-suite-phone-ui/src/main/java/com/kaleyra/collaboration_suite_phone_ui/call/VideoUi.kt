@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call
 
 import androidx.compose.runtime.Immutable
-import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
+import com.kaleyra.collaboration_suite_phone_ui.call.component.pointer.model.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 @Immutable

@@ -13,8 +13,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.*
-import com.kaleyra.collaboration_suite_phone_ui.call.dialing.DialingContentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.ringing.RingingContentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.component.dialing.DialingContentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.RingingContentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList

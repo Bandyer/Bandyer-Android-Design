@@ -54,7 +54,7 @@ import com.kaleyra.collaboration_suite_phone_ui.theme.CollaborationTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.extensions.ConfigurationExtensions.isAtLeastMediumSizeDevice
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewSettings.pipSettings
-import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetContent
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetContentState
@@ -70,8 +70,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.extensions.isHalfExpanding
 import com.kaleyra.collaboration_suite_phone_ui.call.extensions.isHidden
 import com.kaleyra.collaboration_suite_phone_ui.call.extensions.isNotDraggableDown
 import com.kaleyra.collaboration_suite_phone_ui.call.extensions.isSheetFullScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.kicked.KickedMessageDialog
-import com.kaleyra.collaboration_suite_phone_ui.call.feedback.UserFeedbackDialog
+import com.kaleyra.collaboration_suite_phone_ui.call.component.kicked.KickedMessageDialog
+import com.kaleyra.collaboration_suite_phone_ui.call.component.feedback.UserFeedbackDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.permission.CameraPermission
 import com.kaleyra.collaboration_suite_phone_ui.call.permission.RecordAudioPermission
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ContextExtensions.findActivity

@@ -9,9 +9,9 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.TextEditorState
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.TextEditorValue
-import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardModalBottomSheetContent
+import com.kaleyra.collaboration_suite_phone_ui.call.component.whiteboard.view.TextEditorState
+import com.kaleyra.collaboration_suite_phone_ui.call.component.whiteboard.view.TextEditorValue
+import com.kaleyra.collaboration_suite_phone_ui.call.component.whiteboard.view.WhiteboardModalBottomSheetContent
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
