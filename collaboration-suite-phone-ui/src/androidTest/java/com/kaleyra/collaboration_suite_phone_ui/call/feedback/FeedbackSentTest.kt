@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.feedback.view.FeedbackSent
 import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Before

@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.feedback
+package com.kaleyra.collaboration_suite_phone_ui.call.feedback.view
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
