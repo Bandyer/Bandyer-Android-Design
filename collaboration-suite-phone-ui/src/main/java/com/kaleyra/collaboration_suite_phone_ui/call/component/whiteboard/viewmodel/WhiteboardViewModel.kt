@@ -10,7 +10,7 @@ import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite.whiteboard.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.BaseViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.UserMessageViewModel
+import com.kaleyra.collaboration_suite_phone_ui.common.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.getWhiteboardTextEvents
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.isWhiteboardLoading
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.toWhiteboardUploadUi

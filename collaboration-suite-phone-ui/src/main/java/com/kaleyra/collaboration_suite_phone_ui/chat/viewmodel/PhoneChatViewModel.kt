@@ -9,6 +9,7 @@ import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
+import com.kaleyra.collaboration_suite_phone_ui.common.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
@@ -24,7 +25,8 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.mapTo
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure) {
+class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure),
+    UserMessageViewModel {
 
     private val showUnreadHeader = MutableStateFlow(true)
 
@@ -34,7 +36,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
 
     val uiState = _uiState.asStateFlow()
 
-    val userMessage: Flow<UserMessage>
+    override val userMessage: Flow<UserMessage>
         get() = CallUserMessagesProvider.userMessage
 
     val theme: Flow<CompanyUI.Theme>

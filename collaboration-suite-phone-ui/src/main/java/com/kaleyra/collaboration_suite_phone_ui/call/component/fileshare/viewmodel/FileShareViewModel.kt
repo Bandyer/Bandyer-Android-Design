@@ -8,7 +8,7 @@ import com.kaleyra.collaboration_suite.sharedfolder.SharedFolder
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getFileSize
 import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.BaseViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.UserMessageViewModel
+import com.kaleyra.collaboration_suite_phone_ui.common.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.filepick.FilePickProvider
 import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.FileShareMapper.toSharedFilesUi
