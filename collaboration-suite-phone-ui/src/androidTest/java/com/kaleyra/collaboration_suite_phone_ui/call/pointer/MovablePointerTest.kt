@@ -13,7 +13,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.unit.IntSize
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.PointerUi
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.MovablePointer
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

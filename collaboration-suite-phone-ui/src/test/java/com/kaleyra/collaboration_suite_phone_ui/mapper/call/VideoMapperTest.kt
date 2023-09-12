@@ -6,7 +6,7 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.PointerUi
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VideoMapper.mapToPointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VideoMapper.mapToPointersUi

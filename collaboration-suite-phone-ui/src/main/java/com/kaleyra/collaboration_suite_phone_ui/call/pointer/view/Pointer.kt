@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.pointer
+package com.kaleyra.collaboration_suite_phone_ui.call.pointer.view
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.pointer
+package com.kaleyra.collaboration_suite_phone_ui.call.pointer.view
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.offset
@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import com.kaleyra.collaboration_suite_phone_ui.call.PointerUi
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
 import java.lang.Integer.max
 
 const val MovablePointerTag = "MovablePointerTag"

@@ -9,10 +9,10 @@ import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.PointerUi
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.call.pointer.MovablePointerTag
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.MovablePointerTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamViewTestTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList

@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.pointer
+package com.kaleyra.collaboration_suite_phone_ui.call.pointer.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntSize
 import com.kaleyra.collaboration_suite.conference.VideoStreamView
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.PointerUi
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewExtensions.getScale
 import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewExtensions.getSize
 import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewExtensions.getTranslation
