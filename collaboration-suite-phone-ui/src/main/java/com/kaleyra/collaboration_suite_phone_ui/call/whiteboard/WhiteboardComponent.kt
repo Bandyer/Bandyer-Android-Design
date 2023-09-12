@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite.whiteboard.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.NavigationBarsSpacer
+import com.kaleyra.collaboration_suite_phone_ui.common.spacer.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.*

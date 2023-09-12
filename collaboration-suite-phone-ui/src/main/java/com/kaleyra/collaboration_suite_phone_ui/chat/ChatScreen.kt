@@ -51,6 +51,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.ChatAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.PhoneChatViewModel
+import com.kaleyra.collaboration_suite_phone_ui.common.spacer.StatusBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.theme.CollaborationTheme
@@ -125,12 +126,7 @@ fun ChatScreen(
             .semantics {
                 testTagsAsResourceId = true
             }) {
-        Spacer(
-            modifier = Modifier
-                .background(MaterialTheme.colors.primaryVariant)
-                .fillMaxWidth()
-                .windowInsetsTopHeight(WindowInsets.statusBars)
-        )
+        StatusBarsSpacer(Modifier.background(MaterialTheme.colors.primaryVariant))
         Box(Modifier.focusRequester(topBarRef)){
             ChatAppBar(
                 state = uiState.state,

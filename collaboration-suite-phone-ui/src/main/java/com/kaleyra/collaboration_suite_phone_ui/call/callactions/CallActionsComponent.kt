@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
-import com.kaleyra.collaboration_suite_phone_ui.call.NavigationBarsSpacer
+import com.kaleyra.collaboration_suite_phone_ui.common.spacer.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.mockCallActions

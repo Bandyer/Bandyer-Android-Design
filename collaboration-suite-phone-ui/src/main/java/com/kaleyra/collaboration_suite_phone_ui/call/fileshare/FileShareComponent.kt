@@ -28,7 +28,7 @@ import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareV
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.tryToOpenFile
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.NavigationBarsSpacer
+import com.kaleyra.collaboration_suite_phone_ui.common.spacer.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.filepick.FilePickActivity
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.filepick.FilePickBroadcastReceiver
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.FileShareUiState

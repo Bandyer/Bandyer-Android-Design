@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.common.spacer
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable

@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.testTag
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardAppBar
+import com.kaleyra.collaboration_suite_phone_ui.common.spacer.StatusBarsSpacer
 
 const val CallScreenAppBarTag = "CallScreenAppBarTag"
 
@@ -29,12 +30,7 @@ internal fun CallScreenAppBar(
         modifier = modifier.testTag(CallScreenAppBarTag)
     ) {
         Surface(elevation = AppBarDefaults.TopAppBarElevation) {
-            Spacer(
-                Modifier
-                    .background(MaterialTheme.colors.primary)
-                    .fillMaxWidth()
-                    .windowInsetsTopHeight(WindowInsets.statusBars)
-            )
+            StatusBarsSpacer(Modifier.background(MaterialTheme.colors.primary))
             Box(modifier = Modifier.statusBarsPadding()) {
                 when (currentSheetComponent) {
                     BottomSheetComponent.FileShare -> FileShareAppBar(onBackPressed = onBackPressed)
