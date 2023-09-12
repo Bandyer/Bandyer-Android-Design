@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.screen.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import com.kaleyra.collaboration_suite_phone_ui.call.component.dialing.DialingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.RingingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallComponent
 
 @Composable
 internal fun CallScreenContent(

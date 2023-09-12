@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.screen.view
 
 import android.content.res.Configuration
 import android.view.MotionEvent
@@ -38,6 +38,11 @@ import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.extensions.ConfigurationExtensions.isAtLeastMediumSizeWidth
 import com.kaleyra.collaboration_suite_phone_ui.call.extensions.ConfigurationExtensions.isOrientationPortrait
+import com.kaleyra.collaboration_suite_phone_ui.call.rememberCountdownTimerState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle

@@ -16,9 +16,9 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.CallViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.CallViewModel.Companion.SINGLE_STREAM_DEBOUNCE_MILLIS
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel.Companion.SINGLE_STREAM_DEBOUNCE_MILLIS
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamsHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingStateUi

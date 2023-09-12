@@ -1,22 +1,18 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
-import com.kaleyra.collaboration_suite_phone_ui.call.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.model.AudioOutputUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.model.mockAudioDevices
 import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.viewmodel.AudioOutputViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.CallActionsUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.mockCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.viewmodel.CallActionsViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.component.dialing.view.DialingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.component.dialing.viewmodel.DialingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.viewmodel.RingingViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.component.virtualbackground.model.VirtualBackgroundUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.component.virtualbackground.model.mockVirtualBackgrounds
 import com.kaleyra.collaboration_suite_phone_ui.call.component.virtualbackground.viewmodel.VirtualBackgroundViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.component.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.component.whiteboard.viewmodel.WhiteboardViewModel

@@ -2,8 +2,8 @@ package com.kaleyra.collaboration_suite_phone_ui.ui
 
 import androidx.lifecycle.ViewModelProvider
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideoService
-import com.kaleyra.collaboration_suite_phone_ui.call.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.model.mockAudioDevices
 import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.viewmodel.AudioOutputViewModel

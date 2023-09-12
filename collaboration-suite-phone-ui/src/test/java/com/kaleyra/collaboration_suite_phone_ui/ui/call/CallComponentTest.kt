@@ -15,12 +15,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.CallComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.CallComponentState
-import com.kaleyra.collaboration_suite_phone_ui.call.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallComponentState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamsGridTag
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.StreamsGridTag
 import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.WatermarkTag
 import com.kaleyra.collaboration_suite_phone_ui.call.*

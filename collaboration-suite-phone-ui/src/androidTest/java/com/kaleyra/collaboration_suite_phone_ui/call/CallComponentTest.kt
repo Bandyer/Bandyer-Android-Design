@@ -20,6 +20,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.*
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallComponentState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.StreamsGridTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.FeaturedStreamTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.Logo

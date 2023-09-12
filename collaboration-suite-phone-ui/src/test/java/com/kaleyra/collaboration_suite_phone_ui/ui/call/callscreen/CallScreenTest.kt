@@ -6,11 +6,11 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.espresso.Espresso
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.CallScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.CallScreenAppBarTag
-import com.kaleyra.collaboration_suite_phone_ui.call.CallScreenState
-import com.kaleyra.collaboration_suite_phone_ui.call.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.CallScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenAppBarTag
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.CallScreenState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailTag
 import com.kaleyra.collaboration_suite_phone_ui.call.*
 import com.kaleyra.collaboration_suite_phone_ui.call.component.audiooutput.model.AudioOutputUiState
@@ -40,7 +40,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineT
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.ScreenShareComponentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.VirtualBackgroundComponentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.WhiteboardComponentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.rememberCallScreenState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.rememberCallScreenState
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.ui.ComposeViewModelsMockTest

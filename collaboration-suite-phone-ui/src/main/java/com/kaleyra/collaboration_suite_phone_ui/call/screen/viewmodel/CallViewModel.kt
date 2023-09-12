@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel
 
 import android.util.Rational
 import androidx.fragment.app.FragmentActivity
@@ -10,6 +10,10 @@ import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.call.CallExtensions.toMyCameraStream
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.StreamsHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallStateMapper.isConnected

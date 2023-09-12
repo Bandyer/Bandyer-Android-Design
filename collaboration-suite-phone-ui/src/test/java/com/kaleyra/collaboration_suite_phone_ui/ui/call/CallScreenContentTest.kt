@@ -7,11 +7,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.CallComponentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.CallScreenContent
-import com.kaleyra.collaboration_suite_phone_ui.call.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallComponentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenContent
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.*
 import com.kaleyra.collaboration_suite_phone_ui.call.component.dialing.DialingContentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.RingingContentTag
