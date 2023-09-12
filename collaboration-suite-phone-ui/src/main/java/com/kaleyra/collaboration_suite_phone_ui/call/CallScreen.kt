@@ -67,8 +67,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.feedback.UserFeedbackDialog
 import com.kaleyra.collaboration_suite_phone_ui.call.permission.CameraPermission
 import com.kaleyra.collaboration_suite_phone_ui.call.permission.RecordAudioPermission
 import com.kaleyra.collaboration_suite_phone_ui.call.permission.findActivity
-import com.kaleyra.collaboration_suite_phone_ui.call.permission.rememberPermissionState
 import com.kaleyra.collaboration_suite_phone_ui.call.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.permission.rememberMultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.RecordingLabel
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamContainer
@@ -284,11 +284,13 @@ internal fun CallScreen(
         sheetState = sheetState,
         shouldShowFileShareComponent = shouldShowFileShareComponent
     )
-    val audioPermissionState = rememberPermissionState(permission = RecordAudioPermission) { isGranted ->
-        if (isGranted) viewModel.startMicrophone(activity)
-    }
-    val videoPermissionState = rememberPermissionState(permission = CameraPermission) { isGranted ->
-        if (isGranted) viewModel.startCamera(activity)
+    val inputPermissionsState = rememberMultiplePermissionsState(permissions = listOf(RecordAudioPermission, CameraPermission)) { permissionsResult ->
+        permissionsResult.forEach { (permission, isGranted) ->
+            when {
+                permission == RecordAudioPermission && isGranted -> viewModel.startMicrophone(activity)
+                permission == CameraPermission && isGranted -> viewModel.startCamera(activity)
+            }
+        }
     }
     val onFinishActivity = remember(activity) {
         {
@@ -329,10 +331,13 @@ internal fun CallScreen(
         viewModel.setOnPipAspectRatio(onPipAspectRatio)
     }
 
-    LaunchedEffect(videoPermissionState, audioPermissionState) {
+    LaunchedEffect(inputPermissionsState) {
         viewModel.setOnAudioOrVideoChanged { isAudioEnabled, isVideoEnabled ->
-            if (isAudioEnabled) audioPermissionState.launchPermissionRequest()
-            if (isVideoEnabled) videoPermissionState.launchPermissionRequest()
+            when {
+                isAudioEnabled && isVideoEnabled -> inputPermissionsState.launchMultiplePermissionRequest()
+                isAudioEnabled -> inputPermissionsState.permissions[0].launchPermissionRequest()
+                isVideoEnabled -> inputPermissionsState.permissions[1].launchPermissionRequest()
+            }
         }
     }
 
