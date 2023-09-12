@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.extensions
 
 import android.content.res.Configuration
 import androidx.compose.ui.unit.Dp

@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.extensions
 
 import android.graphics.Matrix
 import androidx.compose.ui.unit.IntSize

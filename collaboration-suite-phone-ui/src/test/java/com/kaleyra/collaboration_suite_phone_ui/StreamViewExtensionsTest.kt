@@ -5,12 +5,11 @@ import android.util.Size
 import androidx.compose.ui.unit.IntSize
 import com.kaleyra.collaboration_suite.conference.StreamView
 import com.kaleyra.collaboration_suite.conference.VideoStreamView
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewExtensions.getScale
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewExtensions.getSize
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewExtensions.getTranslation
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewExtensions.getScale
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewExtensions.getSize
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewExtensions.getTranslation
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest

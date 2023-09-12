@@ -1,11 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.ConfigurationExtensions.MediumSizeHeight
-import com.kaleyra.collaboration_suite_phone_ui.call.ConfigurationExtensions.MediumSizeWidth
-import com.kaleyra.collaboration_suite_phone_ui.call.ConfigurationExtensions.isAtLeastMediumSizeDevice
-import com.kaleyra.collaboration_suite_phone_ui.call.ConfigurationExtensions.isAtLeastMediumSizeHeight
-import com.kaleyra.collaboration_suite_phone_ui.call.ConfigurationExtensions.isAtLeastMediumSizeWidth
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.ConfigurationExtensions.MediumSizeHeight
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.ConfigurationExtensions.MediumSizeWidth
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.ConfigurationExtensions.isAtLeastMediumSizeDevice
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.ConfigurationExtensions.isAtLeastMediumSizeHeight
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.ConfigurationExtensions.isAtLeastMediumSizeWidth
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

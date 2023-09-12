@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.IntSize
 import com.kaleyra.collaboration_suite.conference.VideoStreamView
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.PointerUi
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewExtensions.getScale
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewExtensions.getSize
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamViewExtensions.getTranslation
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewExtensions.getScale
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewExtensions.getSize
+import com.kaleyra.collaboration_suite_phone_ui.call.extensions.StreamViewExtensions.getTranslation
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.Flow

@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.extensions
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.State
@@ -34,14 +34,14 @@ internal fun BottomSheetState.isNotDraggableDown(): State<Boolean> {
 @OptIn(ExperimentalMaterialApi::class)
 internal fun BottomSheetState.isCollapsing(): State<Boolean> {
     return derivedStateOf {
-        targetValue == BottomSheetValue.Collapsed && progress.fraction >= com.kaleyra.collaboration_suite_phone_ui.call.TargetStateFractionThreshold
+        targetValue == BottomSheetValue.Collapsed && progress.fraction >= TargetStateFractionThreshold
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 internal fun BottomSheetState.isHalfExpanding(): State<Boolean> {
     return derivedStateOf {
-        targetValue == BottomSheetValue.HalfExpanded && progress.fraction >= com.kaleyra.collaboration_suite_phone_ui.call.TargetStateFractionThreshold
+        targetValue == BottomSheetValue.HalfExpanded && progress.fraction >= TargetStateFractionThreshold
     }
 }
 
