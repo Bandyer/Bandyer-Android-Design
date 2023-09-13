@@ -1,5 +1,6 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.stream.arrangement
 
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,16 +37,22 @@ internal class StreamsHandler(
         ) { newStreams, nOfMaxFeatured ->
             mutex.withLock {
                 val addedStreams = updateStreams(newStreams).toSet()
-                val addedScreenShareStreams = addedStreams.filter { it.video?.isScreenShare == true }.toSet()
+                val addedScreenShareStreams =
+                    addedStreams.filter { it.video?.isScreenShare == true }.toSet()
                 val cameraStreams = addedStreams - addedScreenShareStreams
 
                 val newStreamsIds = newStreams.map { it.id }
                 val removedFeaturedStreams = findRemovedFeaturedStreams(newStreamsIds).toSet()
                 val removedThumbnailsStreams = findRemovedThumbnailsStreams(newStreamsIds).toSet()
 
-                var newFeaturedStreams = (addedScreenShareStreams + featuredStreams + cameraStreams + thumbnailsStreams - removedFeaturedStreams).take(nOfMaxFeatured)
-                val movedToThumbnails = featuredStreams - removedFeaturedStreams - newFeaturedStreams.toSet()
-                var newThumbnailsStreams = movedToThumbnails + thumbnailsStreams + addedStreams - newFeaturedStreams.toSet() - removedThumbnailsStreams
+                var newFeaturedStreams =
+                    (addedScreenShareStreams + featuredStreams + cameraStreams + thumbnailsStreams - removedFeaturedStreams).take(
+                        nOfMaxFeatured
+                    )
+                val movedToThumbnails =
+                    featuredStreams - removedFeaturedStreams - newFeaturedStreams.toSet()
+                var newThumbnailsStreams =
+                    movedToThumbnails + thumbnailsStreams + addedStreams - newFeaturedStreams.toSet() - removedThumbnailsStreams
 
                 // There must be at least a thumbnail stream
                 if (newThumbnailsStreams.isEmpty() && newFeaturedStreams.size > 1) {
@@ -55,7 +62,8 @@ internal class StreamsHandler(
 
                 featuredStreams = newFeaturedStreams
                 thumbnailsStreams = newThumbnailsStreams
-                _streamsArrangement.value = StreamsArrangement(featuredStreams.toList(), thumbnailsStreams.toList())
+                _streamsArrangement.value =
+                    StreamsArrangement(featuredStreams.toList(), thumbnailsStreams.toList())
             }
         }.launchIn(coroutineScope)
     }

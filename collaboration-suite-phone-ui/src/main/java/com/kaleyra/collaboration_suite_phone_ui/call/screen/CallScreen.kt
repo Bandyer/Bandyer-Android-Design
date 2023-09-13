@@ -55,11 +55,11 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenContent
 import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.ConfigurationExtensions.isAtLeastMediumSizeDevice
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.StreamViewSettings.pipSettings
-import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailStreams
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail.ThumbnailStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetContent
@@ -87,8 +87,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.view.RecordingLabel
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.Stream
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.Stream
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamContainer
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding

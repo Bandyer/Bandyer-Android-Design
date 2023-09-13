@@ -17,6 +17,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallComponentTa
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenContent
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.CallInfoWidgetTag
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.findBackButton
 import io.mockk.every
@@ -232,7 +233,9 @@ class CallScreenContentTest {
     @Test
     fun callStateConnected_userClicksStreamBackButton_onBackPressedInvoked() {
         mockkConstructor(CallViewModel::class)
-        every { anyConstructed<CallViewModel>().uiState } returns MutableStateFlow(CallUiState(featuredStreams = ImmutableList(listOf(streamUiMock))))
+        every { anyConstructed<CallViewModel>().uiState } returns MutableStateFlow(CallUiState(featuredStreams = ImmutableList(listOf(
+            streamUiMock
+        ))))
         callState = CallStateUi.Connected
         composeTestRule.findBackButton().performClick()
         assert(backPressed)

@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.stream.model
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList

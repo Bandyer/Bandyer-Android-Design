@@ -43,8 +43,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.rememberCountdownTimerState
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.*
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.*
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.DefaultStreamAvatarSize
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.featured.FeaturedStream
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.featured.HeaderAutoHideMs
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage

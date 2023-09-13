@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.streams
+package com.kaleyra.collaboration_suite_phone_ui.call.stream
 
 import android.view.View
 import androidx.activity.ComponentActivity
@@ -8,12 +8,13 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
-import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.MovablePointerTag
-import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamViewTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.findAvatar
 import org.junit.Test

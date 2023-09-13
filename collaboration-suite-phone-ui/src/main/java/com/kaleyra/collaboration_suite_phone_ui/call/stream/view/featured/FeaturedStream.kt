@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.streams
+package com.kaleyra.collaboration_suite_phone_ui.call.stream.view.featured
 
 import android.view.View
 import androidx.compose.foundation.layout.Box
@@ -24,11 +24,13 @@ import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite.conference.StreamView
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.StreamViewSettings.featuredSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.PointerStreamWrapper
-import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.Stream
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding

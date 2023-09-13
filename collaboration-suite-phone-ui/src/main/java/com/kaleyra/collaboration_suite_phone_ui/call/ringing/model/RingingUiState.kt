@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.ringing.model
 
 import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.model.WatermarkInfo

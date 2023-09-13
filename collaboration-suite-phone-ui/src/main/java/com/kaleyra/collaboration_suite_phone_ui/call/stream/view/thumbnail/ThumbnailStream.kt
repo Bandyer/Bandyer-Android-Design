@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail
 
 import android.view.View
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -14,10 +14,12 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite.conference.StreamView
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.StreamViewSettings.thumbnailSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.PointerStreamWrapper
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.Stream
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.Stream
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamContainer
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

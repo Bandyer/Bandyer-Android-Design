@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 const val ThumbnailStreamsTag = "ThumbnailStreamsTag"

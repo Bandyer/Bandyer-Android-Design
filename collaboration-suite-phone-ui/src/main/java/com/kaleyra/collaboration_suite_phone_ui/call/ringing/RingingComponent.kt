@@ -34,7 +34,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.precall.PreCallComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.viewmodel.RingingViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.DefaultStreamAvatarSize
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.DefaultStreamAvatarSize
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -45,7 +45,7 @@ import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_hang_up_dark_color
 import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_hang_up_light_color
 import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.rememberCountdownTimerState
-import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 const val RingingContentTag = "RingingContentTag"

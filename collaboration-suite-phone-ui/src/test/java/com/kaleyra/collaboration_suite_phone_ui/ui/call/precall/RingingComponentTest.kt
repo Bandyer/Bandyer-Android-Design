@@ -9,13 +9,13 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.RingingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.model.RingingUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamViewTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamViewTestTag
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList

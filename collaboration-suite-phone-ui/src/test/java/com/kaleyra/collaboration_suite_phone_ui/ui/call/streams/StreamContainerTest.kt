@@ -12,7 +12,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onParent
 import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.width
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamContainer
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

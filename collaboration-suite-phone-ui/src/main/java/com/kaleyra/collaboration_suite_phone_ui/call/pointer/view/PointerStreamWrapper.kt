@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.IntSize
 import com.kaleyra.collaboration_suite.conference.VideoStreamView
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.VideoStreamViewExtensions.getScale
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.VideoStreamViewExtensions.getSize

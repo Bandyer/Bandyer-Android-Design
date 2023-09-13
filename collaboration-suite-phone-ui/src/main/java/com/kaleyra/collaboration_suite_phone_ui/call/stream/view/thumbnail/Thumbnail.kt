@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

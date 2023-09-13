@@ -15,12 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.StreamViewSettings.featuredSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.CallInfoWidget
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.Stream
-import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamContainer
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.Stream
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamContainer
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler

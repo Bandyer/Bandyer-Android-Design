@@ -4,9 +4,9 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.*
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailStream
-import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailTag
-import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail.ThumbnailStream
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail.ThumbnailTag
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.ui.performDoubleClick
 import org.junit.After
 import org.junit.Before

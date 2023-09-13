@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.screen.model
 
 import androidx.compose.runtime.Immutable
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.common.uistate.UiState
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.model.WatermarkInfo

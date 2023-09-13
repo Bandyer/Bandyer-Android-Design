@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.streams
+package com.kaleyra.collaboration_suite_phone_ui.call.stream
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertCountEquals
@@ -12,10 +12,10 @@ import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailStreams
-import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailStreamsTag
-import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailTag
-import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail.ThumbnailStreams
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail.ThumbnailStreamsTag
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail.ThumbnailTag
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.performDoubleClick
 import org.junit.After

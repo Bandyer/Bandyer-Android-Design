@@ -1,8 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
-import com.kaleyra.collaboration_suite_phone_ui.call.StreamsHandler
-import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.arrangement.StreamsHandler
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.VideoUi
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

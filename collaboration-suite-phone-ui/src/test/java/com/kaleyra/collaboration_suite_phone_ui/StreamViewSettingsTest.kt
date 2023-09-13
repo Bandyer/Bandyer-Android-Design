@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import com.kaleyra.collaboration_suite.conference.StreamView
 import com.kaleyra.collaboration_suite.conference.VideoStreamView
-import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.StreamViewSettings.featuredSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.StreamViewSettings.pipSettings
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.StreamViewSettings.thumbnailSettings

@@ -14,7 +14,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenAppBa
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.CallScreenState
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.ThumbnailTag
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail.ThumbnailTag
 import com.kaleyra.collaboration_suite_phone_ui.call.*
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.mockAudioDevices
@@ -44,7 +44,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.Scree
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.VirtualBackgroundComponentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.WhiteboardComponentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.rememberCallScreenState
-import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.findBackButton
 import com.kaleyra.collaboration_suite_phone_ui.performDoubleClick
@@ -483,25 +483,33 @@ class CallScreenTest {
 
     @Test
     fun sheetHidden_thumbnailStreamsAreNotDisplayed() {
-        callUiState = CallUiState(CallStateUi.Disconnected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
+        callUiState = CallUiState(CallStateUi.Disconnected, thumbnailStreams = ImmutableList(listOf(
+            streamUiMock
+        )))
         checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.Hidden, areVisible = false)
     }
 
     @Test
     fun sheetCollapsed_thumbnailStreamsAreDisplayed() {
-        callUiState = CallUiState(CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
+        callUiState = CallUiState(CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(
+            streamUiMock
+        )))
         checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.Collapsed, areVisible = true)
     }
 
     @Test
     fun sheetHalfExpanded_thumbnailStreamsAreDisplayed() {
-        callUiState = CallUiState(CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
+        callUiState = CallUiState(CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(
+            streamUiMock
+        )))
         checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.HalfExpanded, areVisible = true)
     }
 
     @Test
     fun sheetExpanded_thumbnailStreamsAreDisplayed() {
-        callUiState = CallUiState(CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
+        callUiState = CallUiState(CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(
+            streamUiMock
+        )))
         checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.Expanded, areVisible = true)
     }
 
@@ -646,7 +654,9 @@ class CallScreenTest {
 
     @Test
     fun userDoubleClicksThumbnail_onThumbnailStreamDoubleClickInvoked() {
-        callUiState = CallUiState(callState = CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(streamUiMock)))
+        callUiState = CallUiState(callState = CallStateUi.Connected, thumbnailStreams = ImmutableList(listOf(
+            streamUiMock
+        )))
         composeTestRule.onNodeWithTag(ThumbnailTag).performDoubleClick()
         assertEquals(streamUiMock.id, thumbnailDoubleClickedStreamId)
     }
