@@ -21,7 +21,6 @@ object MessagesMapper {
         else com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.MyMessage(id, text, time, state.map { state -> mapToUiState(state) })
     }
 
-
     private fun mapToUiState(state: Message.State): com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State =
         when (state) {
             is Message.State.Sending -> com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Sending

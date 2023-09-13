@@ -3,22 +3,25 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.screen.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
-import com.kaleyra.collaboration_suite_phone_ui.common.viewmodel.UserMessageViewModel
-import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
-import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.CallStateMapper.hasActiveCall
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ChatActionsMapper.mapToChatActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ConversationStateMapper.toChatState
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.findFirstUnreadMessageId
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.mapToConversationItems
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatInfo
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
+import com.kaleyra.collaboration_suite_phone_ui.common.viewmodel.UserMessageViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -61,16 +64,16 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
             .launchIn(viewModelScope)
 
         viewModelScope.launch {
-//            val chat = chat.first()
-//            val firstUnreadMessageId = findFirstUnreadMessageId(chat.messages.first(), chat::fetch)
-//            messages.mapToConversationItems(firstUnreadMessageId, showUnreadHeader)
-//                .collect { items ->
-//                    _uiState.update {
-//                        val conversationState =
-//                            it.conversationState.copy(conversationElements = ImmutableList(items))
-//                        it.copy(conversationState = conversationState)
-//                    }
-//                }
+            val chat = chat.first()
+            val firstUnreadMessageId = findFirstUnreadMessageId(chat.messages.first(), chat::fetch)
+            messages.mapToConversationItems(firstUnreadMessageId, showUnreadHeader)
+                .collect { items ->
+                    _uiState.update {
+                        val conversationState =
+                            it.conversationState.copy(conversationElements = ImmutableList(items))
+                        it.copy(conversationState = conversationState)
+                    }
+                }
         }
 
         chat.flatMapLatest { it.unreadMessagesCount }.onEach { count ->
