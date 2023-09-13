@@ -31,7 +31,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn

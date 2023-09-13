@@ -18,7 +18,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.utils.VideoStreamViewExtens
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.VideoStreamViewExtensions.getSize
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.VideoStreamViewExtensions.getTranslation
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf

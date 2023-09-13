@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.min
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.*
-import com.kaleyra.collaboration_suite_phone_ui.call.common.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.performVerticalSwipe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking

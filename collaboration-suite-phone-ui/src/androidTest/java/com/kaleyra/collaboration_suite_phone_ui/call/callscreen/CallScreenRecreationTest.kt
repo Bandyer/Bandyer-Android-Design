@@ -11,7 +11,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.screen.CallScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.*
-import com.kaleyra.collaboration_suite_phone_ui.call.common.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.FileShareComponentTag

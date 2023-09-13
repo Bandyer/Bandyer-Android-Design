@@ -15,7 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.precall.PreCallComponent
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 const val DialingContentTag = "DialingContentTag"
 

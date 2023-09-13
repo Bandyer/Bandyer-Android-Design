@@ -18,7 +18,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.view.AudioOutpu
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.viewmodel.AudioOutputViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.subfeaturelayout.SubFeatureLayout
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 

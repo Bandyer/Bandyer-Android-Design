@@ -19,7 +19,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.*
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.mockAudioDevices
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.viewmodel.AudioOutputViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.common.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingUi

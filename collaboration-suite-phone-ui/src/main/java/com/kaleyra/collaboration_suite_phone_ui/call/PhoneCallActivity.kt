@@ -15,6 +15,7 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityCallActivity
@@ -22,7 +23,6 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensio
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenAspectRatio
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.ThemedCallScreen
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {

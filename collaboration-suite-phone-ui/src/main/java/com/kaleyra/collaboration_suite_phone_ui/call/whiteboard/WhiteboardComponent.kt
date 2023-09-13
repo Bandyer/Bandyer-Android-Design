@@ -27,7 +27,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardM
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardOfflineContent
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.rememberTextEditorState
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.viewmodel.WhiteboardViewModel
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme

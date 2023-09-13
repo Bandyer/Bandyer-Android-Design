@@ -49,7 +49,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.DefaultStr
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.featured.FeaturedStream
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.featured.HeaderAutoHideMs
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow

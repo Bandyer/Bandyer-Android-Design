@@ -40,7 +40,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.MaxFileSizeD
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.viewmodel.FileShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
 
 const val ProgressIndicatorTag = "ProgressIndicatorTag"

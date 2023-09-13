@@ -46,7 +46,7 @@ import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_hang_up_light_colo
 import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.countdowntimer.rememberCountdownTimerState
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 const val RingingContentTag = "RingingContentTag"
 const val TapToAnswerTimerMillis = 7000L

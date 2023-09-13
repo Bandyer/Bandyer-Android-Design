@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ContextExtensions.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.model.TermsAndConditionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.viewmodel.TermsAndConditionsViewModel

@@ -16,7 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallActio
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.mockCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.view.CallActionsContent
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.viewmodel.CallActionsViewModel
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ContextExtensions.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 

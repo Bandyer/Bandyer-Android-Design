@@ -17,7 +17,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.moc
 import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.view.VirtualBackgroundContent
 import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.viewmodel.VirtualBackgroundViewModel
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 internal fun VirtualBackgroundComponent(

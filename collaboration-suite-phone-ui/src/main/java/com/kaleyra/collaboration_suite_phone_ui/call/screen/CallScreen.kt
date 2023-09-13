@@ -89,7 +89,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewMo
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.view.RecordingLabel
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamContainer
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
 import com.kaleyra.collaboration_suite_phone_ui.common.text.Ellipsize
