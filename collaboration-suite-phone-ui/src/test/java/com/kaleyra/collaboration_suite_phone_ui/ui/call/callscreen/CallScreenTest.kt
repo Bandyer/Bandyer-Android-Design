@@ -41,7 +41,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.VirtualBackgrou
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.WhiteboardComponentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.rememberCallScreenState
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.ui.ComposeViewModelsMockTest
 import com.kaleyra.collaboration_suite_phone_ui.ui.findBackButton
 import com.kaleyra.collaboration_suite_phone_ui.ui.performDoubleClick

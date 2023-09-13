@@ -2,10 +2,10 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.screen.model
 
 import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableSet
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatInfo
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatState
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.common.uistate.UiState
 
 @Immutable

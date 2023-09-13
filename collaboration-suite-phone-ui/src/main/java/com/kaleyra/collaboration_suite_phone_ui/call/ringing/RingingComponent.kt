@@ -37,7 +37,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.ringing.viewmodel.RingingVi
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.DefaultStreamAvatarSize
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_answer_dark_color
 import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_answer_light_color

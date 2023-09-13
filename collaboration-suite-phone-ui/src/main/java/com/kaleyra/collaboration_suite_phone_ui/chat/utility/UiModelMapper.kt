@@ -10,11 +10,11 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatInfo
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.Message.Companion.toUiMessage
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.Companion.toUiMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 

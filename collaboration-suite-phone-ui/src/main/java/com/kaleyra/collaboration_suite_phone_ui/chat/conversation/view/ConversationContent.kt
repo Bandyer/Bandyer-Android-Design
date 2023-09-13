@@ -19,10 +19,10 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Conversa
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.DayHeaderItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.MessageItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.NewMessagesHeaderItem
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 
 internal const val MessageStateTag = "MessageStateTag"
-internal const val ConversationTag = "ConversationTag"
+internal const val ConversationContentTag = "ConversationContentTag"
 internal const val ProgressIndicatorTag = "ProgressIndicatorTag"
 
 @Composable
@@ -39,7 +39,7 @@ internal fun ConversationContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .testTag(ConversationTag)
+            .testTag(ConversationContentTag)
             .then(modifier)
     ) {
         items(items.value, key = { it.id }, contentType = { it::class.java }) { item ->

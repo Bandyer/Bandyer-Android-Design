@@ -22,14 +22,15 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ConversationTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.MessageStateTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ProgressIndicatorTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.ConversationComponent
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ConversationContentTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.MessageStateTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ProgressIndicatorTag
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.performScrollUp
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.After
@@ -38,7 +39,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ConversationTest {
+class ConversationComponentTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -143,7 +144,7 @@ class ConversationTest {
         R.string.kaleyra_chat_scroll_to_last_message
     ))
 
-    private fun findConversation() = composeTestRule.onNodeWithTag(ConversationTag)
+    private fun findConversation() = composeTestRule.onNodeWithTag(ConversationContentTag)
 
     private fun findMessageState() = composeTestRule.onNodeWithTag(MessageStateTag)
 

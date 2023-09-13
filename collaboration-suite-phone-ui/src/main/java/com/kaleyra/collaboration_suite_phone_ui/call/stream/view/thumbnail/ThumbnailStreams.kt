@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 
 const val ThumbnailStreamsTag = "ThumbnailStreamsTag"
 

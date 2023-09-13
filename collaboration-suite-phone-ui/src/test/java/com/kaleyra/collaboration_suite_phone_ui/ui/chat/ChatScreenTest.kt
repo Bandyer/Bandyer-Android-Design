@@ -8,15 +8,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.mockActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
+import com.kaleyra.collaboration_suite_phone_ui.chat.input.TextFieldTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ChatScreen
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ConversationComponentTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ChatScreen
-import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ConversationTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.input.TextFieldTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
-import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.ui.performScrollUp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -26,7 +27,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-
 
 @RunWith(RobolectricTestRunner::class)
 class ChatScreenTest {
@@ -147,7 +147,7 @@ class ChatScreenTest {
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 
-    private fun findMessages() = composeTestRule.onNodeWithTag(ConversationTag)
+    private fun findMessages() = composeTestRule.onNodeWithTag(ConversationComponentTag)
 
     private fun findResetScrollFab() = composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(
         R.string.kaleyra_chat_scroll_to_last_message

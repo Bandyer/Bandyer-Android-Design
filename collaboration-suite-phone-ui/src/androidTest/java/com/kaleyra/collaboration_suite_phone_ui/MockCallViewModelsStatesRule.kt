@@ -20,7 +20,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.Whiteboard
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.viewmodel.WhiteboardViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.mockVirtualBackgrounds
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject

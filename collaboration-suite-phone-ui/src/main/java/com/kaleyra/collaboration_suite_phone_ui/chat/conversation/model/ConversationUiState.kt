@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model
 
 import androidx.compose.runtime.Immutable
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 
 @Immutable
 data class ConversationUiState(

@@ -15,7 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WatermarkMapper.toWa
 import com.kaleyra.collaboration_suite_phone_ui.call.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest

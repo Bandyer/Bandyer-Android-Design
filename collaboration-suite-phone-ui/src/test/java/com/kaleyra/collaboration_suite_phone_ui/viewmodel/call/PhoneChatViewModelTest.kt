@@ -74,7 +74,7 @@ class PhoneChatViewModelTest {
 
     @Test
     fun testOnMessageScrolled() {
-        val message = mockk<com.kaleyra.collaboration_suite_phone_ui.chat.model.Message.OtherMessage>()
+        val message = mockk<com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.OtherMessage>()
         every { message.id } returns otherUnreadMessageMock1.id
         viewModel.onMessageScrolled(ConversationElement.Message(message))
         verify { otherUnreadMessageMock1.markAsRead() }

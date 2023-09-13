@@ -42,7 +42,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Conversa
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ConversationContent
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ResetScrollFab
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn

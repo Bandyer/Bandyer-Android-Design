@@ -2,6 +2,7 @@
 
 package com.kaleyra.collaboration_suite_phone_ui.chat.input
 
+import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -29,6 +30,7 @@ import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
 internal const val TextFieldTag = "TextFieldTag"
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ChatUserInput(
     onTextChanged: () -> Unit,
@@ -72,14 +74,9 @@ internal fun ChatUserInput(
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun ChatUserInputPreview() = KaleyraTheme {
-    ChatUserInput(onTextChanged = { }, onMessageSent = { })
-}
-
-@Preview
-@Composable
-internal fun ChatUserInputDarkPreview() = KaleyraTheme(isDarkTheme = true) {
     ChatUserInput(onTextChanged = { }, onMessageSent = { })
 }

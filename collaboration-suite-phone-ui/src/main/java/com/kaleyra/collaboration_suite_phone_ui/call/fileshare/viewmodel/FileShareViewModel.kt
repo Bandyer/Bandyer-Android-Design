@@ -14,7 +14,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.FileShareUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.FileShareMapper.toSharedFilesUi
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import kotlinx.coroutines.flow.*
 
 internal class FileShareViewModel(configure: suspend () -> Configuration, filePickProvider: FilePickProvider) : BaseViewModel<FileShareUiState>(configure),

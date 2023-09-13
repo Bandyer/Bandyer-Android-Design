@@ -5,7 +5,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.model.WatermarkInfo
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 
 @Immutable
 data class DialingUiState(

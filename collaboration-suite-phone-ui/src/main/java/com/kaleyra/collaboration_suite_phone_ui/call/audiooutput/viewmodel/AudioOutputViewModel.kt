@@ -13,7 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioOutp
 import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.AudioOutputMapper.toAudioDevicesUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.AudioOutputMapper.toCurrentAudioDeviceUi
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 

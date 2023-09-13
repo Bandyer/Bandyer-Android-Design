@@ -1,5 +1,6 @@
-package com.kaleyra.collaboration_suite_phone_ui.chat.appbar
+package com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -19,17 +20,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatInfo
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatState
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.mockActions
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.view.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.common.button.BackIconButton
+import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.common.text.Ellipsize
 import com.kaleyra.collaboration_suite_phone_ui.common.text.EllipsizeText
-import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
-import com.kaleyra.collaboration_suite_phone_ui.chat.custom.TypingDots
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableSet
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockActions
 import com.kaleyra.collaboration_suite_phone_ui.common.topappbar.TopAppBar
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
@@ -144,23 +144,12 @@ internal fun Actions(actions: ImmutableSet<ChatAction>) {
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun TopAppBarPreview() = KaleyraTheme {
     ChatAppBar(
         state = ChatState.UserState.Typing,
-        info = ChatInfo("John Smith"),
-        actions = mockActions,
-        isInCall = false,
-        onBackPressed = { }
-    )
-}
-
-@Preview
-@Composable
-internal fun TopAppBarDarkPreview() = KaleyraTheme(isDarkTheme = true) {
-    ChatAppBar(
-        state = ChatState.UserState.Offline(5654635),
         info = ChatInfo("John Smith"),
         actions = mockActions,
         isInCall = false,

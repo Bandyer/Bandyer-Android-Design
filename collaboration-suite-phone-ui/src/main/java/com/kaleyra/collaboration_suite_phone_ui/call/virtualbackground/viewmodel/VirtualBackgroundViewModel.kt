@@ -11,7 +11,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VirtualBackgroundMap
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VirtualBackgroundMapper.toVirtualBackgroundsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.VirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.VirtualBackgroundUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update

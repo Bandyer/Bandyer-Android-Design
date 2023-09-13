@@ -14,8 +14,8 @@ import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMe
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableSet
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.findFirstUnreadMessageId
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.getChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.getChatState

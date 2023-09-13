@@ -1,8 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock
 
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.Message
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 
 val mockConversationElements = ImmutableList(

@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.screen
 
+import android.content.res.Configuration
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -45,7 +46,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Conversa
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.mockChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.viewmodel.PhoneChatViewModel
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.ChatAppBar
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.ChatAppBar
 import com.kaleyra.collaboration_suite_phone_ui.common.spacer.StatusBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
@@ -54,7 +55,7 @@ import com.kaleyra.collaboration_suite_phone_ui.theme.CollaborationTheme
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import kotlinx.coroutines.launch
 
-internal const val ConversationTag = "MessagesTag"
+internal const val ConversationComponentTag = "ConversationComponentTag"
 
 @Composable
 fun ThemedChatScreen(
@@ -147,7 +148,7 @@ fun ChatScreen(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
-                        .testTag(ConversationTag)
+                        .testTag(ConversationComponentTag)
                 )
 
                 Divider(
@@ -195,24 +196,10 @@ internal fun OngoingCallLabel(onClick: () -> Unit) {
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun ChatScreenPreview() = KaleyraTheme {
-    ChatScreen(
-        uiState = mockChatUiState,
-        onBackPressed = { },
-        onMessageScrolled = { },
-        onResetMessagesScroll = { },
-        onFetchMessages = { },
-        onShowCall = { },
-        onSendMessage = { },
-        onTyping = { }
-    )
-}
-
-@Preview
-@Composable
-internal fun ChatScreenDarkPreview() = KaleyraTheme(isDarkTheme = true) {
     ChatScreen(
         uiState = mockChatUiState,
         onBackPressed = { },

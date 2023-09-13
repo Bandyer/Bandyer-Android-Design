@@ -19,7 +19,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamViewTestTag
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.findAvatar
 import com.kaleyra.collaboration_suite_phone_ui.findBackButton
 import org.junit.After

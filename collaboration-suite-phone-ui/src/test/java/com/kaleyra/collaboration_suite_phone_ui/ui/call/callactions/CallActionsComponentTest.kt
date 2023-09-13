@@ -11,7 +11,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.CallActionsComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallActionsUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before

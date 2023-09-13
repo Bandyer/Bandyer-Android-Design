@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.callactions.model
 
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.BluetoothDeviceState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 
 val mockCallActions = ImmutableList(
     listOf(

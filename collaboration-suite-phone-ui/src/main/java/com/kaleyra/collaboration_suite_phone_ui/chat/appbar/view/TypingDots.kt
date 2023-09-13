@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.chat.custom
+package com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background

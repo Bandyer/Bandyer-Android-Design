@@ -20,7 +20,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockUploadSharedFile
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
 const val FileShareItemTag = "FileShareItemTag"

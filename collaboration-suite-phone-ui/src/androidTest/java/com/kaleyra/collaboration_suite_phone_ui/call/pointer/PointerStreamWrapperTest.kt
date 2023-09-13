@@ -11,7 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.MovablePointerTag
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.PointerStreamWrapper
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule

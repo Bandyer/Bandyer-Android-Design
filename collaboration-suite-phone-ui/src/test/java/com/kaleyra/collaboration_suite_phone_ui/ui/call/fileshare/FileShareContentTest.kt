@@ -13,7 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockDownloa
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareContent
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareItemDividerTag
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareItemTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before

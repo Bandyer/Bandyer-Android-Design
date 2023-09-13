@@ -15,7 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.MovablePointerTag
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamViewTestTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.ui.findAvatar
 import org.junit.Test
 

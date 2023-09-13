@@ -13,7 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.dialing.view.DialingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.dialing.viewmodel.DialingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.precall.PreCallComponent
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 

@@ -13,7 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.ScreenShareComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before

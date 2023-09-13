@@ -1,43 +1,10 @@
-package com.kaleyra.collaboration_suite_phone_ui.chat.model
+package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
-import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.UUID
-
-@Immutable
-sealed class ChatState {
-    sealed class NetworkState : ChatState() {
-        object Connecting : NetworkState()
-        object Offline : NetworkState()
-    }
-
-    sealed class UserState : ChatState() {
-        object Online : UserState()
-        data class Offline(val timestamp: Long?) : UserState()
-        object Typing : UserState()
-    }
-
-    object None : ChatState()
-}
-
-// Image is nullable for testing purpose. It is not possible
-// to mock a static field, since it has no getter.
-@Immutable
-data class ChatInfo(
-    val name: String = "",
-    val image: ImmutableUri? = null
-)
-
-@Immutable
-sealed class ChatAction(open val onClick: () -> Unit) {
-    data class AudioCall(override val onClick: () -> Unit) : ChatAction(onClick)
-    data class AudioUpgradableCall(override val onClick: () -> Unit) : ChatAction(onClick)
-    data class VideoCall(override val onClick: () -> Unit) : ChatAction(onClick)
-}
 
 @Stable
 sealed interface Message {
@@ -87,17 +54,4 @@ sealed interface Message {
                 else -> State.Read
             }
     }
-}
-
-// Needed for compose stability to avoid recomposition
-// Tried kotlinx-collections-immutable but they were not working properly
-@Immutable
-data class ImmutableList<out T>(val value: List<T>) {
-    fun getOrNull(index: Int) = value.getOrNull(index)
-    fun count() = value.count()
-}
-
-@Immutable
-data class ImmutableSet<out T>(val value: Set<T>) {
-    fun count() = value.count()
 }

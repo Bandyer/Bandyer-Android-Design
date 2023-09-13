@@ -15,7 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail.Thumb
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail.ThumbnailStreamsTag
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.thumbnail.ThumbnailTag
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.ui.performDoubleClick
 import org.junit.After
 import org.junit.Assert.assertEquals

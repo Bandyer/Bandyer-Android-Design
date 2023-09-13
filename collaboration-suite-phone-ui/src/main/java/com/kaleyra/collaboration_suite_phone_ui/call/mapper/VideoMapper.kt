@@ -5,7 +5,7 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect

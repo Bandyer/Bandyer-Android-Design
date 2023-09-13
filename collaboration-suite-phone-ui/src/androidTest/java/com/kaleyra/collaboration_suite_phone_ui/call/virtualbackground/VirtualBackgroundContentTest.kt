@@ -11,7 +11,7 @@ import androidx.compose.ui.test.performClick
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.VirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.view.VirtualBackgroundContent
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before

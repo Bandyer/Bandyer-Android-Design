@@ -20,7 +20,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.viewmodel.FileSha
 import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.viewmodel.FileShareViewModel.Companion.MaxFileUploadBytes
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
