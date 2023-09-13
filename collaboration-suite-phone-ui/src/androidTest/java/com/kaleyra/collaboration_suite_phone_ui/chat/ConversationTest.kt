@@ -22,10 +22,13 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.ConversationTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.MessageStateTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.Messages
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.ProgressIndicatorTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ConversationTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.MessageStateTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ProgressIndicatorTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.ConversationComponent
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import com.kaleyra.collaboration_suite_phone_ui.performScrollUp
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -57,21 +60,21 @@ class ConversationTest {
 
     @Test
     fun emptyMessages_noMessagesDisplayed() {
-        setContent(ConversationUiState(conversationItems = ImmutableList(emptyList())))
+        setContent(ConversationUiState(conversationElements = ImmutableList(emptyList())))
         val noMessages = composeTestRule.activity.getString(R.string.kaleyra_chat_no_messages)
         composeTestRule.onNodeWithText(noMessages).assertIsDisplayed()
     }
 
     @Test
     fun messagesNotInitialized_loadingMessagingDisplayed() {
-        setContent(ConversationUiState(conversationItems = null))
+        setContent(ConversationUiState(conversationElements = null))
         val channelLoading = composeTestRule.activity.getString(R.string.kaleyra_chat_channel_loading)
         composeTestRule.onNodeWithText(channelLoading).assertIsDisplayed()
     }
 
     @Test
     fun userScrollsUp_fabAppears() {
-        setContent(ConversationUiState(conversationItems = ImmutableList(mockConversationItems.value.plus(mockConversationItems.value))))
+        setContent(ConversationUiState(conversationElements = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))))
         findResetScrollFab().assertDoesNotExist()
         findConversation().performScrollUp()
         findResetScrollFab().assertIsDisplayed()
@@ -79,7 +82,7 @@ class ConversationTest {
 
     @Test
     fun userClicksFab_resetScrollInvoked() {
-        setContent(ConversationUiState(conversationItems = ImmutableList(mockConversationItems.value.plus(mockConversationItems.value))))
+        setContent(ConversationUiState(conversationElements = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))))
         findConversation().performScrollUp()
         findResetScrollFab().performClick()
         findResetScrollFab().assertDoesNotExist()
@@ -88,7 +91,7 @@ class ConversationTest {
 
     @Test
     fun userScrollsToTop_onApproachingTopInvoked() {
-        setContent(ConversationUiState(conversationItems = ImmutableList(mockConversationItems.value.plus(mockConversationItems.value))))
+        setContent(ConversationUiState(conversationElements = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))))
         findConversation().performScrollUp()
         findConversation().performScrollUp()
         assert(onApproachingTop)
@@ -96,14 +99,14 @@ class ConversationTest {
 
     @Test
     fun userScrollsUp_onMessageScrolledInvoked() {
-        setContent(ConversationUiState(conversationItems = ImmutableList(mockConversationItems.value.plus(mockConversationItems.value))))
+        setContent(ConversationUiState(conversationElements = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))))
         findConversation().performScrollUp()
         assert(onMessageScrolled)
     }
 
     @Test
     fun messageStateSending_pendingIconDisplayed() {
-        setContent(ConversationUiState(conversationItems = ImmutableList(listOf(ConversationItem.MessageItem(message)))))
+        setContent(ConversationUiState(conversationElements = ImmutableList(listOf(ConversationElement.Message(message)))))
         val pendingStatus = composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_pending)
         findMessageState().assert(hasContentDescription(pendingStatus))
     }
@@ -111,7 +114,7 @@ class ConversationTest {
     @Test
     fun messageStateSent_sentIconDisplayed() {
         val message = message.copy(state = MutableStateFlow(Message.State.Sent))
-        setContent(ConversationUiState(conversationItems = ImmutableList(listOf(ConversationItem.MessageItem(message)))))
+        setContent(ConversationUiState(conversationElements = ImmutableList(listOf(ConversationElement.Message(message)))))
         val pendingStatus = composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_sent)
         findMessageState().assert(hasContentDescription(pendingStatus))
     }
@@ -119,20 +122,20 @@ class ConversationTest {
     @Test
     fun messageStateRead_seenIconDisplayed() {
         val message = message.copy(state = MutableStateFlow(Message.State.Read))
-        setContent(ConversationUiState(conversationItems = ImmutableList(listOf(ConversationItem.MessageItem(message)))))
+        setContent(ConversationUiState(conversationElements = ImmutableList(listOf(ConversationElement.Message(message)))))
         val pendingStatus = composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_seen)
         findMessageState().assert(hasContentDescription(pendingStatus))
     }
 
     @Test
     fun isNotFetching_progressIndicatorNotDisplayed() {
-        setContent(ConversationUiState(isFetching = false, conversationItems = ImmutableList(listOf(ConversationItem.MessageItem(message)))))
+        setContent(ConversationUiState(isFetching = false, conversationElements = ImmutableList(listOf(ConversationElement.Message(message)))))
         findProgressIndicator().assertDoesNotExist()
     }
 
     @Test
     fun isFetching_progressIndicatorDisplayed() {
-        setContent(ConversationUiState(isFetching = true, conversationItems = ImmutableList(listOf(ConversationItem.MessageItem(message)))))
+        setContent(ConversationUiState(isFetching = true, conversationElements = ImmutableList(listOf(ConversationElement.Message(message)))))
         findProgressIndicator().assertIsDisplayed()
     }
 
@@ -147,7 +150,7 @@ class ConversationTest {
     private fun findProgressIndicator() = composeTestRule.onNodeWithTag(ProgressIndicatorTag)
 
     private fun setContent(uiState: ConversationUiState) = composeTestRule.setContent {
-        Messages(
+        ConversationComponent(
             uiState = uiState,
             onMessageScrolled = { onMessageScrolled = true },
             onApproachingTop = { onApproachingTop = true },

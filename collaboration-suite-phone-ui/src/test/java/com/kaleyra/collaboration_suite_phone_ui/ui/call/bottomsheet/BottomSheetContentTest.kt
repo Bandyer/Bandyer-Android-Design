@@ -9,7 +9,6 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.*
-import com.kaleyra.collaboration_suite_phone_ui.call.common.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.AudioOutputComponentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetContent

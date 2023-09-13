@@ -15,9 +15,6 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.test.espresso.Espresso
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.common.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.WhiteboardComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUploadUi
@@ -25,6 +22,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.LinearProgr
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.TextEditorState
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.TextEditorValue
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardViewTag
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After

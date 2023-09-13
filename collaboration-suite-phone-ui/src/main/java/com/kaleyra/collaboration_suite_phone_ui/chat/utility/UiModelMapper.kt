@@ -13,7 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.Message.Companion.toUiMessage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -81,16 +81,16 @@ internal object UiModelMapper {
     fun Flow<MessagesUI>.mapToConversationItems(
         firstUnreadMessageId: String?,
         shouldShowUnreadHeader: Flow<Boolean>
-    ): Flow<List<ConversationItem>> {
+    ): Flow<List<ConversationElement>> {
         return combine(map { it.list }, shouldShowUnreadHeader) { messages, unreadHeader ->
-            val items = mutableListOf<ConversationItem>()
+            val items = mutableListOf<ConversationElement>()
             messages.forEachIndexed { index, message ->
                 val previousMessage = messages.getOrNull(index + 1)
 
-                items.add(ConversationItem.MessageItem(message.toUiMessage()))
+                items.add(ConversationElement.Message(message.toUiMessage()))
 
                 if (unreadHeader && message.id == firstUnreadMessageId) {
-                    items.add(ConversationItem.UnreadMessagesItem)
+                    items.add(ConversationElement.UnreadMessages)
                 }
 
                 if (previousMessage == null || !TimestampUtils.isSameDay(
@@ -98,7 +98,7 @@ internal object UiModelMapper {
                         previousMessage.creationDate.time
                     )
                 ) {
-                    items.add(ConversationItem.DayItem(message.creationDate.time))
+                    items.add(ConversationElement.Day(message.creationDate.time))
                 }
             }
             items

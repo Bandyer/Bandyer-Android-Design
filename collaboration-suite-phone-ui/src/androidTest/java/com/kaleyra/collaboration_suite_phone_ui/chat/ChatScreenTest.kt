@@ -9,12 +9,15 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationUiState
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.TextFieldTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ChatScreen
-import com.kaleyra.collaboration_suite_phone_ui.chat.screen.MessagesTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ConversationTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.performScrollUp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -33,7 +36,7 @@ class ChatScreenTest {
     private val uiState = MutableStateFlow(
         ChatUiState(
             conversationState = ConversationUiState(
-                conversationItems = ImmutableList(mockConversationItems.value.plus(mockConversationItems.value))
+                conversationElements = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))
             ),
             actions = mockActions
         )
@@ -74,7 +77,7 @@ class ChatScreenTest {
 
     @After
     fun tearDown() {
-        uiState.value = ChatUiState(conversationState = ConversationUiState(conversationItems = ImmutableList(mockConversationItems.value.plus(mockConversationItems.value))), actions = mockActions)
+        uiState.value = ChatUiState(conversationState = ConversationUiState(conversationElements = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))), actions = mockActions)
         onBackPressed = false
         onMessageScrolled = false
         onResetMessagesScroll = false
@@ -143,7 +146,7 @@ class ChatScreenTest {
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
     }
 
-    private fun findMessages() = composeTestRule.onNodeWithTag(MessagesTag)
+    private fun findMessages() = composeTestRule.onNodeWithTag(ConversationTag)
 
     private fun findResetScrollFab() = composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(
         R.string.kaleyra_chat_scroll_to_last_message

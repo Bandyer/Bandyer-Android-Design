@@ -7,7 +7,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.feedback.FeedbackSent
+import com.kaleyra.collaboration_suite_phone_ui.call.feedback.view.FeedbackSent
 import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Before

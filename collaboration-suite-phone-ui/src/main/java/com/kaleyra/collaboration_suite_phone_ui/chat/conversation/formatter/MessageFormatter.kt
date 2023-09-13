@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.chat.conversation
+package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter
 
 import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme

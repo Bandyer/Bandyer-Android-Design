@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalAnimationApi::class)
 
-package com.kaleyra.collaboration_suite_phone_ui.chat.conversation
+package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi

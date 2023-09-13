@@ -39,22 +39,22 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.Messages
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.ChatUserInput
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockChatUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.ChatAppBar
-import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.ConversationComponent
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.mockChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.viewmodel.PhoneChatViewModel
+import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.ChatAppBar
 import com.kaleyra.collaboration_suite_phone_ui.common.spacer.StatusBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.theme.CollaborationTheme
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import kotlinx.coroutines.launch
 
-internal const val MessagesTag = "MessagesTag"
+internal const val ConversationTag = "MessagesTag"
 
 @Composable
 fun ThemedChatScreen(
@@ -94,7 +94,7 @@ fun ChatScreen(
     uiState: ChatUiState,
     userMessage: UserMessage? = null,
     onBackPressed: () -> Unit,
-    onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
+    onMessageScrolled: (ConversationElement.Message) -> Unit,
     onResetMessagesScroll: () -> Unit,
     onFetchMessages: () -> Unit,
     onShowCall: () -> Unit,
@@ -137,7 +137,7 @@ fun ChatScreen(
 
         Box {
             Column {
-                Messages(
+                ConversationComponent(
                     uiState = uiState.conversationState,
                     onDirectionLeft = topBarRef::requestFocus,
                     onMessageScrolled = onMessageScrolled,
@@ -147,7 +147,7 @@ fun ChatScreen(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
-                        .testTag(MessagesTag)
+                        .testTag(ConversationTag)
                 )
 
                 Divider(

@@ -12,8 +12,8 @@ import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combine
 import com.kaleyra.collaboration_suite_phone_ui.common.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.findFirstUnreadMessageId
@@ -64,7 +64,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
             val firstUnreadMessageId = findFirstUnreadMessageId(chat.messages.first(), chat::fetch)
             messages.mapToConversationItems(firstUnreadMessageId, showUnreadHeader).collect { items ->
                 _uiState.update {
-                    val conversationState = it.conversationState.copy(conversationItems = ImmutableList(items))
+                    val conversationState = it.conversationState.copy(conversationElements = ImmutableList(items))
                     it.copy(conversationState = conversationState)
                 }
             }
@@ -104,9 +104,9 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
         }
     }
 
-    fun onMessageScrolled(messageItem: ConversationItem.MessageItem) {
+    fun onMessageScrolled(message: ConversationElement.Message) {
         val messages = messages.getValue()?.other ?: return
-        messages.firstOrNull { it.id == messageItem.id }?.markAsRead()
+        messages.firstOrNull { it.id == message.id }?.markAsRead()
     }
 
     fun onAllMessagesScrolled() {

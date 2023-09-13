@@ -42,7 +42,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.Message.Companion.toUiMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.findFirstUnreadMessageId
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.getChatInfo
@@ -224,8 +224,8 @@ class UiModelMapperTest {
             firstUnreadMessageId = "",
             shouldShowUnreadHeader = MutableStateFlow(false)
         ).first()
-        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(myMessageMock.toUiMessage())))
-        assertEquals(result[1], ConversationItem.DayItem(now.toEpochMilli()))
+        assert(isSameMessageItem(result[0], ConversationElement.Message(myMessageMock.toUiMessage())))
+        assertEquals(result[1], ConversationElement.Day(now.toEpochMilli()))
     }
 
     @Test
@@ -234,10 +234,10 @@ class UiModelMapperTest {
             firstUnreadMessageId = "",
             shouldShowUnreadHeader = MutableStateFlow(false)
         ).first()
-        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherUnreadMessageMock1.toUiMessage())))
-        assertEquals(result[1], ConversationItem.DayItem(yesterday.toEpochMilli()))
-        assert(isSameMessageItem(result[2], ConversationItem.MessageItem(myMessageMock.toUiMessage())))
-        assertEquals(result[3], ConversationItem.DayItem(now.toEpochMilli()))
+        assert(isSameMessageItem(result[0], ConversationElement.Message(otherUnreadMessageMock1.toUiMessage())))
+        assertEquals(result[1], ConversationElement.Day(yesterday.toEpochMilli()))
+        assert(isSameMessageItem(result[2], ConversationElement.Message(myMessageMock.toUiMessage())))
+        assertEquals(result[3], ConversationElement.Day(now.toEpochMilli()))
     }
 
     @Test
@@ -246,11 +246,11 @@ class UiModelMapperTest {
             firstUnreadMessageId = otherUnreadMessageMock1.id,
             shouldShowUnreadHeader = MutableStateFlow(true)
         ).first()
-        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherUnreadMessageMock1.toUiMessage())))
-        assertEquals(result[1].javaClass, ConversationItem.UnreadMessagesItem.javaClass)
-        assertEquals(result[2], ConversationItem.DayItem(yesterday.toEpochMilli()))
-        assert(isSameMessageItem(result[3], ConversationItem.MessageItem(myMessageMock.toUiMessage())))
-        assertEquals(result[4], ConversationItem.DayItem(now.toEpochMilli()))
+        assert(isSameMessageItem(result[0], ConversationElement.Message(otherUnreadMessageMock1.toUiMessage())))
+        assertEquals(result[1].javaClass, ConversationElement.UnreadMessages.javaClass)
+        assertEquals(result[2], ConversationElement.Day(yesterday.toEpochMilli()))
+        assert(isSameMessageItem(result[3], ConversationElement.Message(myMessageMock.toUiMessage())))
+        assertEquals(result[4], ConversationElement.Day(now.toEpochMilli()))
     }
 
     @Test
@@ -296,9 +296,9 @@ class UiModelMapperTest {
         assertEquals(result, otherUnreadMessageMock2.id)
     }
 
-    private suspend fun isSameMessageItem(item1: ConversationItem, item2: ConversationItem): Boolean {
-        if (item1 !is ConversationItem.MessageItem) return false
-        if (item2 !is ConversationItem.MessageItem) return false
+    private suspend fun isSameMessageItem(item1: ConversationElement, item2: ConversationElement): Boolean {
+        if (item1 !is ConversationElement.Message) return false
+        if (item2 !is ConversationElement.Message) return false
 
         if (item1 == item2) return true
 

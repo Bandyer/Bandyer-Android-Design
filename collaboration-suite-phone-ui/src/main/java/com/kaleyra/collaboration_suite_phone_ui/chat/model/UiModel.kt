@@ -4,26 +4,9 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.common.uistate.UiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.UUID
-
-@Immutable
-data class ChatUiState(
-    val info: ChatInfo = ChatInfo("", null),
-    val state: ChatState = ChatState.None,
-    val actions: ImmutableSet<ChatAction> = ImmutableSet(setOf()),
-    val conversationState: ConversationUiState = ConversationUiState(),
-    val isInCall: Boolean = false
-): UiState
-
-@Immutable
-data class ConversationUiState(
-    val isFetching: Boolean = false,
-    val conversationItems: ImmutableList<ConversationItem>? = null,
-    val unreadMessagesCount: Int = 0
-)
 
 @Immutable
 sealed class ChatState {
@@ -54,13 +37,6 @@ sealed class ChatAction(open val onClick: () -> Unit) {
     data class AudioCall(override val onClick: () -> Unit) : ChatAction(onClick)
     data class AudioUpgradableCall(override val onClick: () -> Unit) : ChatAction(onClick)
     data class VideoCall(override val onClick: () -> Unit) : ChatAction(onClick)
-}
-
-@Immutable
-sealed class ConversationItem(val id: String) {
-    data class DayItem(val timestamp: Long) : ConversationItem(id = timestamp.hashCode().toString())
-    object UnreadMessagesItem : ConversationItem(id = UUID.randomUUID().toString())
-    data class MessageItem(val message: Message) : ConversationItem(id = message.id)
 }
 
 @Stable

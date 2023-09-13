@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.min
 import com.kaleyra.collaboration_suite_phone_ui.call.*
-import com.kaleyra.collaboration_suite_phone_ui.call.common.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.AnchorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetScaffold
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetState

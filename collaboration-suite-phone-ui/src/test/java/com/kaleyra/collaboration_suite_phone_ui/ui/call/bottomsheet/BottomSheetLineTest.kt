@@ -6,7 +6,6 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.call.*
-import com.kaleyra.collaboration_suite_phone_ui.call.common.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.CollapsedLineWidth
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.ExpandedLineWidth
 import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.Line
