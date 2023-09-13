@@ -13,6 +13,8 @@ import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.Record
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.TextFieldTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ChatScreen
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.MessagesTag
 import com.kaleyra.collaboration_suite_phone_ui.performScrollUp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

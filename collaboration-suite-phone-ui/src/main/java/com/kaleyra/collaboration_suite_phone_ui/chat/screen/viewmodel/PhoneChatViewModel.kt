@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel
+package com.kaleyra.collaboration_suite_phone_ui.chat.screen.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.utils
+package com.kaleyra.collaboration_suite_phone_ui.extensions
 
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo

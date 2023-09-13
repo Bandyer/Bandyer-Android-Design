@@ -27,8 +27,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.view.Waterma
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.view.RecordingLabel
 import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.verticalGradientScrim
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.horizontalCutoutPadding
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.verticalGradientScrim
 
 const val CallInfoWidgetTag = "CallInfoWidgetTag"
 

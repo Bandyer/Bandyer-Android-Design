@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.chat
+package com.kaleyra.collaboration_suite_phone_ui.chat.screen
 
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
@@ -45,8 +45,8 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.ChatAppBar
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
-import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.PhoneChatViewModel
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.viewmodel.PhoneChatViewModel
 import com.kaleyra.collaboration_suite_phone_ui.common.spacer.StatusBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler

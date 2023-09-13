@@ -22,7 +22,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.common.userinput.UserInputText
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme

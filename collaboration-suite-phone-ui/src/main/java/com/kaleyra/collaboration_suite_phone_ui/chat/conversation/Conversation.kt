@@ -32,7 +32,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

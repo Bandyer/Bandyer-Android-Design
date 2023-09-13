@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.supportRtl
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.supportRtl
 
 private const val DisabledAlpha = 0.25f
 private val MinSize = 48.dp

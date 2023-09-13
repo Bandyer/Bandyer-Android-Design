@@ -10,8 +10,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
-import com.kaleyra.collaboration_suite_phone_ui.chat.ChatScreen
-import com.kaleyra.collaboration_suite_phone_ui.chat.MessagesTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ChatScreen
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.MessagesTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.TextFieldTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import com.kaleyra.collaboration_suite_phone_ui.ui.performScrollUp

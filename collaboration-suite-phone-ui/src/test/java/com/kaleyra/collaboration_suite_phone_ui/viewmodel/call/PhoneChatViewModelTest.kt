@@ -14,7 +14,7 @@ import com.kaleyra.collaboration_suite_phone_ui.Mocks.conferenceMock
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
-import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.PhoneChatViewModel
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.viewmodel.PhoneChatViewModel
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

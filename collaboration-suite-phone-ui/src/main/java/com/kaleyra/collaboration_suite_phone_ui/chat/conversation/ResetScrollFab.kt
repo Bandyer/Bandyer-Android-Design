@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
 
 @Composable
 internal fun ResetScrollFab(

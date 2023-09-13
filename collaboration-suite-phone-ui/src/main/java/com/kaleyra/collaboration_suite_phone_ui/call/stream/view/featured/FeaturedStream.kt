@@ -33,7 +33,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamCont
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.horizontalCutoutPadding
 
 const val FeaturedStreamTag = "FeaturedStreamTag"
 const val HeaderAutoHideMs = 5000L
