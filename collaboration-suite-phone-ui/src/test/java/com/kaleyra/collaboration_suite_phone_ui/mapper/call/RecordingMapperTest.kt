@@ -8,9 +8,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRe
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRecordingStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRecordingUi
-import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingTypeUi
-import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingUi
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
 import io.mockk.every
 import io.mockk.mockk

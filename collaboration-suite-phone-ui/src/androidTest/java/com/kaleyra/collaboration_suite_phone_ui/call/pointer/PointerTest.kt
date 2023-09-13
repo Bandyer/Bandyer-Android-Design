@@ -5,8 +5,8 @@ import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.component.pointer.view.Pointer
-import com.kaleyra.collaboration_suite_phone_ui.call.component.pointer.view.PointerSize
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.Pointer
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.PointerSize
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

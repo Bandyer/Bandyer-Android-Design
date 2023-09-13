@@ -13,7 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VirtualBackgroundMap
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VirtualBackgroundMapper.isVirtualBackgroundEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VirtualBackgroundMapper.toCurrentVirtualBackgroundUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VirtualBackgroundMapper.toVirtualBackgroundsUi
-import com.kaleyra.collaboration_suite_phone_ui.call.component.virtualbackground.model.VirtualBackgroundUi
+import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.VirtualBackgroundUi
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

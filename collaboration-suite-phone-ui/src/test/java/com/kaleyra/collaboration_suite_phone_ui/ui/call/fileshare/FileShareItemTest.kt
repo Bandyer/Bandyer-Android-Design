@@ -13,11 +13,11 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.ProgressIndicatorTag
-import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.model.SharedFileUi
-import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.model.mockDownloadSharedFile
-import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.model.mockUploadSharedFile
-import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.view.FileShareItem
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.ProgressIndicatorTag
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileUi
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockDownloadSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockUploadSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareItem
 import io.mockk.mockk
 import org.junit.After
 import org.junit.Before

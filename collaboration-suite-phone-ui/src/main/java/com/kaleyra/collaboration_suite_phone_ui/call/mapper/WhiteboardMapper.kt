@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.mapper
 import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_phone_ui.call.component.whiteboard.model.WhiteboardUploadUi
+import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUploadUi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance

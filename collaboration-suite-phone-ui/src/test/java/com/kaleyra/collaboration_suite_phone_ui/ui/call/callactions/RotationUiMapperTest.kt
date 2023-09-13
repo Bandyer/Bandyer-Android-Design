@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.utility.mapToRotationState
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.utility.mapToRotationState
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

@@ -7,7 +7,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.UsbCameraUtils
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.failedAudioOutputDevice
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toMe
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.doIHaveStreams
-import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.AudioConnectionFailureMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UsbCameraMessage

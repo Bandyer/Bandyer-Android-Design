@@ -4,7 +4,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.component.pointer.view.TextPointer
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.TextPointer
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule

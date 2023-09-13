@@ -12,7 +12,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.assertRightPositionInRootIsEqualTo
-import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.view.AdaptiveGrid
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.AdaptiveGrid
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

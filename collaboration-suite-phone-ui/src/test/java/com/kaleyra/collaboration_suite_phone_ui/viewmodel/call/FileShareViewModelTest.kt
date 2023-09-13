@@ -14,10 +14,10 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getFileSize
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.filepick.FilePickProvider
-import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.model.SharedFileUi
-import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.viewmodel.FileShareViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.component.fileshare.viewmodel.FileShareViewModel.Companion.MaxFileUploadBytes
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.filepick.FilePickProvider
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileUi
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.viewmodel.FileShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.viewmodel.FileShareViewModel.Companion.MaxFileUploadBytes
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList

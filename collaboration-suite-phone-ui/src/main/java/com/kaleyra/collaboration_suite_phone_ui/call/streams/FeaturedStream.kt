@@ -27,7 +27,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.StreamViewSettings.featuredSettings
-import com.kaleyra.collaboration_suite_phone_ui.call.component.pointer.view.PointerStreamWrapper
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme

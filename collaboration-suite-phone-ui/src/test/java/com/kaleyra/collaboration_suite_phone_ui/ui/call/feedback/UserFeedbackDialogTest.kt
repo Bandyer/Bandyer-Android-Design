@@ -12,7 +12,7 @@ import androidx.compose.ui.test.performTextInput
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.feedback.FeedbackFormTag
 import com.kaleyra.collaboration_suite_phone_ui.call.feedback.FeedbackSentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.component.feedback.UserFeedbackDialog
+import com.kaleyra.collaboration_suite_phone_ui.call.feedback.UserFeedbackDialog
 import junit.framework.TestCase
 import org.junit.After
 import org.junit.Before

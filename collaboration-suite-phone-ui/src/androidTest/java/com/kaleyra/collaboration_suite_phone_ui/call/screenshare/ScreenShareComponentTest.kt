@@ -11,9 +11,9 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.ScreenShareComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.model.ScreenShareUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.component.screenshare.model.ScreenShareTargetUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.ScreenShareComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.After
 import org.junit.Assert.assertEquals

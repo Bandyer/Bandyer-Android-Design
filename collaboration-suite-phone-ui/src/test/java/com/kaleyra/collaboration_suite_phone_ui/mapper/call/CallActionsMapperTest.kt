@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.mapper.call
 
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallActionsMapper.toCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.hasAudio

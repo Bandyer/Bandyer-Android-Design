@@ -4,9 +4,9 @@ import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.CallParticipant
 import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.model.RecordingTypeUi
-import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.model.RingingUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.component.ringing.viewmodel.RingingViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.ringing.model.RingingUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.ringing.viewmodel.RingingViewModel
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk

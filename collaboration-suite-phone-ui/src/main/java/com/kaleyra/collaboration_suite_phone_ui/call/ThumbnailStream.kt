@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite.conference.StreamView
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.StreamViewSettings.thumbnailSettings
-import com.kaleyra.collaboration_suite_phone_ui.call.component.pointer.view.PointerStreamWrapper
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamContainer
 

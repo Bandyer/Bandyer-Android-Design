@@ -11,12 +11,12 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.PipScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.PipScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.call.component.recording.view.RecordingDotTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.recording.view.RecordingDotTestTag
 import com.kaleyra.collaboration_suite_phone_ui.call.streams.StreamViewTestTag
 import org.junit.After
 import org.junit.Before

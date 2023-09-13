@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.mapper
 
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_phone_ui.call.component.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.hasAudio
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.isAudioOnly
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.isGroupCall

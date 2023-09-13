@@ -21,7 +21,7 @@ import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityCallActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenAspectRatio
-import com.kaleyra.collaboration_suite_phone_ui.call.component.screen.ThemedCallScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.ThemedCallScreen
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
 

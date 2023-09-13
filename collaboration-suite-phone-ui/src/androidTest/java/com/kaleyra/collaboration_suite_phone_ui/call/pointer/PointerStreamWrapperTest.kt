@@ -8,9 +8,9 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.component.pointer.model.PointerUi
-import com.kaleyra.collaboration_suite_phone_ui.call.component.pointer.view.MovablePointerTag
-import com.kaleyra.collaboration_suite_phone_ui.call.component.pointer.view.PointerStreamWrapper
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.MovablePointerTag
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.PointerStreamWrapper
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.mockk
 import org.junit.Before
