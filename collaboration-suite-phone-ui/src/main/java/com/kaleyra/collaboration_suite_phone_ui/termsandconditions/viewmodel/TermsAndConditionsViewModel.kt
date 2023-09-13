@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.conversation.Conversation
 import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.model.TermsAndConditionsUiState
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest

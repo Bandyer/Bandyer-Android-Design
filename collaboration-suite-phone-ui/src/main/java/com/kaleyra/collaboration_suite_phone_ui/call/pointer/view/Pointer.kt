@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.rememberCountdownTimerState
+import com.kaleyra.collaboration_suite_phone_ui.call.countdowntimer.rememberCountdownTimerState
 import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow
 
 val PointerSize = 16.dp

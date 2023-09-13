@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.helpertext
 
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text

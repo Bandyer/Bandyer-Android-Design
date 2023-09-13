@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite.conference.Inputs
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareUiState
 import kotlinx.coroutines.launch
 

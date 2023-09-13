@@ -14,7 +14,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.FlowUtils.combine
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallActionsUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.AudioOutputMapper.toCurrentAudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallActionsMapper.toCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.hasUsbCamera

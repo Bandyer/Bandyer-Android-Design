@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call
+package com.kaleyra.collaboration_suite_phone_ui.call.countdowntimer
 
 import android.os.SystemClock
 import androidx.compose.runtime.*

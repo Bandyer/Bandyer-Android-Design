@@ -8,7 +8,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.appbar.CallAppBar
+import com.kaleyra.collaboration_suite_phone_ui.call.appbar.CallAppBar
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
 @Composable

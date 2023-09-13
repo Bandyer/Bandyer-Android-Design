@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet
+package com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateDpAsState

@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.common.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.isVideoIncoming
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toInCallParticipants

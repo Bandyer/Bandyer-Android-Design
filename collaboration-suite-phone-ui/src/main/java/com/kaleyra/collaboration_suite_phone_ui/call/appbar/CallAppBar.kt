@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.core.view.appbar
+package com.kaleyra.collaboration_suite_phone_ui.call.appbar
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets

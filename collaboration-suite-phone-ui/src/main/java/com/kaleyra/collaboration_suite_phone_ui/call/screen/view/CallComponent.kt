@@ -39,7 +39,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.CallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.ConfigurationExtensions.isAtLeastMediumSizeWidth
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.ConfigurationExtensions.isOrientationPortrait
-import com.kaleyra.collaboration_suite_phone_ui.call.rememberCountdownTimerState
+import com.kaleyra.collaboration_suite_phone_ui.call.countdowntimer.rememberCountdownTimerState
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel

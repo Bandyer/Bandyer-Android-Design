@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.HelperText
+import com.kaleyra.collaboration_suite_phone_ui.call.helpertext.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.*
 import com.kaleyra.collaboration_suite_phone_ui.call.precall.PreCallComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
@@ -44,7 +44,7 @@ import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_answer_light_color
 import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_hang_up_dark_color
 import com.kaleyra.collaboration_suite_phone_ui.theme.kaleyra_hang_up_light_color
 import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
-import com.kaleyra.collaboration_suite_phone_ui.call.rememberCountdownTimerState
+import com.kaleyra.collaboration_suite_phone_ui.call.countdowntimer.rememberCountdownTimerState
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 

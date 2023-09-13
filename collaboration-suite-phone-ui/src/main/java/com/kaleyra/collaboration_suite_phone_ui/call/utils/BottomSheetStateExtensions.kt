@@ -9,8 +9,8 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetState
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetValue
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetValue
 
 internal object BottomSheetStateExtensions {
 

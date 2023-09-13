@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.core.viewmodel
+package com.kaleyra.collaboration_suite_phone_ui.call.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite_core_ui.CallUI

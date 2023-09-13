@@ -14,7 +14,7 @@ import com.kaleyra.collaboration_suite.whiteboard.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.appbar.CallAppBar
+import com.kaleyra.collaboration_suite_phone_ui.call.appbar.CallAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.viewmodel.WhiteboardViewModel
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 

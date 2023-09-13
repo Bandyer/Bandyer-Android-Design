@@ -7,12 +7,7 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.*
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.CollapsedLineWidth
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.ExpandedLineWidth
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.Line
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineState
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.LineTag
+import com.kaleyra.collaboration_suite_phone_ui.call.common.view.bottomsheet.*
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test

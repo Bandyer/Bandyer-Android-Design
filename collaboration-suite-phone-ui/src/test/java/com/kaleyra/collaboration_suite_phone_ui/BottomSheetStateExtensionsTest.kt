@@ -4,8 +4,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.BottomSheetStateExtensions.TargetStateFractionThreshold
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetState
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetValue
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.BottomSheetStateExtensions.isCollapsed
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.BottomSheetStateExtensions.isCollapsing
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.BottomSheetStateExtensions.isHalfExpanding

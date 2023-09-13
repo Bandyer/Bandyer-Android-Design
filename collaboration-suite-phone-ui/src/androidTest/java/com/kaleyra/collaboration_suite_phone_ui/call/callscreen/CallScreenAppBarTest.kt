@@ -9,7 +9,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenAppBar
-import com.kaleyra.collaboration_suite_phone_ui.call.core.view.bottomsheet.BottomSheetComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetComponent
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
