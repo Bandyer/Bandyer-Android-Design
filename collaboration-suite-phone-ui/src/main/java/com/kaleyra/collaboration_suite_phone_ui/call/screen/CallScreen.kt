@@ -590,6 +590,7 @@ internal fun DefaultCallScreen(
                 BottomSheetAnchor(callUiState, callScreenState, onThumbnailStreamClick, onThumbnailStreamDoubleClick, modifier = Modifier.horizontalCutoutPadding())
             },
             sheetBackgroundColor = MaterialTheme.colors.surface.copy(alpha = backgroundAlpha),
+            sheetContentColor = MaterialTheme.colors.onSurface,
             sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
             backgroundColor = Color.Black,
             contentColor = Color.White,
