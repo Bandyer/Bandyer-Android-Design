@@ -10,19 +10,24 @@ import com.kaleyra.collaboration_suite_phone_ui.call.utils.VideoStreamViewExtens
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.VideoStreamViewExtensions.getTranslation
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.unmockkAll
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class VideoStreamViewExtensionsTest {
 
     @Test
-    fun testGetSize() = runTest {
+    fun testGetSize() = runTest(UnconfinedTestDispatcher()) {
         val view = mockk<VideoStreamView>()
         every { view.videoSize } returns MutableStateFlow(Size(300, 200))
         val actual = view.getSize().first()
@@ -30,7 +35,7 @@ internal class VideoStreamViewExtensionsTest {
     }
 
     @Test
-    fun `test get translation with an affine matrix`() = runTest {
+    fun `test get translation with an affine matrix`() = runTest(UnconfinedTestDispatcher()) {
         val view = mockk<VideoStreamView>()
         val state = mockk<StreamView.State.Rendering>()
         val matrix = Matrix().apply {
@@ -44,7 +49,7 @@ internal class VideoStreamViewExtensionsTest {
     }
 
     @Test
-    fun `test get translation with a not affine matrix`() = runTest {
+    fun `test get translation with a not affine matrix`() = runTest(UnconfinedTestDispatcher()) {
         val view = mockk<VideoStreamView>()
         val state = mockk<StreamView.State.Rendering>()
         val matrix = Matrix().apply {
@@ -58,7 +63,7 @@ internal class VideoStreamViewExtensionsTest {
     }
 
     @Test
-    fun `test get scale with an affine matrix`() = runTest {
+    fun `test get scale with an affine matrix`() = runTest(UnconfinedTestDispatcher()) {
         val view = mockk<VideoStreamView>()
         val state = mockk<StreamView.State.Rendering>()
         val matrix = Matrix().apply {
@@ -72,7 +77,7 @@ internal class VideoStreamViewExtensionsTest {
     }
 
     @Test
-    fun `test get scale with a not affine matrix`() = runTest {
+    fun `test get scale with a not affine matrix`() = runTest(UnconfinedTestDispatcher()) {
         val view = mockk<VideoStreamView>()
         val state = mockk<StreamView.State.Rendering>()
         val matrix = Matrix().apply {
