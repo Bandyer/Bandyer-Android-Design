@@ -69,7 +69,7 @@ object Mocks {
             override val id: String = "otherId1"
             override val creator: ChatParticipant = mockk()
             override val creationDate: Date = Date(yesterday.toEpochMilli())
-            override val content: Message.Content = mockk()
+            override val content: Message.Content = Message.Content.Text("otherText")
             override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Received())
             override fun markAsRead() = Unit
         }
