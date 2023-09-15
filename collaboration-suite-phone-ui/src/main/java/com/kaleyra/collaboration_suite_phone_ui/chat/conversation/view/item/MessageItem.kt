@@ -1,11 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item
 
-import android.net.Uri
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,11 +19,13 @@ import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalUriHandler
@@ -34,14 +36,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kaleyra.collaboration_suite_core_ui.model.UserDetails
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter.SymbolAnnotationType
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter.messageFormatter
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.MessageStateTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.view.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
 
@@ -49,14 +50,64 @@ private val OtherBubbleShape = RoundedCornerShape(0.dp, 24.dp, 24.dp, 12.dp)
 private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
 
 @Composable
-internal fun MessageItem(
-    showUserDetails: Boolean,
+internal fun OtherMessageItem(
     message: ConversationElement.Message,
+    participantDetails: ParticipantDetails?,
     modifier: Modifier = Modifier
 ) {
+    MessageItem(horizontalArrangement = Arrangement.Start, modifier = modifier) {
+        Row {
+            val username = participantDetails?.first ?: ""
+            val uri = participantDetails?.second
+            if (uri != null) {
+                Avatar(
+                    uri = uri,
+                    contentDescription = stringResource(id = R.string.kaleyra_avatar),
+                    placeholder = R.drawable.ic_kaleyra_avatar,
+                    error = R.drawable.ic_kaleyra_avatar,
+                    contentColor = MaterialTheme.colors.onPrimary,
+                    backgroundColor = colorResource(R.color.kaleyra_color_grey_light),
+                    size = 32.dp
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+            }
+            Bubble(
+                messageText = message.data.text,
+                messageTime = message.data.time,
+                username = username,
+                messageState = null,
+                shape = OtherBubbleShape,
+                backgroundColor = MaterialTheme.colors.primaryVariant
+            )
+        }
+    }
+}
+
+@Composable
+internal fun MyMessageItem(
+    message: ConversationElement.Message,
+    messageState: Message.State,
+    modifier: Modifier = Modifier
+) {
+    MessageItem(horizontalArrangement = Arrangement.End, modifier = modifier) {
+        Bubble(
+            messageText = message.data.text,
+            messageTime = message.data.time,
+            username = null,
+            messageState = messageState,
+            shape = MyBubbleShape,
+            backgroundColor = MaterialTheme.colors.secondary
+        )
+    }
+}
+
+@Composable
+internal fun MessageItem(
+    horizontalArrangement: Arrangement.Horizontal,
+    modifier: Modifier = Modifier,
+    content: @Composable RowScope.() -> Unit
+) {
     val interactionSource = remember { MutableInteractionSource() }
-    val horizontalArrangement =
-        if (message.data is Message.MyMessage) Arrangement.End else Arrangement.Start
 
     Row(
         modifier = Modifier
@@ -64,47 +115,38 @@ internal fun MessageItem(
             .highlightOnFocus(interactionSource)
             .then(modifier),
         horizontalArrangement = horizontalArrangement,
-        content = {
-            Row {
-                if (showUserDetails && message.data is Message.OtherMessage) {
-                    Avatar(
-                        uri = message.data.avatar,
-                        contentDescription = stringResource(id = R.string.kaleyra_avatar),
-                        placeholder = R.drawable.ic_kaleyra_avatar,
-                        error = R.drawable.ic_kaleyra_avatar,
-                        contentColor = MaterialTheme.colors.onPrimary,
-                        backgroundColor = colorResource(R.color.kaleyra_color_grey_light),
-                        size = 32.dp
-                    )
-                    Spacer(modifier = Modifier.width(16.dp))
-                }
-                Bubble(showUserDetails, message)
-            }
-        }
+        content = content
     )
 }
 
 @Composable
-internal fun Bubble(showUsername: Boolean, message: ConversationElement.Message) {
+internal fun Bubble(
+    messageText: String,
+    messageTime: String,
+    username: String?,
+    messageState: Message.State?,
+    shape: Shape,
+    backgroundColor: Color
+) {
     val configuration = LocalConfiguration.current
 
     Card(
-        shape = if (message.data is Message.MyMessage) MyBubbleShape else OtherBubbleShape,
-        backgroundColor = if (message.data is Message.MyMessage) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant,
+        shape = shape,
+        backgroundColor = backgroundColor,
         elevation = 0.dp,
         modifier = Modifier.widthIn(min = 0.dp, max = configuration.screenWidthDp.div(2).dp)
     ) {
         Column(modifier = Modifier.padding(16.dp, 8.dp)) {
-            if (showUsername && message.data is Message.OtherMessage) {
+            if (username != null) {
                 Text(
-                    text = message.data.username,
+                    text = username,
                     fontWeight = FontWeight.SemiBold,
                     style = MaterialTheme.typography.body2
                 )
                 Spacer(modifier = Modifier.height(4.dp))
             }
 
-            ClickableMessageText(item = message)
+            ClickableMessageText(messageText = messageText, textColor = contentColorFor(backgroundColor))
 
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -112,15 +154,12 @@ internal fun Bubble(showUsername: Boolean, message: ConversationElement.Message)
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text(
-                    text = message.data.time,
+                    text = messageTime,
                     fontSize = 12.sp,
                     style = MaterialTheme.typography.body2
                 )
 
-                if (message.data is Message.MyMessage) {
-                    val messageState by message.data.state.collectAsStateWithLifecycle(
-                        Message.State.Sending)
-
+                if (messageState != null) {
                     Icon(
                         painter = painterFor(messageState),
                         contentDescription = contentDescriptionFor(messageState),
@@ -136,13 +175,10 @@ internal fun Bubble(showUsername: Boolean, message: ConversationElement.Message)
 }
 
 @Composable
-internal fun ClickableMessageText(item: ConversationElement.Message) {
+internal fun ClickableMessageText(messageText: String, textColor: Color) {
     val uriHandler = LocalUriHandler.current
 
-    val styledMessage = messageFormatter(
-        text = item.data.text,
-        primary = item.data !is Message.MyMessage
-    )
+    val styledMessage = messageFormatter(text = messageText, textColor = textColor)
 
     ClickableText(
         text = styledMessage,

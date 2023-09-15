@@ -16,10 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.DayHeaderItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.MessageItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.NewMessagesHeaderItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 
 internal const val MessageStateTag = "MessageStateTag"
 internal const val ConversationContentTag = "ConversationContentTag"
@@ -28,6 +31,8 @@ internal const val ProgressIndicatorTag = "ProgressIndicatorTag"
 @Composable
 internal fun ConversationContent(
     items: ImmutableList<ConversationElement>,
+    participantsDetails: ImmutableMap<String, ParticipantDetails>,
+    myMessagesStates: ImmutableMap<String, Message.State>,
     showUserDetails: Boolean,
     isFetching: Boolean,
     scrollState: LazyListState,
@@ -46,6 +51,7 @@ internal fun ConversationContent(
         items(items.value, key = { it.id }, contentType = { it::class.java }) { item ->
             when (item) {
                 is ConversationElement.Message -> MessageItem(
+
                     showUserDetails = showUserDetails,
                     message = item,
                     modifier = Modifier.fillMaxWidth()

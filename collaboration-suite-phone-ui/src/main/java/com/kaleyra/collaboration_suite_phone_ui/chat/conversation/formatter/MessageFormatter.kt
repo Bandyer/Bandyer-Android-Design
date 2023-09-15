@@ -1,8 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter
 
-import androidx.compose.material.Colors
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -29,10 +28,7 @@ internal enum class SymbolAnnotationType {
  * @return AnnotatedString with annotations used inside the ClickableText wrapper
  */
 @Composable
-internal fun messageFormatter(
-    text: String,
-    primary: Boolean
-): AnnotatedString {
+internal fun messageFormatter(text: String, textColor: Color): AnnotatedString {
     val tokens = symbolPattern.findAll(text)
 
     return buildAnnotatedString {
@@ -42,11 +38,7 @@ internal fun messageFormatter(
         for (token in tokens) {
             append(text.slice(cursorPosition until token.range.first))
 
-            val (annotatedString, stringAnnotation) = getSymbolAnnotation(
-                matchResult = token,
-                colors = MaterialTheme.colors,
-                primary = primary
-            )
+            val (annotatedString, stringAnnotation) = getSymbolAnnotation(matchResult = token, textColor = textColor)
             append(annotatedString)
 
             if (stringAnnotation != null) {
@@ -70,8 +62,7 @@ internal fun messageFormatter(
  */
 private fun getSymbolAnnotation(
     matchResult: MatchResult,
-    colors: Colors,
-    primary: Boolean
+    textColor: Color
 ): SymbolAnnotation {
     return when (matchResult.value.first()) {
         '*' -> SymbolAnnotation(
@@ -99,7 +90,7 @@ private fun getSymbolAnnotation(
             AnnotatedString(
                 text = matchResult.value,
                 spanStyle = SpanStyle(
-                    color = if (primary) colors.onPrimary else colors.onSecondary,
+                    color = textColor,
                     textDecoration = TextDecoration.Underline
                 )
             ),
