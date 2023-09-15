@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model
 
-import android.net.Uri
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
@@ -18,16 +17,13 @@ sealed interface Message {
     data class OtherMessage(
         override val id: String,
         override val text: String,
-        override val time: String,
-        val username: String,
-        val avatar: ImmutableUri
+        override val time: String
     ) : Message
 
     data class MyMessage(
         override val id: String,
         override val text: String,
         override val time: String,
-        val state: Flow<State>
     ) : Message
 
     @Immutable
