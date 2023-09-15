@@ -23,12 +23,11 @@ internal class ScreenShareViewModel(configure: suspend () -> Configuration) : Ba
         viewModelScope.launch {
             val call = call.getValue()
             if (context !is FragmentActivity || call == null) return@launch
+            val me = call.participants.value.me ?: return@launch
             val input = call.inputs
                 .request(context, inputType)
                 .getOrNull<Input.Video.My>() ?: return@launch
             input.tryEnable()
-
-            val me = call.participants.value.me
             val stream = me.streams.value.firstOrNull { it.id == SCREEN_SHARE_STREAM_ID } ?: me.addStream(SCREEN_SHARE_STREAM_ID)
             stream.video.value = input
             stream.open()

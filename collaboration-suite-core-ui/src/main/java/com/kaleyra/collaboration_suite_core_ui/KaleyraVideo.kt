@@ -24,16 +24,24 @@ import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndCondit
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
 import com.kaleyra.collaboration_suite_utils.setValue
+import com.kaleyra.video_networking.connector.AccessTokenProvider
+import com.kaleyra.video_networking.connector.ConnectedUser
+import com.kaleyra.video_networking.connector.Connector
+import com.kaleyra.video_networking.connector.Connector.State
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
 /**
@@ -41,7 +49,7 @@ import java.util.concurrent.Executors
  *
  * This object allows the usage of a KaleyraVideo
  */
-object KaleyraVideo {
+object KaleyraVideo : Connector {
 
     /**
      * Collaboration
@@ -90,7 +98,7 @@ object KaleyraVideo {
      */
     val conversation: ConversationUI
         get() {
-            require(collaboration != null) { "configure the CollaborationUI to use the conversation" }
+            require(collaboration != null) { "configure the KaleyraVideo to use the conversation" }
             return _conversation!!
         }
 
@@ -127,26 +135,50 @@ object KaleyraVideo {
         this.chatNotificationActivityClazz = chatNotificationActivityClazz
         mainScope = MainScope()
         collaborationUIConnector = CollaborationUIConnector(collaboration!!, mainScope!!)
-        termsAndConditionsActivityClazz?.also { termsAndConditionsRequester = TermsAndConditionsRequester(it, ::connect, ::disconnect) }
+        termsAndConditionsActivityClazz?.also {
+            termsAndConditionsRequester = TermsAndConditionsRequester(it)
+        }
         return true
     }
+
+    override val state: StateFlow<State>
+        get() {
+            require(collaboration != null) { "You need to configure the KaleyraVideo to get the state" }
+            return collaboration!!.state
+        }
+
+    override val connectedUser: StateFlow<ConnectedUser?>
+        get() {
+            require(collaboration != null) { "You need to configure the KaleyraVideo to get the connectedUser" }
+            return collaboration!!.connectedUser
+        }
 
     /**
      * Connect
      */
-    fun connect(session: Collaboration.Session) {
+    override fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<Boolean> = CompletableDeferred<Boolean>().apply {
         serialScope.launch {
-            if (collaboration?.session != null && collaboration?.session?.userId != session.userId) disconnect(true)
-            collaborationUIConnector?.connect(session)
-            termsAndConditionsRequester?.setUp(session)
+            val connect = collaborationUIConnector?.connect(userId, accessTokenProvider) ?: return@launch
+            connect.invokeOnCompletion {
+                if(it != null) completeExceptionally(it)
+                else complete(connect.getCompleted())
+            }
+            termsAndConditionsRequester?.setUp(state, ::disconnect)
         }
     }
 
-    /**
-     * Disconnect
-     * @param clearSavedData If true, the saved data on DB and SharedPrefs will be cleared.
-     */
-    fun disconnect(clearSavedData: Boolean = false) {
+    override fun connect(accessLink: String): Deferred<Boolean> = CompletableDeferred<Boolean>().apply {
+        serialScope.launch {
+            val connect = collaborationUIConnector?.connect(accessLink) ?: return@launch
+            connect.invokeOnCompletion {
+                if(it != null) completeExceptionally(it)
+                else complete(connect.getCompleted())
+            }
+            termsAndConditionsRequester?.setUp(state, ::disconnect)
+        }
+    }
+
+    override fun disconnect(clearSavedData: Boolean) {
         serialScope.launch {
             collaborationUIConnector?.disconnect(clearSavedData)
             termsAndConditionsRequester?.dispose()

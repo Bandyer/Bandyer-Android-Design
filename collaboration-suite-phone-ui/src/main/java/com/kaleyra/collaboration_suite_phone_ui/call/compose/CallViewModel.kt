@@ -213,7 +213,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
     fun sendUserFeedback(rating: Float, comment: String) {
         val call = call.getValue() ?: return
-        val me = call.participants.value.me
+        val me = call.participants.value.me ?: return
         me.feedback.value = CallParticipant.Me.Feedback(rating.toInt(), comment)
     }
 

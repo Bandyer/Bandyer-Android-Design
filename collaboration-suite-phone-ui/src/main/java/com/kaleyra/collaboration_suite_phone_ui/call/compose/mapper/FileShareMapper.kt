@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.transform
 
@@ -54,7 +55,7 @@ internal object FileShareMapper {
 
     private fun Flow<Call>.toMe(): Flow<CallParticipant.Me> =
         this.flatMapLatest { it.participants }
-            .map { it.me }
+            .mapNotNull { it.me }
             .distinctUntilChanged()
 
     fun SharedFile.mapToSharedFileUi(myUserId: String): Flow<SharedFileUi> {

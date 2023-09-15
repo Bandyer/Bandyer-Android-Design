@@ -17,12 +17,14 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite.Collaboration
-import com.kaleyra.collaboration_suite.conversation.Conversation
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Conference
+import com.kaleyra.collaboration_suite.conversation.Conversation
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.video_networking.connector.AccessTokenProvider
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -66,8 +68,14 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     /**
      * Connect the collaboration
      */
-    fun connect(session: Collaboration.Session) {
-        collaboration.connect(session)
+    fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<Boolean> = collaboration.connect(userId, accessTokenProvider).apply {
+        resume()
+    }
+
+    /**
+     * Connect the collaboration
+     */
+    fun connect(accessLink: String): Deferred<Boolean> = collaboration.connect(accessLink).apply {
         resume()
     }
 
@@ -135,7 +143,8 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
                 val call = conference.call.replayCache.firstOrNull()
                 if (AppLifecycle.isInForeground.value ||
                     (call != null && call.state.value !is Call.State.Disconnected.Ended) ||
-                    conference.state.value !is Conference.State.Connected) return@onEach
+                    conference.state.value !is Conference.State.Connected
+                ) return@onEach
                 performAction(Action.PAUSE)
             }.launchIn(scope)
     }

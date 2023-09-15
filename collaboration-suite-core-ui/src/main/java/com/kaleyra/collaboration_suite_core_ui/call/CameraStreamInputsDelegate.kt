@@ -17,7 +17,7 @@ interface CameraStreamInputsDelegate {
             .map { it.filterIsInstance<Input.Audio>().firstOrNull() }
             .filterNotNull()
             .onEach { audio ->
-                val me = call.participants.value.me
+                val me = call.participants.value.me ?: return@onEach
                 val stream = me.streams.value.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID } ?: return@onEach
                 stream.audio.value = audio
             }
@@ -31,7 +31,7 @@ interface CameraStreamInputsDelegate {
             .combine(call.preferredType) { video, preferredType ->
                 val hasVideo = preferredType.hasVideo()
                 if (!hasVideo) return@combine
-                val me = call.participants.value.me
+                val me = call.participants.value.me ?: return@combine
                 val stream = me.streams.value.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID } ?: return@combine
                 video.setQuality(Input.Video.Quality.Definition.HD)
                 stream.video.value = video

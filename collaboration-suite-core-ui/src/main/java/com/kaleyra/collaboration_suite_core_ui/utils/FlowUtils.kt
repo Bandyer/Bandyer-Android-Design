@@ -1,6 +1,8 @@
 package com.kaleyra.collaboration_suite_core_ui.utils
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
 
 object FlowUtils {
 
@@ -41,5 +43,9 @@ object FlowUtils {
                 args[7] as T8
             )
         }
+    }
+
+    inline fun <T, R> Flow<T>.flatMapLatestNotNull(crossinline transform: suspend (value: T) -> Flow<R>?): Flow<R> = flatMapLatest { a ->
+        transform(a) ?: emptyFlow()
     }
 }

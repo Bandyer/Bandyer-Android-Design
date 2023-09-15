@@ -5,11 +5,13 @@ import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.utils.FlowUtils.flatMapLatestNotNull
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
@@ -50,8 +52,7 @@ internal class CallParticipantMutedTextToSpeechNotifier(
 
     private fun Call.toMuteEvents(): Flow<Input.Audio.Event.Request.Mute> {
         return participants
-            .map { it.me }
-            .flatMapLatest { it.streams }
+            .flatMapLatestNotNull { it.me?.streams }
             .map { streams ->
                 streams.firstOrNull { stream ->
                     stream.audio.firstOrNull { it != null } != null
@@ -63,5 +64,6 @@ internal class CallParticipantMutedTextToSpeechNotifier(
             .flatMapLatest { it.events }
             .filterIsInstance()
     }
+
 
 }

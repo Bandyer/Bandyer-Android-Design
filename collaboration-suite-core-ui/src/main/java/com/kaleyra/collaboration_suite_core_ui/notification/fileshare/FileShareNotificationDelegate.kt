@@ -28,7 +28,7 @@ internal interface FileShareNotificationDelegate {
         val me = call.participants.value.me
         call.sharedFolder.files
             .transform { files ->
-                val lastDownload = files.lastOrNull { file -> file.sender.userId != me.userId } ?: return@transform
+                val lastDownload = files.lastOrNull { file -> file.sender.userId != me?.userId } ?: return@transform
                 if (lastNotifiedDownload != lastDownload) emit(lastDownload)
                 lastNotifiedDownload = lastDownload
             }

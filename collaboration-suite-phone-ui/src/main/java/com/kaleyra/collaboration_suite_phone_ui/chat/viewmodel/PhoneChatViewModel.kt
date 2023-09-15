@@ -91,12 +91,13 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
 
     fun typing() {
         val chat = chat.getValue() ?: return
-        chat.participants.value.me.typing()
+        chat.participants.value.me?.typing()
     }
 
     fun fetchMessages() {
         viewModelScope.launch {
             isFetching.emit(true)
+
             chat.first().fetch(FETCH_COUNT)
             isFetching.emit(false)
         }

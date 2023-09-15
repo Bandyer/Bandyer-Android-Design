@@ -1,14 +1,15 @@
 package com.kaleyra.collaboration_suite_core_ui.termsandconditions
 
-import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
-import com.kaleyra.collaboration_suite_networking.Session
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.video_networking.connector.Connector.State
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
@@ -16,19 +17,20 @@ import kotlinx.coroutines.plus
 
 internal class TermsAndConditionsRequester(
     private val activityClazz: Class<*>,
-    private val onAccept: (session: Collaboration.Session) -> Unit,
-    private val onDecline: () -> Unit,
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO) + CoroutineName("TermsRequester")
 ) {
 
-    fun setUp(session: Collaboration.Session) {
+    fun setUp(
+        state: StateFlow<State>,
+        onDecline: () -> Unit
+    ) {
         dispose()
-        session.state
-            .onEach { sessionState ->
-                if (sessionState !is Session.State.Authenticating.TermsAgreementRequired) return@onEach
-                showTermsAndConditions(sessionState.requiredTerms[0], session)
+        state
+            .onEach { connectorState ->
+                if (connectorState !is State.Connecting.TermsAgreementRequired) return@onEach
+                showTermsAndConditions(connectorState.requiredTerms[0], onDecline)
             }
-            .takeWhile { it !is Session.State.Authenticated }
+            .takeWhile { it !is State.Connected }
             .launchIn(scope)
     }
 
@@ -37,8 +39,8 @@ internal class TermsAndConditionsRequester(
     }
 
     private fun showTermsAndConditions(
-        requiredTerms: Session.State.Authenticating.TermsAgreementRequired.SessionTerms,
-        session: Collaboration.Session
+        requiredTerms: State.Connecting.TermsAgreementRequired.SessionTerms,
+        onDecline: () -> Unit
     ) {
         val context = ContextRetainer.context
         val notificationConfig = TermsAndConditionsUI.Config.Notification(
@@ -49,16 +51,15 @@ internal class TermsAndConditionsRequester(
         )
         val activityConfig =
             TermsAndConditionsUI.Config.Activity(
-            title = requiredTerms.titleFieldText,
-            message = requiredTerms.bodyFieldText,
-            acceptText = requiredTerms.agreeButtonText,
-            declineText = requiredTerms.disagreeButtonText,
-            acceptCallback = {
-                requiredTerms.agree()
-                onAccept(session)
-            },
-            declineCallback = onDecline
-        )
+                title = requiredTerms.titleFieldText,
+                message = requiredTerms.bodyFieldText,
+                acceptText = requiredTerms.agreeButtonText,
+                declineText = requiredTerms.disagreeButtonText,
+                acceptCallback = {
+                    requiredTerms.agree()
+                },
+                declineCallback = onDecline
+            )
 
         TermsAndConditionsUI(activityClazz = activityClazz, notificationConfig = notificationConfig, activityConfig = activityConfig).show()
     }
