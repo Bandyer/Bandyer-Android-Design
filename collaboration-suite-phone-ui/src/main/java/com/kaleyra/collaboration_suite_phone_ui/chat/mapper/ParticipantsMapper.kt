@@ -1,6 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.mapper
 
 import android.net.Uri
+import com.kaleyra.collaboration_suite.conference.Call
+import com.kaleyra.collaboration_suite.conversation.Chat
 import com.kaleyra.collaboration_suite.conversation.ChatParticipant
 import com.kaleyra.collaboration_suite.conversation.ChatParticipants
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
@@ -9,11 +11,17 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
 object ParticipantsMapper {
+
+    fun Flow<Chat>.isGroupCall(companyId: Flow<String>): Flow<Boolean> =
+        combine(this.flatMapLatest { it.participants }, companyId) { participants, companyId ->
+            participants.others.filter { it.userId != companyId }.size > 1
+        }.distinctUntilChanged()
 
     fun Flow<ChatParticipants>.toChatInfo(): Flow<ChatInfo> {
         val participant = otherParticipant()

@@ -151,8 +151,8 @@ class MessagesMapperTest {
 
         if (item1 == item2) return true
 
-        val message1 = item1.message
-        val message2 = item2.message
+        val message1 = item1.data
+        val message2 = item2.data
         if (message1 !is com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.MyMessage) return false
         if (message2 !is com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.MyMessage) return false
 

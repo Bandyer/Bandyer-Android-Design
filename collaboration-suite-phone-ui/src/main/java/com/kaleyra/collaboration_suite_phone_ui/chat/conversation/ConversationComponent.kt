@@ -145,6 +145,7 @@ internal fun ConversationComponent(
         else {
             ConversationContent(
                 items = uiState.conversationElements,
+                showUserDetails = uiState.isGroupChat,
                 isFetching = uiState.isFetching,
                 scrollState = scrollState,
                 modifier = Modifier

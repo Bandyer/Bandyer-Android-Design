@@ -5,6 +5,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.Immu
 
 @Immutable
 data class ConversationUiState(
+    val isGroupChat: Boolean = false,
     val isFetching: Boolean = false,
     val conversationElements: ImmutableList<ConversationElement>? = null,
     val unreadMessagesCount: Int = 0

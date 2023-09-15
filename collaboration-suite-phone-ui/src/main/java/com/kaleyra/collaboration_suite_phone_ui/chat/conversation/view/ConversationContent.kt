@@ -28,6 +28,7 @@ internal const val ProgressIndicatorTag = "ProgressIndicatorTag"
 @Composable
 internal fun ConversationContent(
     items: ImmutableList<ConversationElement>,
+    showUserDetails: Boolean,
     isFetching: Boolean,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
@@ -45,6 +46,7 @@ internal fun ConversationContent(
         items(items.value, key = { it.id }, contentType = { it::class.java }) { item ->
             when (item) {
                 is ConversationElement.Message -> MessageItem(
+                    showUserDetails = showUserDetails,
                     message = item,
                     modifier = Modifier.fillMaxWidth()
                 )

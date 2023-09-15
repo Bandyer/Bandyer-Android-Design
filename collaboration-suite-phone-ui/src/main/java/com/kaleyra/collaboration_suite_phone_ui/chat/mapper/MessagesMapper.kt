@@ -1,24 +1,39 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.mapper
 
+import android.net.Uri
 import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conversation.Messages
 import com.kaleyra.collaboration_suite_core_ui.MessagesUI
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.transform
+import java.util.Date
 
 object MessagesMapper {
 
-    fun Message.toUiMessage(): com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message {
+    fun Message.toUiMessage(): Flow<com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message> {
         val text = (content as? Message.Content.Text)?.message ?: ""
         val time = TimestampUtils.parseTime(creationDate.time)
 
-        return if (this is com.kaleyra.collaboration_suite.conversation.OtherMessage) com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.OtherMessage(id, text, time)
-        else com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.MyMessage(id, text, time, state.map { state -> mapToUiState(state) })
+        return if (this is com.kaleyra.collaboration_suite.conversation.OtherMessage) {
+            combine(creator.combinedDisplayName, creator.combinedDisplayImage.map { ImmutableUri(it ?: Uri.EMPTY) }) { name, image ->
+                com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.OtherMessage(id, text, time, name ?: "",  image)
+            }
+        } else {
+            flowOf(com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.MyMessage(id, text, time, state.map { state -> mapToUiState(state) }))
+        }
     }
 
     private fun mapToUiState(state: Message.State): com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State =
@@ -32,27 +47,38 @@ object MessagesMapper {
         firstUnreadMessageId: String?,
         shouldShowUnreadHeader: Flow<Boolean>
     ): Flow<List<ConversationElement>> {
-        return combine(map { it.list }, shouldShowUnreadHeader) { messages, unreadHeader ->
-            val items = mutableListOf<ConversationElement>()
-            messages.forEachIndexed { index, message ->
-                val previousMessage = messages.getOrNull(index + 1)
+        return flatMapLatest { messagesUI ->
+            val map = mutableMapOf<String, Pair<com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message, Date>>()
+            val messagesList = messagesUI.list
 
-                items.add(ConversationElement.Message(message.toUiMessage()))
+            messagesList
+                .map { message -> message.toUiMessage().map { Pair(it, message.creationDate) } }
+                .merge()
+                .transform { pair ->
+                    val message = pair.first
+                    map[message.id] = pair
+                    val values = map.values.toList()
+                    if (values.size == messagesList.size) {
+                        emit(values)
+                    }
+                }.combine(shouldShowUnreadHeader) { pairs, unreadHeader ->
+                    val items = mutableListOf<ConversationElement>()
+                    var previousCreationDate: Date? = null
+                    pairs.forEach { (message, creationDate) ->
+                        items.add(ConversationElement.Message(message))
 
-                if (unreadHeader && message.id == firstUnreadMessageId) {
-                    items.add(ConversationElement.UnreadMessages)
+                        if (unreadHeader && message.id == firstUnreadMessageId) {
+                            items.add(ConversationElement.UnreadMessages)
+                        }
+
+                        if (previousCreationDate == null || !TimestampUtils.isSameDay(creationDate.time, previousCreationDate!!.time)) {
+                            items.add(ConversationElement.Day(creationDate.time))
+                        }
+                        previousCreationDate = creationDate
+                    }
+                    items
                 }
-
-                if (previousMessage == null || !TimestampUtils.isSameDay(
-                        message.creationDate.time,
-                        previousMessage.creationDate.time
-                    )
-                ) {
-                    items.add(ConversationElement.Day(message.creationDate.time))
-                }
-            }
-            items
-        }
+        }.distinctUntilChanged()
     }
 
     suspend fun findFirstUnreadMessageId(
