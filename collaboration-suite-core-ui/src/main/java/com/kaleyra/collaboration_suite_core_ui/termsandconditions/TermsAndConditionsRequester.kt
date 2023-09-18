@@ -28,7 +28,7 @@ internal class TermsAndConditionsRequester(
         state
             .onEach { connectorState ->
                 if (connectorState !is State.Connecting.TermsAgreementRequired) return@onEach
-                showTermsAndConditions(connectorState.requiredTerms[0], onDecline)
+                showTermsAndConditions(connectorState.requiredTerms.first(), onDecline)
             }
             .takeWhile { it !is State.Connected }
             .launchIn(scope)
@@ -39,7 +39,7 @@ internal class TermsAndConditionsRequester(
     }
 
     private fun showTermsAndConditions(
-        requiredTerms: State.Connecting.TermsAgreementRequired.SessionTerms,
+        requiredTerms: State.Connecting.TermsAgreementRequired.ConnectionTerms,
         onDecline: () -> Unit
     ) {
         val context = ContextRetainer.context

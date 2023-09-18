@@ -15,6 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.Message.Companion.toUiMessage
+import com.kaleyra.video_networking.connector.Connector.State
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
@@ -43,7 +44,7 @@ internal object UiModelMapper {
         participants: Flow<ChatParticipants>,
         conversation: Flow<Conversation>
     ): Flow<ChatState> {
-        var previousConversationState: Conversation.State? = null
+        var previousConversationState: State? = null
 
         return combine(
             participants.typingEvents(),
@@ -51,17 +52,17 @@ internal object UiModelMapper {
             participants.otherParticipantState()
         ) { event, conversationState, participantState ->
             when {
-                conversationState is Conversation.State.Connecting && previousConversationState is Conversation.State.Connected -> ChatState.NetworkState.Offline
-                conversationState is Conversation.State.Connecting -> ChatState.NetworkState.Connecting
-                conversationState is Conversation.State.Connected && participantState is ChatParticipant.State.Joined.Online && event is ChatParticipant.Event.Typing.Idle -> ChatState.UserState.Online
-                conversationState is Conversation.State.Connected && participantState is ChatParticipant.State.Joined.Offline && event is ChatParticipant.Event.Typing.Idle -> {
+                conversationState is State.Connecting && previousConversationState is State.Connected -> ChatState.NetworkState.Offline
+                conversationState is State.Connecting                                                              -> ChatState.NetworkState.Connecting
+                conversationState is State.Connected && participantState is ChatParticipant.State.Joined.Online && event is ChatParticipant.Event.Typing.Idle -> ChatState.UserState.Online
+                conversationState is State.Connected && participantState is ChatParticipant.State.Joined.Offline && event is ChatParticipant.Event.Typing.Idle -> {
                     val lastLogin = participantState.lastLogin
                     ChatState.UserState.Offline(
                         if (lastLogin is ChatParticipant.State.Joined.Offline.LastLogin.At) lastLogin.date.time
                         else null
                     )
                 }
-                conversationState is Conversation.State.Connected && event is ChatParticipant.Event.Typing.Started -> ChatState.UserState.Typing
+                conversationState is State.Connected && event is ChatParticipant.Event.Typing.Started -> ChatState.UserState.Typing
                 else -> ChatState.None
             }.also {
                 previousConversationState = conversationState

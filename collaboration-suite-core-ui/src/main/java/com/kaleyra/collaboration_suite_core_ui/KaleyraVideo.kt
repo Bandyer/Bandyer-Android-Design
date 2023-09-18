@@ -28,6 +28,7 @@ import com.kaleyra.video_networking.connector.AccessTokenProvider
 import com.kaleyra.video_networking.connector.ConnectedUser
 import com.kaleyra.video_networking.connector.Connector
 import com.kaleyra.video_networking.connector.Connector.State
+import com.kaleyra.video_networking.connector.Connector.Synchronization
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -145,6 +146,12 @@ object KaleyraVideo : Connector {
         get() {
             require(collaboration != null) { "You need to configure the KaleyraVideo to get the state" }
             return collaboration!!.state
+        }
+
+    override val synchronization: StateFlow<Synchronization>
+        get() {
+            require(collaboration != null) { "You need to configure the KaleyraVideo to get the synchronization" }
+            return collaboration!!.synchronization
         }
 
     override val connectedUser: StateFlow<ConnectedUser?>
