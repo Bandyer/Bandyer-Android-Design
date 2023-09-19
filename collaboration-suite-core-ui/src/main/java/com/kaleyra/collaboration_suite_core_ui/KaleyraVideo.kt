@@ -163,7 +163,7 @@ object KaleyraVideo : Connector {
     /**
      * Connect
      */
-    override fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<Boolean> = CompletableDeferred<Boolean>().apply {
+    override fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<ConnectedUser> = CompletableDeferred<ConnectedUser>().apply {
         serialScope.launch {
             val connect = collaborationUIConnector?.connect(userId, accessTokenProvider) ?: return@launch
             connect.invokeOnCompletion {
@@ -174,7 +174,7 @@ object KaleyraVideo : Connector {
         }
     }
 
-    override fun connect(accessLink: String): Deferred<Boolean> = CompletableDeferred<Boolean>().apply {
+    override fun connect(accessLink: String): Deferred<ConnectedUser> = CompletableDeferred<ConnectedUser>().apply {
         serialScope.launch {
             val connect = collaborationUIConnector?.connect(accessLink) ?: return@launch
             connect.invokeOnCompletion {

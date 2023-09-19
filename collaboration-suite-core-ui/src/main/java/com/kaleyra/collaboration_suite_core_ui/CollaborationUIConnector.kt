@@ -21,6 +21,7 @@ import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.video_networking.connector.AccessTokenProvider
+import com.kaleyra.video_networking.connector.ConnectedUser
 import com.kaleyra.video_networking.connector.Connector.*
 import com.kaleyra.video_networking.connector.Connector.State.Connected
 import kotlinx.coroutines.CoroutineScope
@@ -68,14 +69,14 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     /**
      * Connect the collaboration
      */
-    fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<Boolean> = collaboration.connect(userId, accessTokenProvider).apply {
+    fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<ConnectedUser> = collaboration.connect(userId, accessTokenProvider).apply {
         resume()
     }
 
     /**
      * Connect the collaboration
      */
-    fun connect(accessLink: String): Deferred<Boolean> = collaboration.connect(accessLink).apply {
+    fun connect(accessLink: String): Deferred<ConnectedUser> = collaboration.connect(accessLink).apply {
         resume()
     }
 

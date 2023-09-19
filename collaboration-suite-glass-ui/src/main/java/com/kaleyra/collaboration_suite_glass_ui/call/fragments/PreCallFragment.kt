@@ -48,7 +48,7 @@ internal abstract class PreCallFragment : ConnectingFragment(),
                     val nParticipants = participants.others.count() + 1
                     val names = participants.others
                         .let { if (nParticipants > 2) it.plus(participants.me) else it }
-                        .map { it.combinedDisplayName.first() ?: "" }
+                        .map { it?.combinedDisplayName?.first() ?: "" }
                     kaleyraParticipants.text = names.joinToString()
                     updateUIOnParticipantsViewChange()
 

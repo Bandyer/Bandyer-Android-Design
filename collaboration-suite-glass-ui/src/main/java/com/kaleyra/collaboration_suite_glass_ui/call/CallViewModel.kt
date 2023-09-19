@@ -30,7 +30,6 @@ import com.kaleyra.collaboration_suite.conference.CallParticipant
 import com.kaleyra.collaboration_suite.conference.CallParticipants
 import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite.conference.Inputs
-import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -48,6 +47,7 @@ import com.kaleyra.collaboration_suite_glass_ui.call.model.StreamParticipant
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
+import com.kaleyra.video_networking.connector.Connector
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -61,6 +61,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
@@ -72,6 +73,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.plus
 import java.util.concurrent.ConcurrentHashMap
@@ -93,8 +95,8 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
 
     val call: SharedFlow<CallUI> = conference.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
-    private val _conferenceState: MutableStateFlow<Conference.State> = MutableStateFlow(Conference.State.Disconnected)
-    val conferenceState: StateFlow<Conference.State> = _conferenceState.asStateFlow()
+    private val _conferenceState: MutableStateFlow<Connector.State> = MutableStateFlow(Connector.State.Disconnected)
+    val conferenceState: StateFlow<Connector.State> = _conferenceState.asStateFlow()
 
     val preferredCallType: StateFlow<Call.PreferredType?> =
         call.flatMapLatest { it.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
@@ -173,7 +175,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
         }
 
     private val myStreams: Flow<List<Stream>> =
-        participants.map { it.me }.flatMapLatest { it.streams }
+        participants.map { it.me }.flatMapLatest { it?.streams ?: emptyFlow() }
 
     private val otherStreams: Flow<List<Stream>> =
         streams.transform { value -> emit(value.filter { !it.itsMe }.map { it.stream }) }
@@ -339,7 +341,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
                 _micPermission.value = Permission(false, false)
             }.launchIn(this)
 
-            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID }?.audio?.value = input
+            currentCall.participants.value.me?.streams?.value?.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID }?.audio?.value = input
         }
     }
 
@@ -354,7 +356,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
 
             val input = inputRequest.getOrNull<Input.Video.Camera.Internal>() ?: return@launchWhenResumed
 
-            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID }?.video?.value = input
+            currentCall.participants.value.me?.streams?.value?.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID }?.video?.value = input
 
             input.state.filter { it is Input.State.Closed }.onEach {
                 _camPermission.value = Permission(false, false)
@@ -413,9 +415,9 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
             }
             pJobs.clear()
             participants.others.plus(participants.me).forEach { participant ->
-                pJobs += participant.streams.combine(participant.state) { streams, state ->
+                participant?.streams?.combine(participant.state) { streams, state ->
                     action(participant, participant == participants.me, streams, state)
-                }.launchIn(scope)
+                }?.launchIn(scope)?.let { pJobs += it }
             }
         }
     }
