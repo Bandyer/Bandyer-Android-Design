@@ -102,6 +102,42 @@ internal fun ConversationContent(
     }
 }
 
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+internal fun ConversationContentPreview() = KaleyraTheme {
+    Surface {
+        ConversationContent(
+            items = mockConversationElements,
+            participantsDetails = ImmutableMap(),
+            isFetching = false,
+            scrollState = rememberLazyListState()
+        )
+    }
+}
+
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+internal fun ConversationContentGroupPreview() = KaleyraTheme {
+    Surface {
+        ConversationContent(
+            items = mockConversationElements,
+            participantsDetails = ImmutableMap(
+                hashMapOf(
+                    "userId1" to ParticipantDetails("Enea", ImmutableUri()),
+                    "userId4" to ParticipantDetails("Luca", ImmutableUri()),
+                    "userId5" to ParticipantDetails("Franco", ImmutableUri()),
+                    "userId7" to ParticipantDetails("Francesco", ImmutableUri()),
+                    "userId8" to ParticipantDetails("Marco", ImmutableUri()),
+                )
+            ),
+            isFetching = false,
+            scrollState = rememberLazyListState()
+        )
+    }
+}
+
 
 
 
