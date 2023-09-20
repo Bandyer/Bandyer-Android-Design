@@ -37,6 +37,8 @@ internal const val MessageStateTag = "MessageStateTag"
 internal const val ConversationContentTag = "ConversationContentTag"
 internal const val ProgressIndicatorTag = "ProgressIndicatorTag"
 
+val ConversationContentPadding = 16.dp
+
 @Composable
 internal fun ConversationContent(
     items: ImmutableList<ConversationElement>,
@@ -48,7 +50,7 @@ internal fun ConversationContent(
     LazyColumn(
         reverseLayout = true,
         state = scrollState,
-        contentPadding = PaddingValues(all = 16.dp),
+        contentPadding = PaddingValues(all = ConversationContentPadding),
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -65,6 +67,7 @@ internal fun ConversationContent(
                             participantDetails = participantsDetails[message.userId],
                             modifier = Modifier.fillMaxWidth()
                         )
+
                         is Message.MyMessage -> MyMessageItem(
                             message = message,
                             isMessageGroupClosed = item.isMessageGroupClosed,

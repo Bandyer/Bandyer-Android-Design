@@ -27,10 +27,19 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Conversa
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ConversationContentPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ConversationContentTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.MessageStateTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ProgressIndicatorTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.OtherBubbleLeftSpacing
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.BubbleTestTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.OtherBubbleAvatarSpacing
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.MessageItemAvatarSize
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
+import com.kaleyra.collaboration_suite_phone_ui.findAvatar
 import com.kaleyra.collaboration_suite_phone_ui.performScrollUp
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.After
@@ -44,7 +53,14 @@ class ConversationComponentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private val message = Message.MyMessage("idTest", "Mutable state item", "18:00", MutableStateFlow(Message.State.Sending))
+    private val myMessage = Message.MyMessage("idTest", "Mutable state item", "18:00", MutableStateFlow(Message.State.Sending))
+
+    private val otherMessage = Message.OtherMessage(
+        "id4",
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "13:12",
+        "userId4"
+    )
 
     private var onMessageScrolled = false
 
@@ -107,14 +123,14 @@ class ConversationComponentTest {
 
     @Test
     fun messageStateSending_pendingIconDisplayed() {
-        setContent(ConversationUiState(conversationElements = ImmutableList(listOf(ConversationElement.Message(message)))))
+        setContent(ConversationUiState(conversationElements = ImmutableList(listOf(ConversationElement.Message(myMessage)))))
         val pendingStatus = composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_pending)
         findMessageState().assert(hasContentDescription(pendingStatus))
     }
 
     @Test
     fun messageStateSent_sentIconDisplayed() {
-        val message = message.copy(state = MutableStateFlow(Message.State.Sent))
+        val message = myMessage.copy(state = MutableStateFlow(Message.State.Sent))
         setContent(ConversationUiState(conversationElements = ImmutableList(listOf(ConversationElement.Message(message)))))
         val pendingStatus = composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_sent)
         findMessageState().assert(hasContentDescription(pendingStatus))
@@ -122,7 +138,7 @@ class ConversationComponentTest {
 
     @Test
     fun messageStateRead_seenIconDisplayed() {
-        val message = message.copy(state = MutableStateFlow(Message.State.Read))
+        val message = myMessage.copy(state = MutableStateFlow(Message.State.Read))
         setContent(ConversationUiState(conversationElements = ImmutableList(listOf(ConversationElement.Message(message)))))
         val pendingStatus = composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_seen)
         findMessageState().assert(hasContentDescription(pendingStatus))
@@ -130,14 +146,59 @@ class ConversationComponentTest {
 
     @Test
     fun isNotFetching_progressIndicatorNotDisplayed() {
-        setContent(ConversationUiState(isFetching = false, conversationElements = ImmutableList(listOf(ConversationElement.Message(message)))))
+        setContent(ConversationUiState(isFetching = false, conversationElements = ImmutableList(listOf(ConversationElement.Message(myMessage)))))
         findProgressIndicator().assertDoesNotExist()
     }
 
     @Test
     fun isFetching_progressIndicatorDisplayed() {
-        setContent(ConversationUiState(isFetching = true, conversationElements = ImmutableList(listOf(ConversationElement.Message(message)))))
+        setContent(ConversationUiState(isFetching = true, conversationElements = ImmutableList(listOf(ConversationElement.Message(myMessage)))))
         findProgressIndicator().assertIsDisplayed()
+    }
+
+    @Test
+    fun participantDetailsProvided_latestGroupMessageOfOtherUser_avatarIsDisplayed() {
+        setContent(ConversationUiState(
+            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage, isMessageGroupClosed = true))),
+            participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("username", ImmutableUri())))
+        ))
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun participantDetailsProvided_usernameIsDisplayed() {
+        setContent(ConversationUiState(
+            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage))),
+            participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("otherUsername", ImmutableUri())))
+        ))
+        composeTestRule.onNodeWithText("otherUsername").assertIsDisplayed()
+    }
+
+    @Test
+    fun participantDetailsProvided_notLatestGroupMessageOfOtherUser_bubbleIsSpaced() {
+        setContent(ConversationUiState(
+            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage))),
+            participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("otherUsername", ImmutableUri())))
+        ))
+        composeTestRule.onNodeWithTag(BubbleTestTag).assertLeftPositionInRootIsEqualTo(ConversationContentPadding + OtherBubbleLeftSpacing)
+    }
+
+    @Test
+    fun participantDetailsProvided_latestGroupMessageOfOtherUser_bubbleIsSpacedFromAvatar() {
+        setContent(ConversationUiState(
+            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage, isMessageGroupClosed = true))),
+            participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("username", ImmutableUri())))
+        ))
+        composeTestRule.onNodeWithTag(BubbleTestTag).assertLeftPositionInRootIsEqualTo(ConversationContentPadding + MessageItemAvatarSize + OtherBubbleAvatarSpacing)
+    }
+
+    @Test
+    fun participantDetailsNotProvided_otherUserMessage_bubbleIsNotSpaced() {
+        setContent(ConversationUiState(
+            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage, isMessageGroupClosed = true))),
+            participantsDetails = ImmutableMap()
+        ))
+        composeTestRule.onNodeWithTag(BubbleTestTag).assertLeftPositionInRootIsEqualTo(ConversationContentPadding)
     }
 
     private fun findResetScrollFab() = composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(

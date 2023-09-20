@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item
 
 import android.content.res.Configuration
-import android.net.Uri
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -42,20 +41,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter.SymbolAnnotationType
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter.messageFormatter
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.MessageStateTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
-import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ChatScreen
-import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.mockChatUiState
-import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.view.Avatar
-import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
-import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -64,6 +56,11 @@ private val LastOtherBubbleShape = RoundedCornerShape(12.dp, 24.dp, 24.dp, 0.dp)
 private val OtherBubbleShape = RoundedCornerShape(12.dp, 24.dp, 24.dp, 12.dp)
 private val LastMyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
 private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 12.dp, 24.dp)
+
+val MessageItemAvatarSize = 28.dp
+val OtherBubbleAvatarSpacing = 8.dp
+val OtherBubbleLeftSpacing = 36.dp
+const val BubbleTestTag = "BubbleTestTag"
 
 @Composable
 internal fun OtherMessageItem(
@@ -84,11 +81,11 @@ internal fun OtherMessageItem(
                         error = R.drawable.ic_kaleyra_avatar,
                         contentColor = MaterialTheme.colors.onPrimary,
                         backgroundColor = colorResource(R.color.kaleyra_color_grey_light),
-                        size = 28.dp
+                        size = MessageItemAvatarSize
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(OtherBubbleAvatarSpacing))
                 }
-                uri != null -> Spacer(modifier = Modifier.width(36.dp))
+                uri != null -> Spacer(modifier = Modifier.width(OtherBubbleLeftSpacing))
             }
             Bubble(
                 messageText = message.text,
@@ -156,7 +153,9 @@ internal fun Bubble(
         shape = shape,
         backgroundColor = backgroundColor,
         elevation = 0.dp,
-        modifier = Modifier.widthIn(min = 0.dp, max = configuration.screenWidthDp.div(2).dp)
+        modifier = Modifier
+            .widthIn(min = 0.dp, max = configuration.screenWidthDp.div(2).dp)
+            .testTag(BubbleTestTag)
     ) {
         Column(modifier = Modifier.padding(16.dp, 8.dp)) {
             if (username != null) {
