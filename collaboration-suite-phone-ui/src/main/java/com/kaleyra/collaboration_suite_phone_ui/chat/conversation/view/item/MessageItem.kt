@@ -21,6 +21,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter.SymbolAnnotationType
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter.messageFormatter
@@ -46,37 +48,54 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.view.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
 
-private val OtherBubbleShape = RoundedCornerShape(0.dp, 24.dp, 24.dp, 12.dp)
-private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
+private val LastOtherBubbleShape = RoundedCornerShape(12.dp, 24.dp, 24.dp, 0.dp)
+private val OtherBubbleShape = RoundedCornerShape(12.dp, 24.dp, 24.dp, 12.dp)
+private val LastMyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
+private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 12.dp, 24.dp)
 
 @Composable
-internal fun OtherMessageItem(
-    message: ConversationElement.Message,
+internal fun MessageItem(
+    messageElement: ConversationElement.Message,
     participantDetails: ParticipantDetails?,
     modifier: Modifier = Modifier
 ) {
-    MessageItem(horizontalArrangement = Arrangement.Start, modifier = modifier) {
-        Row {
-            val username = participantDetails?.first ?: ""
-            val uri = participantDetails?.second
-            if (uri != null) {
-                Avatar(
-                    uri = uri,
-                    contentDescription = stringResource(id = R.string.kaleyra_avatar),
-                    placeholder = R.drawable.ic_kaleyra_avatar,
-                    error = R.drawable.ic_kaleyra_avatar,
-                    contentColor = MaterialTheme.colors.onPrimary,
-                    backgroundColor = colorResource(R.color.kaleyra_color_grey_light),
-                    size = 32.dp
-                )
-                Spacer(modifier = Modifier.width(16.dp))
+    when (val message = messageElement.message) {
+        is Message.OtherMessage -> OtherMessageItem(message, messageElement.isMessageGroupClosed, participantDetails, modifier)
+        is Message.MyMessage -> MyMessageItem(message, messageElement.isMessageGroupClosed, modifier)
+    }
+}
+
+@Composable
+internal fun OtherMessageItem(
+    message: Message.OtherMessage,
+    isMessageGroupClosed: Boolean,
+    participantDetails: ParticipantDetails?,
+    modifier: Modifier = Modifier
+) {
+    MessageRow(isMessageGroupClosed = isMessageGroupClosed, horizontalArrangement = Arrangement.Start, modifier = modifier) {
+        Row(verticalAlignment = Alignment.Bottom) {
+            val (username, uri) = participantDetails ?: (null to null)
+            when {
+                isMessageGroupClosed && uri != null -> {
+                    Avatar(
+                        uri = uri,
+                        contentDescription = stringResource(id = R.string.kaleyra_avatar),
+                        placeholder = R.drawable.ic_kaleyra_avatar,
+                        error = R.drawable.ic_kaleyra_avatar,
+                        contentColor = MaterialTheme.colors.onPrimary,
+                        backgroundColor = colorResource(R.color.kaleyra_color_grey_light),
+                        size = 28.dp
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+                uri != null -> Spacer(modifier = Modifier.width(36.dp))
             }
             Bubble(
-                messageText = message.data.text,
-                messageTime = message.data.time,
+                messageText = message.text,
+                messageTime = message.time,
                 username = username,
                 messageState = null,
-                shape = OtherBubbleShape,
+                shape = if (isMessageGroupClosed) LastOtherBubbleShape else OtherBubbleShape,
                 backgroundColor = MaterialTheme.colors.primaryVariant
             )
         }
@@ -85,24 +104,26 @@ internal fun OtherMessageItem(
 
 @Composable
 internal fun MyMessageItem(
-    message: ConversationElement.Message,
-    messageState: Message.State,
+    message: Message.MyMessage,
+    isMessageGroupClosed: Boolean,
     modifier: Modifier = Modifier
 ) {
-    MessageItem(horizontalArrangement = Arrangement.End, modifier = modifier) {
+    val messageState by message.state.collectAsStateWithLifecycle(initialValue = Message.State.Read)
+    MessageRow(isMessageGroupClosed = isMessageGroupClosed, horizontalArrangement = Arrangement.End, modifier = modifier) {
         Bubble(
-            messageText = message.data.text,
-            messageTime = message.data.time,
+            messageText = message.text,
+            messageTime = message.time,
             username = null,
             messageState = messageState,
-            shape = MyBubbleShape,
+            shape = if (isMessageGroupClosed) LastMyBubbleShape else MyBubbleShape,
             backgroundColor = MaterialTheme.colors.secondary
         )
     }
 }
 
 @Composable
-internal fun MessageItem(
+internal fun MessageRow(
+    isMessageGroupClosed: Boolean,
     horizontalArrangement: Arrangement.Horizontal,
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit
@@ -113,6 +134,7 @@ internal fun MessageItem(
         modifier = Modifier
             .focusable(true, interactionSource)
             .highlightOnFocus(interactionSource)
+            .padding(bottom = if (isMessageGroupClosed) 4.dp else 0.dp)
             .then(modifier),
         horizontalArrangement = horizontalArrangement,
         content = content

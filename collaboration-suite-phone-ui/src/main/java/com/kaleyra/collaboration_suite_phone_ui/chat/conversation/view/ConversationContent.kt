@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.DayHeaderItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.MessageItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.NewMessagesHeaderItem
@@ -32,8 +31,6 @@ internal const val ProgressIndicatorTag = "ProgressIndicatorTag"
 internal fun ConversationContent(
     items: ImmutableList<ConversationElement>,
     participantsDetails: ImmutableMap<String, ParticipantDetails>,
-    myMessagesStates: ImmutableMap<String, Message.State>,
-    showUserDetails: Boolean,
     isFetching: Boolean,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
@@ -42,7 +39,7 @@ internal fun ConversationContent(
         reverseLayout = true,
         state = scrollState,
         contentPadding = PaddingValues(all = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .testTag(ConversationContentTag)
@@ -50,22 +47,22 @@ internal fun ConversationContent(
     ) {
         items(items.value, key = { it.id }, contentType = { it::class.java }) { item ->
             when (item) {
-                is ConversationElement.Message -> MessageItem(
-
-                    showUserDetails = showUserDetails,
-                    message = item,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                is ConversationElement.Message ->
+                    MessageItem(
+                        messageElement = item,
+                        participantDetails = participantsDetails[item.message.userId],
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 is ConversationElement.Day -> DayHeaderItem(
                     timestamp = item.timestamp,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 8.dp)
+                        .padding(vertical = 4.dp)
                 )
                 is ConversationElement.UnreadMessages -> NewMessagesHeaderItem(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 8.dp)
+                        .padding(vertical = 4.dp)
                 )
             }
         }
