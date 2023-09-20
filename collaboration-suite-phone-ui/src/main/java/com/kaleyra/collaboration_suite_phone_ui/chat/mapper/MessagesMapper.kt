@@ -4,7 +4,6 @@ import android.net.Uri
 import com.kaleyra.collaboration_suite.conversation.ChatParticipants
 import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conversation.Messages
-import com.kaleyra.collaboration_suite_core_ui.MessagesUI
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
@@ -27,82 +26,66 @@ object MessagesMapper {
 
     fun Flow<ChatParticipants>.toChatParticipantUserDetails(): Flow<ImmutableMap<String, ParticipantDetails>> =
         flatMapLatest { chatParticipants ->
-                val participantsList = chatParticipants.list
-                val users = mutableMapOf<String, ParticipantDetails>()
-                participantsList
-                    .map { participant ->
-                        combine(
-                            participant.combinedDisplayName,
-                            participant.combinedDisplayImage.map { ImmutableUri(it ?: Uri.EMPTY) }
-                        ) { name, image -> Triple(participant.userId, name ?: "", image) }
-                    }
-                    .merge()
-                    .transform { (userId, name, image) ->
-                        users[userId] = ParticipantDetails(name, image)
-                        val values = users.values.toList()
-                        if (values.size == participantsList.size) {
-                            emit(ImmutableMap(users))
-                        }
-                    }
-            }
-            .distinctUntilChanged()
-
-    fun Flow<MessagesUI>.toMyMessagesSendStates(): Flow<ImmutableMap<String, com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State>> {
-        return this.flatMapLatest { messagesUI ->
-            val states = mutableMapOf<String, com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State>()
-            val messages = messagesUI.my
-
-            messages
-                .map { message -> message.state.map { Pair(message.id, it) } }
+            val participantsList = chatParticipants.list
+            val users = mutableMapOf<String, ParticipantDetails>()
+            participantsList
+                .map { participant ->
+                    combine(
+                        participant.combinedDisplayName,
+                        participant.combinedDisplayImage.map { ImmutableUri(it ?: Uri.EMPTY) }
+                    ) { name, image -> Triple(participant.userId, name ?: "", image) }
+                }
                 .merge()
-                .transform { (messageId, messageState) ->
-                    states[messageId] = messageState.mapToUiState()
-                    if (messages.size == states.keys.size) {
-                        emit(ImmutableMap(states))
+                .transform { (userId, name, image) ->
+                    users[userId] = ParticipantDetails(name, image)
+                    val values = users.values.toList()
+                    if (values.size == participantsList.size) {
+                        emit(ImmutableMap(users))
                     }
                 }
-        }
-    }
+        }.distinctUntilChanged()
 
     fun Message.toUiMessage(): com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message {
         val text = (content as? Message.Content.Text)?.message ?: ""
         val time = TimestampUtils.parseTime(creationDate.time)
 
-        return if (this is com.kaleyra.collaboration_suite.conversation.OtherMessage) {
-            com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.OtherMessage(id, text, time)
-        } else {
-            com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.MyMessage(id, text, time)
-        }
+        return if (this is com.kaleyra.collaboration_suite.conversation.OtherMessage)
+            com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.OtherMessage(creator.userId, id, text, time)
+        else
+            com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.MyMessage(creator.userId, id, text, time, state.mapToUiState())
     }
 
-    private fun Message.State.mapToUiState(): com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State =
-        when (this) {
-            is Message.State.Sending -> com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Sending
-            is Message.State.Sent -> com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Sent
-            else -> com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Read
-        }
-
-    fun Flow<MessagesUI>.mapToConversationItems(
-        firstUnreadMessageId: String?,
-        shouldShowUnreadHeader: Flow<Boolean>
-    ): Flow<List<ConversationElement>> {
-        return combine(map { it.list }, shouldShowUnreadHeader) { messages, unreadHeader ->
-            val items = mutableListOf<ConversationElement>()
-            messages.forEachIndexed { index, message ->
-                val previousMessage = messages.getOrNull(index + 1)
-
-                items.add(ConversationElement.Message(message.toUiMessage()))
-
-                if (unreadHeader && message.id == firstUnreadMessageId) {
-                    items.add(ConversationElement.UnreadMessages)
-                }
-
-                if (previousMessage == null || !TimestampUtils.isSameDay(message.creationDate.time, previousMessage.creationDate.time)) {
-                    items.add(ConversationElement.Day(message.creationDate.time))
-                }
+    private fun Flow<Message.State>.mapToUiState(): Flow<com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State> =
+        map { state ->
+            when (state) {
+                is Message.State.Sending -> com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Sending
+                is Message.State.Sent -> com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Sent
+                else -> com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Read
             }
-            items
         }
+
+    fun List<Message>.mapToConversationItems(unreadMessageId: String? = null, latestMessage: Message? = null): List<ConversationElement> {
+        val items = mutableListOf<ConversationElement>()
+
+        forEachIndexed { index, message ->
+            val previousMessage = getOrNull(index + 1) ?: latestMessage
+            val nextMessage = getOrNull(index - 1)
+            val isMessageGroupClosed = nextMessage?.creator?.userId != message.creator.userId
+
+            val messageElement = ConversationElement.Message(message = message.toUiMessage(), isMessageGroupClosed = isMessageGroupClosed)
+            items.add(messageElement)
+
+            if (unreadMessageId != null && message.id == unreadMessageId) {
+                items.add(ConversationElement.UnreadMessages)
+            }
+
+            if (previousMessage == null || !TimestampUtils.isSameDay(message.creationDate.time, previousMessage.creationDate.time)) {
+                items.add(ConversationElement.Day(message.creationDate.time))
+            }
+
+        }
+
+        return items
     }
 
     suspend fun findFirstUnreadMessageId(
