@@ -15,9 +15,11 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ChatActionsMapper.ma
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ConversationStateMapper.toChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.findFirstUnreadMessageId
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.mapToConversationItems
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.toChatParticipantUserDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
@@ -28,7 +30,9 @@ import kotlinx.coroutines.launch
 class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure),
     UserMessageViewModel {
 
-    private val showUnreadHeader = MutableStateFlow(true)
+    private var latestMessage: Message? = null
+
+    private val firstUnreadMessageId = MutableStateFlow<String?>(null)
 
     private val isFetching = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
 
@@ -53,6 +57,13 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
             .onEach { info -> _uiState.update { it.copy(info = info) } }
             .launchIn(viewModelScope)
 
+        participants
+            .toChatParticipantUserDetails()
+            .onEach { participantsDetails ->
+                _uiState.update { it.copy(conversationState = it.conversationState.copy(participantsDetails = participantsDetails)) }
+            }
+            .launchIn(viewModelScope)
+
         actions
             .map { it.mapToChatActions(call = { pt -> call(pt) }) }
             .onEach { actions -> _uiState.update { it.copy(actions = ImmutableSet(actions)) } }
@@ -65,15 +76,24 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
 
         viewModelScope.launch {
             val chat = chat.first()
-            val firstUnreadMessageId = findFirstUnreadMessageId(chat.messages.first(), chat::fetch)
-            messages.mapToConversationItems(firstUnreadMessageId, showUnreadHeader)
-                .collect { items ->
+            val unreadMessageId = findFirstUnreadMessageId(chat.messages.first(), chat::fetch).also {
+                firstUnreadMessageId.value = it
+            }
+
+            this@PhoneChatViewModel.messages
+                .onEach { messagesUI ->
+                    val messages = messagesUI.list
+                    val newMessages = latestMessage?.let { message -> messages.takeWhile { it.id != message.id } } ?: messages
+                    val newItems = newMessages.mapToConversationItems(unreadMessageId, latestMessage)
+                    latestMessage = messages.firstOrNull()
                     _uiState.update {
-                        val conversationState =
-                            it.conversationState.copy(conversationElements = ImmutableList(items))
-                        it.copy(conversationState = conversationState)
+                        val conversationState = it.conversationState
+                        val currentItems = conversationState.conversationElements?.value ?: emptyList()
+                        val newConversationState = conversationState.copy(conversationElements = ImmutableList(newItems + currentItems))
+                        it.copy(conversationState = newConversationState)
                     }
                 }
+                .launchIn(this)
         }
 
         chat.flatMapLatest { it.unreadMessagesCount }.onEach { count ->
@@ -94,7 +114,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
     fun sendMessage(text: String) {
         val chat = chat.getValue() ?: return
         chat.add(Message.Content.Text(text))
-        showUnreadHeader.value = false
+        firstUnreadMessageId.value = null
     }
 
     fun typing() {
@@ -105,7 +125,15 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
     fun fetchMessages() {
         viewModelScope.launch {
             isFetching.emit(true)
-            chat.first().fetch(FETCH_COUNT)
+            val messages = chat.first().fetch(FETCH_COUNT).getOrNull()
+            val fetchedItems = messages?.list?.mapToConversationItems(firstUnreadMessageId.value) ?: emptyList()
+
+            _uiState.update {
+                val currentItems = it.conversationState.conversationElements?.value ?: emptyList()
+                val newItems = currentItems + fetchedItems
+                val conversationState = it.conversationState.copy(conversationElements = ImmutableList(newItems))
+                it.copy(conversationState = conversationState)
+            }
             isFetching.emit(false)
         }
     }
