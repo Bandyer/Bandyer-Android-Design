@@ -8,9 +8,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.Immu
 @Immutable
 data class ConversationUiState(
     val conversationElements: ImmutableList<ConversationElement>? = null,
-    val participantsDetails: ImmutableMap<String, ParticipantDetails>,
-    val myMessagesStates: ImmutableMap<String, Message.State>,
-    val isGroupChat: Boolean = true,
+    val participantsDetails: ImmutableMap<String, ParticipantDetails> = ImmutableMap(),
     val isFetching: Boolean = false,
     val unreadMessagesCount: Int = 0
 )
