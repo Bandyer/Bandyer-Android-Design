@@ -238,3 +238,38 @@ private fun contentDescriptionFor(state: Message.State): String =
             else -> R.string.kaleyra_chat_msg_status_seen
         }
     )
+
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+internal fun OtherMessageItemPreview() = KaleyraTheme {
+    Surface {
+        OtherMessageItem(
+             message = Message.OtherMessage(
+                    "userId8",
+                    "id8",
+                    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "15:01"
+                ),
+            isMessageGroupClosed = true,
+            participantDetails = null
+        )
+    }
+}
+
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+internal fun MyMessageItemPreview() = KaleyraTheme {
+    Surface {
+        MyMessageItem(
+            message = Message.MyMessage(
+                    "id8",
+                    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "15:01",
+                    MutableStateFlow(Message.State.Read)
+            ),
+            isMessageGroupClosed = true
+        )
+    }
+}
