@@ -1,27 +1,37 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.LocalContentColor
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.DayHeaderItem
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.MessageItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.MyMessageItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.NewMessagesHeaderItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.OtherMessageItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
 internal const val MessageStateTag = "MessageStateTag"
 internal const val ConversationContentTag = "ConversationContentTag"
@@ -47,18 +57,29 @@ internal fun ConversationContent(
     ) {
         items(items.value, key = { it.id }, contentType = { it::class.java }) { item ->
             when (item) {
-                is ConversationElement.Message ->
-                    MessageItem(
-                        messageElement = item,
-                        participantDetails = participantsDetails[item.message.userId],
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                is ConversationElement.Message -> {
+                    when (val message = item.message) {
+                        is Message.OtherMessage -> OtherMessageItem(
+                            message = message,
+                            isMessageGroupClosed = item.isMessageGroupClosed,
+                            participantDetails = participantsDetails[message.userId],
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        is Message.MyMessage -> MyMessageItem(
+                            message = message,
+                            isMessageGroupClosed = item.isMessageGroupClosed,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+
                 is ConversationElement.Day -> DayHeaderItem(
                     timestamp = item.timestamp,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp)
                 )
+
                 is ConversationElement.UnreadMessages -> NewMessagesHeaderItem(
                     modifier = Modifier
                         .fillMaxWidth()

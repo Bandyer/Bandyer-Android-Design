@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.Flow
 @Stable
 sealed interface Message {
 
-    val userId: String
-
     val id: String
 
     val text: String
@@ -16,14 +14,13 @@ sealed interface Message {
     val time: String
 
     data class OtherMessage(
-        override val userId: String,
         override val id: String,
         override val text: String,
-        override val time: String
+        override val time: String,
+        val userId: String
     ) : Message
 
     data class MyMessage(
-        override val userId: String,
         override val id: String,
         override val text: String,
         override val time: String,

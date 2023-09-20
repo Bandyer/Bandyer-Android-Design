@@ -1,5 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item
 
+import android.content.res.Configuration
+import android.net.Uri
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +20,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
@@ -35,9 +38,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter.SymbolAnnotationType
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter.messageFormatter
@@ -45,25 +50,20 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Conversa
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.MessageStateTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ChatScreen
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.mockChatUiState
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.view.Avatar
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
+import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
+import kotlinx.coroutines.flow.MutableStateFlow
 
 private val LastOtherBubbleShape = RoundedCornerShape(12.dp, 24.dp, 24.dp, 0.dp)
 private val OtherBubbleShape = RoundedCornerShape(12.dp, 24.dp, 24.dp, 12.dp)
 private val LastMyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
 private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 12.dp, 24.dp)
-
-@Composable
-internal fun MessageItem(
-    messageElement: ConversationElement.Message,
-    participantDetails: ParticipantDetails?,
-    modifier: Modifier = Modifier
-) {
-    when (val message = messageElement.message) {
-        is Message.OtherMessage -> OtherMessageItem(message, messageElement.isMessageGroupClosed, participantDetails, modifier)
-        is Message.MyMessage -> MyMessageItem(message, messageElement.isMessageGroupClosed, modifier)
-    }
-}
 
 @Composable
 internal fun OtherMessageItem(

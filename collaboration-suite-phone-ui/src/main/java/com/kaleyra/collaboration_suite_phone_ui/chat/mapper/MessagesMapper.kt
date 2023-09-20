@@ -52,7 +52,7 @@ object MessagesMapper {
         return if (this is com.kaleyra.collaboration_suite.conversation.OtherMessage)
             com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.OtherMessage(creator.userId, id, text, time)
         else
-            com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.MyMessage(creator.userId, id, text, time, state.mapToUiState())
+            com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.MyMessage(id, text, time, state.mapToUiState())
     }
 
     private fun Flow<Message.State>.mapToUiState(): Flow<com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State> =
