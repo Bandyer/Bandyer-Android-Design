@@ -201,7 +201,7 @@ internal fun NoMessagesLabel(modifier: Modifier = Modifier) {
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun LoadingMessagesPreview() = KaleyraTheme {
+internal fun LoadingConversationComponentPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         ConversationComponent(
             uiState = ConversationUiState(),
@@ -217,7 +217,7 @@ internal fun LoadingMessagesPreview() = KaleyraTheme {
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun EmptyMessagesPreview() = KaleyraTheme {
+internal fun EmptyConversationComponentPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         ConversationComponent(
             uiState = ConversationUiState(conversationElements = ImmutableList(listOf())),
@@ -233,7 +233,7 @@ internal fun EmptyMessagesPreview() = KaleyraTheme {
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun MessagesPreview() = KaleyraTheme {
+internal fun ConversationComponentPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         ConversationComponent(
             uiState = ConversationUiState(conversationElements = mockConversationElements),

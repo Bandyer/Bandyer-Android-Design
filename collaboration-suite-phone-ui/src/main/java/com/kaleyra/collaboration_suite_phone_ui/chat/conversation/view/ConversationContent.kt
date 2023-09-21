@@ -3,7 +3,6 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -51,7 +50,7 @@ internal fun ConversationContent(
         reverseLayout = true,
         state = scrollState,
         contentPadding = PaddingValues(all = ConversationContentPadding),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .testTag(ConversationContentTag)
@@ -63,14 +62,14 @@ internal fun ConversationContent(
                     when (val message = item.message) {
                         is Message.OtherMessage -> OtherMessageItem(
                             message = message,
-                            isMessageGroupClosed = item.isMessageGroupClosed,
+                            isLastChainMessage = item.isLastChainMessage,
                             participantDetails = participantsDetails[message.userId],
                             modifier = Modifier.fillMaxWidth()
                         )
 
                         is Message.MyMessage -> MyMessageItem(
                             message = message,
-                            isMessageGroupClosed = item.isMessageGroupClosed,
+                            isLastChainMessage = item.isLastChainMessage,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
@@ -80,13 +79,13 @@ internal fun ConversationContent(
                     timestamp = item.timestamp,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+                        .padding(bottom = 6.dp)
                 )
 
                 is ConversationElement.UnreadMessages -> NewMessagesHeaderItem(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+                        .padding(bottom = 6.dp)
                 )
             }
         }

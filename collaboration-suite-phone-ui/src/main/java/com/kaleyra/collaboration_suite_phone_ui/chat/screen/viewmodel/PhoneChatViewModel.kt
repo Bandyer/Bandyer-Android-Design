@@ -15,11 +15,10 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ChatActionsMapper.ma
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ConversationStateMapper.toChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.findFirstUnreadMessageId
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.mapToConversationItems
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.toChatParticipantUserDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatInfo
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatParticipantUserDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
-import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider

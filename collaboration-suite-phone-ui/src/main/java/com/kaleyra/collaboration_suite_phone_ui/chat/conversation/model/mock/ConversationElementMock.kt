@@ -9,12 +9,21 @@ val mockConversationElements = ImmutableList(
     listOf(
         ConversationElement.Message(
             Message.OtherMessage(
+                "id9",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "15:02",
+                "userId8"
+            ),
+            isLastChainMessage = true
+        ),
+        ConversationElement.Message(
+            Message.OtherMessage(
                 "id8",
                 "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                 "15:01",
-                "userId8"
+                "userId7"
             ),
-            isMessageGroupClosed = true
+            isLastChainMessage = true
         ),
         ConversationElement.Message(
             Message.OtherMessage(
@@ -23,7 +32,7 @@ val mockConversationElements = ImmutableList(
                 "15:00",
                 "userId7"
             ),
-            isMessageGroupClosed = true
+            isLastChainMessage = false
         ),
         ConversationElement.UnreadMessages,
         ConversationElement.Message(
@@ -33,7 +42,7 @@ val mockConversationElements = ImmutableList(
                 "13:18",
                 MutableStateFlow(Message.State.Sent)
             ),
-            isMessageGroupClosed = true
+            isLastChainMessage = true
         ),
         ConversationElement.Message(
             Message.OtherMessage(
@@ -42,7 +51,7 @@ val mockConversationElements = ImmutableList(
                 "13:15",
                 "userId5"
             ),
-            isMessageGroupClosed = true
+            isLastChainMessage = true
         ),
         ConversationElement.Message(
             Message.OtherMessage(
@@ -51,7 +60,7 @@ val mockConversationElements = ImmutableList(
                 "13:12",
                 "userId4"
             ),
-            isMessageGroupClosed = true
+            isLastChainMessage = true
         ),
         ConversationElement.Message(
             Message.MyMessage(
@@ -60,7 +69,7 @@ val mockConversationElements = ImmutableList(
                 "13:00",
                 MutableStateFlow(Message.State.Read)
             ),
-            isMessageGroupClosed = true
+            isLastChainMessage = true
         ),
         ConversationElement.Message(
             Message.MyMessage(
@@ -69,9 +78,9 @@ val mockConversationElements = ImmutableList(
                 "11:55",
                 MutableStateFlow(Message.State.Read)
             ),
-            isMessageGroupClosed = true
+            isLastChainMessage = false
         ),
-        ConversationElement.Message(Message.OtherMessage("id1", "Hello there!", "11:45", "userId1"), isMessageGroupClosed = true),
+        ConversationElement.Message(Message.OtherMessage("id1", "Hello there!", "11:45", "userId1"), isLastChainMessage = true),
         ConversationElement.Day(92209343)
     )
 )

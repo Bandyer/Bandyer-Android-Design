@@ -159,7 +159,7 @@ class ConversationComponentTest {
     @Test
     fun participantDetailsProvided_latestGroupMessageOfOtherUser_avatarIsDisplayed() {
         setContent(ConversationUiState(
-            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage, isMessageGroupClosed = true))),
+            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage, isLastChainMessage = true))),
             participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("username", ImmutableUri())))
         ))
         composeTestRule.findAvatar().assertIsDisplayed()
@@ -188,7 +188,7 @@ class ConversationComponentTest {
     @Test
     fun participantDetailsProvided_latestGroupMessageOfOtherUser_bubbleIsSpacedFromAvatar() {
         setContent(ConversationUiState(
-            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage, isMessageGroupClosed = true))),
+            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage, isLastChainMessage = true))),
             participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("username", ImmutableUri())))
         ))
         composeTestRule.onNodeWithTag(BubbleTestTag).assertLeftPositionInRootIsEqualTo(
@@ -199,7 +199,7 @@ class ConversationComponentTest {
     @Test
     fun participantDetailsNotProvided_otherUserMessage_bubbleIsNotSpaced() {
         setContent(ConversationUiState(
-            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage, isMessageGroupClosed = true))),
+            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage, isLastChainMessage = true))),
             participantsDetails = ImmutableMap()
         ))
         composeTestRule.onNodeWithTag(BubbleTestTag).assertLeftPositionInRootIsEqualTo(

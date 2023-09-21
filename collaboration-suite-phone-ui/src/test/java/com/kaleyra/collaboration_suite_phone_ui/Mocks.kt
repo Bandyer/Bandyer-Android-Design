@@ -24,17 +24,32 @@ object Mocks {
     val callState = MutableStateFlow<Call.State>(Call.State.Connected)
     val conversationState = MutableStateFlow<Conversation.State>(Conversation.State.Connected)
     val otherParticipantState = MutableStateFlow<ChatParticipant.State>(ChatParticipant.State.Invited)
+    val myParticipantState = MutableStateFlow<ChatParticipant.State>(ChatParticipant.State.Invited)
     val otherParticipantEvents =
+        MutableStateFlow<ChatParticipant.Event>(ChatParticipant.Event.Typing.Idle)
+    val myParticipantEvents =
         MutableStateFlow<ChatParticipant.Event>(ChatParticipant.Event.Typing.Idle)
 
     val now: Instant = Instant.now()
     val yesterday: Instant = now.minus(1, ChronoUnit.DAYS)
 
+    val myParticipantMock = spyk(
+        object : ChatParticipant.Me {
+            override val state: StateFlow<ChatParticipant.State> = myParticipantState
+            override val events: StateFlow<ChatParticipant.Event> = myParticipantEvents
+            override val userId: String = "myUserId"
+            override val restrictions: Contact.Restrictions = mockk()
+            override val displayName: StateFlow<String?> = MutableStateFlow(null)
+            override val displayImage: StateFlow<Uri?> = MutableStateFlow(null)
+            override fun typing() = Unit
+        }
+    )
+
     val otherParticipantMock = spyk(
         object : ChatParticipant {
             override val state: StateFlow<ChatParticipant.State> = otherParticipantState
             override val events: StateFlow<ChatParticipant.Event> = otherParticipantEvents
-            override val userId: String = "userId"
+            override val userId: String = "otherUserId"
             override val restrictions: Contact.Restrictions = mockk()
             override val displayName: StateFlow<String?> = MutableStateFlow(null)
             override val displayImage: StateFlow<Uri?> = MutableStateFlow(null)
@@ -42,7 +57,7 @@ object Mocks {
     )
 
     val chatParticipantsMock = object : ChatParticipants {
-        override val me: ChatParticipant.Me = mockk(relaxed = true)
+        override val me: ChatParticipant.Me = myParticipantMock
         override val others: List<ChatParticipant> = listOf(otherParticipantMock)
         override val list: List<ChatParticipant> = others + me
         override fun creator(): ChatParticipant? = null
@@ -50,7 +65,7 @@ object Mocks {
 
     val myMessageMock = object : Message {
         override val id: String = "myId"
-        override val creator: ChatParticipant = mockk()
+        override val creator: ChatParticipant = myParticipantMock
         override val creationDate: Date = Date(now.toEpochMilli())
         override val content: Message.Content = Message.Content.Text("text")
         override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Read)
@@ -58,7 +73,7 @@ object Mocks {
 
     val otherReadMessageMock = object : OtherMessage {
         override val id: String = "otherId0"
-        override val creator: ChatParticipant = mockk()
+        override val creator: ChatParticipant = otherParticipantMock
         override val creationDate: Date = Date(now.toEpochMilli())
         override val content: Message.Content = Message.Content.Text("otherText")
         override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Read)
@@ -68,7 +83,7 @@ object Mocks {
     val otherUnreadMessageMock1 = spyk(
         object : OtherMessage {
             override val id: String = "otherId1"
-            override val creator: ChatParticipant = mockk()
+            override val creator: ChatParticipant = otherParticipantMock
             override val creationDate: Date = Date(yesterday.toEpochMilli())
             override val content: Message.Content = Message.Content.Text("otherText")
             override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Received)
@@ -79,9 +94,9 @@ object Mocks {
     val otherUnreadMessageMock2 = spyk(
         object : OtherMessage {
             override val id: String = "otherId2"
-            override val creator: ChatParticipant = mockk()
+            override val creator: ChatParticipant = otherParticipantMock
             override val creationDate: Date = Date(now.toEpochMilli())
-            override val content: Message.Content = mockk()
+            override val content: Message.Content =  Message.Content.Text("otherText2")
             override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Received)
             override fun markAsRead() = Unit
         }

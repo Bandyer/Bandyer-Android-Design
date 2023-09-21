@@ -65,15 +65,15 @@ const val BubbleTestTag = "BubbleTestTag"
 @Composable
 internal fun OtherMessageItem(
     message: Message.OtherMessage,
-    isMessageGroupClosed: Boolean,
+    isLastChainMessage: Boolean,
     participantDetails: ParticipantDetails?,
     modifier: Modifier = Modifier
 ) {
-    MessageRow(isMessageGroupClosed = isMessageGroupClosed, horizontalArrangement = Arrangement.Start, modifier = modifier) {
+    MessageRow(isLastChainMessage = isLastChainMessage, horizontalArrangement = Arrangement.Start, modifier = modifier) {
         Row(verticalAlignment = Alignment.Bottom) {
             val (username, uri) = participantDetails ?: (null to null)
             when {
-                isMessageGroupClosed && uri != null -> {
+                isLastChainMessage && uri != null -> {
                     Avatar(
                         uri = uri,
                         contentDescription = stringResource(id = R.string.kaleyra_avatar),
@@ -92,7 +92,7 @@ internal fun OtherMessageItem(
                 messageTime = message.time,
                 username = username,
                 messageState = null,
-                shape = if (isMessageGroupClosed) LastOtherBubbleShape else OtherBubbleShape,
+                shape = if (isLastChainMessage) LastOtherBubbleShape else OtherBubbleShape,
                 backgroundColor = MaterialTheme.colors.primaryVariant
             )
         }
@@ -102,17 +102,17 @@ internal fun OtherMessageItem(
 @Composable
 internal fun MyMessageItem(
     message: Message.MyMessage,
-    isMessageGroupClosed: Boolean,
+    isLastChainMessage: Boolean,
     modifier: Modifier = Modifier
 ) {
     val messageState by message.state.collectAsStateWithLifecycle(initialValue = Message.State.Read)
-    MessageRow(isMessageGroupClosed = isMessageGroupClosed, horizontalArrangement = Arrangement.End, modifier = modifier) {
+    MessageRow(isLastChainMessage = isLastChainMessage, horizontalArrangement = Arrangement.End, modifier = modifier) {
         Bubble(
             messageText = message.text,
             messageTime = message.time,
             username = null,
             messageState = messageState,
-            shape = if (isMessageGroupClosed) LastMyBubbleShape else MyBubbleShape,
+            shape = if (isLastChainMessage) LastMyBubbleShape else MyBubbleShape,
             backgroundColor = MaterialTheme.colors.secondary
         )
     }
@@ -120,7 +120,7 @@ internal fun MyMessageItem(
 
 @Composable
 internal fun MessageRow(
-    isMessageGroupClosed: Boolean,
+    isLastChainMessage: Boolean,
     horizontalArrangement: Arrangement.Horizontal,
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit
@@ -131,7 +131,7 @@ internal fun MessageRow(
         modifier = Modifier
             .focusable(true, interactionSource)
             .highlightOnFocus(interactionSource)
-            .padding(bottom = if (isMessageGroupClosed) 4.dp else 0.dp)
+            .padding(bottom = if (isLastChainMessage) 6.dp else 0.dp)
             .then(modifier),
         horizontalArrangement = horizontalArrangement,
         content = content
@@ -250,7 +250,7 @@ internal fun OtherMessageItemPreview() = KaleyraTheme {
                     "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                     "15:01"
                 ),
-            isMessageGroupClosed = true,
+            isLastChainMessage = true,
             participantDetails = null
         )
     }
@@ -268,7 +268,7 @@ internal fun MyMessageItemPreview() = KaleyraTheme {
                     "15:01",
                     MutableStateFlow(Message.State.Read)
             ),
-            isMessageGroupClosed = true
+            isLastChainMessage = true
         )
     }
 }

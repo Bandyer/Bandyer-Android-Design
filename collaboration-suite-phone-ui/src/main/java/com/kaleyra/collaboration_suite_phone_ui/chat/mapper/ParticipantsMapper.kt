@@ -9,14 +9,38 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.transform
 
 object ParticipantsMapper {
+
+    fun Flow<ChatParticipants>.toChatParticipantUserDetails(): Flow<ImmutableMap<String, ParticipantDetails>> =
+        flatMapLatest { chatParticipants ->
+            val participantsList = chatParticipants.list
+            val users = mutableMapOf<String, ParticipantDetails>()
+            participantsList
+                .map { participant ->
+                    combine(
+                        participant.combinedDisplayName,
+                        participant.combinedDisplayImage.map { ImmutableUri(it ?: Uri.EMPTY) }
+                    ) { name, image -> Triple(participant.userId, name ?: "", image) }
+                }
+                .merge()
+                .transform { (userId, name, image) ->
+                    users[userId] = ParticipantDetails(name, image)
+                    val values = users.values.toList()
+                    if (values.size == participantsList.size) {
+                        emit(ImmutableMap(users))
+                    }
+                }
+        }.distinctUntilChanged()
 
     fun Flow<Chat>.isGroupCall(companyId: Flow<String>): Flow<Boolean> =
         combine(this.flatMapLatest { it.participants }, companyId) { participants, companyId ->

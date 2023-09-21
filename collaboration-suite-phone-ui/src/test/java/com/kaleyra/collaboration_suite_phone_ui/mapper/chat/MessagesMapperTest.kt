@@ -18,9 +18,7 @@ package com.kaleyra.collaboration_suite_phone_ui.mapper.chat
 import com.kaleyra.collaboration_suite.conversation.ChatParticipant
 import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conversation.Messages
-import com.kaleyra.collaboration_suite.conversation.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.messagesUIMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.myMessageMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.now
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherParticipantEvents
@@ -44,17 +42,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import java.util.Date
 
 class MessagesMapperTest {
-
-//    val messages = listOf(otherUnreadMessageMock1) + myMessageMock
-
-    @Before
-    fun setUp() {
-    }
 
     @After
     fun tearDown() {
@@ -70,10 +61,10 @@ class MessagesMapperTest {
         }
         val expected =
             com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.OtherMessage(
-                message.creator.userId,
-                message.id,
-                (message.content as? Message.Content.Text)?.message ?: "",
-                TimestampUtils.parseTime(message.creationDate.time)
+                userId = message.creator.userId,
+                id = message.id,
+                text = (message.content as? Message.Content.Text)?.message ?: "",
+                time = TimestampUtils.parseTime(message.creationDate.time)
             )
         val result = message.toUiMessage()
         assertEquals(expected, result)
@@ -144,51 +135,73 @@ class MessagesMapperTest {
         assertEquals(expected, result)
     }
 
-//    @Test
-//    fun emptyMessagesList_mapToConversationItems_emptyMessageItems() = runTest {
-//        every { messagesUIMock.list } returns listOf()
-//        val result = messages.mapToConversationItems(
-//            unreadMessageId = "",
-//            shouldShowUnreadHeader = MutableStateFlow(false)
-//        ).first()
-//        assert(result.isEmpty())
-//    }
+    @Test
+    fun emptyMessagesList_mapToConversationItems_emptyMessageItems() = runTest {
+        val result = listOf<Message>().mapToConversationItems()
+        assert(result.isEmpty())
+    }
 
-//    @Test
-//    fun oneMessage_mapToConversationItems_dayAndMessageItems() = runTest {
-//        every { messagesUIMock.list } returns listOf(myMessageMock)
-//        val result = flowOf(messagesUIMock).mapToConversationItems(
-//            firstUnreadMessageId = "",
-//            shouldShowUnreadHeader = MutableStateFlow(false)
-//        ).first()
-//        assert(isSameMessageItem(result[0], ConversationElement.Message(myMessageMock.toUiMessage())))
-//        assertEquals(result[1], ConversationElement.Day(now.toEpochMilli()))
-//    }
+    @Test
+    fun `message and the last mapped message is null, new day and message items`() = runTest {
+        val result = listOf(myMessageMock).mapToConversationItems()
+        assert(isSameMessageItem(result[0], ConversationElement.Message(myMessageMock.toUiMessage())))
+        assertEquals(result[1], ConversationElement.Day(now.toEpochMilli()))
+    }
 
-//    @Test
-//    fun twoMessageOnDifferentDays_mapToConversationItems_twoDayAndMessageItems() = runTest {
-//        val result = flowOf(messagesUIMock).mapToConversationItems(
-//            firstUnreadMessageId = "",
-//            shouldShowUnreadHeader = MutableStateFlow(false)
-//        ).first()
-//        assert(isSameMessageItem(result[0], ConversationElement.Message(otherUnreadMessageMock1.toUiMessage())))
-//        assertEquals(result[1], ConversationElement.Day(yesterday.toEpochMilli()))
-//        assert(isSameMessageItem(result[2], ConversationElement.Message(myMessageMock.toUiMessage())))
-//        assertEquals(result[3], ConversationElement.Day(now.toEpochMilli()))
-//    }
+    @Test
+    fun `message is in a different day with respect to the last mapped message, new day and message items`() = runTest {
+        val lastMappedMessage = object : Message {
+            override val id: String = "myId2"
+            override val creator: ChatParticipant = mockk(relaxed = true)
+            override val creationDate: Date = Date(yesterday.toEpochMilli())
+            override val content: Message.Content = Message.Content.Text("text")
+            override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Read)
+        }
+        val result = listOf(myMessageMock).mapToConversationItems(lastMappedMessage = lastMappedMessage)
+        assert(isSameMessageItem(result[0], ConversationElement.Message(myMessageMock.toUiMessage())))
+        assertEquals(result[1], ConversationElement.Day(now.toEpochMilli()))
+    }
 
-//    @Test
-//    fun oneUnreadMessage_mapToConversationItems_unreadLabelShown() = runTest {
-//        val result = flowOf(messagesUIMock).mapToConversationItems(
-//            firstUnreadMessageId = otherUnreadMessageMock1.id,
-//            shouldShowUnreadHeader = MutableStateFlow(true)
-//        ).first()
-//        assert(isSameMessageItem(result[0], ConversationElement.Message(otherUnreadMessageMock1.toUiMessage())))
-//        assertEquals(result[1].javaClass, ConversationElement.UnreadMessages.javaClass)
-//        assertEquals(result[2], ConversationElement.Day(yesterday.toEpochMilli()))
-//        assert(isSameMessageItem(result[3], ConversationElement.Message(myMessageMock.toUiMessage())))
-//        assertEquals(result[4], ConversationElement.Day(now.toEpochMilli()))
-//    }
+    @Test
+    fun `message is in the same day with respect to the last mapped message, only new message item`() = runTest {
+        val lastMappedMessage = object : Message {
+            override val id: String = "myId2"
+            override val creator: ChatParticipant = mockk(relaxed = true)
+            override val creationDate: Date = Date(now.toEpochMilli())
+            override val content: Message.Content = Message.Content.Text("text")
+            override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Read)
+        }
+        val result = listOf(myMessageMock).mapToConversationItems(lastMappedMessage = lastMappedMessage)
+        assert(isSameMessageItem(result[0], ConversationElement.Message(myMessageMock.toUiMessage())))
+        assertEquals(1, result.size)
+    }
+
+    @Test
+    fun `test last user message of the chain flag in conversation message element`() = runTest {
+        val result = listOf(otherReadMessageMock, otherUnreadMessageMock2, myMessageMock).mapToConversationItems()
+        assert(isSameMessageItem(result[0], ConversationElement.Message(otherReadMessageMock.toUiMessage(), true)))
+        assert(isSameMessageItem(result[1], ConversationElement.Message(otherUnreadMessageMock2.toUiMessage(), false)))
+        assert(isSameMessageItem(result[2], ConversationElement.Message(myMessageMock.toUiMessage(), true)))
+    }
+
+    @Test
+    fun twoMessageOnDifferentDays_mapToConversationItems_twoDayAndMessageItems() = runTest {
+        val result = listOf(otherUnreadMessageMock1, myMessageMock).mapToConversationItems()
+        assert(isSameMessageItem(result[0], ConversationElement.Message(otherUnreadMessageMock1.toUiMessage())))
+        assertEquals(result[1], ConversationElement.Day(yesterday.toEpochMilli()))
+        assert(isSameMessageItem(result[2], ConversationElement.Message(myMessageMock.toUiMessage())))
+        assertEquals(result[3], ConversationElement.Day(now.toEpochMilli()))
+    }
+
+    @Test
+    fun oneUnreadMessage_mapToConversationItems_unreadLabelShown() = runTest {
+        val result = listOf(otherUnreadMessageMock1, myMessageMock).mapToConversationItems(firstUnreadMessageId = otherUnreadMessageMock1.id,)
+        assert(isSameMessageItem(result[0], ConversationElement.Message(otherUnreadMessageMock1.toUiMessage())))
+        assertEquals(result[1].javaClass, ConversationElement.UnreadMessages.javaClass)
+        assertEquals(result[2], ConversationElement.Day(yesterday.toEpochMilli()))
+        assert(isSameMessageItem(result[3], ConversationElement.Message(myMessageMock.toUiMessage())))
+        assertEquals(result[4], ConversationElement.Day(now.toEpochMilli()))
+    }
 
     @Test
     fun allMessagesRead_findFirstUnreadMessage_null() = runTest {

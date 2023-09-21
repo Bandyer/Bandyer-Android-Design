@@ -29,6 +29,8 @@ sealed interface Message {
 
     @Immutable
     sealed class State {
+        object Created : State()
+        object Received : State()
         object Sending : State()
         object Sent : State()
         object Read : State()
