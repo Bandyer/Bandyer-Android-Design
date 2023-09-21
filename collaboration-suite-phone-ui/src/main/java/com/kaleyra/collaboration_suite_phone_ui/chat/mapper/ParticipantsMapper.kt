@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.mapper
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conversation.Chat
 import com.kaleyra.collaboration_suite.conversation.ChatParticipant
 import com.kaleyra.collaboration_suite.conversation.ChatParticipants
@@ -15,17 +14,19 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.transform
 
 object ParticipantsMapper {
 
-    fun Flow<ChatParticipants>.toChatParticipantUserDetails(): Flow<ImmutableMap<String, ParticipantDetails>> =
+    fun Flow<ChatParticipants>.toChatParticipantDetails(): Flow<ImmutableMap<String, ParticipantDetails>> =
         flatMapLatest { chatParticipants ->
             val participantsList = chatParticipants.list
             val users = mutableMapOf<String, ParticipantDetails>()
-            participantsList
+            if (participantsList.isEmpty()) flowOf(ImmutableMap())
+            else participantsList
                 .map { participant ->
                     combine(
                         participant.combinedDisplayName,
@@ -42,10 +43,8 @@ object ParticipantsMapper {
                 }
         }.distinctUntilChanged()
 
-    fun Flow<Chat>.isGroupCall(companyId: Flow<String>): Flow<Boolean> =
-        combine(this.flatMapLatest { it.participants }, companyId) { participants, companyId ->
-            participants.others.filter { it.userId != companyId }.size > 1
-        }.distinctUntilChanged()
+    fun Flow<ChatParticipants>.isGroupChat(): Flow<Boolean> =
+       map { it.others.size > 1 }.distinctUntilChanged()
 
     fun Flow<ChatParticipants>.toChatInfo(): Flow<ChatInfo> {
         val participant = otherParticipant()

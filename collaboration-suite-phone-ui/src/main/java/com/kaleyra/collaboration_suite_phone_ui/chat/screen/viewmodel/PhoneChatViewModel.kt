@@ -16,7 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ConversationStateMap
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.findFirstUnreadMessageId
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.mapToConversationItems
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatInfo
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatParticipantUserDetails
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
@@ -57,7 +57,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
             .launchIn(viewModelScope)
 
         participants
-            .toChatParticipantUserDetails()
+            .toChatParticipantDetails()
             .onEach { participantsDetails ->
                 _uiState.update { it.copy(conversationState = it.conversationState.copy(participantsDetails = participantsDetails)) }
             }
