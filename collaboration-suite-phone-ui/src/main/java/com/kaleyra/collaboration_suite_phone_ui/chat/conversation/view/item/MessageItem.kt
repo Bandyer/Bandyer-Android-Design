@@ -65,6 +65,7 @@ const val BubbleTestTag = "BubbleTestTag"
 @Composable
 internal fun OtherMessageItem(
     message: Message.OtherMessage,
+    isFirstChatMessage: Boolean,
     isLastChainMessage: Boolean,
     participantDetails: ParticipantDetails?,
     modifier: Modifier = Modifier
@@ -90,7 +91,7 @@ internal fun OtherMessageItem(
             Bubble(
                 messageText = message.text,
                 messageTime = message.time,
-                username = username,
+                username = if (isFirstChatMessage) username else null,
                 messageState = null,
                 shape = if (isLastChainMessage) LastOtherBubbleShape else OtherBubbleShape,
                 backgroundColor = MaterialTheme.colors.primaryVariant
@@ -250,6 +251,7 @@ internal fun OtherMessageItemPreview() = KaleyraTheme {
                     "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                     "15:01"
                 ),
+            isFirstChatMessage = true,
             isLastChainMessage = true,
             participantDetails = null
         )

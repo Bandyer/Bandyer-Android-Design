@@ -41,9 +41,14 @@ object MessagesMapper {
         forEachIndexed { index, message ->
             val previousMessage = getOrNull(index + 1) ?: lastMappedMessage
             val nextMessage = getOrNull(index - 1)
-            val isMessageGroupClosed = nextMessage?.creator?.userId != message.creator.userId
+            val isFirstChainMessage = previousMessage?.creator?.userId != message.creator.userId
+            val isLastChainMessage = nextMessage?.creator?.userId != message.creator.userId
 
-            val messageElement = ConversationElement.Message(message = message.toUiMessage(), isLastChainMessage = isMessageGroupClosed)
+            val messageElement = ConversationElement.Message(
+                message = message.toUiMessage(),
+                isFirstChainMessage = isFirstChainMessage,
+                isLastChainMessage = isLastChainMessage
+            )
             items.add(messageElement)
 
             if (firstUnreadMessageId != null && message.id == firstUnreadMessageId) {

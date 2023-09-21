@@ -177,11 +177,11 @@ class MessagesMapperTest {
     }
 
     @Test
-    fun `test last user message of the chain flag in conversation message element`() = runTest {
+    fun `test is first and is last chain message flags in conversation message element`() = runTest {
         val result = listOf(otherReadMessageMock, otherUnreadMessageMock2, myMessageMock).mapToConversationItems()
-        assert(isSameMessageItem(result[0], ConversationElement.Message(otherReadMessageMock.toUiMessage(), true)))
-        assert(isSameMessageItem(result[1], ConversationElement.Message(otherUnreadMessageMock2.toUiMessage(), false)))
-        assert(isSameMessageItem(result[2], ConversationElement.Message(myMessageMock.toUiMessage(), true)))
+        assert(isSameMessageItem(result[0], ConversationElement.Message(otherReadMessageMock.toUiMessage(), isFirstChainMessage = false, isLastChainMessage = true)))
+        assert(isSameMessageItem(result[1], ConversationElement.Message(otherUnreadMessageMock2.toUiMessage(), isFirstChainMessage = true, isLastChainMessage = false)))
+        assert(isSameMessageItem(result[2], ConversationElement.Message(myMessageMock.toUiMessage(), isFirstChainMessage = true, isLastChainMessage = true)))
     }
 
     @Test

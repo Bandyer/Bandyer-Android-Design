@@ -40,6 +40,8 @@ import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.Immu
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.ui.findAvatar
 import com.kaleyra.collaboration_suite_phone_ui.ui.performScrollUp
+import io.mockk.every
+import io.mockk.spyk
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.After
 import org.junit.Rule
@@ -166,12 +168,21 @@ class ConversationComponentTest {
     }
 
     @Test
-    fun participantDetailsProvided_usernameIsDisplayed() {
+    fun participantDetailsProvided_messageIsTheFirstChainMessage_usernameIsDisplayed() {
         setContent(ConversationUiState(
-            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage))),
+            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage, isFirstChainMessage = true))),
             participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("otherUsername", ImmutableUri())))
         ))
         composeTestRule.onNodeWithText("otherUsername").assertIsDisplayed()
+    }
+
+    @Test
+    fun participantDetailsProvided_messageIsNotTheFirstChainMessage_usernameIsNotDisplayed() {
+        setContent(ConversationUiState(
+            conversationElements = ImmutableList(listOf(ConversationElement.Message(otherMessage, isFirstChainMessage = false))),
+            participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("otherUsername", ImmutableUri())))
+        ))
+        composeTestRule.onNodeWithText("otherUsername").assertDoesNotExist()
     }
 
     @Test

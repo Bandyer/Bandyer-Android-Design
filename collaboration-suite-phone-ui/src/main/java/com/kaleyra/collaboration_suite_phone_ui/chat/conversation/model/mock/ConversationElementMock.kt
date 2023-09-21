@@ -14,6 +14,7 @@ val mockConversationElements = ImmutableList(
                 "15:02",
                 "userId8"
             ),
+            isFirstChainMessage = true,
             isLastChainMessage = true
         ),
         ConversationElement.Message(
@@ -23,6 +24,7 @@ val mockConversationElements = ImmutableList(
                 "15:01",
                 "userId7"
             ),
+            isFirstChainMessage = false,
             isLastChainMessage = true
         ),
         ConversationElement.Message(
@@ -32,6 +34,7 @@ val mockConversationElements = ImmutableList(
                 "15:00",
                 "userId7"
             ),
+            isFirstChainMessage = true,
             isLastChainMessage = false
         ),
         ConversationElement.UnreadMessages,
@@ -42,6 +45,7 @@ val mockConversationElements = ImmutableList(
                 "13:18",
                 MutableStateFlow(Message.State.Sent)
             ),
+            isFirstChainMessage = true,
             isLastChainMessage = true
         ),
         ConversationElement.Message(
@@ -51,6 +55,7 @@ val mockConversationElements = ImmutableList(
                 "13:15",
                 "userId5"
             ),
+            isFirstChainMessage = true,
             isLastChainMessage = true
         ),
         ConversationElement.Message(
@@ -60,6 +65,7 @@ val mockConversationElements = ImmutableList(
                 "13:12",
                 "userId4"
             ),
+            isFirstChainMessage = true,
             isLastChainMessage = true
         ),
         ConversationElement.Message(
@@ -69,6 +75,7 @@ val mockConversationElements = ImmutableList(
                 "13:00",
                 MutableStateFlow(Message.State.Read)
             ),
+            isFirstChainMessage = false,
             isLastChainMessage = true
         ),
         ConversationElement.Message(
@@ -78,9 +85,10 @@ val mockConversationElements = ImmutableList(
                 "11:55",
                 MutableStateFlow(Message.State.Read)
             ),
+            isFirstChainMessage = true,
             isLastChainMessage = false
         ),
-        ConversationElement.Message(Message.OtherMessage("id1", "Hello there!", "11:45", "userId1"), isLastChainMessage = true),
+        ConversationElement.Message(Message.OtherMessage("id1", "Hello there!", "11:45", "userId1"), isFirstChainMessage = true, isLastChainMessage = true),
         ConversationElement.Day(92209343)
     )
 )

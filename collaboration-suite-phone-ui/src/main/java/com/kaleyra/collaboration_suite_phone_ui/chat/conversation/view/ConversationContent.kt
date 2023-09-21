@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -62,6 +63,7 @@ internal fun ConversationContent(
                     when (val message = item.message) {
                         is Message.OtherMessage -> OtherMessageItem(
                             message = message,
+                            isFirstChatMessage = item.isFirstChainMessage,
                             isLastChainMessage = item.isLastChainMessage,
                             participantDetails = participantsDetails[message.userId],
                             modifier = Modifier.fillMaxWidth()
@@ -87,6 +89,7 @@ internal fun ConversationContent(
                         .fillMaxWidth()
                         .padding(bottom = 6.dp)
                 )
+
             }
         }
         if (isFetching) {
