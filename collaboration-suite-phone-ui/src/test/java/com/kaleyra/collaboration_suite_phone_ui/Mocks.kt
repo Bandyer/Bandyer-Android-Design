@@ -5,6 +5,7 @@ import com.kaleyra.collaboration_suite.Contact
 import com.kaleyra.collaboration_suite.conversation.*
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.*
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,15 +53,15 @@ object Mocks {
         override val creator: ChatParticipant = mockk()
         override val creationDate: Date = Date(now.toEpochMilli())
         override val content: Message.Content = Message.Content.Text("text")
-        override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Read())
+        override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Read)
     }
 
     val otherReadMessageMock = object : OtherMessage {
         override val id: String = "otherId0"
         override val creator: ChatParticipant = mockk()
         override val creationDate: Date = Date(now.toEpochMilli())
-        override val content: Message.Content = mockk()
-        override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Read())
+        override val content: Message.Content = Message.Content.Text("otherText")
+        override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Read)
         override fun markAsRead() = Unit
     }
 
@@ -70,7 +71,7 @@ object Mocks {
             override val creator: ChatParticipant = mockk()
             override val creationDate: Date = Date(yesterday.toEpochMilli())
             override val content: Message.Content = Message.Content.Text("otherText")
-            override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Received())
+            override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Received)
             override fun markAsRead() = Unit
         }
     )
@@ -81,7 +82,7 @@ object Mocks {
             override val creator: ChatParticipant = mockk()
             override val creationDate: Date = Date(now.toEpochMilli())
             override val content: Message.Content = mockk()
-            override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Received())
+            override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Received)
             override fun markAsRead() = Unit
         }
     )
