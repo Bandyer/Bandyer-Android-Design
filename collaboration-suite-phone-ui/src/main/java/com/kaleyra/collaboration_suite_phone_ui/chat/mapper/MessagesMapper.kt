@@ -3,16 +3,15 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.mapper
 import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conversation.Messages
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
-import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-typealias ParticipantDetails = Pair<String, ImmutableUri>
-
 object MessagesMapper {
+
+    private const val UnreadMessageFetchCount = 5
 
     fun Message.toUiMessage(): com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message {
         val text = (content as? Message.Content.Text)?.message ?: ""
@@ -35,8 +34,8 @@ object MessagesMapper {
             }
         }
 
-    fun List<Message>.mapToConversationItems(firstUnreadMessageId: String? = null, lastMappedMessage: Message? = null): List<ConversationElement> {
-        val items = mutableListOf<ConversationElement>()
+    fun List<Message>.mapToConversationItems(firstUnreadMessageId: String? = null, lastMappedMessage: Message? = null): List<ConversationItem> {
+        val items = mutableListOf<ConversationItem>()
 
         forEachIndexed { index, message ->
             val previousMessage = getOrNull(index + 1) ?: lastMappedMessage
@@ -44,7 +43,7 @@ object MessagesMapper {
             val isFirstChainMessage = previousMessage?.creator?.userId != message.creator.userId
             val isLastChainMessage = nextMessage?.creator?.userId != message.creator.userId
 
-            val messageElement = ConversationElement.Message(
+            val messageElement = ConversationItem.Message(
                 message = message.toUiMessage(),
                 isFirstChainMessage = isFirstChainMessage,
                 isLastChainMessage = isLastChainMessage
@@ -52,11 +51,11 @@ object MessagesMapper {
             items.add(messageElement)
 
             if (firstUnreadMessageId != null && message.id == firstUnreadMessageId) {
-                items.add(ConversationElement.UnreadMessages)
+                items.add(ConversationItem.UnreadMessages)
             }
 
             if (previousMessage == null || !TimestampUtils.isSameDay(message.creationDate.time, previousMessage.creationDate.time)) {
-                items.add(ConversationElement.Day(message.creationDate.time))
+                items.add(ConversationItem.Day(message.creationDate.time))
             }
         }
 
@@ -88,7 +87,7 @@ object MessagesMapper {
         val size = list.size
 
         if (index == size - 1) {
-            val result = fetch(5).getOrNull()
+            val result = fetch(UnreadMessageFetchCount).getOrNull()
             when {
                 result == null -> continuation(null)
                 result.other.isEmpty() -> continuation(message.id)

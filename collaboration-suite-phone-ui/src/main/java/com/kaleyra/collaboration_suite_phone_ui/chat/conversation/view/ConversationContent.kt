@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.DayHeaderItem
@@ -41,7 +40,7 @@ val ConversationContentPadding = 16.dp
 
 @Composable
 internal fun ConversationContent(
-    items: ImmutableList<ConversationElement>,
+    items: ImmutableList<ConversationItem>,
     participantsDetails: ImmutableMap<String, ParticipantDetails>,
     isFetching: Boolean,
     scrollState: LazyListState,
@@ -59,7 +58,7 @@ internal fun ConversationContent(
     ) {
         items(items.value, key = { it.id }, contentType = { it::class.java }) { item ->
             when (item) {
-                is ConversationElement.Message -> {
+                is ConversationItem.Message -> {
                     when (val message = item.message) {
                         is Message.OtherMessage -> OtherMessageItem(
                             message = message,
@@ -77,14 +76,14 @@ internal fun ConversationContent(
                     }
                 }
 
-                is ConversationElement.Day -> DayHeaderItem(
+                is ConversationItem.Day -> DayHeaderItem(
                     timestamp = item.timestamp,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 6.dp)
                 )
 
-                is ConversationElement.UnreadMessages -> NewMessagesHeaderItem(
+                is ConversationItem.UnreadMessages -> NewMessagesHeaderItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 6.dp)

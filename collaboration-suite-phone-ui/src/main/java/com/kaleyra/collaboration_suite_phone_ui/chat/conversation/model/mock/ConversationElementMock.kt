@@ -1,13 +1,13 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock
 
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 
 val mockConversationElements = ImmutableList(
     listOf(
-        ConversationElement.Message(
+        ConversationItem.Message(
             Message.OtherMessage(
                 "id9",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -17,7 +17,7 @@ val mockConversationElements = ImmutableList(
             isFirstChainMessage = true,
             isLastChainMessage = true
         ),
-        ConversationElement.Message(
+        ConversationItem.Message(
             Message.OtherMessage(
                 "id8",
                 "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -27,7 +27,7 @@ val mockConversationElements = ImmutableList(
             isFirstChainMessage = false,
             isLastChainMessage = true
         ),
-        ConversationElement.Message(
+        ConversationItem.Message(
             Message.OtherMessage(
                 "id7",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -37,8 +37,8 @@ val mockConversationElements = ImmutableList(
             isFirstChainMessage = true,
             isLastChainMessage = false
         ),
-        ConversationElement.UnreadMessages,
-        ConversationElement.Message(
+        ConversationItem.UnreadMessages,
+        ConversationItem.Message(
             Message.MyMessage(
                 "userId6",
                 "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -48,7 +48,7 @@ val mockConversationElements = ImmutableList(
             isFirstChainMessage = true,
             isLastChainMessage = true
         ),
-        ConversationElement.Message(
+        ConversationItem.Message(
             Message.OtherMessage(
                 "id5",
                 "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur..",
@@ -58,7 +58,7 @@ val mockConversationElements = ImmutableList(
             isFirstChainMessage = true,
             isLastChainMessage = true
         ),
-        ConversationElement.Message(
+        ConversationItem.Message(
             Message.OtherMessage(
                 "id4",
                 "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -68,7 +68,7 @@ val mockConversationElements = ImmutableList(
             isFirstChainMessage = true,
             isLastChainMessage = true
         ),
-        ConversationElement.Message(
+        ConversationItem.Message(
             Message.MyMessage(
                 "id3",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -78,7 +78,7 @@ val mockConversationElements = ImmutableList(
             isFirstChainMessage = false,
             isLastChainMessage = true
         ),
-        ConversationElement.Message(
+        ConversationItem.Message(
             Message.MyMessage(
                 "id2",
                 "How is going?",
@@ -88,7 +88,7 @@ val mockConversationElements = ImmutableList(
             isFirstChainMessage = true,
             isLastChainMessage = false
         ),
-        ConversationElement.Message(Message.OtherMessage("id1", "Hello there!", "11:45", "userId1"), isFirstChainMessage = true, isLastChainMessage = true),
-        ConversationElement.Day(92209343)
+        ConversationItem.Message(Message.OtherMessage("id1", "Hello there!", "11:45", "userId1"), isFirstChainMessage = true, isLastChainMessage = true),
+        ConversationItem.Day(92209343)
     )
 )

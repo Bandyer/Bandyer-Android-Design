@@ -42,7 +42,7 @@ import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.ChatUserInput
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.ConversationComponent
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.mockChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.viewmodel.PhoneChatViewModel
@@ -95,7 +95,7 @@ fun ChatScreen(
     uiState: ChatUiState,
     userMessage: UserMessage? = null,
     onBackPressed: () -> Unit,
-    onMessageScrolled: (ConversationElement.Message) -> Unit,
+    onMessageScrolled: (ConversationItem.Message) -> Unit,
     onResetMessagesScroll: () -> Unit,
     onFetchMessages: () -> Unit,
     onShowCall: () -> Unit,
@@ -126,7 +126,7 @@ fun ChatScreen(
         StatusBarsSpacer(Modifier.background(MaterialTheme.colors.primaryVariant))
         Box(Modifier.focusRequester(topBarRef)){
             ChatAppBar(
-                state = uiState.state,
+                state = uiState.connectionState,
                 info = uiState.info,
                 isInCall = uiState.isInCall,
                 onBackPressed = onBackPressed,

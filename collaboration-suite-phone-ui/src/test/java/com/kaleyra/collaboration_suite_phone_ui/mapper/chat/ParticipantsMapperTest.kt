@@ -7,11 +7,10 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.Mocks
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.isGroupChat
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatInfo
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatParticipantDetails
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatParticipantsDetails
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import io.mockk.every
@@ -58,7 +57,7 @@ class ParticipantsMapperTest {
     @Test
     fun emptyParticipants_toChatParticipantDetails_emptyMap() = runTest {
         every { chatParticipants.list } returns listOf()
-        val result = flowOf(chatParticipants).toChatParticipantDetails()
+        val result = flowOf(chatParticipants).toChatParticipantsDetails()
         val expected = ImmutableMap<String, ParticipantDetails>()
         assertEquals(expected, result.first())
     }
@@ -66,7 +65,7 @@ class ParticipantsMapperTest {
     @Test
     fun filledParticipants_toChatParticipantDetails_filledMap() = runTest {
         every { chatParticipants.list } returns listOf(meParticipant, otherParticipant)
-        val result = flowOf(chatParticipants).toChatParticipantDetails()
+        val result = flowOf(chatParticipants).toChatParticipantsDetails()
         val expected = ImmutableMap(
             hashMapOf(
                 "myUserId" to ParticipantDetails("myUsername", ImmutableUri(myUri)),
@@ -81,7 +80,7 @@ class ParticipantsMapperTest {
         val name = MutableStateFlow("otherUsername")
         every { otherParticipant.combinedDisplayName } returns name
         every { chatParticipants.list } returns listOf(otherParticipant)
-        val result = flowOf(chatParticipants).toChatParticipantDetails()
+        val result = flowOf(chatParticipants).toChatParticipantsDetails()
         val expected = ImmutableMap(
             hashMapOf("otherUserId" to ParticipantDetails("otherUsername", ImmutableUri(otherUri)))
         )
@@ -98,7 +97,7 @@ class ParticipantsMapperTest {
         val image = MutableStateFlow(otherUri)
         every { otherParticipant.combinedDisplayImage } returns image
         every { chatParticipants.list } returns listOf(otherParticipant)
-        val result = flowOf(chatParticipants).toChatParticipantDetails()
+        val result = flowOf(chatParticipants).toChatParticipantsDetails()
         val expected = ImmutableMap(
             hashMapOf("otherUserId" to ParticipantDetails("otherUsername", ImmutableUri(otherUri)))
         )

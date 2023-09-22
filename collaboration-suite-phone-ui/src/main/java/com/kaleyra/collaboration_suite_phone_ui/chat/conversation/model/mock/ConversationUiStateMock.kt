@@ -1,8 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock
 
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationState
 
-val mockConversationUiState = ConversationUiState(
-    conversationElements = mockConversationElements,
+val mockConversationState = ConversationState(
+    conversationItems = mockConversationElements,
     unreadMessagesCount = 5
 )

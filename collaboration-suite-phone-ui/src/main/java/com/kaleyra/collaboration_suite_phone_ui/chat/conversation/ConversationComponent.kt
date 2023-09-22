@@ -38,8 +38,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ConversationContent
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ResetScrollFab
@@ -77,9 +77,9 @@ private fun scrollToBottomFabEnabled(listState: LazyListState): State<Boolean> {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ConversationComponent(
-    uiState: ConversationUiState,
+    uiState: ConversationState,
     onDirectionLeft: (() -> Unit) = { },
-    onMessageScrolled: (ConversationElement.Message) -> Unit,
+    onMessageScrolled: (ConversationItem.Message) -> Unit,
     onApproachingTop: () -> Unit,
     onResetScroll: () -> Unit,
     scrollState: LazyListState,
@@ -99,17 +99,17 @@ internal fun ConversationComponent(
     }
 
     LaunchedEffect(scrollState) {
-        val index = uiState.conversationElements?.value?.indexOfFirst { it is ConversationElement.UnreadMessages } ?: -1
+        val index = uiState.conversationItems?.value?.indexOfFirst { it is ConversationItem.UnreadMessages } ?: -1
         if (index != -1) {
             scrollState.scrollToItem(index)
             scrollState.scrollBy(-screenHeight * 2 / 3f)
         }
     }
 
-    LaunchedEffect(scrollState, uiState.conversationElements) {
+    LaunchedEffect(scrollState, uiState.conversationItems) {
         snapshotFlow { scrollState.firstVisibleItemIndex }
             .onEach {
-                val item = uiState.conversationElements?.value?.getOrNull(it) as? ConversationElement.Message ?: return@onEach
+                val item = uiState.conversationItems?.value?.getOrNull(it) as? ConversationItem.Message ?: return@onEach
                 onMessageScrolled(item)
             }.launchIn(this)
     }
@@ -121,7 +121,7 @@ internal fun ConversationComponent(
             .launchIn(this)
     }
 
-    LaunchedEffect(uiState.conversationElements) {
+    LaunchedEffect(uiState.conversationItems) {
         if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
     }
 
@@ -140,11 +140,11 @@ internal fun ConversationComponent(
             }
             .then(modifier)
     ) {
-        if (uiState.conversationElements == null) LoadingMessagesLabel(Modifier.align(Alignment.Center))
-        else if (uiState.conversationElements.value.isEmpty()) NoMessagesLabel(Modifier.align(Alignment.Center))
+        if (uiState.conversationItems == null) LoadingMessagesLabel(Modifier.align(Alignment.Center))
+        else if (uiState.conversationItems.value.isEmpty()) NoMessagesLabel(Modifier.align(Alignment.Center))
         else {
             ConversationContent(
-                items = uiState.conversationElements,
+                items = uiState.conversationItems,
                 participantsDetails = uiState.participantsDetails,
                 isFetching = uiState.isFetching,
                 scrollState = scrollState,
@@ -204,7 +204,7 @@ internal fun NoMessagesLabel(modifier: Modifier = Modifier) {
 internal fun LoadingConversationComponentPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         ConversationComponent(
-            uiState = ConversationUiState(),
+            uiState = ConversationState(),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },
@@ -220,7 +220,7 @@ internal fun LoadingConversationComponentPreview() = KaleyraTheme {
 internal fun EmptyConversationComponentPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         ConversationComponent(
-            uiState = ConversationUiState(conversationElements = ImmutableList(listOf())),
+            uiState = ConversationState(conversationItems = ImmutableList(listOf())),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },
@@ -236,7 +236,7 @@ internal fun EmptyConversationComponentPreview() = KaleyraTheme {
 internal fun ConversationComponentPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         ConversationComponent(
-            uiState = ConversationUiState(conversationElements = mockConversationElements),
+            uiState = ConversationState(conversationItems = mockConversationElements),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },

@@ -89,7 +89,7 @@ internal fun OtherMessageItem(
                 uri != null -> Spacer(modifier = Modifier.width(OtherBubbleLeftSpacing))
             }
             Bubble(
-                messageText = message.text,
+                messageText = message.content,
                 messageTime = message.time,
                 username = if (isFirstChatMessage) username else null,
                 messageState = null,
@@ -109,7 +109,7 @@ internal fun MyMessageItem(
     val messageState by message.state.collectAsStateWithLifecycle(initialValue = Message.State.Read)
     MessageRow(isLastChainMessage = isLastChainMessage, horizontalArrangement = Arrangement.End, modifier = modifier) {
         Bubble(
-            messageText = message.text,
+            messageText = message.content,
             messageTime = message.time,
             username = null,
             messageState = messageState,

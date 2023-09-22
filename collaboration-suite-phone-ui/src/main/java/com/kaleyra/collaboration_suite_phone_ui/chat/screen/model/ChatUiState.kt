@@ -1,18 +1,41 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.screen.model
 
-import androidx.compose.runtime.Immutable
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationUiState
+import androidx.compose.runtime.Stable
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatInfo
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatState
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ConnectionState
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationState
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.common.uistate.UiState
 
-@Immutable
-data class ChatUiState(
-    val info: ChatInfo = ChatInfo("", null),
-    val state: ChatState = ChatState.None,
-    val actions: ImmutableSet<ChatAction> = ImmutableSet(setOf()),
-    val conversationState: ConversationUiState = ConversationUiState(),
-    val isInCall: Boolean = false
-): UiState
+@Stable
+sealed interface ChatUiState : UiState {
+
+    val actions: ImmutableSet<ChatAction>
+
+    val connectionState: ConnectionState
+
+    val conversationState: ConversationState
+
+    val isInCall: Boolean
+
+    data class OneToOne(
+        val recipientDetails: ParticipantDetails = ParticipantDetails("", ImmutableUri()),
+        override val actions: ImmutableSet<ChatAction> = ImmutableSet(),
+        override val connectionState: ConnectionState,
+        override val conversationState: ConversationState = ConversationState(),
+        override val isInCall: Boolean = false
+    ): ChatUiState
+
+    data class Group(
+        val name: String = "",
+        val image: ImmutableUri = ImmutableUri(),
+        val participantsDetails: ImmutableMap<String, ParticipantDetails> = ImmutableMap(),
+        override val actions: ImmutableSet<ChatAction> = ImmutableSet(),
+        override val connectionState: ConnectionState,
+        override val conversationState: ConversationState = ConversationState(),
+        override val isInCall: Boolean = false
+    ): ChatUiState
+}

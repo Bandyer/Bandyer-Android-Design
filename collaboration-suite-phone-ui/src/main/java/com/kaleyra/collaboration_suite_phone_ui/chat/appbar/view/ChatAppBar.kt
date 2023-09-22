@@ -20,9 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatState
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ConnectionState
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.mockActions
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.view.Avatar
@@ -39,7 +38,7 @@ internal const val ChatActionsTag = "ChatActionsTag"
 
 @Composable
 internal fun ChatAppBar(
-    state: ChatState,
+    state: ConnectionState,
     info: ChatInfo,
     isInCall: Boolean,
     actions: ImmutableSet<ChatAction>,
@@ -53,7 +52,7 @@ internal fun ChatAppBar(
 }
 
 @Composable
-internal fun ChatDetails(info: ChatInfo, state: ChatState) {
+internal fun ChatDetails(info: ChatInfo, state: ConnectionState) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Avatar(
             uri = info.image,
@@ -79,7 +78,7 @@ internal fun ChatDetails(info: ChatInfo, state: ChatState) {
                     modifier = Modifier.testTag(SubtitleTag),
                     ellipsize = Ellipsize.Marquee
                 )
-                if (state is ChatState.UserState.Typing) {
+                if (state is ConnectionState.UserState.Typing) {
                     TypingDots(
                         color = LocalContentColor.current.copy(alpha = 0.5f),
                         modifier = Modifier
@@ -94,12 +93,12 @@ internal fun ChatDetails(info: ChatInfo, state: ChatState) {
 }
 
 @Composable
-private fun textFor(state: ChatState): String =
+private fun textFor(state: ConnectionState): String =
     when (state) {
-        is ChatState.NetworkState.Offline -> stringResource(R.string.kaleyra_chat_state_waiting_for_network)
-        is ChatState.NetworkState.Connecting -> stringResource(R.string.kaleyra_chat_state_connecting)
-        is ChatState.UserState.Online -> stringResource(R.string.kaleyra_chat_user_status_online)
-        is ChatState.UserState.Offline -> {
+        is ConnectionState.NetworkState.Offline -> stringResource(R.string.kaleyra_chat_state_waiting_for_network)
+        is ConnectionState.NetworkState.Connecting -> stringResource(R.string.kaleyra_chat_state_connecting)
+        is ConnectionState.UserState.Online -> stringResource(R.string.kaleyra_chat_user_status_online)
+        is ConnectionState.UserState.Offline -> {
             val timestamp = state.timestamp
             if (timestamp == null) stringResource(R.string.kaleyra_chat_user_status_offline)
             else {
@@ -109,7 +108,7 @@ private fun textFor(state: ChatState): String =
                 )
             }
         }
-        is ChatState.UserState.Typing -> stringResource(R.string.kaleyra_chat_user_status_typing)
+        is ConnectionState.UserState.Typing -> stringResource(R.string.kaleyra_chat_user_status_typing)
         else -> ""
     }
 
@@ -149,7 +148,7 @@ internal fun Actions(actions: ImmutableSet<ChatAction>) {
 @Composable
 internal fun TopAppBarPreview() = KaleyraTheme {
     ChatAppBar(
-        state = ChatState.UserState.Typing,
+        state = ConnectionState.UserState.Typing,
         info = ChatInfo("John Smith"),
         actions = mockActions,
         isInCall = false,

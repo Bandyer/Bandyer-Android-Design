@@ -10,7 +10,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.mockActions
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.TextFieldTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ChatScreen
@@ -36,8 +36,8 @@ class ChatScreenTest {
 
     private val uiState = MutableStateFlow(
         ChatUiState(
-            conversationState = ConversationUiState(
-                conversationElements = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))
+            conversationState = ConversationState(
+                conversationItems = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))
             ),
             actions = mockActions
         )
@@ -78,7 +78,7 @@ class ChatScreenTest {
 
     @After
     fun tearDown() {
-        uiState.value = ChatUiState(conversationState = ConversationUiState(conversationElements = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))), actions = mockActions)
+        uiState.value = ChatUiState(conversationState = ConversationState(conversationItems = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))), actions = mockActions)
         onBackPressed = false
         onMessageScrolled = false
         onResetMessagesScroll = false
