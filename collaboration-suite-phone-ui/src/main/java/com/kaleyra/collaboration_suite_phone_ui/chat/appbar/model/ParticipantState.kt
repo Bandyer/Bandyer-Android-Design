@@ -1,13 +1,12 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model
 
-import androidx.compose.runtime.Stable
-import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
+import androidx.compose.runtime.Immutable
 
-@Stable
-sealed interface ParticipantState {
-    data class Online(val username: ImmutableList<String>) : ParticipantState
+@Immutable
+sealed class ParticipantState {
+    object Online : ParticipantState()
 
-    data class Offline(val username: String, val timestamp: Long? = null) : ParticipantState
+    data class Offline(val timestamp: Long? = null) : ParticipantState()
 
-    data class Typing(val username: ImmutableList<String>) : ParticipantState
+    object Typing : ParticipantState()
 }
