@@ -10,8 +10,10 @@ import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantState
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantsState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ConnectionState
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationState
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.CallStateMapper.hasActiveCall
@@ -19,10 +21,9 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ChatActionsMapper.ma
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ConversationStateMapper.toConnectionState
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.findFirstUnreadMessageId
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.mapToConversationItems
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.isGroupChat
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatParticipantsDetails
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toRecipientDetails
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toOtherParticipantsState
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toParticipantsDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
@@ -36,13 +37,12 @@ import kotlinx.coroutines.launch
 
 private data class PhoneChatViewModelState(
     val isGroupChat: Boolean = false,
-    val recipientDetails: ParticipantDetails = ParticipantDetails("", ImmutableUri()),
+    val recipientDetails: ChatParticipantDetails = ChatParticipantDetails(),
     val chatName: String = "",
     val chatImage: ImmutableUri = ImmutableUri(),
-    val participantsDetails: ImmutableMap<String, ParticipantDetails> = ImmutableMap(),
     val actions: ImmutableSet<ChatAction> = ImmutableSet(),
     val connectionState: ConnectionState = ConnectionState.Undefined,
-    val participantsState: ImmutableMap<String, ParticipantState> = ImmutableList(),
+    val participantsState: ChatParticipantsState = ChatParticipantsState(),
     val conversationState: ConversationState = ConversationState(),
     val isInCall: Boolean = false
 ) {
@@ -52,7 +52,7 @@ private data class PhoneChatViewModelState(
             ChatUiState.Group(
                 name = chatName,
                 image = chatImage,
-                participantsDetails = participantsDetails,
+                participantsState = participantsState,
                 actions = actions,
                 connectionState = connectionState,
                 conversationState = conversationState,
@@ -88,7 +88,8 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
 
     init {
         viewModelScope.launch {
-            val isGroupChat = participants.isGroupChat().first()
+            val participants = participants.first()
+            val isGroupChat = participants.isGroupChat()
             viewModelState.update { it.copy(isGroupChat = isGroupChat) }
 
             actions
@@ -121,7 +122,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
             }
 
             conversation
-                .toConnectionState(participants)
+                .toConnectionState()
                 .onEach { connectionState -> viewModelState.update { it.copy(connectionState = connectionState) } }
                 .launchIn(this)
 
@@ -132,16 +133,17 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
 
             if (isGroupChat) {
                 // TODO Bind the chat name and chat image when it will be developed for mtm chats
-
                 participants
-                    .toChatParticipantsDetails()
-                    .onEach { participantsDetails -> viewModelState.update { it.copy(participantsDetails = participantsDetails) } }
+                    .toOtherParticipantsState()
+                    .onEach { participantsState -> viewModelState.update { it.copy(participantsState = participantsState) } }
                     .launchIn(this)
             } else {
-                participants
-                    .toRecipientDetails()
-                    .onEach { recipientDetails -> viewModelState.update { it.copy(recipientDetails = recipientDetails) } }
-                    .launchIn(this)
+                val membersDetails = participants.toParticipantsDetails()
+                val recipientUserId = participants.others.firstOrNull()?.userId
+                val recipientDetails = recipientUserId?.let { membersDetails[it] }
+                if (recipientDetails != null) {
+                    viewModelState.update { it.copy(recipientDetails = recipientDetails) }
+                }
             }
         }
     }
@@ -162,7 +164,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
             updateFetchingState(isFetching = true)
             val messages = chat.first().fetch(FETCH_COUNT).getOrNull()
             val fetchedItems = messages?.list?.mapToConversationItems(firstUnreadMessageId.value) ?: emptyList()
-            updateConversationItems(fetchedItems, prepend = true)
+            updateConversationItems(fetchedItems)
             updateFetchingState(isFetching = false)
         }
     }
