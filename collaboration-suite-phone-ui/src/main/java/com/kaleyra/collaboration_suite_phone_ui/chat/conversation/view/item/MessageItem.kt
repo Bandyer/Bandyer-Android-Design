@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +28,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalConfiguration
@@ -38,6 +42,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -52,11 +58,6 @@ import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.hi
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 
-private val LastOtherBubbleShape = RoundedCornerShape(12.dp, 24.dp, 24.dp, 0.dp)
-private val OtherBubbleShape = RoundedCornerShape(12.dp, 24.dp, 24.dp, 12.dp)
-private val LastMyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
-private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 12.dp, 24.dp)
-
 val MessageItemAvatarSize = 28.dp
 val OtherBubbleAvatarSpacing = 8.dp
 val OtherBubbleLeftSpacing = 36.dp
@@ -65,12 +66,16 @@ const val BubbleTestTag = "BubbleTestTag"
 @Composable
 internal fun OtherMessageItem(
     message: Message.OtherMessage,
-    isFirstChatMessage: Boolean,
-    isLastChainMessage: Boolean,
-    participantDetails: ChatParticipantDetails?,
+    isFirstChainMessage: Boolean = true,
+    isLastChainMessage: Boolean = true,
+    participantDetails: ChatParticipantDetails? = null,
     modifier: Modifier = Modifier
 ) {
-    MessageRow(isLastChainMessage = isLastChainMessage, horizontalArrangement = Arrangement.Start, modifier = modifier) {
+    MessageRow(
+        isLastChainMessage = isLastChainMessage,
+        horizontalArrangement = Arrangement.Start,
+        modifier = modifier
+    ) {
         Row(verticalAlignment = Alignment.Bottom) {
             val uri = participantDetails?.image
             when {
@@ -86,14 +91,20 @@ internal fun OtherMessageItem(
                     )
                     Spacer(modifier = Modifier.width(OtherBubbleAvatarSpacing))
                 }
+
                 uri != null -> Spacer(modifier = Modifier.width(OtherBubbleLeftSpacing))
             }
             Bubble(
                 messageText = message.content,
                 messageTime = message.time,
-                username = if (isFirstChatMessage) participantDetails?.username else null,
+                username = if (isFirstChainMessage) participantDetails?.username else null,
                 messageState = null,
-                shape = if (isLastChainMessage) LastOtherBubbleShape else OtherBubbleShape,
+                shape = RoundedCornerShape(
+                    topStart = if (isFirstChainMessage) 12.dp else 4.dp,
+                    topEnd = 24.dp,
+                    bottomStart = if (isLastChainMessage) 0.dp else 4.dp,
+                    bottomEnd = 24.dp
+                ),
                 backgroundColor = MaterialTheme.colors.primaryVariant
             )
         }
@@ -103,17 +114,27 @@ internal fun OtherMessageItem(
 @Composable
 internal fun MyMessageItem(
     message: Message.MyMessage,
-    isLastChainMessage: Boolean,
+    isFirstChainMessage: Boolean = true,
+    isLastChainMessage: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     val messageState by message.state.collectAsStateWithLifecycle(initialValue = Message.State.Read)
-    MessageRow(isLastChainMessage = isLastChainMessage, horizontalArrangement = Arrangement.End, modifier = modifier) {
+    MessageRow(
+        isLastChainMessage = isLastChainMessage,
+        horizontalArrangement = Arrangement.End,
+        modifier = modifier
+    ) {
         Bubble(
             messageText = message.content,
             messageTime = message.time,
             username = null,
             messageState = messageState,
-            shape = if (isLastChainMessage) LastMyBubbleShape else MyBubbleShape,
+            shape = RoundedCornerShape(
+                topStart = 24.dp,
+                topEnd = if (isFirstChainMessage) 12.dp else 4.dp,
+                bottomStart = 24.dp,
+                bottomEnd = if (isLastChainMessage) 0.dp else 4.dp
+            ),
             backgroundColor = MaterialTheme.colors.secondary
         )
     }
@@ -168,7 +189,10 @@ internal fun Bubble(
                 Spacer(modifier = Modifier.height(4.dp))
             }
 
-            ClickableMessageText(messageText = messageText, textColor = contentColorFor(backgroundColor))
+            ClickableMessageText(
+                messageText = messageText,
+                textColor = contentColorFor(backgroundColor)
+            )
 
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -245,15 +269,12 @@ private fun contentDescriptionFor(state: Message.State): String =
 internal fun OtherMessageItemPreview() = KaleyraTheme {
     Surface {
         OtherMessageItem(
-             message = Message.OtherMessage(
-                    "userId8",
-                    "id8",
-                    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "15:01"
-                ),
-            isFirstChatMessage = true,
-            isLastChainMessage = true,
-            participantDetails = null
+            message = Message.OtherMessage(
+                "userId8",
+                "id8",
+                "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "15:01"
+            )
         )
     }
 }
@@ -265,12 +286,11 @@ internal fun MyMessageItemPreview() = KaleyraTheme {
     Surface {
         MyMessageItem(
             message = Message.MyMessage(
-                    "id8",
-                    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "15:01",
-                    MutableStateFlow(Message.State.Read)
-            ),
-            isLastChainMessage = true
+                "id8",
+                "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                "15:01",
+                MutableStateFlow(Message.State.Read)
+            )
         )
     }
 }

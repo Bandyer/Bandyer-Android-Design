@@ -61,7 +61,7 @@ internal fun ConversationContent(
                     when (val message = item.message) {
                         is Message.OtherMessage -> OtherMessageItem(
                             message = message,
-                            isFirstChatMessage = item.isFirstChainMessage,
+                            isFirstChainMessage = item.isFirstChainMessage,
                             isLastChainMessage = item.isLastChainMessage,
                             participantDetails = participantsDetails?.get(message.userId),
                             modifier = Modifier.fillMaxWidth()
@@ -69,6 +69,7 @@ internal fun ConversationContent(
 
                         is Message.MyMessage -> MyMessageItem(
                             message = message,
+                            isFirstChainMessage = item.isFirstChainMessage,
                             isLastChainMessage = item.isLastChainMessage,
                             modifier = Modifier.fillMaxWidth()
                         )
