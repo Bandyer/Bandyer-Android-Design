@@ -45,7 +45,7 @@ private fun textFor(
     val context = LocalContext.current
     return when {
         connectionState is ConnectionState.Offline -> stringResource(R.string.kaleyra_chat_state_waiting_for_network)
-        connectionState is ConnectionState.Connecting -> stringResource(R.string.kaleyra_chat_state_waiting_for_network)
+        connectionState is ConnectionState.Connecting -> stringResource(R.string.kaleyra_chat_state_connecting)
         recipientState is ChatParticipantState.Online -> stringResource(R.string.kaleyra_chat_user_status_online)
         recipientState is ChatParticipantState.Offline -> {
             val timestamp = recipientState.timestamp

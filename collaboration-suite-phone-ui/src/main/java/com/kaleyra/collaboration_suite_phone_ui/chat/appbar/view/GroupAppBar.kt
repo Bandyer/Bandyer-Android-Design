@@ -47,7 +47,7 @@ private fun textFor(
     val onlineCount = participantsState.online.count()
     return when {
         connectionState is ConnectionState.Offline -> stringResource(R.string.kaleyra_chat_state_waiting_for_network)
-        connectionState is ConnectionState.Connecting -> stringResource(R.string.kaleyra_chat_state_waiting_for_network)
+        connectionState is ConnectionState.Connecting -> stringResource(R.string.kaleyra_chat_state_connecting)
         typingCount == 1 -> pluralStringResource(
             id = R.plurals.kaleyra_call_participants_typing,
             count = 1,

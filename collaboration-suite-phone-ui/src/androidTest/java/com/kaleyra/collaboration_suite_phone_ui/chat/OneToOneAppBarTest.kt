@@ -10,13 +10,19 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantState
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantsState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ConnectionState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.BouncingDotsTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.ChatActionsTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.ChatAppBar
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.OneToOneAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.SubtitleTag
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.common.topappbar.ActionsTag
+import com.kaleyra.collaboration_suite_phone_ui.findBackButton
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -29,16 +35,18 @@ import java.time.format.FormatStyle
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
-class ChatAppBarTest {
+class OneToOneAppBarTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+    private val chatParticipantState = MutableStateFlow<ChatParticipantState>(ChatParticipantState.Unknown)
+
     private var connectionState by mutableStateOf<ConnectionState>(ConnectionState.Undefined)
 
-    private var isInCall by mutableStateOf(false)
+    private var chatParticipantsDetails by mutableStateOf(ChatParticipantDetails(username = "recipientUser", state = chatParticipantState))
 
-    private val chatInfo = ChatInfo(name = "chatName")
+    private var isInCall by mutableStateOf(false)
 
     private val chatActions = ImmutableSet(setOf<ChatAction>(ChatAction.AudioCall { isActionClicked = true }))
 
@@ -49,59 +57,63 @@ class ChatAppBarTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            ChatAppBar(
-                state = connectionState,
-                info = chatInfo,
+            OneToOneAppBar(
+                connectionState = connectionState,
+                recipientDetails = chatParticipantsDetails,
                 isInCall = isInCall,
                 actions = chatActions,
-                onBackPressed = { isBackPressed = true })
+                onBackPressed = { isBackPressed = true }
+            )
         }
     }
 
     @After
     fun tearDown() {
         connectionState = ConnectionState.Undefined
+        ChatParticipantDetails(username = "recipientUser", state = chatParticipantState)
+        chatParticipantState.value = ChatParticipantState.Unknown
         isInCall = false
         isBackPressed = false
         isActionClicked = false
     }
 
     // Check the content description instead of the text because the title and subtitle views are AndroidViews
-
     @Test
     fun title_set() {
-        composeTestRule.onNodeWithContentDescription(chatInfo.name).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(chatParticipantsDetails.username).assertIsDisplayed()
     }
 
     @Test
-    fun chatStateNone_subtitleNotDisplayed() {
+    fun connectionStateUndefinedAndRecipientStateUnknown_subtitleNotDisplayed() {
+        connectionState = ConnectionState.Undefined
+        chatParticipantState.value = ChatParticipantState.Unknown
         getSubtitle().assertContentDescriptionEquals("")
     }
 
     @Test
-    fun chatStateNetworkConnecting_connectingDisplayed() {
-        connectionState = ConnectionState.NetworkState.Connecting
+    fun connectionStateConnecting_connectingDisplayed() {
+        connectionState = ConnectionState.Connecting
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_chat_state_connecting)
         getSubtitle().assertContentDescriptionEquals(connecting)
     }
 
     @Test
-    fun chatStateNetworkOffline_waitingForNetworkDisplayed() {
-        connectionState = ConnectionState.NetworkState.Offline
+    fun connectionStateOffline_waitingForNetworkDisplayed() {
+        connectionState = ConnectionState.Offline
         val waitingForNetwork = composeTestRule.activity.getString(R.string.kaleyra_chat_state_waiting_for_network)
         getSubtitle().assertContentDescriptionEquals(waitingForNetwork)
     }
 
     @Test
-    fun chatStateUserOnline_onlineDisplayed() {
-        connectionState = ConnectionState.UserState.Online
+    fun chatParticipantStateOnline_onlineDisplayed() {
+        chatParticipantState.value = ChatParticipantState.Online
         val online = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_online)
         getSubtitle().assertContentDescriptionEquals(online)
     }
 
     @Test
-    fun chatStateUserOffline_lastLoginDisplayed() {
-        connectionState = ConnectionState.UserState.Offline(0)
+    fun chatParticipantStateOffline_lastLoginDisplayed() {
+        chatParticipantState.value = ChatParticipantState.Offline(0)
         val timestamp = DateTimeFormatter
             .ofLocalizedDateTime(FormatStyle.SHORT)
             .withLocale(Locale.getDefault())
@@ -112,16 +124,16 @@ class ChatAppBarTest {
     }
 
     @Test
-    fun chatStateUserNeverOnline_recentlySeenDisplayed() {
-        connectionState = ConnectionState.UserState.Offline(null)
+    fun chatParticipantStateNeverOnline_recentlySeenDisplayed() {
+        chatParticipantState.value = ChatParticipantState.Offline(null)
         val offline = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_offline)
         getSubtitle().assertContentDescriptionEquals(offline)
     }
 
     @Test
-    fun chatStateUserTyping_typingWithDotsDisplayed() {
+    fun chatParticipantStateTyping_typingWithDotsDisplayed() {
         getBouncingDots().assertDoesNotExist()
-        connectionState = ConnectionState.UserState.Typing
+        chatParticipantState.value = ChatParticipantState.Typing
         val typing = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_typing)
         getSubtitle().assertContentDescriptionEquals(typing)
         getBouncingDots().assertIsDisplayed()
@@ -138,6 +150,12 @@ class ChatAppBarTest {
     fun userClicksAction_onActionClickedInvoked() {
         composeTestRule.onNodeWithTag(ActionsTag).onChildren().onFirst().performClick()
         assert(isActionClicked)
+    }
+
+    @Test
+    fun userClicksBackButton_onBackPressedInvoked() {
+        composeTestRule.findBackButton().performClick()
+        assert(isBackPressed)
     }
 
     private fun getSubtitle() = composeTestRule.onNodeWithTag(SubtitleTag)

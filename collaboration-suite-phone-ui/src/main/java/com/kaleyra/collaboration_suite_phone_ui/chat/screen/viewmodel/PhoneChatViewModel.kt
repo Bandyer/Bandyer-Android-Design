@@ -133,7 +133,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
                 .launchIn(this)
 
             if (isGroupChat) {
-                // TODO Bind the chat name and chat image when it will be developed for mtm chats
+                // TODO bind the chat name and chat image when the mtm chats will be available
                 participants
                     .flatMapLatest { it.toOtherParticipantsState() }
                     .onEach { participantsState -> viewModelState.update { it.copy(participantsState = participantsState) } }
