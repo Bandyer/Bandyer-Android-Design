@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.mapper
 import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conversation.Messages
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
+import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils.areDateDifferenceGreaterThanMillis
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.map
 object MessagesMapper {
 
     private const val UnreadMessageFetchCount = 5
+    private const val NewMessageChainDeltaMillis = 5 * 60 * 1000L
 
     fun Message.toUiMessage(): com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message {
         val text = (content as? Message.Content.Text)?.message ?: ""
@@ -40,8 +42,8 @@ object MessagesMapper {
         forEachIndexed { index, message ->
             val previousMessage = getOrNull(index + 1) ?: lastMappedMessage
             val nextMessage = getOrNull(index - 1)
-            val isFirstChainMessage = previousMessage?.creator?.userId != message.creator.userId
-            val isLastChainMessage = nextMessage?.creator?.userId != message.creator.userId
+            val isFirstChainMessage = previousMessage?.creator?.userId != message.creator.userId || areDateDifferenceGreaterThanMillis(message.creationDate, previousMessage.creationDate, NewMessageChainDeltaMillis)
+            val isLastChainMessage = nextMessage?.creator?.userId != message.creator.userId || areDateDifferenceGreaterThanMillis(nextMessage.creationDate, message.creationDate, NewMessageChainDeltaMillis)
 
             val messageElement = ConversationItem.Message(
                 message = message.toUiMessage(),
