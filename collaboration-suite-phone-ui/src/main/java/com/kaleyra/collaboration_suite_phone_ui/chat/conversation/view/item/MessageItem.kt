@@ -100,9 +100,9 @@ internal fun OtherMessageItem(
                 username = if (isFirstChainMessage) participantDetails?.username else null,
                 messageState = null,
                 shape = RoundedCornerShape(
-                    topStart = if (isFirstChainMessage) 12.dp else 4.dp,
+                    topStart = if (isFirstChainMessage) 12.dp else 6.dp,
                     topEnd = 24.dp,
-                    bottomStart = if (isLastChainMessage) 0.dp else 4.dp,
+                    bottomStart = if (isLastChainMessage) 0.dp else 6.dp,
                     bottomEnd = 24.dp
                 ),
                 backgroundColor = MaterialTheme.colors.primaryVariant
@@ -131,9 +131,9 @@ internal fun MyMessageItem(
             messageState = messageState,
             shape = RoundedCornerShape(
                 topStart = 24.dp,
-                topEnd = if (isFirstChainMessage) 12.dp else 4.dp,
+                topEnd = if (isFirstChainMessage) 12.dp else 6.dp,
                 bottomStart = 24.dp,
-                bottomEnd = if (isLastChainMessage) 0.dp else 4.dp
+                bottomEnd = if (isLastChainMessage) 0.dp else 6.dp
             ),
             backgroundColor = MaterialTheme.colors.secondary
         )
