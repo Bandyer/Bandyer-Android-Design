@@ -17,11 +17,10 @@
 package com.kaleyra.collaboration_suite_phone_ui.ui.chat
 
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.MessageStateTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.ConversationComponent
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationState
@@ -29,13 +28,12 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ConversationContentPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ConversationContentTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.MessageStateTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.BubbleTestTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.MessageItemAvatarSize
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.OtherBubbleAvatarSpacing
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.OtherBubbleLeftSpacing
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
-import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.ui.findAvatar
@@ -53,7 +51,9 @@ class ConversationComponentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private val myMessage = Message.MyMessage("idTest", "Mutable state item", "18:00", MutableStateFlow(Message.State.Sending))
+    private val myMessage = Message.MyMessage("idTest", "Mutable state item", "18:00", MutableStateFlow(
+        Message.State.Sending)
+    )
 
     private val otherMessage = Message.OtherMessage(
         "id4",
@@ -91,7 +91,12 @@ class ConversationComponentTest {
 
     @Test
     fun userScrollsUp_fabAppears() {
-        setContent(ConversationState(conversationItems = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))))
+        setContent(
+            ConversationState(conversationItems = ImmutableList(
+                mockConversationElements.value.plus(
+                    mockConversationElements.value))
+            )
+        )
         findResetScrollFab().assertDoesNotExist()
         findConversation().performScrollUp()
         findResetScrollFab().assertIsDisplayed()
@@ -99,7 +104,12 @@ class ConversationComponentTest {
 
     @Test
     fun userClicksFab_resetScrollInvoked() {
-        setContent(ConversationState(conversationItems = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))))
+        setContent(
+            ConversationState(conversationItems = ImmutableList(
+                mockConversationElements.value.plus(
+                    mockConversationElements.value))
+            )
+        )
         findConversation().performScrollUp()
         findResetScrollFab().performClick()
         findResetScrollFab().assertDoesNotExist()
@@ -108,7 +118,12 @@ class ConversationComponentTest {
 
     @Test
     fun userScrollsToTop_onApproachingTopInvoked() {
-        setContent(ConversationState(conversationItems = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))))
+        setContent(
+            ConversationState(conversationItems = ImmutableList(
+                mockConversationElements.value.plus(
+                    mockConversationElements.value))
+            )
+        )
         findConversation().performScrollUp()
         findConversation().performScrollUp()
         assert(onApproachingTop)
@@ -116,7 +131,12 @@ class ConversationComponentTest {
 
     @Test
     fun userScrollsUp_onMessageScrolledInvoked() {
-        setContent(ConversationState(conversationItems = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))))
+        setContent(
+            ConversationState(conversationItems = ImmutableList(
+                mockConversationElements.value.plus(
+                    mockConversationElements.value))
+            )
+        )
         findConversation().performScrollUp()
         assert(onMessageScrolled)
     }
@@ -146,49 +166,48 @@ class ConversationComponentTest {
 
     @Test
     fun isNotFetching_progressIndicatorNotDisplayed() {
-        setContent(ConversationState(isFetching = false, conversationItems = ImmutableList(listOf(ConversationItem.Message(myMessage)))))
+        setContent(
+            ConversationState(isFetching = false, conversationItems = ImmutableList(listOf(
+                ConversationItem.Message(myMessage)))
+            )
+        )
         findProgressIndicator().assertDoesNotExist()
     }
 
     @Test
     fun isFetching_progressIndicatorDisplayed() {
-        setContent(ConversationState(isFetching = true, conversationItems = ImmutableList(listOf(ConversationItem.Message(myMessage)))))
+        setContent(
+            ConversationState(isFetching = true, conversationItems = ImmutableList(listOf(
+                ConversationItem.Message(myMessage)))
+            )
+        )
         findProgressIndicator().assertIsDisplayed()
     }
 
     @Test
     fun participantDetailsProvided_latestGroupMessageOfOtherUser_avatarIsDisplayed() {
-        setContent(ConversationState(
-            conversationItems = ImmutableList(listOf(ConversationItem.Message(otherMessage, isLastChainMessage = true))),
-            participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("username", ImmutableUri())))
-        ))
+        setContent(
+            ConversationState(conversationItems = ImmutableList(listOf(ConversationItem.Message(otherMessage, isLastChainMessage = true)))),
+            participantsDetails = ImmutableMap(mapOf("userId4" to ChatParticipantDetails("username")))
+        )
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
-    fun participantDetailsProvided_messageIsTheFirstChainMessage_usernameIsDisplayed() {
-        setContent(ConversationState(
-            conversationItems = ImmutableList(listOf(ConversationItem.Message(otherMessage, isFirstChainMessage = true))),
-            participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("otherUsername", ImmutableUri())))
-        ))
+    fun participantDetailsProvided_usernameIsDisplayed() {
+        setContent(
+            ConversationState(conversationItems = ImmutableList(listOf(ConversationItem.Message(otherMessage)))),
+            participantsDetails = ImmutableMap(mapOf("userId4" to ChatParticipantDetails("otherUsername")))
+        )
         composeTestRule.onNodeWithText("otherUsername").assertIsDisplayed()
     }
 
     @Test
-    fun participantDetailsProvided_messageIsNotTheFirstChainMessage_usernameIsNotDisplayed() {
-        setContent(ConversationState(
-            conversationItems = ImmutableList(listOf(ConversationItem.Message(otherMessage, isFirstChainMessage = false))),
-            participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("otherUsername", ImmutableUri())))
-        ))
-        composeTestRule.onNodeWithText("otherUsername").assertDoesNotExist()
-    }
-
-    @Test
     fun participantDetailsProvided_notLatestGroupMessageOfOtherUser_bubbleIsSpaced() {
-        setContent(ConversationState(
-            conversationItems = ImmutableList(listOf(ConversationItem.Message(otherMessage))),
-            participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("otherUsername", ImmutableUri())))
-        ))
+        setContent(
+            ConversationState(conversationItems = ImmutableList(listOf(ConversationItem.Message(otherMessage)))),
+            participantsDetails = ImmutableMap(mapOf("userId4" to ChatParticipantDetails("otherUsername")))
+        )
         composeTestRule.onNodeWithTag(BubbleTestTag).assertLeftPositionInRootIsEqualTo(
             ConversationContentPadding + OtherBubbleLeftSpacing
         )
@@ -196,10 +215,10 @@ class ConversationComponentTest {
 
     @Test
     fun participantDetailsProvided_latestGroupMessageOfOtherUser_bubbleIsSpacedFromAvatar() {
-        setContent(ConversationState(
-            conversationItems = ImmutableList(listOf(ConversationItem.Message(otherMessage, isLastChainMessage = true))),
-            participantsDetails = ImmutableMap(mapOf("userId4" to ParticipantDetails("username", ImmutableUri())))
-        ))
+        setContent(
+            ConversationState(conversationItems = ImmutableList(listOf(ConversationItem.Message(otherMessage, isLastChainMessage = true)))),
+            participantsDetails = ImmutableMap(mapOf("userId4" to ChatParticipantDetails("username")))
+        )
         composeTestRule.onNodeWithTag(BubbleTestTag).assertLeftPositionInRootIsEqualTo(
             ConversationContentPadding + MessageItemAvatarSize + OtherBubbleAvatarSpacing
         )
@@ -207,10 +226,7 @@ class ConversationComponentTest {
 
     @Test
     fun participantDetailsNotProvided_otherUserMessage_bubbleIsNotSpaced() {
-        setContent(ConversationState(
-            conversationItems = ImmutableList(listOf(ConversationItem.Message(otherMessage, isLastChainMessage = true))),
-            participantsDetails = ImmutableMap()
-        ))
+        setContent(ConversationState(conversationItems = ImmutableList(listOf(ConversationItem.Message(otherMessage, isLastChainMessage = true)))))
         composeTestRule.onNodeWithTag(BubbleTestTag).assertLeftPositionInRootIsEqualTo(
             ConversationContentPadding
         )
@@ -226,13 +242,13 @@ class ConversationComponentTest {
 
     private fun findProgressIndicator() = composeTestRule.onNodeWithTag(ProgressIndicatorTag)
 
-    private fun setContent(uiState: ConversationState) = composeTestRule.setContent {
+    private fun setContent(uiState: ConversationState, participantsDetails: ImmutableMap<String, ChatParticipantDetails> = ImmutableMap()) = composeTestRule.setContent {
         ConversationComponent(
-            uiState = uiState,
+            conversationState = uiState,
+            participantsDetails = participantsDetails,
             onMessageScrolled = { onMessageScrolled = true },
             onApproachingTop = { onApproachingTop = true },
-            onResetScroll = { onResetScroll = true },
-            scrollState = LazyListState()
+            onResetScroll = { onResetScroll = true }
         )
     }
 
