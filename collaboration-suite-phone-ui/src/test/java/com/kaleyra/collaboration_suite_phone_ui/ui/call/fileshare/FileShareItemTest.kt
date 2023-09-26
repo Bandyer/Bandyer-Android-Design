@@ -12,12 +12,12 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.ProgressIndicatorTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.SharedFileUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadSharedFile
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadSharedFile
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItem
+import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.ProgressIndicatorTag
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.SharedFileUi
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockDownloadSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.model.mockUploadSharedFile
+import com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareItem
 import io.mockk.mockk
 import org.junit.After
 import org.junit.Before
@@ -26,7 +26,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class FileShareItemTest {

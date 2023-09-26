@@ -175,7 +175,7 @@ class CallExtensionsTest {
     @Test
     fun callIsNotConnected_isNotConnected_true() {
         val call = mockk<Call>()
-        every { call.state } returns MutableStateFlow(mockk())
+        every { call.state } returns MutableStateFlow(Call.State.Disconnected)
         assertEquals(true, call.isNotConnected())
     }
 

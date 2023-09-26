@@ -1,28 +1,28 @@
 package com.kaleyra.collaboration_suite_phone_ui.ui
 
 import androidx.lifecycle.ViewModelProvider
-import com.kaleyra.collaboration_suite_core_ui.CollaborationService
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.mockAudioDevices
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.viewmodel.AudioOutputViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.mockCallActions
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel.CallActionsViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.view.DialingUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.viewmodel.DialingViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.viewmodel.RingingViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.VirtualBackgroundUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.model.mockVirtualBackgrounds
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.virtualbackground.viewmodel.VirtualBackgroundViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel.WhiteboardViewModel
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideoService
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioOutputUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.mockAudioDevices
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.viewmodel.AudioOutputViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallActionsUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.mockCallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.viewmodel.CallActionsViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.dialing.view.DialingUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.dialing.viewmodel.DialingViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.ringing.model.RingingUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.ringing.viewmodel.RingingViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareTargetUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.VirtualBackgroundUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.mockVirtualBackgrounds
+import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.viewmodel.VirtualBackgroundViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.viewmodel.WhiteboardViewModel
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -71,7 +71,7 @@ abstract class ComposeViewModelsMockTest {
         @BeforeClass
         @JvmStatic
         fun setup() {
-            mockkObject(CollaborationService)
+            mockkObject(KaleyraVideoService)
             mockkObject(CallViewModel)
             mockkObject(DialingViewModel)
             mockkObject(RingingViewModel)
@@ -81,7 +81,7 @@ abstract class ComposeViewModelsMockTest {
             mockkObject(WhiteboardViewModel)
             mockkObject(VirtualBackgroundViewModel)
 
-            coEvery { CollaborationService.get() } returns mockk(relaxed = true)
+            coEvery { KaleyraVideoService.get() } returns mockk(relaxed = true)
 
             every { CallViewModel.provideFactory(any()) } returns callViewModelFactory
             every { callViewModelFactory.create<CallViewModel>(any(), any()) } returns callViewModel
@@ -97,7 +97,9 @@ abstract class ComposeViewModelsMockTest {
 
             every { ScreenShareViewModel.provideFactory(any()) } returns screenShareViewModelFactory
             every { screenShareViewModelFactory.create<ScreenShareViewModel>(any(), any()) } returns screenShareViewModel
-            every { screenShareViewModel.uiState } returns MutableStateFlow( ScreenShareUiState(targetList = ImmutableList(listOf(ScreenShareTargetUi.Device, ScreenShareTargetUi.Application))))
+            every { screenShareViewModel.uiState } returns MutableStateFlow( ScreenShareUiState(targetList = ImmutableList(listOf(
+                ScreenShareTargetUi.Device, ScreenShareTargetUi.Application)))
+            )
 
             every { AudioOutputViewModel.provideFactory(any()) } returns audioOutputViewModelFactory
             every { audioOutputViewModelFactory.create<AudioOutputViewModel>(any(), any()) } returns audioOutputViewModel
@@ -113,7 +115,9 @@ abstract class ComposeViewModelsMockTest {
 
             every { VirtualBackgroundViewModel.provideFactory(any()) } returns virtualBackgroundViewModelFactory
             every { virtualBackgroundViewModelFactory.create<VirtualBackgroundViewModel>(any(), any()) } returns virtualBackgroundViewModel
-            every { virtualBackgroundViewModel.uiState } returns MutableStateFlow(VirtualBackgroundUiState(backgroundList = mockVirtualBackgrounds))
+            every { virtualBackgroundViewModel.uiState } returns MutableStateFlow(
+                VirtualBackgroundUiState(backgroundList = mockVirtualBackgrounds)
+            )
         }
 
         @AfterClass

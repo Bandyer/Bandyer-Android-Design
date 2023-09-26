@@ -1,12 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.termsandconditions
 
-import com.kaleyra.collaboration_suite.conversation.Conversation
-import com.kaleyra.collaboration_suite.conference.Conference
-import com.kaleyra.collaboration_suite_core_ui.ConversationUI
-import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
+import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.ConversationUI
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.viewmodel.TermsAndConditionsViewModel
+import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.viewmodel.TermsAndConditionsViewModel
+import com.kaleyra.video_networking.connector.Connector.State
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -45,8 +44,8 @@ class TermsAndConditionsViewModelTest {
 
     @Test
     fun testTermsAndConditionsUiState_isConnectedUpdated() = runTest {
-        every { conferenceMock.state } returns MutableStateFlow(Conference.State.Connected)
-        every { conversationMock.state } returns MutableStateFlow(Conversation.State.Connected)
+        every { conferenceMock.state } returns MutableStateFlow(State.Connected)
+        every { conversationMock.state } returns MutableStateFlow(State.Connected)
         val actual = viewModel.uiState.first()
         assertEquals(false, actual.isConnected)
         advanceUntilIdle()

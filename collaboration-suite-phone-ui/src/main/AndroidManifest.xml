@@ -22,13 +22,13 @@
     <application>
 
         <activity
-            android:name=".call.compose.termsandconditions.PhoneTermsAndConditionsActivity"
-            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.compose.termsandconditions.PhoneTermsAndConditionsActivity"
+            android:name=".termsandconditions.PhoneTermsAndConditionsActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.termsandconditions.PhoneTermsAndConditionsActivity"
             android:launchMode="singleTop"
             android:exported="false" />
 
         <receiver
-            android:name=".call.compose.fileshare.filepick.FilePickBroadcastReceiver"
+            android:name=".call.fileshare.filepick.FilePickBroadcastReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.kaleyra.collaboration_suite_phone_ui.FILE_PICK_EVENT_ACTION" />
@@ -36,7 +36,7 @@
         </receiver>
 
         <activity
-            android:name=".call.compose.PhoneCallActivity"
+            android:name=".call.PhoneCallActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:launchMode="singleTask"
             android:showForAllUsers="true"
@@ -44,7 +44,7 @@
             android:showWhenLocked="true"
             android:turnScreenOn="true"
             android:supportsPictureInPicture="true"
-            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.compose.PhoneCallActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.PhoneCallActivity"
             tools:targetApi="o_mr1" />
         <activity
             android:name=".chat.PhoneChatActivity"
@@ -52,11 +52,11 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".call.compose.fileshare.filepick.FilePickActivity"
+            android:name=".call.fileshare.filepick.FilePickActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
             android:launchMode="singleInstance"
             android:resizeableActivity="false"
-            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.filepick.FilePickActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.fileshare.filepick.FilePickActivity"
             android:theme="@style/Theme.AppCompat" />
     </application>
 

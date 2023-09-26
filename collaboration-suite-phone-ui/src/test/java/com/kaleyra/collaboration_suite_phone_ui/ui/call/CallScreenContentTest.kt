@@ -7,11 +7,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.dialing.DialingContentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.RingingContentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallComponentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenContent
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.*
+import com.kaleyra.collaboration_suite_phone_ui.call.dialing.DialingContentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.ringing.RingingContentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.CallInfoWidgetTag
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.ui.ComposeViewModelsMockTest
 import com.kaleyra.collaboration_suite_phone_ui.ui.findBackButton
 import io.mockk.every
@@ -229,7 +235,9 @@ class CallScreenContentTest : ComposeViewModelsMockTest() {
     @Test
     fun callStateConnected_userClicksStreamBackButton_onBackPressedInvoked() {
         mockkConstructor(CallViewModel::class)
-        every { anyConstructed<CallViewModel>().uiState } returns MutableStateFlow(CallUiState(featuredStreams = ImmutableList(listOf(streamUiMock))))
+        every { anyConstructed<CallViewModel>().uiState } returns MutableStateFlow(CallUiState(featuredStreams = ImmutableList(listOf(
+            streamUiMock
+        ))))
         callState = CallStateUi.Connected
         composeTestRule.findBackButton().performClick()
         assert(backPressed)

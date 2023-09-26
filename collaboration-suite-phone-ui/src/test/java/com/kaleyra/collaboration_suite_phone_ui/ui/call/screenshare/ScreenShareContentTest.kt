@@ -9,9 +9,9 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.view.ScreenShareContent
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareTargetUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.view.ScreenShareContent
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -19,7 +19,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class ScreenShareContentTest {

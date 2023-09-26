@@ -17,9 +17,11 @@
 package com.kaleyra.collaboration_suite_glass_ui.termsandconditions
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -56,15 +58,24 @@ internal class GlassTermsAndConditionsActivity : AppCompatActivity(), OnDestinat
 
     private var termsAndConditions: TermsAndConditions? = null
 
+    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() { termsAndConditions?.decline() }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = KaleyraActivityTermsAndConditionsGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
-        val termsAndConditions = intent.extras?.getParcelable<TermsAndConditions>(EXTRA_TERMS_AND_CONDITIONS_CONFIGURATION)?.apply {
-            termsAndConditions = this
-        }
+        val termsAndConditions: TermsAndConditions? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.extras?.getParcelable(EXTRA_TERMS_AND_CONDITIONS_CONFIGURATION, TermsAndConditions::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.extras?.getParcelable(EXTRA_TERMS_AND_CONDITIONS_CONFIGURATION)
+        }.apply { termsAndConditions = this }
+
         if (termsAndConditions != null) {
             onConfig(termsAndConditions)
         } else {
@@ -101,11 +112,6 @@ internal class GlassTermsAndConditionsActivity : AppCompatActivity(), OnDestinat
         }
 
         glassTouchEventManager = GlassTouchEventManager(this, this)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        termsAndConditions?.decline()
     }
 
     override fun onDestroy() {

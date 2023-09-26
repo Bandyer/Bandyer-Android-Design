@@ -4,10 +4,10 @@ import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMapper.getWhiteboardTextEvents
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMapper.isWhiteboardLoading
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.WhiteboardMapper.toWhiteboardUploadUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.getWhiteboardTextEvents
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.isWhiteboardLoading
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WhiteboardMapper.toWhiteboardUploadUi
+import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUploadUi
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

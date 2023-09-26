@@ -7,17 +7,16 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.PointerUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.MovablePointerTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.PointerStreamWrapper
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.MovablePointerTag
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.PointerStreamWrapper
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class PointerStreamWrapperTest {

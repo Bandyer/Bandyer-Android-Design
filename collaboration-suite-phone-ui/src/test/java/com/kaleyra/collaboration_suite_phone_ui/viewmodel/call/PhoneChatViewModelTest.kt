@@ -11,10 +11,10 @@ import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherReadMessageMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherUnreadMessageMock1
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherUnreadMessageMock2
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.conferenceMock
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
-import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.PhoneChatViewModel
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationElement
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.viewmodel.PhoneChatViewModel
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -74,9 +74,9 @@ class PhoneChatViewModelTest {
 
     @Test
     fun testOnMessageScrolled() {
-        val message = mockk<com.kaleyra.collaboration_suite_phone_ui.chat.model.Message.OtherMessage>()
+        val message = mockk<com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.OtherMessage>()
         every { message.id } returns otherUnreadMessageMock1.id
-        viewModel.onMessageScrolled(ConversationItem.MessageItem(message))
+        viewModel.onMessageScrolled(ConversationElement.Message(message))
         verify { otherUnreadMessageMock1.markAsRead() }
     }
 

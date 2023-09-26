@@ -36,28 +36,28 @@ apply from: '../moveIcons.gradle'
 dependencies {
 
     /** Platform **/
-    api catalog.kotlinStdLib
-    api catalog.androidxCoreKtx
+    api platform(catalog.androidxComposeBom)
+    api 'androidx.activity:activity-compose'
+    api 'androidx.compose.material:material'
+    api 'androidx.compose.foundation:foundation'
+    api 'androidx.compose.runtime:runtime'
+    api 'androidx.compose.ui:ui-tooling-preview'
+    api 'androidx.lifecycle:lifecycle-viewmodel-compose'
+    api 'androidx.lifecycle:lifecycle-runtime-compose'
+
     api catalog.appcompat
     api catalog.material
+    api catalog.googleAccompanistSystemUiController
+    api catalog.googleAccompanistPermission
     coreLibraryDesugaring catalog.desugar
 
     /** UI **/
     api catalog.squareupPicasso
     implementation catalog.androidxConstraintLayout
-    api 'androidx.activity:activity-compose:1.5.1'
-    api "androidx.compose.material:material:1.2.1"
-    api "androidx.compose.foundation:foundation:1.2.1"
-    api "androidx.compose.runtime:runtime:1.2.1"
-    api "androidx.compose.ui:ui-tooling-preview:1.2.1"
-    api 'com.google.android.material:compose-theme-adapter:1.1.13'
-    api 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
-    api "com.google.accompanist:accompanist-systemuicontroller:0.25.1"
 
     /** Testing **/
-    testImplementation project(":collaboration-suite")
     testImplementation catalog.junit
-    testImplementation catalog.mockk
+    testImplementation catalog.mockkAndroid
     testImplementation catalog.roboelectric
     testImplementation catalog.coroutines
     testImplementation catalog.coroutinesTest
@@ -65,15 +65,12 @@ dependencies {
     testImplementation project(":collaboration-suite-extension-audio")
     testImplementation project(":collaboration-suite")
 
-    androidTestImplementation catalog.androidxTestEspressoCore
-    androidTestImplementation "io.mockk:mockk-android:1.13.3"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:3.4.0"
-
-    debugImplementation "androidx.compose.ui:ui-tooling:1.2.1"
+    androidTestImplementation catalog.mockkAndroid
+    androidTestImplementation catalog.androidxTestEspressoIntents
+    androidTestImplementation catalog.junitTestExt
 
     /** Kaleyra **/
     implementation project(':collaboration-suite-utils')
-
     compileOnly project(":collaboration-suite")
     compileOnly project(":collaboration-suite-extension-audio")
 //    compileOnly kaleyraCatalog.kaleyraCollaborationSuite

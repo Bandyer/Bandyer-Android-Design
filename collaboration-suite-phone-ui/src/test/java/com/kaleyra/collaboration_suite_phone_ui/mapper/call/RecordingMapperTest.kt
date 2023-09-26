@@ -2,16 +2,16 @@ package com.kaleyra.collaboration_suite_phone_ui.mapper.call
 
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.mapToRecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.mapToRecordingTypeUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingTypeUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingTypeUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.recording.model.RecordingUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.RecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.mapToRecordingStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.mapToRecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRecordingMessage
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRecordingStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
+import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.RecordingMessage
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll

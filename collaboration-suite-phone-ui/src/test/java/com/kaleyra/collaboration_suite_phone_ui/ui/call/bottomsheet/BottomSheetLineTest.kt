@@ -5,14 +5,17 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.*
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.CollapsedLineWidth
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.ExpandedLineWidth
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.Line
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.LineState
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.LineTag
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class BottomSheetLineTest {
@@ -30,7 +33,9 @@ class BottomSheetLineTest {
     @Test
     fun lineStateCollapsed_lineIsCollapsed() {
         composeTestRule.setUpLineTest(LineState.Collapsed(Color.White.toArgb()))
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(
+            CollapsedLineWidth
+        )
     }
 
     @Test

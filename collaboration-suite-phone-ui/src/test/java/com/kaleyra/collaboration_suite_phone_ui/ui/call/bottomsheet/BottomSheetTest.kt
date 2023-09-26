@@ -12,8 +12,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.min
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.*
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.AnchorTag
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetScaffold
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetTag
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.BottomSheetValue
+import com.kaleyra.collaboration_suite_phone_ui.call.bottomsheet.rememberBottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.ui.ComposeViewModelsMockTest
 import com.kaleyra.collaboration_suite_phone_ui.ui.performVerticalSwipe
 import kotlinx.coroutines.flow.first
@@ -116,7 +121,7 @@ class BottomSheetTest : ComposeViewModelsMockTest() {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Collapsed,
             targetState = BottomSheetValue.HalfExpanded,
-            swipeAmount = 0.3f
+            swipeAmount = 0.2f
         )
 
     @Test

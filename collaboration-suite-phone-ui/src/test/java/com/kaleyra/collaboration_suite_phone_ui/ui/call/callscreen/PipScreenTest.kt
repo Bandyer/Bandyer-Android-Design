@@ -11,20 +11,19 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableView
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.PipScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.RecordingDotTestTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.PipScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.VideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.recording.view.RecordingDotTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamViewTestTag
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class PipScreenTest {

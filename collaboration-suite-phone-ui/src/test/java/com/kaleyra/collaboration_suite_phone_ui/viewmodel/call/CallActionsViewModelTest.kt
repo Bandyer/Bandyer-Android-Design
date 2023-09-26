@@ -15,12 +15,12 @@ import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Compan
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.currentAudioOutputDevice
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel.CallActionsViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.model.CameraRestrictionMessage
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.usermessages.provider.CallUserMessagesProvider
+import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.viewmodel.CallActionsViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.CameraRestrictionMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import io.mockk.*
 import io.mockk.Ordering.ORDERED
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -311,7 +311,7 @@ class CallActionsViewModelTest {
         val current = result.first().actionList.value
         assertEquals(listOf<CallAction>(), current)
 
-        every { callMock.state } returns MutableStateFlow(mockk())
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.FileShare))
 
         advanceUntilIdle()
@@ -326,7 +326,7 @@ class CallActionsViewModelTest {
         val current = result.first().actionList.value
         assertEquals(listOf<CallAction>(), current)
 
-        every { callMock.state } returns MutableStateFlow(mockk())
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.ScreenShare))
 
         advanceUntilIdle()
@@ -341,7 +341,7 @@ class CallActionsViewModelTest {
         val current = result.first().actionList.value
         assertEquals(listOf<CallAction>(), current)
 
-        every { callMock.state } returns MutableStateFlow(mockk())
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.OpenWhiteboard.Full))
 
         advanceUntilIdle()

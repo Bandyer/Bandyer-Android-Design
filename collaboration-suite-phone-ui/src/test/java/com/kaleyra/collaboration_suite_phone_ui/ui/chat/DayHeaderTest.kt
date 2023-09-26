@@ -6,14 +6,13 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.DayHeader
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.DayHeaderItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
@@ -29,7 +28,7 @@ class DayHeaderTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            DayHeader(timestamp = time.collectAsState().value)
+            DayHeaderItem(timestamp = time.collectAsState().value)
         }
     }
 

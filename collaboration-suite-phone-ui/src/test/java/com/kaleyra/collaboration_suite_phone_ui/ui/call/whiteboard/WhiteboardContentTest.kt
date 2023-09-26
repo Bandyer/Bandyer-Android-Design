@@ -9,17 +9,16 @@ import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.LinearProgressIndicatorTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardContent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardViewTag
+import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUploadUi
+import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.LinearProgressIndicatorTag
+import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardContent
+import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardViewTag
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 
 @RunWith(RobolectricTestRunner::class)

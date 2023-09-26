@@ -12,14 +12,13 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.unit.IntSize
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.PointerUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.pointer.MovablePointer
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.model.PointerUi
+import com.kaleyra.collaboration_suite_phone_ui.call.pointer.view.MovablePointer
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 class MovablePointerTest {

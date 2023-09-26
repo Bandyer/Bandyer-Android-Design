@@ -2,15 +2,15 @@ package com.kaleyra.collaboration_suite_phone_ui.mapper.call
 
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallActionsMapper.toCallActions
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.hasAudio
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.InputMapper.isAudioOnly
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.VirtualBackgroundMapper.hasVirtualBackground
+import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallActionsMapper.toCallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.hasAudio
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.isAudioOnly
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.isGroupCall
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VirtualBackgroundMapper
+import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VirtualBackgroundMapper.hasVirtualBackground
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
