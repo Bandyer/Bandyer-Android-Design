@@ -174,7 +174,7 @@ internal fun CallComponent(
 
     CompositionLocalProvider(LocalContentColor provides Color.White) {
         Box(modifier.testTag(CallComponentTag)) {
-            if (callUiState.callState !is CallStateUi.Disconnected.Ended) {
+            if (callUiState.callState !is CallStateUi.Ringing && callUiState.callState !is CallStateUi.Dialing && callUiState.callState !is CallStateUi.Disconnected.Ended) {
                 AdaptiveGrid(
                     columns = if (callUiState.fullscreenStream == null) callComponentState.columns else 1,
                     modifier = Modifier

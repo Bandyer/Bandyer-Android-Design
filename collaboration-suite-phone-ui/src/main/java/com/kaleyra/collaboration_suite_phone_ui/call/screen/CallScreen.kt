@@ -90,6 +90,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.recording.view.RecordingLab
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamContainer
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.horizontalSystemBarsPadding
 import com.kaleyra.collaboration_suite_phone_ui.common.text.Ellipsize
@@ -668,7 +669,7 @@ internal fun BottomSheetAnchor(
         modifier = modifier
     ) {
         ThumbnailStreams(
-            streams = callUiState.thumbnailStreams,
+            streams = if (callUiState.callState !is CallStateUi.Ringing && callUiState.callState !is CallStateUi.Dialing) callUiState.thumbnailStreams else ImmutableList(),
             contentPadding = PaddingValues(16.dp),
             onStreamClick = onThumbnailStreamClick,
             onStreamDoubleClick = onThumbnailStreamDoubleClick

@@ -88,7 +88,6 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
         streamsHandler.streamsArrangement
             .combine(callState) { (featuredStreams, thumbnailsStreams), state ->
-                if (state is CallStateUi.Ringing || state is CallStateUi.Dialing) return@combine
                 val thumbnails = thumbnailsStreams.filterNot { it.id == ScreenShareViewModel.SCREEN_SHARE_STREAM_ID }
                 _uiState.update {
                     it.copy(
