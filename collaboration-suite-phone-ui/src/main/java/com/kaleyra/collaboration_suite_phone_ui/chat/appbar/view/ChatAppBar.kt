@@ -1,204 +1,36 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view
 
-import android.content.res.Configuration
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantState
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantsState
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ConnectionState
-import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
-import com.kaleyra.collaboration_suite_phone_ui.common.avatar.view.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.common.button.BackIconButton
 import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
-import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
-import com.kaleyra.collaboration_suite_phone_ui.common.text.Ellipsize
-import com.kaleyra.collaboration_suite_phone_ui.common.text.EllipsizeText
 import com.kaleyra.collaboration_suite_phone_ui.common.topappbar.TopAppBar
-import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 
 internal const val SubtitleTag = "SubtitleTag"
 internal const val BouncingDotsTag = "BouncingDots"
 internal const val ChatActionsTag = "ChatActionsTag"
 
 @Composable
-internal fun OneToOneAppBar(
-    state: ConnectionState,
-    recipientDetails: ChatParticipantDetails,
-    isInCall: Boolean,
+internal fun ChatAppBar(
+    isInCall: Boolean = false,
     actions: ImmutableSet<ChatAction>,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit = { },
+    content: @Composable RowScope.() -> Unit
 ) {
     TopAppBar(
         navigationIcon = { BackIconButton(onClick = onBackPressed) },
-        content = {
-            val recipientState by recipientDetails.state.collectAsStateWithLifecycle(
-                ChatParticipantState.Unknown
-            )
-            val (username, image) = recipientDetails
-            ChatAppBarContent(
-                image = image,
-                title = username,
-                subtitle = textFor(connectionState = state, recipientState = recipientState),
-                typingDots = recipientState is ChatParticipantState.Typing
-            )
-        },
+        content = content,
         actions = { if (!isInCall) Actions(actions = actions) }
     )
 }
-
-@Composable
-internal fun GroupAppBar(
-    image: ImmutableUri,
-    name: String,
-    connectionState: ConnectionState,
-    participantsDetails: ImmutableMap<String, ChatParticipantDetails>,
-    participantsState: ChatParticipantsState,
-    isInCall: Boolean,
-    actions: ImmutableSet<ChatAction>,
-    onBackPressed: () -> Unit
-) {
-    TopAppBar(
-        navigationIcon = { BackIconButton(onClick = onBackPressed) },
-        content = {
-            ChatAppBarContent(
-                // TODO replace this fix the image
-                image = ImmutableUri(),
-                // TODO replace the fixed string with the name
-                title = stringResource(R.string.kaleyra_chat_group_title),
-                subtitle = textFor(connectionState, participantsState, participantsDetails),
-                typingDots = participantsState.typing.count() > 0
-            )
-        },
-        actions = { if (!isInCall) Actions(actions = actions) }
-    )
-}
-
-@Composable
-internal fun ChatAppBarContent(
-    image: ImmutableUri,
-    title: String,
-    subtitle: String,
-    typingDots: Boolean
-) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Avatar(
-            uri = image,
-            contentDescription = stringResource(id = R.string.kaleyra_chat_avatar_desc),
-            placeholder = R.drawable.ic_kaleyra_avatar,
-            error = R.drawable.ic_kaleyra_avatar,
-            contentColor = MaterialTheme.colors.onPrimary,
-            backgroundColor = colorResource(R.color.kaleyra_color_grey_light),
-            size = 40.dp
-        )
-        Column(Modifier.padding(start = 12.dp)) {
-            EllipsizeText(
-                text = title,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                ellipsize = Ellipsize.Marquee
-            )
-            Row {
-                EllipsizeText(
-                    text = subtitle,
-                    fontSize = 12.sp,
-                    color = LocalContentColor.current.copy(alpha = 0.5f),
-                    modifier = Modifier.testTag(SubtitleTag),
-                    ellipsize = Ellipsize.Marquee
-                )
-                if (typingDots) {
-                    TypingDots(
-                        color = LocalContentColor.current.copy(alpha = 0.5f),
-                        modifier = Modifier
-                            .align(Alignment.Bottom)
-                            .padding(start = 4.dp, bottom = 4.dp)
-                            .testTag(BouncingDotsTag)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun textFor(
-    connectionState: ConnectionState,
-    participantsState: ChatParticipantsState,
-    participantsDetails: ImmutableMap<String, ChatParticipantDetails>
-): String {
-    val typingCount = participantsState.typing.count()
-    val onlineCount = participantsState.online.count()
-    return when {
-        connectionState is ConnectionState.Offline -> stringResource(R.string.kaleyra_chat_state_waiting_for_network)
-        connectionState is ConnectionState.Connecting -> stringResource(R.string.kaleyra_chat_state_waiting_for_network)
-        typingCount == 1 -> pluralStringResource(
-            id = R.plurals.kaleyra_call_participants_typing,
-            count = 1,
-            participantsState.typing.value.first()
-        )
-
-        typingCount > 1 -> pluralStringResource(
-            id = R.plurals.kaleyra_call_participants_typing,
-            count = typingCount,
-            typingCount
-        )
-
-        onlineCount > 0 -> stringResource(
-            R.string.kaleyra_chat_participants_online,
-            onlineCount,
-            onlineCount
-        )
-
-        else -> participantsDetails.value.values.joinToString(", ") { it.username }
-    }
-}
-
-@Composable
-private fun textFor(
-    connectionState: ConnectionState,
-    recipientState: ChatParticipantState
-): String {
-    val context = LocalContext.current
-    return when {
-        connectionState is ConnectionState.Offline -> stringResource(R.string.kaleyra_chat_state_waiting_for_network)
-        connectionState is ConnectionState.Connecting -> stringResource(R.string.kaleyra_chat_state_waiting_for_network)
-        recipientState is ChatParticipantState.Online -> stringResource(R.string.kaleyra_chat_user_status_online)
-        recipientState is ChatParticipantState.Offline -> {
-            val timestamp = recipientState.timestamp
-            if (timestamp == null) stringResource(R.string.kaleyra_chat_user_status_offline)
-            else stringResource(
-                R.string.kaleyra_chat_user_status_last_login,
-                TimestampUtils.parseTimestamp(context, timestamp)
-            )
-        }
-
-        recipientState is ChatParticipantState.Typing -> stringResource(R.string.kaleyra_chat_user_status_typing)
-        else -> ""
-    }
-}
-
 
 @Composable
 internal fun Actions(actions: ImmutableSet<ChatAction>) {
@@ -231,17 +63,4 @@ internal fun Actions(actions: ImmutableSet<ChatAction>) {
             }
         }
     }
-}
-
-@Preview(name = "Light Mode")
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
-@Composable
-internal fun TopAppBarPreview() = KaleyraTheme {
-    ChatAppBar(
-        state = ConnectionState.UserState.Typing,
-        info = ChatInfo("John Smith"),
-        actions = mockActions,
-        isInCall = false,
-        onBackPressed = { }
-    )
 }

@@ -129,7 +129,7 @@ fun ChatScreen(
             when (uiState) {
                 is ChatUiState.OneToOne -> {
                     OneToOneAppBar(
-                        state = uiState.connectionState,
+                        connectionState = uiState.connectionState,
                         recipientDetails = uiState.recipientDetails,
                         isInCall = uiState.isInCall,
                         actions = uiState.actions,
@@ -140,7 +140,7 @@ fun ChatScreen(
                 is ChatUiState.Group -> {
                     GroupAppBar(
                         image = uiState.image,
-                        name = uiState.name,
+                        name = uiState.name.ifBlank { stringResource(R.string.kaleyra_chat_group_title) },
                         connectionState = uiState.connectionState,
                         participantsDetails = uiState.participantsDetails,
                         participantsState = uiState.participantsState,
