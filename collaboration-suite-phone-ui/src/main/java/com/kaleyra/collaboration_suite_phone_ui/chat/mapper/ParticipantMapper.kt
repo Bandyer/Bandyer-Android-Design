@@ -86,13 +86,18 @@ object ParticipantsMapper {
     fun Map<String, ChatParticipantState>.mapToChatParticipantsState(): ChatParticipantsState {
         val online = mutableListOf<String>()
         val typing = mutableListOf<String>()
+        val offline = mutableListOf<String>()
         forEach { (username, state) ->
             when (state) {
                 is ChatParticipantState.Online -> online.add(username)
                 is ChatParticipantState.Typing -> typing.add(username)
-                else -> Unit
+                else -> offline.add(username)
             }
         }
-        return ChatParticipantsState(online = ImmutableList(online), typing = ImmutableList(typing))
+        return ChatParticipantsState(
+            online = ImmutableList(online),
+            typing = ImmutableList(typing),
+            offline = ImmutableList(offline)
+        )
     }
 }

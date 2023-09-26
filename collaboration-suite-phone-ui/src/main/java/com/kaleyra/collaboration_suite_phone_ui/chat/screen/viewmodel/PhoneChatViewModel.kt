@@ -42,6 +42,7 @@ private data class PhoneChatViewModelState(
     val chatImage: ImmutableUri = ImmutableUri(),
     val actions: ImmutableSet<ChatAction> = ImmutableSet(),
     val connectionState: ConnectionState = ConnectionState.Undefined,
+    val participantsDetails: ImmutableMap<String, ChatParticipantDetails> = ImmutableMap(),
     val participantsState: ChatParticipantsState = ChatParticipantsState(),
     val conversationState: ConversationState = ConversationState(),
     val isInCall: Boolean = false
@@ -52,6 +53,7 @@ private data class PhoneChatViewModelState(
             ChatUiState.Group(
                 name = chatName,
                 image = chatImage,
+                participantsDetails = participantsDetails,
                 participantsState = participantsState,
                 actions = actions,
                 connectionState = connectionState,
@@ -88,8 +90,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
 
     init {
         viewModelScope.launch {
-            val participants = participants.first()
-            val isGroupChat = participants.isGroupChat()
+            val isGroupChat = participants.first().isGroupChat()
             viewModelState.update { it.copy(isGroupChat = isGroupChat) }
 
             actions
@@ -134,16 +135,23 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
             if (isGroupChat) {
                 // TODO Bind the chat name and chat image when it will be developed for mtm chats
                 participants
-                    .toOtherParticipantsState()
+                    .flatMapLatest { it.toOtherParticipantsState() }
                     .onEach { participantsState -> viewModelState.update { it.copy(participantsState = participantsState) } }
                     .launchIn(this)
+
+                participants
+                    .map { it.toParticipantsDetails() }
+                    .onEach { participantsDetails -> viewModelState.update { it.copy(participantsDetails = participantsDetails) } }
+                    .launchIn(this)
             } else {
-                val membersDetails = participants.toParticipantsDetails()
-                val recipientUserId = participants.others.firstOrNull()?.userId
-                val recipientDetails = recipientUserId?.let { membersDetails[it] }
-                if (recipientDetails != null) {
-                    viewModelState.update { it.copy(recipientDetails = recipientDetails) }
-                }
+                participants
+                    .map { it.toParticipantsDetails() }
+                    .onEach { participantsDetails ->
+                        val others = participants.getValue()?.others
+                        val recipientUserId = others?.firstOrNull()?.userId
+                        val recipientDetails = recipientUserId?.let { participantsDetails[it] }
+                        if (recipientDetails != null) viewModelState.update { it.copy(recipientDetails = recipientDetails) }
+                    }.launchIn(this)
             }
         }
     }

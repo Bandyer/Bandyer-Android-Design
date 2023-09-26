@@ -40,13 +40,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.input.ChatUserInput
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.GroupAppBar
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.OneToOneAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.ConversationComponent
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.input.ChatUserInput
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.mockChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.viewmodel.PhoneChatViewModel
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.ChatAppBar
 import com.kaleyra.collaboration_suite_phone_ui.common.spacer.StatusBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
@@ -124,14 +125,30 @@ fun ChatScreen(
                 testTagsAsResourceId = true
             }) {
         StatusBarsSpacer(Modifier.background(MaterialTheme.colors.primaryVariant))
-        Box(Modifier.focusRequester(topBarRef)){
-            ChatAppBar(
-                state = uiState.connectionState,
-                info = uiState.info,
-                isInCall = uiState.isInCall,
-                onBackPressed = onBackPressed,
-                actions = uiState.actions
-            )
+        Box(Modifier.focusRequester(topBarRef)) {
+            when (uiState) {
+                is ChatUiState.OneToOne -> {
+                    OneToOneAppBar(
+                        state = uiState.connectionState,
+                        recipientDetails = uiState.recipientDetails,
+                        isInCall = uiState.isInCall,
+                        actions = uiState.actions,
+                        onBackPressed = onBackPressed
+                    )
+                }
+
+                is ChatUiState.Group -> {
+                    GroupAppBar(
+                        image = uiState.image,
+                        name = uiState.name,
+                        connectionState = uiState.connectionState,
+                        participantsState = uiState.participantsState,
+                        isInCall = uiState.isInCall,
+                        actions = uiState.actions,
+                        onBackPressed = onBackPressed
+                    )
+                }
+            }
         }
 
         if (uiState.isInCall) OngoingCallLabel(onClick = onShowCall)
@@ -139,7 +156,8 @@ fun ChatScreen(
         Box {
             Column {
                 ConversationComponent(
-                    uiState = uiState.conversationState,
+                    conversationState = uiState.conversationState,
+                    participantsDetails = if (uiState is ChatUiState.Group) uiState.participantsDetails else null,
                     onDirectionLeft = topBarRef::requestFocus,
                     onMessageScrolled = onMessageScrolled,
                     onApproachingTop = onFetchMessages,

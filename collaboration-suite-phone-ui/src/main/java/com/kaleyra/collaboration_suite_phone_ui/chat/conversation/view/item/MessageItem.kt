@@ -42,11 +42,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter.SymbolAnnotationType
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.formatter.messageFormatter
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.MessageStateTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.view.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
@@ -67,12 +67,12 @@ internal fun OtherMessageItem(
     message: Message.OtherMessage,
     isFirstChatMessage: Boolean,
     isLastChainMessage: Boolean,
-    participantDetails: ParticipantDetails?,
+    participantDetails: ChatParticipantDetails?,
     modifier: Modifier = Modifier
 ) {
     MessageRow(isLastChainMessage = isLastChainMessage, horizontalArrangement = Arrangement.Start, modifier = modifier) {
         Row(verticalAlignment = Alignment.Bottom) {
-            val (username, uri) = participantDetails ?: (null to null)
+            val uri = participantDetails?.image
             when {
                 isLastChainMessage && uri != null -> {
                     Avatar(
@@ -91,7 +91,7 @@ internal fun OtherMessageItem(
             Bubble(
                 messageText = message.content,
                 messageTime = message.time,
-                username = if (isFirstChatMessage) username else null,
+                username = if (isFirstChatMessage) participantDetails?.username else null,
                 messageState = null,
                 shape = if (isLastChainMessage) LastOtherBubbleShape else OtherBubbleShape,
                 backgroundColor = MaterialTheme.colors.primaryVariant

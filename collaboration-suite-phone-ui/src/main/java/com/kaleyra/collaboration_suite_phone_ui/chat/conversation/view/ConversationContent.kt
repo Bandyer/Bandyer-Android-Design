@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
@@ -26,8 +27,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.DayH
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.MyMessageItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.NewMessagesHeaderItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.item.OtherMessageItem
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantDetails
-import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
@@ -41,7 +40,7 @@ val ConversationContentPadding = 16.dp
 @Composable
 internal fun ConversationContent(
     items: ImmutableList<ConversationItem>,
-    participantsDetails: ImmutableMap<String, ParticipantDetails>,
+    participantsDetails: ImmutableMap<String, ChatParticipantDetails>?,
     isFetching: Boolean,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
@@ -64,7 +63,7 @@ internal fun ConversationContent(
                             message = message,
                             isFirstChatMessage = item.isFirstChainMessage,
                             isLastChainMessage = item.isLastChainMessage,
-                            participantDetails = participantsDetails[message.userId],
+                            participantDetails = participantsDetails?.get(message.userId),
                             modifier = Modifier.fillMaxWidth()
                         )
 
@@ -129,11 +128,11 @@ internal fun ConversationContentGroupPreview() = KaleyraTheme {
             items = mockConversationElements,
             participantsDetails = ImmutableMap(
                 hashMapOf(
-                    "userId1" to ParticipantDetails("Enea", ImmutableUri()),
-                    "userId4" to ParticipantDetails("Luca", ImmutableUri()),
-                    "userId5" to ParticipantDetails("Franco", ImmutableUri()),
-                    "userId7" to ParticipantDetails("Francesco", ImmutableUri()),
-                    "userId8" to ParticipantDetails("Marco", ImmutableUri()),
+                    "userId1" to ChatParticipantDetails("Enea"),
+                    "userId4" to ChatParticipantDetails("Luca"),
+                    "userId5" to ChatParticipantDetails("Franco"),
+                    "userId7" to ChatParticipantDetails("Francesco"),
+                    "userId8" to ChatParticipantDetails("Marco"),
                 )
             ),
             isFetching = false,

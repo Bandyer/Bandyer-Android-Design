@@ -7,6 +7,8 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipan
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ConnectionState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationState
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.common.uistate.UiState
 import kotlinx.coroutines.flow.flowOf
@@ -33,6 +35,7 @@ sealed interface ChatUiState : UiState {
     data class Group(
         val name: String = "",
         val image: ImmutableUri = ImmutableUri(),
+        val participantsDetails: ImmutableMap<String, ChatParticipantDetails> = ImmutableMap(),
         val participantsState: ChatParticipantsState = ChatParticipantsState(),
         override val actions: ImmutableSet<ChatAction> = ImmutableSet(),
         override val connectionState: ConnectionState,

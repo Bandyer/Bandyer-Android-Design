@@ -38,12 +38,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.mock.mockConversationElements
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ConversationContent
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.view.ResetScrollFab
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -77,12 +79,13 @@ private fun scrollToBottomFabEnabled(listState: LazyListState): State<Boolean> {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ConversationComponent(
-    uiState: ConversationState,
+    conversationState: ConversationState,
+    participantsDetails: ImmutableMap<String, ChatParticipantDetails>? = null,
     onDirectionLeft: (() -> Unit) = { },
-    onMessageScrolled: (ConversationItem.Message) -> Unit,
-    onApproachingTop: () -> Unit,
-    onResetScroll: () -> Unit,
-    scrollState: LazyListState,
+    onMessageScrolled: (ConversationItem.Message) -> Unit = { },
+    onApproachingTop: () -> Unit = { },
+    onResetScroll: () -> Unit = { },
+    scrollState: LazyListState = rememberLazyListState(),
     modifier: Modifier = Modifier
 ) {
     val screenHeight = with(LocalDensity.current) {
@@ -99,17 +102,17 @@ internal fun ConversationComponent(
     }
 
     LaunchedEffect(scrollState) {
-        val index = uiState.conversationItems?.value?.indexOfFirst { it is ConversationItem.UnreadMessages } ?: -1
+        val index = conversationState.conversationItems?.value?.indexOfFirst { it is ConversationItem.UnreadMessages } ?: -1
         if (index != -1) {
             scrollState.scrollToItem(index)
             scrollState.scrollBy(-screenHeight * 2 / 3f)
         }
     }
 
-    LaunchedEffect(scrollState, uiState.conversationItems) {
+    LaunchedEffect(scrollState, conversationState.conversationItems) {
         snapshotFlow { scrollState.firstVisibleItemIndex }
             .onEach {
-                val item = uiState.conversationItems?.value?.getOrNull(it) as? ConversationItem.Message ?: return@onEach
+                val item = conversationState.conversationItems?.value?.getOrNull(it) as? ConversationItem.Message ?: return@onEach
                 onMessageScrolled(item)
             }.launchIn(this)
     }
@@ -121,7 +124,7 @@ internal fun ConversationComponent(
             .launchIn(this)
     }
 
-    LaunchedEffect(uiState.conversationItems) {
+    LaunchedEffect(conversationState.conversationItems) {
         if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
     }
 
@@ -140,13 +143,13 @@ internal fun ConversationComponent(
             }
             .then(modifier)
     ) {
-        if (uiState.conversationItems == null) LoadingMessagesLabel(Modifier.align(Alignment.Center))
-        else if (uiState.conversationItems.value.isEmpty()) NoMessagesLabel(Modifier.align(Alignment.Center))
+        if (conversationState.conversationItems == null) LoadingMessagesLabel(Modifier.align(Alignment.Center))
+        else if (conversationState.conversationItems.value.isEmpty()) NoMessagesLabel(Modifier.align(Alignment.Center))
         else {
             ConversationContent(
-                items = uiState.conversationItems,
-                participantsDetails = uiState.participantsDetails,
-                isFetching = uiState.isFetching,
+                items = conversationState.conversationItems,
+                participantsDetails = participantsDetails,
+                isFetching = conversationState.isFetching,
                 scrollState = scrollState,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -162,7 +165,7 @@ internal fun ConversationComponent(
                 .padding(16.dp)
         ) {
             ResetScrollFab(
-                counter = uiState.unreadMessagesCount,
+                counter = conversationState.unreadMessagesCount,
                 onClick = onFabClick,
                 enabled = scrollToBottomFabEnabled
             )
@@ -204,7 +207,7 @@ internal fun NoMessagesLabel(modifier: Modifier = Modifier) {
 internal fun LoadingConversationComponentPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         ConversationComponent(
-            uiState = ConversationState(),
+            conversationState = ConversationState(),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },
@@ -220,11 +223,7 @@ internal fun LoadingConversationComponentPreview() = KaleyraTheme {
 internal fun EmptyConversationComponentPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         ConversationComponent(
-            uiState = ConversationState(conversationItems = ImmutableList(listOf())),
-            onMessageScrolled = { },
-            onApproachingTop = { },
-            onResetScroll = { },
-            scrollState = rememberLazyListState(),
+            conversationState = ConversationState(conversationItems = ImmutableList(listOf())),
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -236,11 +235,7 @@ internal fun EmptyConversationComponentPreview() = KaleyraTheme {
 internal fun ConversationComponentPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         ConversationComponent(
-            uiState = ConversationState(conversationItems = mockConversationElements),
-            onMessageScrolled = { },
-            onApproachingTop = { },
-            onResetScroll = { },
-            scrollState = rememberLazyListState(),
+            conversationState = ConversationState(conversationItems = mockConversationElements),
             modifier = Modifier.fillMaxSize()
         )
     }

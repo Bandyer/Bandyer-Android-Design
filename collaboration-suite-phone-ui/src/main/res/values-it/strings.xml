@@ -56,6 +56,12 @@
     <string name="kaleyra_edit_text_input_placeholder">Scrivi qui &#8230;</string>
     <string name="kaleyra_chat_channel_loading">Caricamento &#8230;</string>
     <string name="kaleyra_chat_user_status_online">in linea</string>
+    <string name="kaleyra_chat_participants_online">%1$s in linea</string>
+    <plurals name="kaleyra_call_participants_typing">
+        <item quantity="one">%1$s sta scrivendo</item>
+        <item quantity="other">%1$d stanno scrivendo</item>
+        <item quantity="many">%1$d stanno scrivendo</item>
+    </plurals>
     <string name="kaleyra_chat_user_status_last_login">ultimo accesso: %1$s</string>
     <string name="kaleyra_chat_user_status_offline">visto di recente</string>
     <string name="kaleyra_chat_user_status_typing">sta scrivendo</string>
@@ -69,6 +75,7 @@
     <string name="kaleyra_chat_unread_messages">Messaggi non letti</string>
     <string name="kaleyra_chat_no_messages">Nessun messaggio&#8230;</string>
     <string name="kaleyra_chat_avatar_desc">Immagine della chat</string>
+    <string name="kaleyra_chat_group_title">Chat di gruppo</string>
 
     <!-- Call -->
     <string name="kaleyra_call_show_buttons">Mostra tasti</string>
