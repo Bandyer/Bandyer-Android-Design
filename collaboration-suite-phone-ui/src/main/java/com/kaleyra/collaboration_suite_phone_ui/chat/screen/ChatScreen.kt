@@ -142,6 +142,7 @@ fun ChatScreen(
                         image = uiState.image,
                         name = uiState.name,
                         connectionState = uiState.connectionState,
+                        participantsDetails = uiState.participantsDetails,
                         participantsState = uiState.participantsState,
                         isInCall = uiState.isInCall,
                         actions = uiState.actions,

@@ -32,6 +32,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.view.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.common.button.BackIconButton
 import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.common.text.Ellipsize
 import com.kaleyra.collaboration_suite_phone_ui.common.text.EllipsizeText
@@ -73,6 +74,7 @@ internal fun GroupAppBar(
     image: ImmutableUri,
     name: String,
     connectionState: ConnectionState,
+    participantsDetails: ImmutableMap<String, ChatParticipantDetails>,
     participantsState: ChatParticipantsState,
     isInCall: Boolean,
     actions: ImmutableSet<ChatAction>,
@@ -86,7 +88,7 @@ internal fun GroupAppBar(
                 image = ImmutableUri(),
                 // TODO replace the fixed string with the name
                 title = stringResource(R.string.kaleyra_chat_group_title),
-                subtitle = textFor(connectionState, participantsState),
+                subtitle = textFor(connectionState, participantsState, participantsDetails),
                 typingDots = participantsState.typing.count() > 0
             )
         },
@@ -143,7 +145,8 @@ internal fun ChatAppBarContent(
 @Composable
 private fun textFor(
     connectionState: ConnectionState,
-    participantsState: ChatParticipantsState
+    participantsState: ChatParticipantsState,
+    participantsDetails: ImmutableMap<String, ChatParticipantDetails>
 ): String {
     val typingCount = participantsState.typing.count()
     val onlineCount = participantsState.online.count()
@@ -168,7 +171,7 @@ private fun textFor(
             onlineCount
         )
 
-        else -> participantsState.offline.value.joinToString(", ")
+        else -> participantsDetails.value.values.joinToString(", ") { it.username }
     }
 }
 
