@@ -33,7 +33,6 @@ import com.kaleyra.collaboration_suite_utils.logging.PriorityLogger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -45,8 +44,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -167,7 +164,7 @@ class ConferenceUI(
                     serviceJob = callService(call, callScope) {
                         mutex.withLock { currentCall = null }
                     }
-                    call.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope)
+                    call.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope, isLink = call.isLink)
                     if (call.isLink) showOnAppResumed(call) else internalShow(call)
                 }
                 call.isLink                            -> showCannotJoinUrl()

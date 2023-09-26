@@ -30,6 +30,7 @@ internal object InputMapper {
 
     fun Flow<Call>.toAudioConnectionFailureMessage(): Flow<AudioConnectionFailureMessage> =
         this.flatMapLatest { it.failedAudioOutputDevice }
+            .filterNotNull()
             .map {
                 if (it.isInSystemCall) AudioConnectionFailureMessage.InSystemCall
                 else AudioConnectionFailureMessage.Generic
