@@ -5,6 +5,8 @@ import com.kaleyra.collaboration_suite.conversation.ChatParticipants
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantsState
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatParticipantState
+import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toParticipantsDetails
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
@@ -67,23 +69,31 @@ object ParticipantsMapper {
         }.distinctUntilChanged()
     }
 
-    fun ChatParticipants.toOtherParticipantsState(): Flow<ChatParticipantsState> {
-        val states = others.map { participant ->
-            participant.toChatParticipantState().map { participant.userId to it }
-        }
-        val participantsState = mutableMapOf<String, ChatParticipantState>()
-        return states
-            .merge()
-            .transform { (userId, state) ->
-                participantsState[userId] = state
-                if (others.size == participantsState.keys.size) {
-                    emit(participantsState.mapToChatParticipantsState())
+    suspend fun ChatParticipants.toOtherParticipantsState(): Flow<ChatParticipantsState> {
+        return coroutineScope {
+            val states = others
+                .map { participant ->
+                    val username = async { participant.displayName.filterNotNull().first() }
+                    Pair(participant, username)
                 }
-            }
-            .distinctUntilChanged()
+                .map { (participant, deferredUsername) ->
+                    participant.toChatParticipantState().map { Triple(participant.userId, deferredUsername.await(), it) }
+                }
+
+            val participantsState = mutableMapOf<String, Pair<String, ChatParticipantState>>()
+            states
+                .merge()
+                .transform { (userId, username, state) ->
+                    participantsState[userId] = Pair(username, state)
+                    if (others.size == participantsState.keys.size) {
+                        emit(participantsState.values.toList().mapToChatParticipantsState())
+                    }
+                }
+                .distinctUntilChanged()
+        }
     }
 
-    fun Map<String, ChatParticipantState>.mapToChatParticipantsState(): ChatParticipantsState {
+    fun List<Pair<String, ChatParticipantState>>.mapToChatParticipantsState(): ChatParticipantsState {
         val online = mutableListOf<String>()
         val typing = mutableListOf<String>()
         val offline = mutableListOf<String>()
