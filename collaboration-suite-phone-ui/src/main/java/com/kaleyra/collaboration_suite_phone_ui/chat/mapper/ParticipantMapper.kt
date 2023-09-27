@@ -2,11 +2,11 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.mapper
 
 import com.kaleyra.collaboration_suite.conversation.ChatParticipant
 import com.kaleyra.collaboration_suite.conversation.ChatParticipants
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantsState
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toChatParticipantState
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toParticipantsDetails
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableMap
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.transform
@@ -32,8 +33,8 @@ object ParticipantsMapper {
             coroutineScope {
                 val participantsDetails = list
                     .map {
-                        val name = async { it.displayName.filterNotNull().first() }
-                        val image = async { it.displayImage.filterNotNull().first() }
+                        val name = async { it.combinedDisplayName.filterNotNull().first() }
+                        val image = async { it.combinedDisplayImage.filterNotNull().first() }
                         Triple(it, name, image)
                     }
                     .map { (participant, name, image) ->
@@ -71,25 +72,28 @@ object ParticipantsMapper {
 
     suspend fun ChatParticipants.toOtherParticipantsState(): Flow<ChatParticipantsState> {
         return coroutineScope {
-            val states = others
-                .map { participant ->
-                    val username = async { participant.displayName.filterNotNull().first() }
-                    Pair(participant, username)
-                }
-                .map { (participant, deferredUsername) ->
-                    participant.toChatParticipantState().map { Triple(participant.userId, deferredUsername.await(), it) }
-                }
-
-            val participantsState = mutableMapOf<String, Pair<String, ChatParticipantState>>()
-            states
-                .merge()
-                .transform { (userId, username, state) ->
-                    participantsState[userId] = Pair(username, state)
-                    if (others.size == participantsState.keys.size) {
-                        emit(participantsState.values.toList().mapToChatParticipantsState())
+            if (others.isEmpty()) flowOf(ChatParticipantsState())
+            else {
+                val states = others
+                    .map { participant ->
+                        val username = async { participant.combinedDisplayName.filterNotNull().first() }
+                        Pair(participant, username)
                     }
-                }
-                .distinctUntilChanged()
+                    .map { (participant, deferredUsername) ->
+                        participant.toChatParticipantState().map { Triple(participant.userId, deferredUsername.await(), it) }
+                    }
+
+                val participantsState = mutableMapOf<String, Pair<String, ChatParticipantState>>()
+                states
+                    .merge()
+                    .transform { (userId, username, state) ->
+                        participantsState[userId] = Pair(username, state)
+                        if (others.size == participantsState.keys.size) {
+                            emit(participantsState.values.toList().mapToChatParticipantsState())
+                        }
+                    }
+                    .distinctUntilChanged()
+            }
         }
     }
 
