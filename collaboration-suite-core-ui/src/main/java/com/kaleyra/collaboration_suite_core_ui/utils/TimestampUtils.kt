@@ -12,6 +12,9 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 
 object TimestampUtils {
+    
+    fun areDateDifferenceGreaterThanMillis(firstDate: Date, secondDate: Date, millis: Long): Boolean =
+        firstDate.toInstant().isAfter(secondDate.toInstant().plusMillis(millis)) || firstDate.toInstant().isBefore(secondDate.toInstant().minusMillis(millis))
 
     /**
      * Parse a UTC millis timestamp into a human readable timestamp. This function takes into account the current zone offset.
