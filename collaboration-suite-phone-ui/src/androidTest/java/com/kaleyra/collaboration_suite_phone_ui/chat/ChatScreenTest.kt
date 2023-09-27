@@ -35,7 +35,7 @@ class ChatScreenTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private val uiState = MutableStateFlow(
-        ChatUiState(
+        ChatUiState.OneToOne(
             conversationState = ConversationState(
                 conversationItems = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))
             ),
@@ -78,7 +78,12 @@ class ChatScreenTest {
 
     @After
     fun tearDown() {
-        uiState.value = ChatUiState(conversationState = ConversationState(conversationItems = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))), actions = mockActions)
+        uiState.value = ChatUiState.OneToOne(
+            conversationState = ConversationState(
+                conversationItems = ImmutableList(mockConversationElements.value.plus(mockConversationElements.value))
+            ),
+            actions = mockActions
+        )
         onBackPressed = false
         onMessageScrolled = false
         onResetMessagesScroll = false
