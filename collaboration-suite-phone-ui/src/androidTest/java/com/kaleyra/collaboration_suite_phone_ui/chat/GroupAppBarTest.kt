@@ -36,7 +36,7 @@ class GroupAppBarTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var connectionState by mutableStateOf<ConnectionState>(ConnectionState.Undefined)
+    private var connectionState by mutableStateOf<ConnectionState>(ConnectionState.Unknown)
 
     private var isInCall by mutableStateOf(false)
 
@@ -68,7 +68,7 @@ class GroupAppBarTest {
 
     @After
     fun tearDown() {
-        connectionState = ConnectionState.Undefined
+        connectionState = ConnectionState.Unknown
         participantsDetails = ImmutableMap()
         participantsState = ChatParticipantsState()
         isInCall = false

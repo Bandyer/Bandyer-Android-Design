@@ -41,7 +41,7 @@ private data class PhoneChatViewModelState(
     val chatName: String = "",
     val chatImage: ImmutableUri = ImmutableUri(),
     val actions: ImmutableSet<ChatAction> = ImmutableSet(),
-    val connectionState: ConnectionState = ConnectionState.Undefined,
+    val connectionState: ConnectionState = ConnectionState.Unknown,
     val participantsDetails: ImmutableMap<String, ChatParticipantDetails> = ImmutableMap(),
     val participantsState: ChatParticipantsState = ChatParticipantsState(),
     val conversationState: ConversationState = ConversationState(),

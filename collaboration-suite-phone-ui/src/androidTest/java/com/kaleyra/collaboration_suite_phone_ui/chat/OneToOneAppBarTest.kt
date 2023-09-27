@@ -12,11 +12,9 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantState
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantsState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ConnectionState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.BouncingDotsTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.ChatActionsTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.ChatAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.OneToOneAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.view.SubtitleTag
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
@@ -42,7 +40,7 @@ class OneToOneAppBarTest {
 
     private val chatParticipantState = MutableStateFlow<ChatParticipantState>(ChatParticipantState.Unknown)
 
-    private var connectionState by mutableStateOf<ConnectionState>(ConnectionState.Undefined)
+    private var connectionState by mutableStateOf<ConnectionState>(ConnectionState.Unknown)
 
     private var chatParticipantsDetails by mutableStateOf(ChatParticipantDetails(username = "recipientUser", state = chatParticipantState))
 
@@ -69,7 +67,7 @@ class OneToOneAppBarTest {
 
     @After
     fun tearDown() {
-        connectionState = ConnectionState.Undefined
+        connectionState = ConnectionState.Unknown
         ChatParticipantDetails(username = "recipientUser", state = chatParticipantState)
         chatParticipantState.value = ChatParticipantState.Unknown
         isInCall = false
@@ -85,7 +83,7 @@ class OneToOneAppBarTest {
 
     @Test
     fun connectionStateUndefinedAndRecipientStateUnknown_subtitleNotDisplayed() {
-        connectionState = ConnectionState.Undefined
+        connectionState = ConnectionState.Unknown
         chatParticipantState.value = ChatParticipantState.Unknown
         getSubtitle().assertContentDescriptionEquals("")
     }

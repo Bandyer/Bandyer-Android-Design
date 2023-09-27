@@ -40,7 +40,7 @@ class OneToOneAppBarTest {
 
     private val chatParticipantState = MutableStateFlow<ChatParticipantState>(ChatParticipantState.Unknown)
 
-    private var connectionState by mutableStateOf<ConnectionState>(ConnectionState.Undefined)
+    private var connectionState by mutableStateOf<ConnectionState>(ConnectionState.Unknown)
 
     private var chatParticipantsDetails by mutableStateOf(ChatParticipantDetails(username = "recipientUser", state = chatParticipantState))
 
@@ -67,7 +67,7 @@ class OneToOneAppBarTest {
 
     @After
     fun tearDown() {
-        connectionState = ConnectionState.Undefined
+        connectionState = ConnectionState.Unknown
         ChatParticipantDetails(username = "recipientUser", state = chatParticipantState)
         chatParticipantState.value = ChatParticipantState.Unknown
         isInCall = false
@@ -83,7 +83,7 @@ class OneToOneAppBarTest {
 
     @Test
     fun connectionStateUndefinedAndRecipientStateUnknown_subtitleNotDisplayed() {
-        connectionState = ConnectionState.Undefined
+        connectionState = ConnectionState.Unknown
         chatParticipantState.value = ChatParticipantState.Unknown
         getSubtitle().assertContentDescriptionEquals("")
     }

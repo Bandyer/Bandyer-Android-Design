@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model
 
 import androidx.compose.runtime.Immutable
-import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 
 @Immutable
 sealed class ConnectionState {
@@ -12,6 +11,6 @@ sealed class ConnectionState {
 
     object Offline : ConnectionState()
 
-    object Undefined : ConnectionState()
+    object Unknown : ConnectionState()
 }
 
