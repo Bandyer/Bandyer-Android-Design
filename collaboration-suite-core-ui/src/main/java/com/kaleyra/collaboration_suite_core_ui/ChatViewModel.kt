@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_core_ui
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 
 open class ChatViewModel(configure: suspend () -> Configuration) : CollaborationViewModel(configure) {
@@ -18,8 +19,8 @@ open class ChatViewModel(configure: suspend () -> Configuration) : Collaboration
 
     val participants = chat.flatMapLatest { it.participants }.shareInEagerly(viewModelScope)
 
-    fun setChat(userId: String): ChatUI? {
-        val conversation = conversation.getValue() ?: return null
+    suspend fun setChat(userId: String): ChatUI? {
+        val conversation = conversation.first()
         val chat = conversation.create(listOf(userId)).getOrNull() ?: return null
         _chat.tryEmit(chat)
         return chat

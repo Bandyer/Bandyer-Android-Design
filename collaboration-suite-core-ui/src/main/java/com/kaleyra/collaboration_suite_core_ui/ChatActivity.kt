@@ -46,10 +46,12 @@ abstract class ChatActivity : FragmentActivity() {
     }
 
     private fun setChat(intent: Intent) {
-        val userId = intent.extras?.getString("userId") ?: return
-        val chat = viewModel.setChat(userId) ?: return
-        chatId = chat.id
-        sendChatAction(DisplayedChatActivity.ACTION_CHAT_VISIBLE, chat.id)
+        lifecycleScope.launch {
+            val userId = intent.extras?.getString("userId") ?: return@launch
+            val chat = viewModel.setChat(userId) ?: return@launch
+            chatId = chat.id
+            sendChatAction(DisplayedChatActivity.ACTION_CHAT_VISIBLE, chat.id)
+        }
     }
 
     private fun sendChatAction(action: String, chatId: String? = null) {
