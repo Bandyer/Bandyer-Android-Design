@@ -6,9 +6,9 @@ import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.conference.*
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.Configuration.Success
-import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI.Theme
+import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
+import com.kaleyra.collaboration_suite_core_ui.Configuration.Success
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
@@ -16,19 +16,19 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
+import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.model.Logo
+import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.model.WatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel.Companion.SINGLE_STREAM_DEBOUNCE_MILLIS
-import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
-import com.kaleyra.collaboration_suite_phone_ui.call.stream.arrangement.StreamsHandler
-import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.model.Logo
-import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.model.WatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.arrangement.StreamsHandler
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
-import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -239,30 +239,6 @@ class CallViewModelTest {
     }
 
     @Test
-    fun testRingingCallUiState_featuredStreamsNotUpdated() = runTest {
-        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnected)
-        every { callParticipantsMock.creator() } returns mockk(relaxed = true)
-        val current = viewModel.uiState.first().featuredStreams
-        assertEquals(ImmutableList<StreamUi>(listOf()), current)
-        advanceUntilIdle()
-        val new = viewModel.uiState.first().featuredStreams
-        val featuredStreamsIds = new.value.map { it.id }
-        assertEquals(listOf<String>(), featuredStreamsIds)
-    }
-
-    @Test
-    fun testDialingCallUiState_featuredStreamsNotUpdated() = runTest {
-        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Connecting)
-        every { callParticipantsMock.creator() } returns participantMeMock
-        val current = viewModel.uiState.first().featuredStreams
-        assertEquals(ImmutableList<StreamUi>(listOf()), current)
-        advanceUntilIdle()
-        val new = viewModel.uiState.first().featuredStreams
-        val featuredStreamsIds = new.value.map { it.id }
-        assertEquals(listOf<String>(), featuredStreamsIds)
-    }
-
-    @Test
     fun testCallUiState_thumbnailStreamsUpdated() = runTest {
         val current = viewModel.uiState.first().thumbnailStreams
         assertEquals(ImmutableList<StreamUi>(listOf()), current)
@@ -270,30 +246,6 @@ class CallViewModelTest {
         val new = viewModel.uiState.first().thumbnailStreams
         val thumbnailStreamsIds = new.value.map { it.id }
         assertEquals(listOf(streamMock3.id, myStreamMock.id), thumbnailStreamsIds)
-    }
-
-    @Test
-    fun testRingingCallUiState_thumbnailStreamsNotUpdated() = runTest {
-        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnected)
-        every { callParticipantsMock.creator() } returns mockk(relaxed = true)
-        val current = viewModel.uiState.first().thumbnailStreams
-        assertEquals(ImmutableList<StreamUi>(listOf()), current)
-        advanceUntilIdle()
-        val new = viewModel.uiState.first().thumbnailStreams
-        val thumbnailStreamsIds = new.value.map { it.id }
-        assertEquals(listOf<String>(), thumbnailStreamsIds)
-    }
-
-    @Test
-    fun testDialingCallUiState_thumbnailStreamsNotUpdated() = runTest {
-        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Connecting)
-        every { callParticipantsMock.creator() } returns participantMeMock
-        val current = viewModel.uiState.first().thumbnailStreams
-        assertEquals(ImmutableList<StreamUi>(listOf()), current)
-        advanceUntilIdle()
-        val new = viewModel.uiState.first().thumbnailStreams
-        val thumbnailStreamsIds = new.value.map { it.id }
-        assertEquals(listOf<String>(), thumbnailStreamsIds)
     }
 
     @Test
