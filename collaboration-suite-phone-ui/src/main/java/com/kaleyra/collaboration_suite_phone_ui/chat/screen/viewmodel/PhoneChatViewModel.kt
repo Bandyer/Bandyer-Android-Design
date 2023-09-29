@@ -11,7 +11,6 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
-import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantsState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ConnectionState
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
@@ -32,6 +31,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.Immu
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.common.viewmodel.UserMessageViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -93,49 +93,10 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
             val isGroupChat = participants.first().isGroupChat()
             viewModelState.update { it.copy(isGroupChat = isGroupChat) }
 
-            actions
-                .map { it.mapToChatActions(call = { pt -> call(pt) }) }
-                .onEach { actions -> viewModelState.update { it.copy(actions = ImmutableSet(actions)) } }
-                .launchIn(this)
-
-            call
-                .hasActiveCall()
-                .onEach { hasActiveCall -> viewModelState.update { it.copy(isInCall = hasActiveCall) } }
-                .launchIn(this)
-
-            launch {
-                val chat = chat.first()
-                findFirstUnreadMessageId(chat.messages.first(), chat::fetch).also {
-                    firstUnreadMessageId.value = it
-                }
-
-                var latestMessage: Message? = null
-                messages
-                    .onEach { messagesUI ->
-                        val messages = messagesUI.list
-                        // Take only new messages after the latest one to avoid mapping all the previous messages again
-                        val newMessages = latestMessage?.let { message -> messages.takeWhile { it.id != message.id } } ?: messages
-                        val newItems = newMessages.mapToConversationItems(firstUnreadMessageId.value, latestMessage)
-                        updateConversationItems(newItems, prepend = true)
-                        latestMessage = messages.firstOrNull()
-                    }
-                    .launchIn(this)
-            }
-
-            conversation
-                .toConnectionState()
-                .onEach { connectionState -> viewModelState.update { it.copy(connectionState = connectionState) } }
-                .launchIn(this)
-
-            chat
-                .flatMapLatest { it.unreadMessagesCount }
-                .onEach { count -> updateUnreadMessagesCount(count) }
-                .launchIn(this)
-
             if (isGroupChat) {
                 // TODO bind the chat name and chat image when the mtm chats will be available
-                participants
-                    .flatMapLatest { it.toOtherParticipantsState() }
+                participants.first()
+                    .toOtherParticipantsState()
                     .onEach { participantsState -> viewModelState.update { it.copy(participantsState = participantsState) } }
                     .launchIn(this)
 
@@ -153,6 +114,46 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
                         if (recipientDetails != null) viewModelState.update { it.copy(recipientDetails = recipientDetails) }
                     }.launchIn(this)
             }
+        }
+
+        actions
+            .map { it.mapToChatActions(call = { pt -> call(pt) }) }
+            .onEach { actions -> viewModelState.update { it.copy(actions = ImmutableSet(actions)) } }
+            .launchIn(viewModelScope)
+
+        call
+            .hasActiveCall()
+            .onEach { hasActiveCall -> viewModelState.update { it.copy(isInCall = hasActiveCall) } }
+            .launchIn(viewModelScope)
+
+        conversation
+            .toConnectionState()
+            .onEach { connectionState -> viewModelState.update { it.copy(connectionState = connectionState) } }
+            .launchIn(viewModelScope)
+
+        chat
+            .flatMapLatest { it.unreadMessagesCount }
+            .onEach { count -> updateUnreadMessagesCount(count) }
+            .launchIn(viewModelScope)
+
+        viewModelScope.launch {
+            val chat = chat.first()
+            findFirstUnreadMessageId(chat.messages.first(), chat::fetch).also {
+                firstUnreadMessageId.value = it
+            }
+
+            var latestMessage: Message? = null
+            messages
+                .onEach { messagesUI ->
+                    val messages = messagesUI.list
+                    // Take only new messages after the latest one to avoid mapping all the previous messages again
+                    val newMessages = latestMessage?.let { message -> messages.takeWhile { it.id != message.id } } ?: messages
+                    val newItems = newMessages.mapToConversationItems(firstUnreadMessageId.value, latestMessage)
+
+                    updateConversationItems(newItems, prepend = true)
+                    latestMessage = messages.firstOrNull()
+                }
+                .launchIn(this)
         }
     }
 

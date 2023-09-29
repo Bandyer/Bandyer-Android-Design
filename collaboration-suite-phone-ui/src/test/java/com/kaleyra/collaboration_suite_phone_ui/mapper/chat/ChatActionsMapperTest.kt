@@ -26,16 +26,14 @@ import com.kaleyra.collaboration_suite_phone_ui.Mocks.messagesUIMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.myMessageMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherParticipantEvents
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherParticipantState
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherUnreadMessageMock1
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherYesterdayUnreadMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ChatActionsMapper.mapToChatActions
 import io.mockk.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import java.util.*
 
 class ChatActionsMapperTest {
 
@@ -44,7 +42,7 @@ class ChatActionsMapperTest {
         every { callMock.state } returns callState
         every { conversationMock.state } returns conversationState
         every { messagesUIMock.my } returns listOf(myMessageMock)
-        every { messagesUIMock.other } returns listOf(otherUnreadMessageMock1)
+        every { messagesUIMock.other } returns listOf(otherYesterdayUnreadMessage)
         every { messagesUIMock.list } returns messagesUIMock.other + messagesUIMock.my
     }
 
