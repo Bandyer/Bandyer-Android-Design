@@ -13,25 +13,23 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.callMock
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.conversationMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatMock
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.oneToOneChatParticipantsFlow
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.messagesUIMock
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherTodayReadMessage
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherYesterdayUnreadMessage
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherTodayUnreadMessage
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.conferenceMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.conversationMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.groupChatParticipantsMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.messagesUIMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.myParticipantMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.oneToOneChatParticipantsFlow
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherParticipantMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherParticipantMock2
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherTodayReadMessage
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherTodayUnreadMessage
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherTodayUnreadMessage2
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherYesterdayUnreadMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantDetails
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatParticipantsState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ConnectionState
-import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
-import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.findFirstUnreadMessageId
@@ -40,8 +38,9 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.screen.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.viewmodel.PhoneChatViewModel
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
+import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import io.mockk.*
-import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -93,7 +92,7 @@ class PhoneChatViewModelTest {
         }
         with(messagesUIMock) {
             every { list } returns listOf(otherTodayUnreadMessage, otherTodayReadMessage)
-            every { other } returns listOf(otherTodayUnreadMessage, otherYesterdayUnreadMessage, otherTodayReadMessage)
+            every { other } returns listOf(otherTodayUnreadMessage, otherTodayReadMessage)
         }
         with(myParticipantMock) {
             every { userId } returns "myUserId"
@@ -204,27 +203,62 @@ class PhoneChatViewModelTest {
 //        Assert.assertEquals(true, new)
 //    }
 
-//    @Test
-//    fun testChatUiState_conversationItemsUpdated() = runTest {
-//        val current = viewModel.uiState.first().conversationState.conversationItems
-//        Assert.assertEquals(null, current)
-//        advanceUntilIdle()
-//        val unreadMessage  = findFirstUnreadMessageId(messagesUIMock) { mockk() }
-//
-//        val actual = viewModel.uiState.first().conversationState.conversationItems
-//        val expected = listOf(otherTodayUnreadMessage, otherTodayReadMessage).mapToConversationItems(unreadMessage)
-//        Assert.assertEquals(ImmutableList(expected), actual)
-//
-//        val newMessagesUIMock = mockk<MessagesUI>(relaxed = true)
-//        val newMessageList = listOf(otherTodayUnreadMessage2, otherTodayUnreadMessage, otherTodayReadMessage)
-//        every { newMessagesUIMock.list } returns newMessageList
-//        messagesFlow.value =  newMessagesUIMock
-//
-//        advanceUntilIdle()
-//        val newActual = viewModel.uiState.first().conversationState.conversationItems
-//        val newExpected = newMessageList.mapToConversationItems(unreadMessage)
-//        Assert.assertEquals(ImmutableList(newExpected), newActual)
-//    }
+    @Test
+    fun testChatUiState_conversationItemsUpdated() = runTest {
+        val current = viewModel.uiState.first().conversationState.conversationItems
+        Assert.assertEquals(null, current)
+        advanceUntilIdle()
+        val unreadMessage = findFirstUnreadMessageId(messagesUIMock) { mockk() }
+
+        val actual = viewModel.uiState.first().conversationState.conversationItems
+        val expected = listOf(otherTodayUnreadMessage, otherTodayReadMessage).mapToConversationItems(unreadMessage)
+        Assert.assertEquals(ImmutableList(expected), actual)
+    }
+
+    @Test
+    fun `latest message item's isLastChainMessage flag is updated`() = runTest {
+        val current = viewModel.uiState.first().conversationState.conversationItems
+        Assert.assertEquals(null, current)
+        advanceUntilIdle()
+        val unreadMessage = findFirstUnreadMessageId(messagesUIMock) { mockk() }
+
+        val actual = viewModel.uiState.first().conversationState.conversationItems
+        val expected = listOf(otherTodayUnreadMessage, otherTodayReadMessage).mapToConversationItems(unreadMessage)
+        Assert.assertEquals(ImmutableList(expected), actual)
+
+        val newMessagesUIMock = mockk<MessagesUI>(relaxed = true)
+        val newMessageList = listOf(otherTodayUnreadMessage2, otherTodayUnreadMessage, otherTodayReadMessage)
+        every { newMessagesUIMock.list } returns newMessageList
+        messagesFlow.value =  newMessagesUIMock
+
+        advanceUntilIdle()
+        val newActual = viewModel.uiState.first().conversationState.conversationItems
+        val newExpected = newMessageList.mapToConversationItems(unreadMessage)
+        Assert.assertEquals(ImmutableList(newExpected), newActual)
+    }
+
+    @Test
+    fun `unread messages items is removed if a message is sent`() = runTest {
+        val current = viewModel.uiState.first().conversationState.conversationItems
+        Assert.assertEquals(null, current)
+        advanceUntilIdle()
+        val unreadMessage = findFirstUnreadMessageId(messagesUIMock) { mockk() }
+
+        val actual = viewModel.uiState.first().conversationState.conversationItems
+        val expected = listOf(otherTodayUnreadMessage, otherTodayReadMessage).mapToConversationItems(unreadMessage)
+        Assert.assertEquals(ImmutableList(expected), actual)
+
+        viewModel.sendMessage("text")
+
+        val newMessagesUIMock = mockk<MessagesUI>(relaxed = true)
+        every { newMessagesUIMock.list } returns messagesUIMock.list
+        messagesFlow.value =  newMessagesUIMock
+
+        advanceUntilIdle()
+        val newActual = viewModel.uiState.first().conversationState.conversationItems
+        val newExpected = messagesUIMock.list.mapToConversationItems()
+        Assert.assertEquals(ImmutableList(newExpected), newActual)
+    }
 
     @Test
     fun testChatUiState_connectionStateUpdated() = runTest {
@@ -292,11 +326,11 @@ class PhoneChatViewModelTest {
         advanceUntilIdle()
 
         coVerify { chatMock.fetch(any()) }
-        TestCase.assertEquals(false, isFetchingValues[0])
-        TestCase.assertEquals(true, isFetchingValues[1])
-        TestCase.assertEquals(false, isFetchingValues[2])
+        assertEquals(false, isFetchingValues[0])
+        assertEquals(true, isFetchingValues[1])
+        assertEquals(false, isFetchingValues[2])
         val actualItems = viewModel.uiState.first().conversationState.conversationItems?.value
-        TestCase.assertEquals(conversationItems, actualItems)
+        assertEquals(conversationItems, actualItems)
 
         // Test the fetched items are added in append to the current list
         val conversationItems2 = listOf(ConversationItem.Message(mockk(relaxed = true)))
@@ -311,9 +345,9 @@ class PhoneChatViewModelTest {
     fun testOnMessageScrolled() = runTest {
         advanceUntilIdle()
         val message = mockk<com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.OtherMessage>()
-        every { message.id } returns otherYesterdayUnreadMessage.id
+        every { message.id } returns otherTodayUnreadMessage.id
         viewModel.onMessageScrolled(ConversationItem.Message(message))
-        verify { otherYesterdayUnreadMessage.markAsRead() }
+        verify { otherTodayUnreadMessage.markAsRead() }
     }
 
     @Test

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 object MessagesMapper {
 
     private const val UnreadMessageFetchCount = 5
-    private const val NewMessageChainDeltaMillis = 5 * 60 * 1000L
+//    private const val NewMessageChainDeltaMillis = 5 * 60 * 1000L
 
     fun Message.toUiMessage(): com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message {
         val text = (content as? Message.Content.Text)?.message ?: ""
@@ -68,14 +68,13 @@ object MessagesMapper {
     }
 
     fun Message.isFirstChainMessage(previousMessage: Message) =
-        (previousMessage.creator.userId != creator.userId
-                || areDateDifferenceGreaterThanMillis(creationDate, previousMessage.creationDate, NewMessageChainDeltaMillis))
+        previousMessage.creator.userId != creator.userId
+//                || areDateDifferenceGreaterThanMillis(creationDate, previousMessage.creationDate, NewMessageChainDeltaMillis)
                 || !TimestampUtils.isSameDay(creationDate.time, previousMessage.creationDate.time)
 
-
     fun Message.isLastChainMessage(nextMessage: Message) =
-        (nextMessage.creator.userId != creator.userId
-                || areDateDifferenceGreaterThanMillis(nextMessage.creationDate, creationDate, NewMessageChainDeltaMillis))
+        nextMessage.creator.userId != creator.userId
+//                || areDateDifferenceGreaterThanMillis(nextMessage.creationDate, creationDate, NewMessageChainDeltaMillis)
                 || !TimestampUtils.isSameDay(creationDate.time, nextMessage.creationDate.time)
 
     suspend fun findFirstUnreadMessageId(
