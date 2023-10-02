@@ -36,19 +36,20 @@ object MessagesMapper {
             }
         }
 
-    fun List<Message>.mapToConversationItems(firstUnreadMessageId: String? = null, lastMappedMessage: Message? = null): List<ConversationItem> {
+    fun List<Message>.mapToConversationItems(
+        firstUnreadMessageId: String? = null,
+        lastMappedMessage: Message? = null
+    ): List<ConversationItem> {
         val items = mutableListOf<ConversationItem>()
 
         forEachIndexed { index, message ->
             val previousMessage = getOrNull(index + 1) ?: lastMappedMessage
             val nextMessage = getOrNull(index - 1)
-            val isFirstChainMessage = previousMessage?.creator?.userId != message.creator.userId || areDateDifferenceGreaterThanMillis(message.creationDate, previousMessage.creationDate, NewMessageChainDeltaMillis)
-            val isLastChainMessage = nextMessage?.creator?.userId != message.creator.userId || areDateDifferenceGreaterThanMillis(nextMessage.creationDate, message.creationDate, NewMessageChainDeltaMillis)
 
             val messageElement = ConversationItem.Message(
                 message = message.toUiMessage(),
-                isFirstChainMessage = isFirstChainMessage,
-                isLastChainMessage = isLastChainMessage
+                isFirstChainMessage = if (previousMessage != null) message.isFirstChainMessage(previousMessage) else true,
+                isLastChainMessage = if (nextMessage != null) message.isLastChainMessage(nextMessage) else true
             )
             items.add(messageElement)
 
@@ -56,13 +57,26 @@ object MessagesMapper {
                 items.add(ConversationItem.UnreadMessages)
             }
 
-            if (previousMessage == null || !TimestampUtils.isSameDay(message.creationDate.time, previousMessage.creationDate.time)) {
+            if (previousMessage == null ||
+                !TimestampUtils.isSameDay(message.creationDate.time, previousMessage.creationDate.time)
+            ) {
                 items.add(ConversationItem.Day(message.creationDate.time))
             }
         }
 
         return items
     }
+
+    fun Message.isFirstChainMessage(previousMessage: Message) =
+        (previousMessage.creator.userId != creator.userId
+                || areDateDifferenceGreaterThanMillis(creationDate, previousMessage.creationDate, NewMessageChainDeltaMillis))
+                || !TimestampUtils.isSameDay(creationDate.time, previousMessage.creationDate.time)
+
+
+    fun Message.isLastChainMessage(nextMessage: Message) =
+        (nextMessage.creator.userId != creator.userId
+                || areDateDifferenceGreaterThanMillis(nextMessage.creationDate, creationDate, NewMessageChainDeltaMillis))
+                || !TimestampUtils.isSameDay(creationDate.time, nextMessage.creationDate.time)
 
     suspend fun findFirstUnreadMessageId(
         messages: Messages,
