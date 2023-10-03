@@ -90,6 +90,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.recording.view.RecordingLab
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamContainer
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.rememberPermissionState
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.horizontalSystemBarsPadding
@@ -306,15 +307,21 @@ internal fun CallScreen(
         sheetState = sheetState,
         shouldShowFileShareComponent = shouldShowFileShareComponent
     )
-    val inputPermissionsState = rememberMultiplePermissionsState(permissions = listOf(
-        RecordAudioPermission, CameraPermission
-    )) { permissionsResult ->
+    // Needed this to handle properly a sequence of multiple permission
+    // Cannot call micPermissionState.launchPermission followed by cameraPermissionState.launchPermission, or vice versa
+    val inputPermissionsState = rememberMultiplePermissionsState(permissions = listOf(RecordAudioPermission, CameraPermission)) { permissionsResult ->
         permissionsResult.forEach { (permission, isGranted) ->
             when {
                 permission == RecordAudioPermission && isGranted -> viewModel.startMicrophone(activity)
                 permission == CameraPermission && isGranted -> viewModel.startCamera(activity)
             }
         }
+    }
+    val micPermissionState = rememberPermissionState(permission = RecordAudioPermission) { isGranted ->
+        if (isGranted) viewModel.startMicrophone(activity)
+    }
+    val cameraPermissionState = rememberPermissionState(permission = CameraPermission) { isGranted ->
+        if (isGranted) viewModel.startCamera(activity)
     }
     val onFinishActivity = remember(activity) {
         {
@@ -359,8 +366,8 @@ internal fun CallScreen(
         viewModel.setOnAudioOrVideoChanged { isAudioEnabled, isVideoEnabled ->
             when {
                 isAudioEnabled && isVideoEnabled -> inputPermissionsState.launchMultiplePermissionRequest()
-                isAudioEnabled -> inputPermissionsState.permissions[0].launchPermissionRequest()
-                isVideoEnabled -> inputPermissionsState.permissions[1].launchPermissionRequest()
+                isAudioEnabled -> micPermissionState.launchPermissionRequest()
+                isVideoEnabled -> cameraPermissionState.launchPermissionRequest()
             }
         }
     }
@@ -482,7 +489,6 @@ internal fun CallScreen(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun PipScreen(
     stream: StreamUi?,
