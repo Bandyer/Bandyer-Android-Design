@@ -19,7 +19,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.CallStateMapper.hasA
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ChatActionsMapper.mapToChatActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ConversationStateMapper.toConnectionState
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.findFirstUnreadMessageId
-import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.isLastChainMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.mapToConversationItems
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.isGroupChat
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ParticipantsMapper.toOtherParticipantsState
@@ -152,19 +151,10 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
                 firstUnreadMessageId.value = it
             }
 
-            var latestMessage: Message? = null
             messages
                 .onEach { messagesUI ->
-                    val messages = messagesUI.list
-
-                    // Take only new messages after the latest one to avoid mapping all the previous messages again
-                    val newMessages = latestMessage?.let { message -> messages.takeWhile { it.id != message.id } } ?: messages
-
-                    latestMessage?.let { updateLatestMessageItem(newMessages, it) }
-                    val newItems = newMessages.mapToConversationItems(firstUnreadMessageId = firstUnreadMessageId.value, lastMappedMessage = latestMessage)
-                    updateConversationItems(newItems, prepend = true, removeUnreadMessage = firstUnreadMessageId.value == null)
-
-                    latestMessage = messages.firstOrNull()
+                    val newItems = messagesUI.list.mapToConversationItems(firstUnreadMessageId = firstUnreadMessageId.value)
+                    updateConversationItems(newItems)
                 }
                 .launchIn(this)
         }
@@ -184,9 +174,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
     fun fetchMessages() {
         viewModelScope.launch {
             updateFetchingState(isFetching = true)
-            val messages = chat.first().fetch(FETCH_COUNT).getOrNull()
-            val fetchedItems = messages?.list?.mapToConversationItems() ?: emptyList()
-            updateConversationItems(fetchedItems)
+            chat.first().fetch(FETCH_COUNT).getOrNull()
             updateFetchingState(isFetching = false)
         }
     }
@@ -213,45 +201,10 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
         }
     }
 
-    // Update last message item's isLastChainMessage flag
-    private fun updateLatestMessageItem(
-        newMessages: List<Message>,
-        latestMessage: Message
-    ) {
-        val firstNewMessage = newMessages.firstOrNull()
-        val conversationState = viewModelState.value.conversationState
-        val currentItems = conversationState.conversationItems?.value?.toMutableList()
-        val lastConversationItem = currentItems?.firstOrNull()
-        if (firstNewMessage == null || currentItems.isNullOrEmpty() || lastConversationItem !is ConversationItem.Message) return
-
-        val updatedMessageItem = lastConversationItem.copy(
-            isLastChainMessage = latestMessage.isLastChainMessage(firstNewMessage)
-        )
-        currentItems[0] = updatedMessageItem
+    private fun updateConversationItems(newItems: List<ConversationItem>) {
         viewModelState.update {
-            val updatedConversationState = it.conversationState.copy(conversationItems = ImmutableList(currentItems))
-            it.copy(conversationState = updatedConversationState)
-        }
-    }
-
-    private fun updateConversationItems(
-        newItems: List<ConversationItem>,
-        prepend: Boolean = false,
-        removeUnreadMessage: Boolean = false
-    ) {
-        viewModelState.update {
-            val conversationState = it.conversationState
-            val currentItems =
-                conversationState.conversationItems?.value?.toMutableList() ?: mutableListOf()
-            if (removeUnreadMessage) {
-                val unreadItemIndex =
-                    currentItems.indexOfFirst { item -> item is ConversationItem.UnreadMessages }
-                if (unreadItemIndex != -1) currentItems.removeAt(unreadItemIndex)
-            }
-            val updatedItems = if (prepend) newItems + currentItems else currentItems + newItems
-            val updatedConversationState =
-                it.conversationState.copy(conversationItems = ImmutableList(updatedItems))
-            it.copy(conversationState = updatedConversationState)
+            val conversationState = it.conversationState.copy(conversationItems = ImmutableList(newItems))
+            it.copy(conversationState = conversationState)
         }
     }
 
