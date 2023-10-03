@@ -26,6 +26,7 @@ import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherTodayReadMessage
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherYesterdayUnreadMessage
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherTodayUnreadMessage
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherTodayUnreadMessage2
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.yesterday
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.MessagesMapper.findFirstUnreadMessageId
@@ -142,46 +143,31 @@ class MessagesMapperTest {
     }
 
     @Test
-    fun `message and the last mapped message is null, new day and message items`() = runTest {
-        val result = listOf(myMessageMock).mapToConversationItems()
-        assert(isSameMessageItem(result[0], ConversationItem.Message(myMessageMock.toUiMessage())))
-        assertEquals(result[1], ConversationItem.Day(now.toEpochMilli()))
-    }
-
-    @Test
-    fun `message is in a different day with respect to the last mapped message, new day and message items`() = runTest {
-        val lastMappedMessage = object : Message {
-            override val id: String = "myId2"
-            override val creator: ChatParticipant = mockk(relaxed = true)
-            override val creationDate: Date = Date(yesterday.toEpochMilli())
-            override val content: Message.Content = Message.Content.Text("text")
-            override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Read)
-        }
-        val result = listOf(myMessageMock).mapToConversationItems(lastMappedMessage = lastMappedMessage)
-        assert(isSameMessageItem(result[0], ConversationItem.Message(myMessageMock.toUiMessage())))
-        assertEquals(result[1], ConversationItem.Day(now.toEpochMilli()))
-    }
-
-    @Test
-    fun `message is in the same day with respect to the last mapped message, only new message item`() = runTest {
-        val lastMappedMessage = object : Message {
-            override val id: String = "myId2"
-            override val creator: ChatParticipant = mockk(relaxed = true)
-            override val creationDate: Date = Date(now.toEpochMilli())
-            override val content: Message.Content = Message.Content.Text("text")
-            override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Read)
-        }
-        val result = listOf(myMessageMock).mapToConversationItems(lastMappedMessage = lastMappedMessage)
-        assert(isSameMessageItem(result[0], ConversationItem.Message(myMessageMock.toUiMessage())))
-        assertEquals(1, result.size)
-    }
-
-    @Test
-    fun `test is first and is last chain message flags in conversation message element`() = runTest {
+    fun `test is first and is last chain message flags when there are different users`() = runTest {
         val result = listOf(otherTodayReadMessage, otherTodayUnreadMessage, myMessageMock).mapToConversationItems()
         assert(isSameMessageItem(result[0], ConversationItem.Message(otherTodayReadMessage.toUiMessage(), isFirstChainMessage = false, isLastChainMessage = true)))
         assert(isSameMessageItem(result[1], ConversationItem.Message(otherTodayUnreadMessage.toUiMessage(), isFirstChainMessage = true, isLastChainMessage = false)))
         assert(isSameMessageItem(result[2], ConversationItem.Message(myMessageMock.toUiMessage(), isFirstChainMessage = true, isLastChainMessage = true)))
+        assertEquals(ConversationItem.Day(myMessageMock.creationDate.time), result[3])
+    }
+
+    @Test
+    fun `test is first and is last chain message flags with same user but different day`() = runTest {
+        val result = listOf(otherTodayReadMessage, otherTodayUnreadMessage, otherYesterdayUnreadMessage).mapToConversationItems()
+        assert(isSameMessageItem(result[0], ConversationItem.Message(otherTodayReadMessage.toUiMessage(), isFirstChainMessage = false, isLastChainMessage = true)))
+        assert(isSameMessageItem(result[1], ConversationItem.Message(otherTodayUnreadMessage.toUiMessage(), isFirstChainMessage = true, isLastChainMessage = false)))
+        assertEquals(ConversationItem.Day(otherTodayUnreadMessage.creationDate.time), result[2])
+        assert(isSameMessageItem(result[3], ConversationItem.Message(otherYesterdayUnreadMessage.toUiMessage(), isFirstChainMessage = true, isLastChainMessage = true)))
+        assertEquals(ConversationItem.Day(otherYesterdayUnreadMessage.creationDate.time), result[4])
+    }
+
+    @Test
+    fun `test is first and is last chain message flags with three messages from the same user`() = runTest {
+        val result = listOf(otherTodayUnreadMessage2, otherTodayUnreadMessage, otherTodayReadMessage).mapToConversationItems()
+        assert(isSameMessageItem(result[0], ConversationItem.Message(otherTodayUnreadMessage2.toUiMessage(), isFirstChainMessage = false, isLastChainMessage = true)))
+        assert(isSameMessageItem(result[1], ConversationItem.Message(otherTodayUnreadMessage.toUiMessage(), isFirstChainMessage = false, isLastChainMessage = false)))
+        assert(isSameMessageItem(result[2], ConversationItem.Message(otherTodayReadMessage.toUiMessage(), isFirstChainMessage = true, isLastChainMessage = false)))
+        assertEquals(ConversationItem.Day(otherTodayReadMessage.creationDate.time), result[3])
     }
 
     @Test

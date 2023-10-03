@@ -36,14 +36,11 @@ object MessagesMapper {
             }
         }
 
-    fun List<Message>.mapToConversationItems(
-        firstUnreadMessageId: String? = null,
-        lastMappedMessage: Message? = null
-    ): List<ConversationItem> {
+    fun List<Message>.mapToConversationItems(firstUnreadMessageId: String? = null): List<ConversationItem> {
         val items = mutableListOf<ConversationItem>()
 
         forEachIndexed { index, message ->
-            val previousMessage = getOrNull(index + 1) ?: lastMappedMessage
+            val previousMessage = getOrNull(index + 1)
             val nextMessage = getOrNull(index - 1)
 
             val messageElement = ConversationItem.Message(
@@ -67,12 +64,12 @@ object MessagesMapper {
         return items
     }
 
-    fun Message.isFirstChainMessage(previousMessage: Message) =
+    private fun Message.isFirstChainMessage(previousMessage: Message) =
         previousMessage.creator.userId != creator.userId
 //                || areDateDifferenceGreaterThanMillis(creationDate, previousMessage.creationDate, NewMessageChainDeltaMillis)
                 || !TimestampUtils.isSameDay(creationDate.time, previousMessage.creationDate.time)
 
-    fun Message.isLastChainMessage(nextMessage: Message) =
+    private fun Message.isLastChainMessage(nextMessage: Message) =
         nextMessage.creator.userId != creator.userId
 //                || areDateDifferenceGreaterThanMillis(nextMessage.creationDate, creationDate, NewMessageChainDeltaMillis)
                 || !TimestampUtils.isSameDay(creationDate.time, nextMessage.creationDate.time)
