@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.viewmodel
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -84,6 +85,10 @@ internal class WhiteboardViewModel(configure: suspend () -> Configuration, white
     fun onTextConfirmed(text: String) {
         onTextConfirmed.value?.invoke(text)
         _uiState.update { it.copy(text = null) }
+    }
+
+    fun onWhiteboardClosed() {
+        _uiState.update { it.copy(isLoading = false) }
     }
 
     fun uploadMediaFile(uri: Uri) {

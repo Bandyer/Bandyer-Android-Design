@@ -14,10 +14,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite.whiteboard.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.common.spacer.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.TextEditorState
@@ -27,7 +27,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardM
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.WhiteboardOfflineContent
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.view.rememberTextEditorState
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.viewmodel.WhiteboardViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_phone_ui.common.spacer.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
@@ -57,6 +57,7 @@ internal fun WhiteboardComponent(
         onReloadClick = viewModel::onReloadClick,
         onTextDismissed = viewModel::onTextDismissed,
         onTextConfirmed = viewModel::onTextConfirmed,
+        onWhiteboardClosed = viewModel::onWhiteboardClosed,
         modifier = modifier
     )
 }
@@ -71,6 +72,7 @@ internal fun WhiteboardComponent(
     onReloadClick: () -> Unit,
     onTextDismissed: () -> Unit,
     onTextConfirmed: (String) -> Unit,
+    onWhiteboardClosed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val shouldShowTextEditor by rememberUpdatedState(newValue = uiState.text != null)
@@ -81,6 +83,12 @@ internal fun WhiteboardComponent(
         } else {
             editorSheetState.hide()
             textEditorState.clearState()
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            onWhiteboardClosed()
         }
     }
 
@@ -169,7 +177,8 @@ private fun WhiteboardComponentPreview(uiState: WhiteboardUiState) {
                 textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty),
                 onReloadClick = {},
                 onTextDismissed = {},
-                onTextConfirmed = {}
+                onTextConfirmed = {},
+                onWhiteboardClosed = {}
             )
         }
     }

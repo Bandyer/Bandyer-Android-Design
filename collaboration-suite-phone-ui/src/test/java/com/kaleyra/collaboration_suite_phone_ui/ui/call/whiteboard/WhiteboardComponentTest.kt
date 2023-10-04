@@ -41,6 +41,8 @@ class WhiteboardComponentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+    private var showWhiteboardComponent by mutableStateOf(true)
+
     private var uiState by mutableStateOf(WhiteboardUiState())
 
     private var sheetState by mutableStateOf(ModalBottomSheetState(ModalBottomSheetValue.Hidden))
@@ -55,23 +57,29 @@ class WhiteboardComponentTest {
 
     private var isTextDismissed = false
 
+    private var isWhiteboardClosed = false
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            WhiteboardComponent(
-                uiState = uiState,
-                editorSheetState = sheetState,
-                textEditorState = textEditorState,
-                userMessage = userMessage,
-                onReloadClick = { isReloadClicked = true },
-                onTextConfirmed = { confirmedText = it },
-                onTextDismissed = { isTextDismissed = true }
-            )
+            if (showWhiteboardComponent) {
+                WhiteboardComponent(
+                    uiState = uiState,
+                    editorSheetState = sheetState,
+                    textEditorState = textEditorState,
+                    userMessage = userMessage,
+                    onReloadClick = { isReloadClicked = true },
+                    onTextConfirmed = { confirmedText = it },
+                    onTextDismissed = { isTextDismissed = true },
+                    onWhiteboardClosed = { isWhiteboardClosed = true }
+                )
+            }
         }
     }
 
     @After
     fun tearDown() {
+        showWhiteboardComponent = true
         uiState = WhiteboardUiState()
         sheetState = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
         textEditorState = TextEditorState(TextEditorValue.Empty)
@@ -79,6 +87,7 @@ class WhiteboardComponentTest {
         userMessage = null
         isTextDismissed = false
         isReloadClicked = false
+        isWhiteboardClosed = false
     }
 
     @Test
@@ -273,6 +282,13 @@ class WhiteboardComponentTest {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
             assertEquals(ModalBottomSheetValue.Expanded, currentValue)
         }
+    }
+
+    @Test
+    fun whiteboardComponentDispose_onWhiteboardClosedInvoked() {
+        showWhiteboardComponent = false
+        composeTestRule.waitForIdle()
+        assertEquals(true, isWhiteboardClosed)
     }
 
     @Test
