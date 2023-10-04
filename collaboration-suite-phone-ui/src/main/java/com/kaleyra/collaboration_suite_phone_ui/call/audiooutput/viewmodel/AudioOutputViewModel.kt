@@ -24,15 +24,14 @@ internal class AudioOutputViewModel(configure: suspend () -> Configuration) : Ba
     init {
         call
             .toAudioDevicesUi()
-            .onEach { audioDevices ->
-                _uiState.update { it.copy(audioDeviceList = ImmutableList(audioDevices)) }
-            }
+            .onEach { audioDevices -> _uiState.update { it.copy(audioDeviceList = ImmutableList(audioDevices)) } }
             .launchIn(viewModelScope)
 
-        viewModelScope.launch {
-            val currentOutputDevice = call.toCurrentAudioDeviceUi().filterNotNull().first()
-            _uiState.update { it.copy(playingDeviceId = currentOutputDevice.id) }
-        }
+        call
+            .toCurrentAudioDeviceUi()
+            .filterNotNull()
+            .onEach { currentOutputDevice -> _uiState.update { it.copy(playingDeviceId = currentOutputDevice.id) } }
+            .launchIn(viewModelScope)
     }
 
     suspend fun setDevice(device: AudioDeviceUi) {
