@@ -73,7 +73,7 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
                 },
                 onWhiteboardVisibility = { isWhiteboardDisplayed = it },
                 onPipAspectRatio = { aspectRatio ->
-                    pictureInPictureAspectRatio = if (aspectRatio == Rational.NaN) getScreenAspectRatio() else coerceRationalForPip(aspectRatio)
+                    pictureInPictureAspectRatio = if (aspectRatio == Rational.NaN) getScreenAspectRatio() else aspectRatio.coerceRationalForPip()
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         updatePipParams()?.let { setPictureInPictureParams(it) }
                     }

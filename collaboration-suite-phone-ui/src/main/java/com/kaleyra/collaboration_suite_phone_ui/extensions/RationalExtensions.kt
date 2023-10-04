@@ -8,5 +8,5 @@ object RationalExtensions {
 
     private val MAX_PIP_RATIONAL = Rational(22, 9)
 
-    fun coerceRationalForPip(rational: Rational) = rational.coerceIn(MIN_PIP_RATIONAL, MAX_PIP_RATIONAL)
+    fun Rational.coerceRationalForPip() = coerceIn(MIN_PIP_RATIONAL, MAX_PIP_RATIONAL)
 }
