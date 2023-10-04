@@ -24,6 +24,7 @@ import android.os.Build
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isScreenLocked
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.turnOnScreen
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
@@ -80,7 +81,7 @@ internal interface CallNotificationManager {
             .enableCallStyle(enableCallStyle)
             .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
-            .fullscreenIntent(fullScreenPendingIntent(context, activityClazz))
+            .apply { if (context.isScreenLocked()) fullscreenIntent(fullScreenPendingIntent(context, activityClazz)) }
             .answerIntent(answerPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
 

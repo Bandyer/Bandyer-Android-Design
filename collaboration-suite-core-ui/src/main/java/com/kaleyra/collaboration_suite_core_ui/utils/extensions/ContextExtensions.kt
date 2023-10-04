@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui.utils.extensions
 
 import android.app.Activity
 import android.app.AppOpsManager
+import android.app.KeyguardManager
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -152,6 +153,12 @@ object ContextExtensions {
         ta.recycle()
         return value
     }
+
+    internal fun Context.isScreenLocked() = isDeviceSecure() || !isUserPresent() || isScreenOff()
+
+    internal fun Context.isDeviceSecure() = (applicationContext.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager).isKeyguardLocked
+
+    internal fun Context.isUserPresent() = (applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager).isInteractive
 
     /**
      * Check if the screen is off
