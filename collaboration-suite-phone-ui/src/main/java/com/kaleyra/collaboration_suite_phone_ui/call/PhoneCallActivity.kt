@@ -23,6 +23,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensio
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenAspectRatio
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.ThemedCallScreen
+import com.kaleyra.collaboration_suite_phone_ui.extensions.RationalExtensions.coerceRationalForPip
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
@@ -72,7 +73,7 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
                 },
                 onWhiteboardVisibility = { isWhiteboardDisplayed = it },
                 onPipAspectRatio = { aspectRatio ->
-                    pictureInPictureAspectRatio = if (aspectRatio == Rational.NaN) getScreenAspectRatio() else aspectRatio
+                    pictureInPictureAspectRatio = if (aspectRatio == Rational.NaN) getScreenAspectRatio() else coerceRationalForPip(aspectRatio)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         updatePipParams()?.let { setPictureInPictureParams(it) }
                     }
