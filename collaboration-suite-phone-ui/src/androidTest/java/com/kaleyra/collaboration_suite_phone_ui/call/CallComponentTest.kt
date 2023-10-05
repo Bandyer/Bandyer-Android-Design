@@ -106,14 +106,14 @@ class CallComponentTest {
 
     @Test
     fun userClicksEnterFullscreen_onFullscreenStreamClickInvoked() {
-        callUiState = CallUiState(featuredStreams = featuredStreamsMock)
+        callUiState = CallUiState(callState = CallStateUi.Connected, featuredStreams = featuredStreamsMock)
         composeTestRule.onAllNodesWithContentDescription(getEnterFullscreenText()).onFirst().performClick()
         assertEquals(streamMock1.id, fullscreenStreamId)
     }
 
     @Test
     fun userClicksExitFullscreen_onFullscreenStreamClickInvoked() {
-        callUiState = CallUiState(featuredStreams = featuredStreamsMock, fullscreenStream = streamMock1)
+        callUiState = CallUiState(callState = CallStateUi.Connected, featuredStreams = featuredStreamsMock, fullscreenStream = streamMock1)
         composeTestRule.onNodeWithContentDescription(getExitFullscreenText()).performClick()
         assertEquals(null, fullscreenStreamId)
     }
@@ -224,6 +224,18 @@ class CallComponentTest {
         val newStreamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
         val callInfoWidgetHeight = composeTestRule.onNodeWithTag(CallInfoWidgetTag).getBoundsInRoot().height
         newStreamOneTextTop.assertIsEqualTo(streamOneTextTop + callInfoWidgetHeight, "stream header")
+    }
+
+    @Test
+    fun featuredStreamsAndCallIsConnected_fullscreenButtonIsDisplayed() {
+        callUiState = CallUiState(callState = CallStateUi.Connected, featuredStreams = featuredStreamsMock)
+        composeTestRule.onAllNodesWithContentDescription(getEnterFullscreenText()).assertCountEquals(featuredStreamsMock.count())
+    }
+
+    @Test
+    fun featuredStreamsAndCallIsNotConnected_fullscreenButtonIsNotDisplayed() {
+        callUiState = CallUiState(callState = CallStateUi.Reconnecting, featuredStreams = featuredStreamsMock)
+        composeTestRule.onAllNodesWithContentDescription(getEnterFullscreenText()).assertCountEquals(0)
     }
 
     @Test

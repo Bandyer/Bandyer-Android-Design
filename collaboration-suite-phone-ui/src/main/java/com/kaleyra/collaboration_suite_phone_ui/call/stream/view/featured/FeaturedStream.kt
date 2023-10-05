@@ -42,6 +42,7 @@ const val HeaderAutoHideMs = 5000L
 internal fun FeaturedStream(
     stream: StreamUi,
     isFullscreen: Boolean = false,
+    fullscreenVisible: Boolean = false,
     onFullscreenClick: () -> Unit,
     onBackPressed: (() -> Unit)? = null,
     headerModifier: Modifier = Modifier,
@@ -70,6 +71,7 @@ internal fun FeaturedStream(
             Header(
                 username = stream.username,
                 fullscreen = isFullscreen,
+                fullscreenVisible = fullscreenVisible,
                 onBackPressed = onBackPressed,
                 onFullscreenClick = onFullscreenClick,
                 modifier = Modifier
@@ -84,6 +86,7 @@ internal fun FeaturedStream(
 private fun Header(
     username: String,
     fullscreen: Boolean,
+    fullscreenVisible: Boolean,
     onBackPressed: (() -> Unit)? = null,
     onFullscreenClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -106,15 +109,17 @@ private fun Header(
             style = LocalTextStyle.current.shadow()
         )
 
-        IconButton(
-            icon = painterResource(
-                id = if (fullscreen) R.drawable.ic_kaleyra_exit_fullscreen else R.drawable.ic_kaleyra_enter_fullscreen
-            ),
-            iconDescription = stringResource(
-                id = if (fullscreen) R.string.kaleyra_exit_fullscreen else R.string.kaleyra_enter_fullscreen
-            ),
-            onClick = onFullscreenClick
-        )
+        if (fullscreenVisible) {
+            IconButton(
+                icon = painterResource(
+                    id = if (fullscreen) R.drawable.ic_kaleyra_exit_fullscreen else R.drawable.ic_kaleyra_enter_fullscreen
+                ),
+                iconDescription = stringResource(
+                    id = if (fullscreen) R.string.kaleyra_exit_fullscreen else R.string.kaleyra_enter_fullscreen
+                ),
+                onClick = onFullscreenClick
+            )
+        }
     }
 }
 

@@ -34,12 +34,15 @@ class FeaturedStreamTest: StreamParentComposableTest() {
 
     private var isFullscreen by mutableStateOf(false)
 
+    private var showFullscreen by mutableStateOf(true)
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
             FeaturedStream(
                 stream = stream.value,
                 isFullscreen = isFullscreen,
+                fullscreenVisible = showFullscreen,
                 onBackPressed = onBackPressed,
                 onFullscreenClick = { fullscreenClicked = true },
                 isTesting = true
@@ -51,6 +54,7 @@ class FeaturedStreamTest: StreamParentComposableTest() {
     fun tearDown() {
         isBackPressed = false
         fullscreenClicked = false
+        showFullscreen = true
         stream = mutableStateOf(streamUiMock)
         onBackPressed = null
         isFullscreen = false
@@ -100,6 +104,12 @@ class FeaturedStreamTest: StreamParentComposableTest() {
         isFullscreen = false
         findEnterFullscreenButton().performClick()
         assertEquals(true, fullscreenClicked)
+    }
+
+    @Test
+    fun fullscreenVisibleFalse_fullscreenButtonNotExists() {
+        showFullscreen = false
+        findEnterFullscreenButton().assertDoesNotExist()
     }
 
     private fun findEnterFullscreenButton(): SemanticsNodeInteraction {
