@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.mapper
 
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.utils.UsbCameraUtils
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.failedAudioOutputDevice
@@ -17,8 +18,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 internal object InputMapper {
@@ -37,6 +38,7 @@ internal object InputMapper {
 
     fun Flow<Call>.toMutedMessage(): Flow<MutedMessage> =
         this.toAudio()
+            .filterNotNull()
             .flatMapLatest { it.events }
             .filterIsInstance<Input.Audio.Event.Request.Mute>()
             .map { event -> event.producer.combinedDisplayName.first() }
@@ -60,20 +62,14 @@ internal object InputMapper {
     fun Flow<Call>.isMyCameraEnabled(): Flow<Boolean> =
         this.toMe()
             .flatMapLatest { it.streams }
-            .map { streams ->
-                streams.firstOrNull { stream ->
-                    stream.video.firstOrNull { it is Input.Video.Camera } != null
-                }
-            }
-            .filterNotNull()
-            .flatMapLatest { it.video }
-            .filterNotNull()
-            .flatMapLatest { it.enabled }
+            .map { streams -> streams.firstOrNull { stream -> stream.id == CAMERA_STREAM_ID } }
+            .flatMapLatest { it?.video ?: flowOf(null) }
+            .flatMapLatest { it?.enabled ?: flowOf(false) }
             .distinctUntilChanged()
 
     fun Flow<Call>.isMyMicEnabled(): Flow<Boolean> =
         this.toAudio()
-            .flatMapLatest { it.enabled }
+            .flatMapLatest { it?.enabled ?: flowOf(false) }
             .distinctUntilChanged()
 
     fun Flow<Call>.isSharingScreen(): Flow<Boolean> =
@@ -98,16 +94,10 @@ internal object InputMapper {
                 }
             }
 
-    private fun Flow<Call>.toAudio(): Flow<Input.Audio> =
+    private fun Flow<Call>.toAudio(): Flow<Input.Audio?> =
         this.toMe()
             .flatMapLatest { it.streams }
-            .map { streams ->
-                streams.firstOrNull { stream ->
-                    stream.audio.firstOrNull { it != null } != null
-                }
-            }
-            .filterNotNull()
-            .flatMapLatest { it.audio }
-            .filterNotNull()
-            .distinctUntilChanged()
+            .map { streams -> streams.firstOrNull { stream -> stream.id == CAMERA_STREAM_ID } }
+            .flatMapLatest { it?.audio ?: flowOf(null) }
+
 }
