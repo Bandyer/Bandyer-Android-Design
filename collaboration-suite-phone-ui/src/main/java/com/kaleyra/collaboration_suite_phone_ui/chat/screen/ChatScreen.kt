@@ -59,35 +59,27 @@ import kotlinx.coroutines.launch
 internal const val ConversationComponentTag = "ConversationComponentTag"
 
 @Composable
-fun ThemedChatScreen(
-    onBackPressed: () -> Unit,
-    viewModel: PhoneChatViewModel
-) {
-    val theme by viewModel.theme.collectAsStateWithLifecycle(CompanyUI.Theme())
-    CollaborationTheme(theme = theme) {
-        ChatScreen(onBackPressed = onBackPressed, viewModel = viewModel)
-    }
-}
-
-@Composable
 fun ChatScreen(
     onBackPressed: () -> Unit,
     viewModel: PhoneChatViewModel
 ) {
+    val theme by viewModel.theme.collectAsStateWithLifecycle(CompanyUI.Theme())
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val userMessage by viewModel.userMessage.collectAsStateWithLifecycle(initialValue = null)
 
-    ChatScreen(
-        uiState = uiState,
-        userMessage = userMessage,
-        onBackPressed = onBackPressed,
-        onMessageScrolled = viewModel::onMessageScrolled,
-        onResetMessagesScroll = viewModel::onAllMessagesScrolled,
-        onFetchMessages = viewModel::fetchMessages,
-        onShowCall = viewModel::showCall,
-        onSendMessage = viewModel::sendMessage,
-        onTyping = viewModel::typing
-    )
+    CollaborationTheme(theme = theme) {
+        ChatScreen(
+            uiState = uiState,
+            userMessage = userMessage,
+            onBackPressed = onBackPressed,
+            onMessageScrolled = viewModel::onMessageScrolled,
+            onResetMessagesScroll = viewModel::onAllMessagesScrolled,
+            onFetchMessages = viewModel::fetchMessages,
+            onShowCall = viewModel::showCall,
+            onSendMessage = viewModel::sendMessage,
+            onTyping = viewModel::typing
+        )
+    }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)

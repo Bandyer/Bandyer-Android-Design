@@ -253,8 +253,9 @@ internal class CallScreenState(
     }
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-internal fun ThemedCallScreen(
+internal fun CallScreen(
     viewModel: CallViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
         factory = CallViewModel.provideFactory(::requestConfiguration)
     ),
@@ -267,35 +268,6 @@ internal fun ThemedCallScreen(
     onActivityFinishing: () -> Unit
 ) {
     val theme by viewModel.theme.collectAsStateWithLifecycle(CompanyUI.Theme())
-    CollaborationTheme(theme = theme, transparentSystemBars = true) { isDarkTheme ->
-        CallScreen(
-            shouldShowFileShareComponent = shouldShowFileShareComponent,
-            isInPipMode = isInPipMode,
-            isDarkTheme = isDarkTheme,
-            onEnterPip = onEnterPip,
-            onPipAspectRatio = onPipAspectRatio ,
-            onFileShareVisibility = onFileShareVisibility,
-            onWhiteboardVisibility = onWhiteboardVisibility,
-            onActivityFinishing = onActivityFinishing
-        )
-    }
-}
-
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-internal fun CallScreen(
-    viewModel: CallViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-        factory = CallViewModel.provideFactory(::requestConfiguration)
-    ),
-    shouldShowFileShareComponent: Boolean,
-    isInPipMode: Boolean,
-    isDarkTheme: Boolean,
-    onEnterPip: () -> Unit,
-    onPipAspectRatio: (Rational) -> Unit,
-    onFileShareVisibility: (Boolean) -> Unit,
-    onWhiteboardVisibility: (Boolean) -> Unit,
-    onActivityFinishing: () -> Unit
-) {
     val activity = LocalContext.current.findActivity() as FragmentActivity
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberBottomSheetState(
@@ -372,21 +344,23 @@ internal fun CallScreen(
         }
     }
 
-    CallScreen(
-        callUiState = callUiState,
-        callScreenState = callScreenState,
-        onThumbnailStreamClick = viewModel::swapThumbnail,
-        onThumbnailStreamDoubleClick = viewModel::fullscreenStream,
-        onFullscreenStreamClick = viewModel::fullscreenStream,
-        onUserFeedback = viewModel::sendUserFeedback,
-        onConfigurationChange = viewModel::updateStreamsArrangement,
-        onBackPressed = onBackPressed,
-        onFinishActivity = onFinishActivity,
-        isInPipMode = isInPipMode,
-        isDarkTheme = isDarkTheme,
-        onFileShareVisibility = onFileShareVisibility,
-        onWhiteboardVisibility = onWhiteboardVisibility
-    )
+    CollaborationTheme(theme = theme, transparentSystemBars = true) { isDarkTheme ->
+        CallScreen(
+            callUiState = callUiState,
+            callScreenState = callScreenState,
+            onThumbnailStreamClick = viewModel::swapThumbnail,
+            onThumbnailStreamDoubleClick = viewModel::fullscreenStream,
+            onFullscreenStreamClick = viewModel::fullscreenStream,
+            onUserFeedback = viewModel::sendUserFeedback,
+            onConfigurationChange = viewModel::updateStreamsArrangement,
+            onBackPressed = onBackPressed,
+            onFinishActivity = onFinishActivity,
+            isInPipMode = isInPipMode,
+            isDarkTheme = isDarkTheme,
+            onFileShareVisibility = onFileShareVisibility,
+            onWhiteboardVisibility = onWhiteboardVisibility
+        )
+    }
 }
 
 @Composable

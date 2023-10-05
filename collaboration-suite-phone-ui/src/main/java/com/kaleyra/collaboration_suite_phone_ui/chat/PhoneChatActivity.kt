@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
-import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ThemedChatScreen
+import com.kaleyra.collaboration_suite_phone_ui.chat.screen.ChatScreen
 import com.kaleyra.collaboration_suite_phone_ui.chat.screen.viewmodel.PhoneChatViewModel
 
 internal class PhoneChatActivity : ChatActivity() {
@@ -19,7 +19,7 @@ internal class PhoneChatActivity : ChatActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            ThemedChatScreen(onBackPressed = this::finishAndRemoveTask, viewModel = viewModel)
+            ChatScreen(onBackPressed = this::finishAndRemoveTask, viewModel = viewModel)
         }
     }
 }
