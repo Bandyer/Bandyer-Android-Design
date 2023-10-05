@@ -42,13 +42,18 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         .map { it is Call.State.Connected }
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
+    private val isCallEnded = call
+        .flatMapLatest { it.state }
+        .map { it is Call.State.Disconnected.Ended }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
     private val isMyCameraEnabled = call
         .isMyCameraEnabled()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, true)
 
     private val isMyMicEnabled = call
         .isMyMicEnabled()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, true)
 
     private val isSharingScreen = call
         .isSharingScreen()
@@ -86,7 +91,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
             isVirtualBackgroundEnabled,
             hasUsbCamera
         ) { callActions, isCallConnected, isMyCameraEnabled, isMyMicEnabled, isSharingScreen, currentAudioOutput, isVirtualBackgroundEnabled, hasUsbCamera ->
-            callActions
+            val actions = callActions
                 .updateActionIfExists(CallAction.Microphone(isToggled = !isMyMicEnabled))
                 .updateActionIfExists(CallAction.Camera(isToggled = !isMyCameraEnabled))
                 .updateActionIfExists(CallAction.Audio(device = currentAudioOutput))
@@ -95,9 +100,13 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
                 .updateActionIfExists(CallAction.VirtualBackground(isToggled = isVirtualBackgroundEnabled))
                 .updateActionIfExists(CallAction.Whiteboard(isEnabled = isCallConnected))
                 .updateActionIfExists(CallAction.SwitchCamera(isEnabled = !hasUsbCamera && isMyCameraEnabled))
+            ImmutableList(actions)
         }
             .distinctUntilChanged()
-            .onEach { actions -> _uiState.update { it.copy(actionList = ImmutableList(actions)) } }
+            .combine(isCallEnded) { actions, isCallEnded ->
+                if (!isCallEnded) _uiState.update { it.copy(actionList = actions) }
+                isCallEnded
+            }
             .launchIn(viewModelScope)
     }
 

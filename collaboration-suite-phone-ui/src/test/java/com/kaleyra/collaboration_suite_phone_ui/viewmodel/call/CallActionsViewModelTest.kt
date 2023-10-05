@@ -78,6 +78,8 @@ class CallActionsViewModelTest {
     private val cameraRestrictionMock = mockk<Contact.Restrictions.Restriction.Camera>()
 
     private val inputs = MutableStateFlow(setOf<Input>())
+
+    private val callState = MutableStateFlow<Call.State>(Call.State.Disconnected)
     
     private val activity = mockk<FragmentActivity>()
 
@@ -91,7 +93,7 @@ class CallActionsViewModelTest {
         with(callMock) {
             every { inputs } returns inputsMock
             every { actions } returns MutableStateFlow(setOf(CallUI.Action.HangUp, CallUI.Action.Audio))
-            every { state } returns MutableStateFlow(mockk())
+            every { state } returns callState
             every { participants } returns MutableStateFlow(callParticipantsMock)
             every { effects } returns effectsMock
             every { preferredType } returns MutableStateFlow(Call.PreferredType.audioVideo())
@@ -101,7 +103,7 @@ class CallActionsViewModelTest {
             every { others } returns listOf(otherParticipantMock)
         }
         with(myStreamMock) {
-            every { id } returns "myStreamId"
+            every { id } returns CAMERA_STREAM_ID
             every { video } returns MutableStateFlow(videoMock)
             every { audio } returns MutableStateFlow(audioMock)
         }
@@ -268,7 +270,6 @@ class CallActionsViewModelTest {
         assertEquals(expected, actual)
     }
 
-
     @Test
     fun testCallActionsUiState_audioActionUpdated() = runTest {
         val result = viewModel.uiState
@@ -303,6 +304,19 @@ class CallActionsViewModelTest {
         val actual = result.first().actionList.value
         val expected = listOf(CallAction.VirtualBackground(isToggled = true))
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun testCallActionsUiState_callStateEnded_actionsNotUpdated() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
+        callState.value = Call.State.Disconnected.Ended
+
+        advanceUntilIdle()
+        val actual = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), actual)
     }
 
     @Test
