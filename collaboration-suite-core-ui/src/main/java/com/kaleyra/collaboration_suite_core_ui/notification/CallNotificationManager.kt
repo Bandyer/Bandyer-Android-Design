@@ -81,7 +81,9 @@ internal interface CallNotificationManager {
             .enableCallStyle(enableCallStyle)
             .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
-            .apply { if (context.isScreenLocked()) fullscreenIntent(fullScreenPendingIntent(context, activityClazz)) }
+            .apply {
+                if (context.isScreenLocked() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) fullscreenIntent(fullScreenPendingIntent(context, activityClazz))
+            }
             .answerIntent(answerPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
 
