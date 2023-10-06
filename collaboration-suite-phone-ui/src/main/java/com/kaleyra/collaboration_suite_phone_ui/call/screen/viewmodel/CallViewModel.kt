@@ -181,7 +181,6 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     override fun onCleared() {
         super.onCleared()
         CallUserMessagesProvider.dispose()
-        call.getValue()?.inputs?.releaseAll()
     }
 
     fun startMicrophone(context: FragmentActivity) {
@@ -193,8 +192,8 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     fun startCamera(context: FragmentActivity) {
         val call = call.getValue() ?: return
         if (call.toMyCameraStream()?.video?.value != null) return
-        viewModelScope.launch { call.inputs.request(context, Inputs.Type.Camera.Internal).getOrNull<Input.Video>() }
-        viewModelScope.launch { call.inputs.request(context, Inputs.Type.Camera.External).getOrNull<Input.Video>() }
+        viewModelScope.launch { call.inputs.request(context, Inputs.Type.Camera.Internal) }
+        viewModelScope.launch { call.inputs.request(context, Inputs.Type.Camera.External) }
     }
 
     fun hangUp() {
