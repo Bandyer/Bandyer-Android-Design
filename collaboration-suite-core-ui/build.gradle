@@ -20,7 +20,6 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-parcelize'
-    id 'kotlin-kapt'
     id 'maven-publish'
     alias(catalog.plugins.dokka)
     alias(catalog.plugins.licenseReport)
@@ -61,7 +60,6 @@ dependencies {
     testImplementation catalog.roboelectric
     testImplementation catalog.coroutines
     testImplementation catalog.coroutinesTest
-//    testImplementation kaleyraCatalog.kaleyraCollaborationSuite
     testImplementation project(":collaboration-suite-extension-audio")
     testImplementation project(":collaboration-suite")
 
@@ -70,7 +68,9 @@ dependencies {
     androidTestImplementation catalog.junitTestExt
 
     /** Kaleyra **/
-    implementation project(':collaboration-suite-utils')
+//    implementation project(':video-utils')
+    implementation kaleyraCatalog.kaleyraVideoUtils
+
     compileOnly project(":collaboration-suite")
     compileOnly project(":collaboration-suite-extension-audio")
 //    compileOnly kaleyraCatalog.kaleyraCollaborationSuite

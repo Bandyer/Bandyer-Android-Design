@@ -25,7 +25,7 @@ import com.kaleyra.collaboration_suite.conversation.Message.State.Received
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideoBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.video_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first

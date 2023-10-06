@@ -23,7 +23,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_utils.HostAppInfo
+import com.kaleyra.video_utils.HostAppInfo
 
 internal class TermsAndConditionsNotification {
 

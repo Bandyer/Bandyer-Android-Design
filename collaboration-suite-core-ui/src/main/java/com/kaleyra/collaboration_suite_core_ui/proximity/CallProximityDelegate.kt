@@ -5,8 +5,8 @@ import android.content.ContextWrapper
 import androidx.lifecycle.LifecycleOwner
 import com.bandyer.android_audiosession.session.AudioCallSession
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
-import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensorListener
+import com.kaleyra.video_utils.proximity_listener.ProximitySensor
+import com.kaleyra.video_utils.proximity_listener.ProximitySensorListener
 
 internal class CallProximityDelegate<T>(
     private val lifecycleContext: T,

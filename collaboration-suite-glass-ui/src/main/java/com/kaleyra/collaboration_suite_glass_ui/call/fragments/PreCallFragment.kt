@@ -18,8 +18,8 @@ package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.annotation.SuppressLint
 import android.view.View
-import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.first

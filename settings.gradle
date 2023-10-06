@@ -13,20 +13,31 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-include ':app',
-        ':macrobenchmark',
-        ':collaboration-suite-core-ui',
+include ':collaboration-suite-core-ui',
         ':collaboration-suite-phone-ui',
         ':collaboration-suite-glass-ui',
         ':collaboration-suite',
-        ":collaboration-suite-extension-audio",
+        ':collaboration-suite-extension-audio'
+//        ':communication_center',
+//        ':extension_live_pointer',
+//        ':extension_file_share',
+//        ':video-networking',
+//        ':collaboration-suite-utils',
 //        ':bandyer-android-chat',
-        ':collaboration-suite-utils'
+//        ':collaboration-suite-utils'
+//        ':macrobenchmark',
+//        ':app'
 
 project(':collaboration-suite').projectDir = file('../bandyer-android-collaborationcenter/collaboration-suite/')
 project(':collaboration-suite-extension-audio').projectDir = file('../bandyer-android-collaborationcenter/collaboration-suite-extension-audio/')
 //project(':bandyer-android-chat').projectDir = file('../Bandyer-Android-Chat-SDK/bandyer-android-chat/')
-project(':collaboration-suite-utils').projectDir = file('../Collaboration-Suite-Utils/collaboration-suite-utils')
+//project(':collaboration-suite-utils').projectDir = file('../Collaboration-Suite-Utils/collaboration-suite-utils')
+//project(':communication_center').projectDir = file('../Bandyer-Android-CommunicationCenter/communication_center/')
+//project(':extension_live_pointer').projectDir = file('../Bandyer-Android-CommunicationCenter/extension_live_pointer/')
+//project(':extension_file_share').projectDir = file('../Bandyer-Android-CommunicationCenter/extension_file_share')
+//project(':video-networking').projectDir = file('../Collaboration-Suite-Networking/video-networking/')
+//project(':collaboration-suite-utils').projectDir = file('../Collaboration-Suite-Utils/collaboration-suite-utils')
+
 
 dependencyResolutionManagement {
     repositories {
@@ -35,18 +46,19 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.bandyer.com/prebuilts' }
         maven { url 'https://maven.bandyer.com/releases' }
     }
 
     versionCatalogs {
         create("kaleyraCatalog") {
-            from("com.kaleyra:kaleyra-libs-version-catalog:2023.07.00")
+            from("com.kaleyra:kaleyra-libs-version-catalog:2023.10.00")
         }
         create("catalog") {
-            from("com.kaleyra:video-sdk-version-catalog:2023.07.00")
+            from("com.kaleyra:video-sdk-version-catalog:2023.10.00")
         }
         create("sampleAppCatalog") {
-            from("com.kaleyra:video-app-version-catalog:2023.07.00")
+            from("com.kaleyra:video-app-version-catalog:2023.10.00")
         }
     }
 }

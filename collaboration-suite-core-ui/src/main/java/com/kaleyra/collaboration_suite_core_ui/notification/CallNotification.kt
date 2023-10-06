@@ -31,7 +31,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
-import com.kaleyra.collaboration_suite_utils.HostAppInfo
+import com.kaleyra.video_utils.HostAppInfo
 
 /**
  * CallNotification. Be aware: on api > 31, the notifications requires either to be linked to a foreground service or to have a fullscreen intent.

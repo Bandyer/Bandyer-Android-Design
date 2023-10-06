@@ -22,9 +22,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnAttach
 import androidx.fragment.app.FragmentActivity
-import com.kaleyra.collaboration_suite_utils.LifecycleEvents
-import com.kaleyra.collaboration_suite_utils.LifecyleBinder
 import com.kaleyra.collaboration_suite_core_ui.systemviews.SystemViewLayoutObserver
+import com.kaleyra.video_utils.LifecycleEvents
+import com.kaleyra.video_utils.LifecyleBinder
 
 internal class SystemViewControlsAware(private var finished: (() -> Unit)?) :
     SystemViewControlsAwareInstance {

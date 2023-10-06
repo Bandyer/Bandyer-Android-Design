@@ -9,8 +9,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
-import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.mockAudioDevices
@@ -19,6 +17,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.viewmodel.Audio
 import com.kaleyra.collaboration_suite_phone_ui.call.subfeaturelayout.SubFeatureLayout
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
+import com.kaleyra.collaboration_suite_phone_ui.R
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 

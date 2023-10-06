@@ -23,10 +23,10 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentStartBinding
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentStartBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 import kotlinx.coroutines.flow.combine

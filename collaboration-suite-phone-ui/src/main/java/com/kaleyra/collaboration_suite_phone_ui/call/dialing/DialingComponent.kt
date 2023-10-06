@@ -7,8 +7,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
-import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.dialing.view.DialingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.dialing.viewmodel.DialingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.precall.PreCallComponent
@@ -16,6 +14,8 @@ import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMe
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
+import com.kaleyra.collaboration_suite_phone_ui.R
 
 const val DialingContentTag = "DialingContentTag"
 

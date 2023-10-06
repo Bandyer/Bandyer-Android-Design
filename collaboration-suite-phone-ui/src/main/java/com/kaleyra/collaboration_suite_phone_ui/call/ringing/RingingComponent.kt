@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.helpertext.HelperText
 import com.kaleyra.collaboration_suite_phone_ui.call.*
@@ -47,6 +46,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.button.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.countdowntimer.rememberCountdownTimerState
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.streamUiMock
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 
 const val RingingContentTag = "RingingContentTag"
 const val TapToAnswerTimerMillis = 7000L

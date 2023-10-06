@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.subfeaturelayout.SubFeatureLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareTargetUi
@@ -19,6 +18,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.Scree
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 
 @Composable
 internal fun ScreenShareComponent(

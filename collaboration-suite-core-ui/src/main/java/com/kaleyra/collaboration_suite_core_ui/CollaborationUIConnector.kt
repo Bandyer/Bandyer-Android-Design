@@ -112,7 +112,10 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
             .dropWhile { !it }
             .onEach { isInForeground ->
                 if (isInForeground) performAction(Action.RESUME)
-                else if (collaboration.conference.call.replayCache.isEmpty()) performAction(Action.PAUSE)
+                else {
+                    val isInCall = collaboration.conference.call.replayCache.firstOrNull()?.state !is Call.State.Disconnected
+                    if (isInCall) performAction(Action.PAUSE)
+                }
             }
             .launchIn(scope)
     }

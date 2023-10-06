@@ -18,11 +18,11 @@ package com.kaleyra.collaboration_suite_glass_ui.chat
 
 import android.net.Uri
 import android.view.View
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
-import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatMessageItemLayoutBinding
+import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
+
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 

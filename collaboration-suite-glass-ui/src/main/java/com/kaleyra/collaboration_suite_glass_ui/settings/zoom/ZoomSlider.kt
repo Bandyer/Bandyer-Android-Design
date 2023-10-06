@@ -19,11 +19,9 @@ package com.kaleyra.collaboration_suite_glass_ui.settings.zoom
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-
-
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.common.SettingSlider
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassSliderLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.common.SettingSlider
 import kotlin.math.roundToInt
 
 /**

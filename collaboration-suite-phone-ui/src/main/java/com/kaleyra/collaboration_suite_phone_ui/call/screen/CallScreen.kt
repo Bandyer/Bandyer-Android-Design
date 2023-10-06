@@ -49,7 +49,6 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
-import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.theme.CollaborationTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.view.CallScreenAppBar
@@ -90,6 +89,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.recording.view.RecordingLab
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.core.StreamContainer
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.extensions.ModifierExtensions.horizontalSystemBarsPadding
 import com.kaleyra.collaboration_suite_phone_ui.common.text.Ellipsize

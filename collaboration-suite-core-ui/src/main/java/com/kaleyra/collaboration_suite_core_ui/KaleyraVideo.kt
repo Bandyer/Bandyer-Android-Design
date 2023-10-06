@@ -21,14 +21,14 @@ import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
-import com.kaleyra.collaboration_suite_utils.cached
-import com.kaleyra.collaboration_suite_utils.getValue
-import com.kaleyra.collaboration_suite_utils.setValue
 import com.kaleyra.video_networking.connector.AccessTokenProvider
 import com.kaleyra.video_networking.connector.ConnectedUser
 import com.kaleyra.video_networking.connector.Connector
 import com.kaleyra.video_networking.connector.Connector.State
 import com.kaleyra.video_networking.connector.Connector.Synchronization
+import com.kaleyra.video_utils.cached
+import com.kaleyra.video_utils.getValue
+import com.kaleyra.video_utils.setValue
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -42,7 +42,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
 /**

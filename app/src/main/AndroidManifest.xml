@@ -16,8 +16,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.kaleyra.demo_collaboration_suite_ui" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature
         android:name="android.hardware.bluetooth"
@@ -77,8 +76,8 @@
         <activity
             android:name=".ChatActivity"
             android:exported="true"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat" >
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation">
+            <!--android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat" >-->
             <intent-filter>
                 <action android:name="com.kaleyra.demo_collaboration_suite_ui.CHAT_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />

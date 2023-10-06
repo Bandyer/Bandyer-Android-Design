@@ -21,10 +21,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassStatusBarLayoutBinding
 import com.kaleyra.collaboration_suite_core_ui.utils.TimerParser
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.blink
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassStatusBarLayoutBinding
-
 
 /**
  * A custom state bar view

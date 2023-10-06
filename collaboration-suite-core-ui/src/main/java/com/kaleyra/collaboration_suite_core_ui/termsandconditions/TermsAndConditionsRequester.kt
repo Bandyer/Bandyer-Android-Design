@@ -2,14 +2,13 @@ package com.kaleyra.collaboration_suite_core_ui.termsandconditions
 
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.video_networking.connector.Connector.State
+import com.kaleyra.video_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile

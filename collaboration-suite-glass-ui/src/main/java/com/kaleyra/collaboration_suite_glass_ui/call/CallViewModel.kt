@@ -44,10 +44,10 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_glass_ui.call.model.StreamParticipant
-import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
-import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
-import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
+import com.kaleyra.video_utils.audio.CallAudioManager
 import com.kaleyra.video_networking.connector.Connector
+import com.kaleyra.video_utils.battery_observer.BatteryInfo
+import com.kaleyra.video_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -73,7 +73,6 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.plus
 import java.util.concurrent.ConcurrentHashMap

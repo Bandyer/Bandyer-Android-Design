@@ -4,6 +4,7 @@ if (project.rootProject.file("local.properties").exists()) {
 }
 
 afterEvaluate {
+//    tasks["dokkaHtml"].dependsOn(tasks.getByName("kaptReleaseKotlin"), tasks.getByName("kaptDebugKotlin"))
     publishing {
         repositories {
             maven {
@@ -17,7 +18,7 @@ afterEvaluate {
 
         publications {
             release(MavenPublication) {
-                from components.release
+                from components.getByName("release")
                 groupId = moduleGroupId
                 artifactId = project.getName()
                 version = moduleVersion
@@ -62,14 +63,14 @@ task dokkaDoc() {
     dependsOn dokkaHtml
 }
 
-task kdocJar(type: Jar, dependsOn: dokkaDoc) {
-    archiveClassifier.set("javadoc")
-    from "$buildDir/kDoc"
+task kdocJar(type: Jar, dependsOn: dokkaHtml) {
+    from "$buildDir/docs"
+    archiveClassifier.set("kdocJar")
 }
 
 task sourcesJar(type: Jar) {
-    archiveClassifier.set("sources")
     from android.sourceSets.main.java.srcDirs
+    archiveClassifier.set("sources")
 }
 
 artifacts {

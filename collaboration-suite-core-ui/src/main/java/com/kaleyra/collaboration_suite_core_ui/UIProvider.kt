@@ -19,7 +19,7 @@ package com.kaleyra.collaboration_suite_core_ui
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils.isSmartGlass
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.video_utils.ContextRetainer
 
 internal object UIProvider {
 
