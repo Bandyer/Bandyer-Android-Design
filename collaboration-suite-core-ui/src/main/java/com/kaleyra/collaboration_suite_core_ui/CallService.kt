@@ -44,8 +44,10 @@ import com.kaleyra.collaboration_suite_core_ui.texttospeech.TextToSpeechNotifier
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -75,9 +77,9 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
     private var proximityDelegate: CallProximityDelegate<LifecycleService>? = null
 
-    private var onCallActivityReady: ((Context, ProximityCallActivity) -> Unit)? = null
     private var proximityCallActivity: ProximityCallActivity? = null
 
+    private var onNewCallActivity: ((Context) -> Unit)? = null
 
     private var recordingTextToSpeechNotifier: TextToSpeechNotifier? = null
 
@@ -117,8 +119,8 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         if (activity !is ProximityCallActivity) return
-        onCallActivityReady?.invoke(activity, activity)
         proximityCallActivity = activity
+        onNewCallActivity?.invoke(activity)
     }
 
     override fun onActivityStarted(activity: Activity) = Unit
@@ -147,16 +149,13 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
             handleCameraStreamVideo(call, callScope)
             openParticipantsStreams(call.participants, callScope)
             setStreamsVideoView(this@CallService, call.participants, callScope)
-            syncCallNotification(
-                call,
-                callActivityClazz,
-                callScope
-            )
-            onCallActivityReady = { activityContext, proximityCallActivity ->
+            syncCallNotification(call, callActivityClazz, callScope)
+
+            var screenShareScope: CoroutineScope? = null
+            onNewCallActivity = { activityContext ->
+                screenShareScope?.cancel()
+                screenShareScope = newScreenShareScope(callScope)
                 syncScreenShareOverlay(activityContext, call, callScope)
-                if (!DeviceUtils.isSmartGlass) {
-                    handleProximity(call, proximityCallActivity)
-                }
             }
 
             call.participants
@@ -248,4 +247,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
             .takeWhile { it }
             .launchIn(lifecycleScope)
     }
+
+    private fun newScreenShareScope(coroutineScope: CoroutineScope) =
+        CoroutineScope(SupervisorJob(coroutineScope.coroutineContext[Job])) + CoroutineName("ScreenShare")
 }

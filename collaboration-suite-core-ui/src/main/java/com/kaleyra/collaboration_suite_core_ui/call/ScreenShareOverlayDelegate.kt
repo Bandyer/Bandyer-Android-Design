@@ -22,7 +22,7 @@ internal interface ScreenShareOverlayDelegate {
         var deviceScreenShareOverlay: AppViewOverlay? = null
         var appScreenShareOverlay: AppViewOverlay? = null
 
-        isDeviceScreenShareEnabled(call, scope)
+        isDeviceScreenShareEnabled(call)
             .distinctUntilChanged()
             .onEach {
                 if (it) {
@@ -37,7 +37,7 @@ internal interface ScreenShareOverlayDelegate {
                 deviceScreenShareOverlay = null
             }.launchIn(scope)
 
-        isApplicationScreenShareEnabled(call, scope)
+        isApplicationScreenShareEnabled(call)
             .distinctUntilChanged()
             .onEach {
                 if (it) {
@@ -53,14 +53,14 @@ internal interface ScreenShareOverlayDelegate {
             }.launchIn(scope)
     }
 
-    fun isDeviceScreenShareEnabled(call: Call, scope: CoroutineScope): Flow<Boolean> =
+    fun isDeviceScreenShareEnabled(call: Call): Flow<Boolean> =
         call.inputs
             .availableInputs
             .mapLatest { it.filterIsInstance<Input.Video.Screen.My>().firstOrNull() }
             .flatMapLatest { it?.enabled ?: flowOf(false) }
 
 
-    fun isApplicationScreenShareEnabled(call: Call, scope: CoroutineScope): Flow<Boolean> =
+    fun isApplicationScreenShareEnabled(call: Call): Flow<Boolean> =
         call.inputs
             .availableInputs
             .mapLatest { it.filterIsInstance<Input.Video.Application>().firstOrNull() }
