@@ -21,9 +21,8 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.chat.ChatAction
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatMenuItemLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.chat.ChatAction
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem

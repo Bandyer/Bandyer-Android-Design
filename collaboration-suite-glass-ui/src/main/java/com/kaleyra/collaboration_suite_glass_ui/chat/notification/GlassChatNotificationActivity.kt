@@ -28,6 +28,8 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatNotificationActivityGlassBinding
 import com.kaleyra.collaboration_suite.conversation.Chat
 import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conversation.OtherMessage
@@ -40,11 +42,9 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensio
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.animateViewHeight
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
-import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.common.AvatarGroupView
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatNotificationActivityGlassBinding
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

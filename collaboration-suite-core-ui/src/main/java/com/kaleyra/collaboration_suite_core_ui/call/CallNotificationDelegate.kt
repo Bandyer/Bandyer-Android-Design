@@ -29,7 +29,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isOngoing
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isOutgoing
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.video_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull

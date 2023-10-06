@@ -21,7 +21,7 @@ import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.Terms
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.broadcastreceiver.TermsAndConditionBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.notification.TermsAndConditionsUINotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.video_utils.ContextRetainer
 
 open class TermsAndConditionsUI(
     context: Context = ContextRetainer.context,

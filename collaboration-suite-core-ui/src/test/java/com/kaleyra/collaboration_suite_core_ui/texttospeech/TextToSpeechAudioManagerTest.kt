@@ -5,6 +5,7 @@ import android.media.AudioManager
 import com.kaleyra.collaboration_suite_core_ui.texttospeech.TextToSpeechAudioManager.Companion.TTSVolumePercentage
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Before

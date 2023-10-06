@@ -21,6 +21,7 @@ buildscript {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.bandyer.com/releases' }
@@ -33,6 +34,10 @@ buildscript {
         classpath "com.android.tools.build:gradle:${catalog.versions.gradleVersion.get()}"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions-runtime:${catalog.versions.jetbrainsKotlinVersion.get()}"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${catalog.plugins.androidxNavigationSafeArgs.get().version}"
+        classpath "com.mxalbert.gradle:jacoco-android:${catalog.plugins.jacoco.get().version}"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${catalog.plugins.sonarqube.get().version}"
+//        classpath "com.dicedmelon.gradle:jacoco-android:0.1.5"
+        classpath "com.mxalbert.gradle:jacoco-android:${catalog.plugins.jacoco.get().version}"
     }
 }
 
@@ -42,6 +47,7 @@ allprojects {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.bandyer.com/releases' }

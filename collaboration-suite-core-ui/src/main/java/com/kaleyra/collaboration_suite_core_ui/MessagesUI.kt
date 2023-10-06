@@ -75,7 +75,7 @@ class MessagesUI(
             .filter { it.state.value is Message.State.Received }
             .map { it.toChatNotificationMessage(chatParticipants) }
             .sortedBy { it.timestamp }
-        val me = chatParticipants.me
+        val me = chatParticipants.me ?: return
         val notification = NotificationManager.buildChatNotification(
             me.userId,
             me.combinedDisplayName.firstOrNull() ?: "",

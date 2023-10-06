@@ -15,27 +15,17 @@
  */
 android {
 
-    // TODO restore the previous code when the compileSdkVersion will be updated
-    compileSdkVersion 34
+    namespace "com.kaleyra." + project.getName().replace("-", "_")
+    compileSdkVersion catalog.versions.sdkVersion.get().toInteger()
+    buildToolsVersion catalog.versions.toolsVersion.get()
 
     defaultConfig {
-        minSdkVersion sampleAppCatalog.versions.sampleAppMinSdkVersion.get().toInteger()
-        targetSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
+        minSdkVersion catalog.versions.minSdkVersion.get()
+        targetSdkVersion catalog.versions.sdkVersion.get().toInteger()
         versionCode 1
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
-//
-//    compileSdkVersion catalog.versions.sdkVersion.get().toInteger()
-//    buildToolsVersion catalog.versions.toolsVersion.get()
-//
-//    defaultConfig {
-//        minSdkVersion catalog.versions.minSdkVersion.get()
-//        targetSdkVersion catalog.versions.sdkVersion.get().toInteger()
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-//        versionCode 1
-//        versionName moduleVersion
-//    }
 
     buildTypes {
         release {
@@ -74,14 +64,19 @@ android {
     buildFeatures {
         compose true
         viewBinding true
+        buildConfig true
         dataBinding true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.5.3'
+        kotlinCompilerExtensionVersion catalog.versions.kotlinCompilerExtensionVersion.get()
     }
 
-    aaptOptions.cruncherEnabled = false
+    publishing {
+        singleVariant('release') {
+            withJavadocJar()
+        }
+    }
 
     resourcePrefix 'kaleyra'
 }

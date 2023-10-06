@@ -28,22 +28,21 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite.conversation.Conversation
-import com.kaleyra.collaboration_suite.conference.Conference
+import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraFragmentTermsAndConditionsBinding
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.accept
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions.TermsAndConditionsExt.decline
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getThemeAttribute
-import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraFragmentTermsAndConditionsBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
+import com.kaleyra.video_networking.connector.Connector
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.*
@@ -161,7 +160,7 @@ internal class TermsAndConditionsFragment : BaseFragment(), TiltListener {
         combine(viewModel.conference
             .flatMapLatest { it.state }, viewModel.conversation
             .flatMapLatest { it.state }) { pbState, cbState ->
-            pbState != Conference.State.Connecting && cbState != Conversation.State.Connecting
+            pbState != Connector.State.Connecting && cbState != Connector.State.Connecting
         }
             .takeWhile { !it }
             .onCompletion { activity.finishAndRemoveTask() }

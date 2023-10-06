@@ -28,8 +28,8 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtension
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import com.kaleyra.collaboration_suite_utils.logging.PriorityLogger
+import com.kaleyra.video_utils.ContextRetainer
+import com.kaleyra.video_utils.logging.PriorityLogger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -125,7 +125,9 @@ class ConferenceUI(
     /**
      * @suppress
      */
-    override fun create(url: String): Result<CallUI> = synchronized(this) { conference.create(url).map { createCallUI(it) } }
+    override fun create(url: String): Result<CallUI> = synchronized(this) {
+        conference.create(url).map { createCallUI(it) }
+    }
 
     /**
      * @suppress
@@ -162,10 +164,10 @@ class ConferenceUI(
                     serviceJob = callService(call, callScope) {
                         mutex.withLock { currentCall = null }
                     }
-                    call.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope)
+                    call.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope, isLink = call.isLink)
                     if (call.isLink) showOnAppResumed(call) else internalShow(call)
                 }
-                call.isLink -> showCannotJoinUrl()
+                call.isLink                            -> showCannotJoinUrl()
             }
         }.onCompletion {
             with(ContextRetainer.context) { stopService(Intent(this, CallService::class.java)) }

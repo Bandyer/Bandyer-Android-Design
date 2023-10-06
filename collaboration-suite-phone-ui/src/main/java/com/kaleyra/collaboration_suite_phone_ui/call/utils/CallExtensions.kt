@@ -7,7 +7,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 internal object CallExtensions {
 
     fun Call.toMyCameraStream(): Stream.Mutable? {
-        val me = participants.value.me
+        val me = participants.value.me ?: return null
         val streams = me.streams.value
         return streams.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID }
     }

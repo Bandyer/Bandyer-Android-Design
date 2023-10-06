@@ -5,12 +5,14 @@ import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.CallParticipant
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
+import com.kaleyra.collaboration_suite_core_ui.utils.FlowUtils.flatMapLatestNotNull
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.transform
 
@@ -71,7 +73,7 @@ internal object ParticipantMapper {
 
     fun Flow<Call>.toInCallParticipants(): Flow<List<CallParticipant>> =
         this.flatMapLatest { it.participants }
-            .map { Pair(it.me, it.others) }
+            .mapNotNull { participants -> participants.me?.let { Pair(it, participants.others) }}
             .flatMapLatest { (me, others) ->
                 val inCallMap = mutableMapOf<String, CallParticipant>(me.userId to me)
                 val notInCallMap = mutableMapOf<String, CallParticipant>()
@@ -103,11 +105,11 @@ internal object ParticipantMapper {
 
     fun Flow<Call>.toMe(): Flow<CallParticipant.Me> =
         this.flatMapLatest { it.participants }
-            .map { it.me }
+            .mapNotNull { it.me }
             .distinctUntilChanged()
 
     fun Flow<Call>.toMyParticipantState(): Flow<CallParticipant.State> =
         this.flatMapLatest { it.participants }
-            .flatMapLatest { it.me.state }
+            .flatMapLatestNotNull { it.me?.state }
             .distinctUntilChanged()
 }

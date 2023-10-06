@@ -4,7 +4,7 @@ import android.content.Context
 import android.speech.tts.TextToSpeech
 import com.bandyer.android_audiosession.sounds.CallSound
 import com.kaleyra.collaboration_suite_core_ui.texttospeech.TextToSpeechExtensions.queue
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.video_utils.ContextRetainer
 import java.util.Locale
 
 internal class CallTextToSpeech {

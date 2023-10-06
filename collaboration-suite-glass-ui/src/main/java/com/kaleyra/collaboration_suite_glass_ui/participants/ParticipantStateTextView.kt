@@ -19,7 +19,6 @@ package com.kaleyra.collaboration_suite_glass_ui.participants
 import android.content.Context
 import android.util.AttributeSet
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.google.android.material.textview.MaterialTextView
 import com.kaleyra.collaboration_suite.conversation.ChatParticipant
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils

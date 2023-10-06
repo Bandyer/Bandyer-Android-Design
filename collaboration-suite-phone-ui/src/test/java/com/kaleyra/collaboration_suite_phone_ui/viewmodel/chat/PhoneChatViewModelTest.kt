@@ -41,6 +41,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.Immu
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
+import com.kaleyra.video_networking.connector.Connector
 import io.mockk.*
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -242,7 +243,7 @@ class PhoneChatViewModelTest {
 
     @Test
     fun testChatUiState_connectionStateUpdated() = runTest {
-        every { conversationMock.state } returns MutableStateFlow(Conversation.State.Connecting)
+        every { conversationMock.state } returns MutableStateFlow(Connector.State.Connecting)
         val current = viewModel.uiState.first().connectionState
         Assert.assertEquals(ConnectionState.Unknown, current)
         advanceUntilIdle()
@@ -279,7 +280,7 @@ class PhoneChatViewModelTest {
     fun testTyping() = runTest {
         advanceUntilIdle()
         viewModel.typing()
-        verify { oneToOneChatParticipantsFlow.me.typing() }
+        verify { oneToOneChatParticipantsFlow.me!!.typing() }
     }
 
     @Test

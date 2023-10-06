@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite_core_ui.notification.DisplayedChatActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.video_utils.ContextRetainer
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 

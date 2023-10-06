@@ -23,7 +23,7 @@ class TextToSpeechExtensionsTest {
     @Test
     fun `onCompletion is invoked when the utterance is done`() {
         var listener: UtteranceProgressListener? = null
-        val onCompletion = spyk({ })
+        val onCompletion: () -> Unit = spyk()
         textToSpeechMock.queue(text = "", onCompletion = onCompletion)
         verify(exactly = 1) { textToSpeechMock.setOnUtteranceProgressListener(withArg { listener = it }) }
 
@@ -35,7 +35,7 @@ class TextToSpeechExtensionsTest {
     @Test
     fun `onCompletion is invoked when the utterance get an error 1`() {
         var listener: UtteranceProgressListener? = null
-        val onCompletion = spyk({ })
+        val onCompletion: () -> Unit = spyk()
         textToSpeechMock.queue(text = "", onCompletion = onCompletion)
         verify(exactly = 1) { textToSpeechMock.setOnUtteranceProgressListener(withArg { listener = it }) }
 
@@ -47,7 +47,7 @@ class TextToSpeechExtensionsTest {
     @Test
     fun `onCompletion is invoked when the utterance get an error 2`() {
         var listener: UtteranceProgressListener? = null
-        val onCompletion = spyk({ })
+        val onCompletion: () -> Unit = spyk()
         textToSpeechMock.queue(text = "", onCompletion = onCompletion)
         verify(exactly = 1) { textToSpeechMock.setOnUtteranceProgressListener(withArg { listener = it }) }
 

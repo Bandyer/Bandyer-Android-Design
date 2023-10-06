@@ -4,8 +4,8 @@ import android.content.Context
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
+import com.kaleyra.video_utils.ContextRetainer
+import com.kaleyra.video_utils.proximity_listener.ProximitySensor
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkConstructor

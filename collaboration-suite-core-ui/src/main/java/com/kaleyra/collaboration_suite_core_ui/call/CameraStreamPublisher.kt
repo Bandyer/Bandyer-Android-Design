@@ -14,7 +14,7 @@ interface CameraStreamPublisher {
      * @param call The call
      */
     fun addCameraStream(call: Call) {
-        val me = call.participants.value.me
+        val me = call.participants.value.me ?: return
         if (me.streams.value.firstOrNull { it.id == CAMERA_STREAM_ID } != null) return
         me.addStream(CAMERA_STREAM_ID).let {
             it.audio.value = null

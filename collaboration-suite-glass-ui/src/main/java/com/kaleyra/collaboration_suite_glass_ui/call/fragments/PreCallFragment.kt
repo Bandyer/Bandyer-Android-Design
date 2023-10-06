@@ -18,8 +18,8 @@ package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.annotation.SuppressLint
 import android.view.View
-import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.first
@@ -48,7 +48,7 @@ internal abstract class PreCallFragment : ConnectingFragment(),
                     val nParticipants = participants.others.count() + 1
                     val names = participants.others
                         .let { if (nParticipants > 2) it.plus(participants.me) else it }
-                        .map { it.combinedDisplayName.first() ?: "" }
+                        .map { it?.combinedDisplayName?.first() ?: "" }
                     kaleyraParticipants.text = names.joinToString()
                     updateUIOnParticipantsViewChange()
 

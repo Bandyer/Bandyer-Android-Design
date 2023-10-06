@@ -12,21 +12,21 @@ internal object CallExtensions {
     }
 
     fun Call.isMyInternalCameraEnabled(): Boolean {
-        val me = participants.value.me
+        val me = participants.value.me ?: return false
         val videos = me.streams.value.map { it.video.value }
         val video = videos.firstOrNull { it is Input.Video.Camera.Internal }
         return video?.enabled?.value ?: false
     }
 
     fun Call.isMyInternalCameraUsingFrontLens(): Boolean {
-        val me = participants.value.me
+        val me = participants.value.me ?: return false
         val streams = me.streams.value
         val video = streams.map { it.video.value }.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull()
         return video?.currentLens?.value?.isRear == false
     }
 
     fun Call.isMyScreenShareEnabled(): Boolean {
-        val me = participants.value.me
+        val me = participants.value.me ?: return false
         val streams = me.streams.value
         return streams.firstOrNull { it.video.value is Input.Video.Screen.My || it.video.value is Input.Video.Application } != null
     }

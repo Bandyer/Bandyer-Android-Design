@@ -36,7 +36,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Input
-import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard.LoadOptions
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -67,10 +66,11 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensio
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
-import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
-import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
+import com.kaleyra.video_networking.connector.Connector
+import com.kaleyra.video_utils.ContextRetainer
+import com.kaleyra.video_utils.audio.CallAudioManager
+import com.kaleyra.video_utils.battery_observer.BatteryInfo
+import com.kaleyra.video_utils.network_observer.WiFiInfo
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
@@ -249,7 +249,7 @@ internal class GlassCallActivity :
 
         viewModel.conferenceState
             .onEach {
-                if (it !is Conference.State.Disconnecting) return@onEach
+                if (it !is Connector.State.Disconnecting) return@onEach
                 finishAndRemoveTask()
             }
             .launchIn(lifecycleScope)

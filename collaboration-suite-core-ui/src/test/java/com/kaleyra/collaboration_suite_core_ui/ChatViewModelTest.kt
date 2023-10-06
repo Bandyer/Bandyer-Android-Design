@@ -8,6 +8,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -15,6 +17,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ChatViewModelTest {
 
     @get:Rule
@@ -28,7 +31,7 @@ class ChatViewModelTest {
 
     private val call = mockk<CallUI>()
 
-    private val chat = mockk<ChatUI>()
+    private val chat = mockk<ChatUI>(relaxed = true)
 
     @Before
     fun setUp() {

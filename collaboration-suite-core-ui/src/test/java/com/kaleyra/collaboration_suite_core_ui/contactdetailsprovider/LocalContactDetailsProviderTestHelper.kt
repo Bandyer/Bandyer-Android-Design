@@ -8,7 +8,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import kotlin.coroutines.suspendCoroutine
 
 internal object LocalContactDetailsProviderTestHelper {
 

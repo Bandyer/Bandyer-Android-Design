@@ -7,6 +7,7 @@ import com.kaleyra.collaboration_suite_phone_ui.Mocks.conferenceMock
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.conversationState
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ConnectionState
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ConversationStateMapper.toConnectionState
+import com.kaleyra.video_networking.connector.Connector
 import io.mockk.every
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,50 +30,50 @@ class ConversationStateMapperTest {
 
     @After
     fun tearDown() {
-        Mocks.conversationState.value = Conversation.State.Connected
+        Mocks.conversationState.value = Connector.State.Connected
         Mocks.otherParticipantState.value = ChatParticipant.State.Invited
         Mocks.otherParticipantEvents.value = ChatParticipant.Event.Typing.Idle
     }
 
     @Test
     fun conversationConnected_toConnectionState_connected() = runTest {
-        Mocks.conversationState.value = Conversation.State.Connected
+        Mocks.conversationState.value = Connector.State.Connected
         Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Connected)
     }
 
     @Test
     fun conversationConnecting_toConnectionState_connecting() = runTest {
-        Mocks.conversationState.value = Conversation.State.Connecting
+        Mocks.conversationState.value = Connector.State.Connecting
         Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Connecting)
     }
 
     @Test
     fun conversationDisconnecting_toConnectionState_unknown() = runTest {
-        Mocks.conversationState.value = Conversation.State.Disconnecting
+        Mocks.conversationState.value = Connector.State.Disconnecting
         Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Unknown)
     }
 
     @Test
     fun conversationDisconnected_toConnectionState_none() = runTest {
-        Mocks.conversationState.value = Conversation.State.Disconnected
+        Mocks.conversationState.value = Connector.State.Disconnected
         Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Unknown)
     }
 
     @Test
     fun conversationStateUserInactive_toConnectionState_none() = runTest {
-        Mocks.conversationState.value = Conversation.State.Disconnected.UserInactive
+        Mocks.conversationState.value = Connector.State.Disconnected.Error.UserInactive
         Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Unknown)
     }
 
     @Test
     fun conversationStateUnsupportedVersion_toConnectionState_none() = runTest {
-        Mocks.conversationState.value = Conversation.State.Disconnected.UnsupportedVersion
+        Mocks.conversationState.value = Connector.State.Disconnected.Error.UnsupportedVersion
         Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Unknown)
     }
 
     @Test
     fun conversationStateUnknown_toConnectionState_none() = runTest {
-        Mocks.conversationState.value = Conversation.State.Disconnected.Unknown
+        Mocks.conversationState.value = Connector.State.Disconnected.Error.Unknown("")
         Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Unknown)
     }
 
@@ -80,7 +81,7 @@ class ConversationStateMapperTest {
     fun conversationReconnecting_toConnectionState_offline() = runTest {
         with(flowOf(Mocks.conversationMock).toConnectionState()) {
             first()
-            conversationState.value = Conversation.State.Connecting
+            conversationState.value = Connector.State.Connecting
             assertEquals(first(), ConnectionState.Offline)
         }
     }

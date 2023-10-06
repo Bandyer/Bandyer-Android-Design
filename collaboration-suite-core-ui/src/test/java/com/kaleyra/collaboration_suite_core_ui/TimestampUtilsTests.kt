@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils.areDateDifferenceGreaterThanMillis
-import com.kaleyra.collaboration_suite_utils.assertIsTrue
+import com.kaleyra.video_utils.assertIsTrue
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.time.Instant

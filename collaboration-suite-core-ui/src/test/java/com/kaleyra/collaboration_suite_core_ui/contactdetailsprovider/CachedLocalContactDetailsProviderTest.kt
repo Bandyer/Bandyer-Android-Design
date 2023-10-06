@@ -4,22 +4,29 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.Cac
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.model.ContactDetails
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.ContactDetailsTestHelper.assertEqualsContactDetails
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.usersDescriptionProviderMock
+import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
+import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.spyk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class CachedLocalContactDetailsProviderTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
+    @Suppress("UNCHECKED_CAST")
     @Test
     fun `test retrieve cached user contact details`() = runTest(testDispatcher) {
-        val usersDescriptionProvider = spyk(usersDescriptionProviderMock())
+        // cannot use spyk(usersDescriptionProviderMock()) because of this issue https://github.com/mockk/mockk/issues/1033
+        val usersDescriptionProvider: UserDetailsProvider = spyk {
+            coEvery { this@spyk.invoke(any()) } coAnswers { call ->
+                usersDescriptionProviderMock().invoke(call.invocation.args.first() as List<String>)
+            }
+        }
         val provider = CachedLocalContactDetailsProvider(userDetailsProvider = usersDescriptionProvider, ioDispatcher = testDispatcher)
 
         val result = provider.fetchContactsDetails("userId1")

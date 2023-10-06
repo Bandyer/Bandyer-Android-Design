@@ -7,7 +7,6 @@ import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate.Companion.EXTRA_DOWNLOAD_ID
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 internal interface FileShareNotificationManager {
 

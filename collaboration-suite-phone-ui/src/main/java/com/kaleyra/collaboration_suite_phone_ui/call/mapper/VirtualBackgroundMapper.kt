@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 
 internal object VirtualBackgroundMapper {
 
@@ -45,7 +46,7 @@ internal object VirtualBackgroundMapper {
 
     private fun Flow<CallUI>.toCurrentCameraVideoEffect(): Flow<Effect> =
         this.flatMapLatest { it.participants }
-            .map { it.me }
+            .mapNotNull { it.me }
             .flatMapLatest { it.streams }
             .map { streams ->
                 streams.firstOrNull { it.id == CameraStreamPublisher.CAMERA_STREAM_ID }

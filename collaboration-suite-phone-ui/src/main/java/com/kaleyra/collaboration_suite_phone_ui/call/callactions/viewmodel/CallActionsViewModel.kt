@@ -123,7 +123,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         if (activity !is FragmentActivity) return
         val call = call.getValue() ?: return
         val participants = call.participants.value
-        val restrictions = participants.me.restrictions
+        val restrictions = participants.me?.restrictions ?: return
         val canUseCamera = !restrictions.camera.value.usage
         if (!canUseCamera) {
             // Avoid sending a burst of camera restriction message event
@@ -179,7 +179,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         val call = call.getValue()
         return if (input == null || call == null) false
         else {
-            val me = call.participants.value.me
+            val me = call.participants.value.me ?: return false
             val streams = me.streams.value
             val stream = streams.firstOrNull { it.id == SCREEN_SHARE_STREAM_ID }
             if (stream != null) me.removeStream(stream)

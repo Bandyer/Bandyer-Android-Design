@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.CallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.utils.ConfigurationExtensions.isAtLeastMediumSizeWidth
@@ -50,6 +49,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.featured.Featur
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.view.featured.HeaderAutoHideMs
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
 import com.kaleyra.collaboration_suite_phone_ui.extensions.TextStyleExtensions.shadow

@@ -19,7 +19,6 @@ import com.github.jk1.license.render.JsonReportRenderer
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'maven-publish'
     alias(catalog.plugins.dokka)
@@ -53,7 +52,7 @@ dependencies {
     /*** Platform ***/
     implementation catalog.androidxCoreKtx
     implementation catalog.androidxActivity
-    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    implementation catalog.androidxComposeConstraintLayout
     coreLibraryDesugaring catalog.desugar
 
     /*** Testing ***/
@@ -61,21 +60,21 @@ dependencies {
     testImplementation project(":collaboration-suite")
     testImplementation catalog.roboelectric
     testImplementation catalog.junit
-    testImplementation("androidx.compose.ui:ui-test-junit4:1.5.1")
-    testImplementation "androidx.test.espresso:espresso-intents:3.5.1"
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1'
-    testImplementation 'io.mockk:mockk:1.13.3'
+    testImplementation catalog.androidxComposeUiTestJunit4
+    testImplementation catalog.androidxTestEspressoIntents
+    testImplementation catalog.coroutinesTest
+    testImplementation catalog.mockkAndroid
 
     androidTestImplementation catalog.androidxTestRunner
     androidTestImplementation catalog.androidxTestEspressoCore
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.1")
-    androidTestImplementation "io.mockk:mockk-android:1.13.3"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:3.5.1"
+    androidTestImplementation catalog.androidxComposeUiTestJunit4
+    androidTestImplementation catalog.mockkAndroid
+    androidTestImplementation catalog.androidxTestEspressoIntents
 
-    debugImplementation("androidx.compose.ui:ui-tooling:1.5.1")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.1")
+    debugImplementation catalog.androidxComposeUiTooling
+    debugImplementation catalog.androidxComposeUiTestManifest
 
-    implementation("io.coil-kt:coil-compose:2.2.0")
+    implementation catalog.coilCompose
 
     api project(":collaboration-suite-core-ui")
 

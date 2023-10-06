@@ -2,11 +2,10 @@ package com.kaleyra.collaboration_suite_core_ui.termsandconditions.extensions
 
 import android.content.Context
 import android.content.Intent
-import com.kaleyra.collaboration_suite_core_ui.termsandconditions.activity.TermsAndConditionsUIActivityDelegate
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.broadcastreceiver.TermsAndConditionBroadcastReceiver.Companion.ACTION_ACCEPT
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.broadcastreceiver.TermsAndConditionBroadcastReceiver.Companion.ACTION_DECLINE
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.model.TermsAndConditions
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.video_utils.ContextRetainer
 
 object TermsAndConditionsExt {
     fun TermsAndConditions.accept() = ContextRetainer.context.apply {

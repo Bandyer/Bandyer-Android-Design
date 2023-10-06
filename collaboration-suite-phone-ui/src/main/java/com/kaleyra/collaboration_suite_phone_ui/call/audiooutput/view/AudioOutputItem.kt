@@ -14,12 +14,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.BluetoothDeviceState
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.isConnectedOrPlaying
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.isConnecting
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.R
 
 @Composable
 internal fun AudioOutputItem(

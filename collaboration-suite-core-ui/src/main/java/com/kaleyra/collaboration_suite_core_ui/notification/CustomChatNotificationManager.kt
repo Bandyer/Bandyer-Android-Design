@@ -17,7 +17,7 @@
 package com.kaleyra.collaboration_suite_core_ui.notification
 
 import android.content.Intent
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.video_utils.ContextRetainer
 
 /**
  * The custom chat notification manager

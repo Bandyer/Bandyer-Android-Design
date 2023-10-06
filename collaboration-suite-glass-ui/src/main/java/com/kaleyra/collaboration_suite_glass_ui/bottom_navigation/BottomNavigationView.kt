@@ -23,9 +23,9 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.view.ContextThemeWrapper
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassBottomNavigationLayoutBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
  * Bottom action bar view, it describes the actions the user performs

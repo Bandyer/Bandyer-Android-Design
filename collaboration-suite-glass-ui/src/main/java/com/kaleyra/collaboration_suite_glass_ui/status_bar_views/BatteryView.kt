@@ -23,8 +23,8 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.dp2px
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.dp2px
 
 /**
  * A custom battery view created using a canvas.

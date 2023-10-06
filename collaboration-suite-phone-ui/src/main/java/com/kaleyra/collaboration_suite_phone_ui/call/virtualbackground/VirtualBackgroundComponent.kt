@@ -8,7 +8,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.subfeaturelayout.SubFeatureLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.VirtualBackgroundUi
@@ -18,6 +17,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.view.Virt
 import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.viewmodel.VirtualBackgroundViewModel
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 
 @Composable
 internal fun VirtualBackgroundComponent(

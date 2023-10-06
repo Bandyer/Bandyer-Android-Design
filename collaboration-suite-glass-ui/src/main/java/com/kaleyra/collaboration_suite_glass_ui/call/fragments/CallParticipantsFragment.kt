@@ -62,7 +62,7 @@ internal class CallParticipantsFragment : ParticipantsFragment() {
                 .takeWhile { it.first.isNotEmpty() }
                 .collect { pair ->
                     val sortedList =
-                        pair.first.sortedBy { pair.second.me.userId != it.userId }
+                        pair.first.sortedBy { pair.second.me?.userId != it.userId }
                     val items = sortedList.map { part ->
                         val data = ParticipantItemData(part.userId, part.combinedDisplayName.first() ?: "")
                         ParticipantItem(data)

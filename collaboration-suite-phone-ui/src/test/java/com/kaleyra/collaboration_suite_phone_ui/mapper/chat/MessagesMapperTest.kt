@@ -93,7 +93,7 @@ class MessagesMapperTest {
 
     @Test
     fun messageStateSending_mapToUiState_mappedStateSending() = runTest {
-        val state = Message.State.Sending
+        val state = Message.State.Sending()
         val expected =
             com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Sending
         val result = flowOf(state).mapToUiState().first()
@@ -102,7 +102,7 @@ class MessagesMapperTest {
 
     @Test
     fun messageStateSent_mapToUiState_mappedStateSent() = runTest {
-        val state = Message.State.Sent
+        val state = Message.State.Sent()
         val expected =
             com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Sent
         val result = flowOf(state).mapToUiState().first()
@@ -111,7 +111,7 @@ class MessagesMapperTest {
 
     @Test
     fun messageStateReceived_mapToUiState_mappedStateReceived() = runTest {
-        val state = Message.State.Received
+        val state = Message.State.Received()
         val expected =
             com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Received
         val result = flowOf(state).mapToUiState().first()
@@ -120,7 +120,7 @@ class MessagesMapperTest {
 
     @Test
     fun messageStateCreated_mapToUiState_mappedStateCreated() = runTest {
-        val state = Message.State.Created
+        val state = Message.State.Created()
         val expected =
             com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Created
         val result = flowOf(state).mapToUiState().first()
@@ -129,7 +129,7 @@ class MessagesMapperTest {
 
     @Test
     fun messageStateRead_mapToUiState_mappedStateRead() = runTest {
-        val state = Message.State.Read
+        val state = Message.State.Read()
         val expected =
             com.kaleyra.collaboration_suite_phone_ui.chat.conversation.model.Message.State.Read
         val result = flowOf(state).mapToUiState().first()

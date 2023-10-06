@@ -1,13 +1,14 @@
 package com.kaleyra.collaboration_suite_core_ui.texttospeech
 
 import android.content.Context
+import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
+import com.kaleyra.collaboration_suite_core_ui.utils.FlowUtils.flatMapLatestNotNull
+import com.kaleyra.video_utils.ContextRetainer
+import com.kaleyra.video_utils.proximity_listener.ProximitySensor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -51,8 +52,7 @@ internal class CallParticipantMutedTextToSpeechNotifier(
 
     private fun Call.toMuteEvents(): Flow<Input.Audio.Event.Request.Mute> {
         return participants
-            .map { it.me }
-            .flatMapLatest { it.streams }
+            .flatMapLatestNotNull { it.me?.streams }
             .map { streams -> streams.firstOrNull { stream -> stream.id == CameraStreamPublisher.CAMERA_STREAM_ID } }
             .flatMapLatest { it?.audio ?: flowOf(null) }
             .filterNotNull()

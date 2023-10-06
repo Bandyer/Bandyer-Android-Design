@@ -20,7 +20,7 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationManager
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.video_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
 
 /**

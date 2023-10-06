@@ -29,6 +29,7 @@ import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherYesterdayUnreadMessage
 import com.kaleyra.collaboration_suite_phone_ui.chat.appbar.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.mapper.ChatActionsMapper.mapToChatActions
+import com.kaleyra.video_networking.connector.Connector
 import io.mockk.*
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -50,7 +51,7 @@ class ChatActionsMapperTest {
     fun tearDown() {
         unmockkAll()
         callState.value = Call.State.Connected
-        conversationState.value = Conversation.State.Connected
+        conversationState.value = Connector.State.Connected
         otherParticipantState.value = ChatParticipant.State.Invited
         otherParticipantEvents.value = ChatParticipant.Event.Typing.Idle
     }

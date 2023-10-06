@@ -42,7 +42,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Theme.Call" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight"/>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call" /> <!-- parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight"/> -->
 
     <!-- CALL WATERMARK CUSTOMIZATION -->
 

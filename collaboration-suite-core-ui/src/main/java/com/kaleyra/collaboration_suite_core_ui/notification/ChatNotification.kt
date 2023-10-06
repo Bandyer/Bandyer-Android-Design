@@ -31,7 +31,7 @@ import androidx.core.app.RemoteInput
 import androidx.core.graphics.drawable.toBitmap
 import com.google.android.material.color.MaterialColors
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_utils.HostAppInfo
+import com.kaleyra.video_utils.HostAppInfo
 
 /**
  * ChatNotification

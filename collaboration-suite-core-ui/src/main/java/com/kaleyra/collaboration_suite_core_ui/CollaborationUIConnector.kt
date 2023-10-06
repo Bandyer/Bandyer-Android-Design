@@ -17,12 +17,15 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite.Collaboration
-import com.kaleyra.collaboration_suite.conversation.Conversation
 import com.kaleyra.collaboration_suite.conference.Call
-import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.video_networking.connector.AccessTokenProvider
+import com.kaleyra.video_networking.connector.ConnectedUser
+import com.kaleyra.video_networking.connector.Connector.*
+import com.kaleyra.video_networking.connector.Connector.State.Connected
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -66,8 +69,14 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     /**
      * Connect the collaboration
      */
-    fun connect(session: Collaboration.Session) {
-        collaboration.connect(session)
+    fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<ConnectedUser> = collaboration.connect(userId, accessTokenProvider).apply {
+        resume()
+    }
+
+    /**
+     * Connect the collaboration
+     */
+    fun connect(accessLink: String): Deferred<ConnectedUser> = collaboration.connect(accessLink).apply {
         resume()
     }
 
@@ -83,8 +92,8 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     }
 
     private fun pause() {
-        wasConferenceConnected = collaboration.conference.state.value.let { it !is Conference.State.Disconnected && it !is Conference.State.Disconnecting }
-        wasConversationConnected = collaboration.conversation.state.value.let { it !is Conversation.State.Disconnected && it !is Conversation.State.Disconnecting }
+        wasConferenceConnected = collaboration.conference.state.value.let { it !is State.Disconnected && it !is State.Disconnecting }
+        wasConversationConnected = collaboration.conversation.state.value.let { it !is State.Disconnected && it !is State.Disconnecting }
         collaboration.conference.disconnect()
         collaboration.conversation.disconnect()
         scope.coroutineContext.cancelChildren()
@@ -103,7 +112,10 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
             .dropWhile { !it }
             .onEach { isInForeground ->
                 if (isInForeground) performAction(Action.RESUME)
-                else if (collaboration.conference.call.replayCache.isEmpty()) performAction(Action.PAUSE)
+                else {
+                    val isInCall = collaboration.conference.call.replayCache.firstOrNull()?.state !is Call.State.Disconnected
+                    if (isInCall) performAction(Action.PAUSE)
+                }
             }
             .launchIn(scope)
     }
@@ -113,7 +125,7 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
         val callState = collaboration.conference.call.flatMapLatest { it.state }
         scope.launch {
             combine(conferenceState, callState, AppLifecycle.isInForeground) { conferenceState, callState, isInForeground ->
-                conferenceState is Conference.State.Connected && callState is Call.State.Disconnected.Ended && !isInForeground
+                conferenceState is State.Connected && callState is Call.State.Disconnected.Ended && !isInForeground
             }.collectLatest {
                 if (!it) return@collectLatest
 
@@ -128,14 +140,15 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     }
 
     private fun syncWithChatMessages(scope: CoroutineScope) {
-        collaboration.conversation.state
-            .dropWhile { it !is Conversation.State.Connected.Synchronized }
+        collaboration.synchronization
+            .dropWhile { it !is Synchronization.Active.Completed }
             .onEach {
                 val conference = collaboration.conference
                 val call = conference.call.replayCache.firstOrNull()
                 if (AppLifecycle.isInForeground.value ||
                     (call != null && call.state.value !is Call.State.Disconnected.Ended) ||
-                    conference.state.value !is Conference.State.Connected) return@onEach
+                    conference.state.value !is State.Connected
+                ) return@onEach
                 performAction(Action.PAUSE)
             }.launchIn(scope)
     }

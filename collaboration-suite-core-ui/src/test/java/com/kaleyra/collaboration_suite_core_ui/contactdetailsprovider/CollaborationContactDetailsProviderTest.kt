@@ -7,7 +7,6 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.Cac
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.cachedprovider.CachedRemoteContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.provider.CollaborationContactDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.ContactDetailsTestHelper.assertEqualsContactDetails
-import com.kaleyra.collaboration_suite_core_ui.contactdetailsprovider.LocalContactDetailsProviderTestHelper.usersDescriptionProviderMock
 import com.kaleyra.collaboration_suite_core_ui.model.UserDetails
 import io.mockk.every
 import io.mockk.mockk
@@ -54,7 +53,7 @@ class CollaborationContactDetailsProviderTest {
 
     @Test
     fun `local provider is used as primary provider`() = runTest(testDispatcher) {
-        val usersDescriptionProvider = usersDescriptionProviderMock(fetchDelay = 1500L)
+        val usersDescriptionProvider = LocalContactDetailsProviderTestHelper.usersDescriptionProviderMock(fetchDelay = 1500L)
         every { KaleyraVideo.userDetailsProvider } returns usersDescriptionProvider
         every { KaleyraVideo.collaboration } returns mockk(relaxed = true)
         val provider = CollaborationContactDetailsProvider(testDispatcher)
@@ -159,7 +158,7 @@ class CollaborationContactDetailsProviderTest {
 
     @Test
     fun `users description provider changes, the local provider is updated`() = runTest(testDispatcher) {
-        val usersDescriptionProvider = usersDescriptionProviderMock()
+        val usersDescriptionProvider = LocalContactDetailsProviderTestHelper.usersDescriptionProviderMock()
         every { KaleyraVideo.userDetailsProvider } returns usersDescriptionProvider
         every { KaleyraVideo.collaboration } returns mockk(relaxed = true)
         val provider = CollaborationContactDetailsProvider(testDispatcher)
@@ -184,7 +183,7 @@ class CollaborationContactDetailsProviderTest {
 
     @Test
     fun `collaboration changes, the remote provider updated`() = runTest(testDispatcher) {
-        val usersDescriptionProvider = usersDescriptionProviderMock(Exception())
+        val usersDescriptionProvider = LocalContactDetailsProviderTestHelper.usersDescriptionProviderMock(Exception())
         every { KaleyraVideo.userDetailsProvider } returns usersDescriptionProvider
         every { KaleyraVideo.collaboration } returns mockk {
             every { this@mockk.contacts } returns contactsMock

@@ -4,10 +4,9 @@ import androidx.lifecycle.LifecycleService
 import com.kaleyra.collaboration_suite_core_ui.proximity.AudioProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.CallProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.CameraProximityDelegate
-import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityCallActivity
 import com.kaleyra.collaboration_suite_core_ui.proximity.WakeLockProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions
-import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
+import com.kaleyra.video_utils.proximity_listener.ProximitySensor
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject

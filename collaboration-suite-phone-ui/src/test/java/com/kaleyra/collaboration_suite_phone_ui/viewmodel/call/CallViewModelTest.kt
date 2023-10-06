@@ -112,7 +112,7 @@ class CallViewModelTest {
         with(callParticipantsMock) {
             every { others } returns listOf(participantMock1, participantMock2)
             every { me } returns participantMeMock
-            every { list } returns others + me
+            every { list } returns others + me!!
             every { creator() } returns me
         }
         with(videoMock) {
@@ -253,7 +253,7 @@ class CallViewModelTest {
         with(callParticipantsMock) {
             every { others } returns listOf()
             every { me } returns participantMeMock
-            every { list } returns others + me
+            every { list } returns others + me!!
         }
         every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
         every { myStreamMock.id } returns ScreenShareViewModel.SCREEN_SHARE_STREAM_ID
