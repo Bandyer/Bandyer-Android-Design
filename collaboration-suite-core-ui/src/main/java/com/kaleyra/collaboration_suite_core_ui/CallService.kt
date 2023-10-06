@@ -76,6 +76,8 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
     private var proximityDelegate: CallProximityDelegate<LifecycleService>? = null
 
     private var onCallActivityReady: ((Context, ProximityCallActivity) -> Unit)? = null
+    private var proximityCallActivity: ProximityCallActivity? = null
+
 
     private var recordingTextToSpeechNotifier: TextToSpeechNotifier? = null
 
@@ -116,6 +118,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         if (activity !is ProximityCallActivity) return
         onCallActivityReady?.invoke(activity, activity)
+        proximityCallActivity = activity
     }
 
     override fun onActivityStarted(activity: Activity) = Unit
@@ -127,7 +130,9 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
 
-    override fun onActivityDestroyed(activity: Activity) = Unit
+    override fun onActivityDestroyed(activity: Activity) {
+        proximityCallActivity = null
+    }
     /**
      * Set up the call streams and notifications
      *
@@ -170,6 +175,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                 .launchIn(lifecycleScope)
 
             if (!DeviceUtils.isSmartGlass) {
+                handleProximity(call)
                 syncFileShareNotification(this, call, callActivityClazz, callScope)
             }
         }
@@ -213,7 +219,7 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
             .launchIn(lifecycleScope)
     }
 
-    private fun handleProximity(call: CallUI, proximityCallActivity: ProximityCallActivity) {
+    private fun handleProximity(call: CallUI) {
         combine(
             call.state,
             call.participants
@@ -224,7 +230,11 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
                 proximityDelegate = CallProximityDelegate<LifecycleService>(
                     lifecycleContext = this,
                     call = call,
-                    proximityCallActivity = proximityCallActivity
+                    disableProximity = { proximityCallActivity?.disableProximity ?: false },
+                    disableWindowTouch = { disableWindowTouch ->
+                        if (disableWindowTouch) proximityCallActivity?.disableWindowTouch()
+                        else proximityCallActivity?.enableWindowTouch()
+                    }
                 ).apply { bind() }
                 recordingTextToSpeechNotifier = CallRecordingTextToSpeechNotifier(
                     call,

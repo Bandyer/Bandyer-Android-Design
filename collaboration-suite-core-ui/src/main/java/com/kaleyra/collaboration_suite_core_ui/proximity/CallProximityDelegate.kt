@@ -11,7 +11,8 @@ import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensorL
 internal class CallProximityDelegate<T>(
     private val lifecycleContext: T,
     private val call: CallUI,
-    private val proximityCallActivity: ProximityCallActivity? = null,
+    private val disableProximity: () -> Boolean,
+    private val disableWindowTouch: (Boolean) -> Unit,
     private val wakeLockProximityDelegate: WakeLockProximityDelegate = WakeLockProximityDelegateImpl(lifecycleContext.applicationContext as Application, call),
     private val cameraProximityDelegate: CameraProximityDelegate = CameraProximityDelegateImpl(call),
     private val audioProximityDelegate: AudioProximityDelegate = AudioProximityDelegateImpl(AudioCallSession.getInstance())
@@ -33,16 +34,16 @@ internal class CallProximityDelegate<T>(
 
     override fun onProximitySensorChanged(isNear: Boolean) {
         if (isNear) {
-            if (proximityCallActivity?.disableProximity == false) {
+            if (!disableProximity()) {
                 wakeLockProximityDelegate.tryTurnScreenOff()
                 cameraProximityDelegate.tryDisableCamera(forceDisableCamera = wakeLockProximityDelegate.isScreenTurnedOff)
             }
             if (wakeLockProximityDelegate.isScreenTurnedOff) {
-                proximityCallActivity?.disableWindowTouch()
+                disableWindowTouch(true)
             }
             audioProximityDelegate.trySwitchToEarpiece()
         } else {
-            proximityCallActivity?.enableWindowTouch()
+            disableWindowTouch(false)
             wakeLockProximityDelegate.restoreScreenOn()
             cameraProximityDelegate.restoreCamera()
             audioProximityDelegate.tryRestoreToLoudspeaker()
