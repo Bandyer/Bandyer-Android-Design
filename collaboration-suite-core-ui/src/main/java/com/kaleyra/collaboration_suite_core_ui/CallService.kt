@@ -163,7 +163,10 @@ class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInput
 
             call.state
                 .takeWhile { it !is Call.State.Disconnected.Ended }
-                .onCompletion { callScope.cancel() }
+                .onCompletion {
+                    call.inputs.releaseAll()
+                    callScope.cancel()
+                }
                 .launchIn(lifecycleScope)
 
             if (!DeviceUtils.isSmartGlass) {
