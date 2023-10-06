@@ -6,6 +6,7 @@ import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.proximity_listener.ProximitySensor
 import io.mockk.every
@@ -54,6 +55,7 @@ class CallParticipantMutedTextToSpeechNotifierTest {
         })
         every { participantMeMock.streams } returns MutableStateFlow(listOf(streamMock))
         every { streamMock.audio } returns MutableStateFlow(audioMock)
+        every { streamMock.id } returns CameraStreamPublisher.CAMERA_STREAM_ID
         every { audioMock.events } returns MutableStateFlow(eventMock)
     }
 
