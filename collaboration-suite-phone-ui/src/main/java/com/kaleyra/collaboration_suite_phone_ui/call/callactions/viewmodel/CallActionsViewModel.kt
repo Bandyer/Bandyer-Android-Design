@@ -26,9 +26,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.Scree
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.CameraRestrictionMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.Locale.filter
 
 internal class CallActionsViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallActionsUiState>(configure) {
     override fun initialState() = CallActionsUiState()
@@ -168,10 +170,14 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         val participants = call?.participants?.getValue()
         if (conversation == null || participants == null) return
         val companyId = company.getValue()?.id?.getValue()
-        conversation.chat(
-            context = context,
-            userIDs = participants.others.filter { it.userId != companyId }.map { it.userId }
-        )
+        val otherParticipants = participants.others.filter { it.userId != companyId }.map { it.userId }
+        if (otherParticipants.size == 1) {
+            conversation.chat(context = context, otherParticipants.first())
+        } else {
+            viewModelScope.launch {
+                conversation.chat(context = context, otherParticipants, call.serverId.first())
+            }
+        }
     }
 
     fun tryStopScreenShare(): Boolean {

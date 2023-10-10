@@ -17,8 +17,8 @@ include ':collaboration-suite-core-ui',
         ':collaboration-suite-phone-ui',
         ':collaboration-suite-glass-ui',
         ':collaboration-suite',
-        ':collaboration-suite-extension-audio'
-//        ':communication_center',
+        ':collaboration-suite-extension-audio',
+//        ':communication_center'
 //        ':extension_live_pointer',
 //        ':extension_file_share',
 //        ':video-networking',

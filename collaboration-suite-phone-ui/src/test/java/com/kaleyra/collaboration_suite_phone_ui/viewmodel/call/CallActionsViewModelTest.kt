@@ -8,6 +8,7 @@ import com.kaleyra.collaboration_suite.Contact
 import com.kaleyra.collaboration_suite.conference.*
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.ConversationUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
@@ -57,6 +58,8 @@ class CallActionsViewModelTest {
 
     private val otherParticipantMock = mockk<CallParticipant>()
 
+    private val otherParticipantMock2 = mockk<CallParticipant>()
+
     private val inputsMock = mockk<Inputs>()
 
     private val audioMock = mockk<Input.Audio>(relaxed = true)
@@ -80,7 +83,7 @@ class CallActionsViewModelTest {
     private val inputs = MutableStateFlow(setOf<Input>())
 
     private val callState = MutableStateFlow<Call.State>(Call.State.Disconnected)
-    
+
     private val activity = mockk<FragmentActivity>()
 
     @Before
@@ -91,6 +94,7 @@ class CallActionsViewModelTest {
         every { conferenceMock.call } returns MutableStateFlow(callMock)
         every { companyMock.id } returns MutableStateFlow("companyId")
         with(callMock) {
+            every { serverId } returns MutableStateFlow("serverId")
             every { inputs } returns inputsMock
             every { actions } returns MutableStateFlow(setOf(CallUI.Action.HangUp, CallUI.Action.Audio))
             every { state } returns callState
@@ -112,6 +116,7 @@ class CallActionsViewModelTest {
             every { preselected } returns MutableStateFlow(Effect.Video.None)
         }
         every { otherParticipantMock.userId } returns "otherUserId"
+        every { otherParticipantMock2.userId } returns "otherUserId2"
 
         inputs.value = setOf(audioMock, videoMock)
         every { inputsMock.availableInputs } returns inputs
@@ -572,11 +577,30 @@ class CallActionsViewModelTest {
         every { conversationMock.chat(any(), any()) } returns Result.success(mockk())
         advanceUntilIdle()
         viewModel.showChat(contextMock)
-        val expectedUserIds = listOf(otherParticipantMock.userId)
+        val expectedUserId = otherParticipantMock.userId
         verify(exactly = 1) {
             conversationMock.chat(
                 context = contextMock,
-                userIDs = withArg { assertEquals(it, expectedUserIds) }
+                userId = withArg { assertEquals(it, expectedUserId) }
+            )
+        }
+    }
+
+    @Test
+    fun testShowGroupChat() = runTest {
+        val contextMock = mockk<Context>()
+        every { conversationMock.chat(any(), any(), any()) } returns Result.success(mockk())
+        every { callParticipantsMock.others } returns listOf(otherParticipantMock, otherParticipantMock2)
+        advanceUntilIdle()
+        viewModel.showChat(contextMock)
+        advanceUntilIdle()
+        val expectedCallServerId = callMock.serverId.replayCache.first()
+        val expectedUserIds = listOf(otherParticipantMock.userId, otherParticipantMock2.userId)
+        verify(exactly = 1) {
+            conversationMock.chat(
+                context = contextMock,
+                userIds = withArg { assertEquals(it, expectedUserIds) },
+                chatId = withArg { assertEquals(it, expectedCallServerId) }
             )
         }
     }
@@ -591,11 +615,33 @@ class CallActionsViewModelTest {
         every { callParticipantsMock.others } returns listOf(otherParticipantMock, companyParticipant)
         advanceUntilIdle()
         viewModel.showChat(contextMock)
-        val expectedUserIds = listOf(otherParticipantMock.userId)
+        val expectedUserId = otherParticipantMock.userId
         verify(exactly = 1) {
             conversationMock.chat(
                 context = contextMock,
-                userIDs = withArg { assertEquals(it, expectedUserIds) }
+                userId = withArg { assertEquals(it, expectedUserId) }
+            )
+        }
+    }
+
+    @Test
+    fun testShowGroupChatWithCompanyIdParticipant() = runTest {
+        val contextMock = mockk<Context>()
+        val companyParticipant = mockk<CallParticipant> {
+            every { userId } returns "companyId"
+        }
+        every { conversationMock.chat(any(), any(), any()) } returns Result.success(mockk())
+        every { callParticipantsMock.others } returns listOf(otherParticipantMock, otherParticipantMock2, companyParticipant)
+        advanceUntilIdle()
+        viewModel.showChat(contextMock)
+        advanceUntilIdle()
+        val expectedCallServerId = callMock.serverId.replayCache.first()
+        val expectedUserIds = listOf(otherParticipantMock.userId, otherParticipantMock2.userId)
+        verify(exactly = 1) {
+            conversationMock.chat(
+                context = contextMock,
+                userIds = withArg { assertEquals(it, expectedUserIds) },
+                chatId = expectedCallServerId
             )
         }
     }

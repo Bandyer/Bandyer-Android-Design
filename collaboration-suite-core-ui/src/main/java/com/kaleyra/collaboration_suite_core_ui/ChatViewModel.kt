@@ -21,7 +21,14 @@ open class ChatViewModel(configure: suspend () -> Configuration) : Collaboration
 
     suspend fun setChat(userId: String): ChatUI? {
         val conversation = conversation.first()
-        val chat = conversation.create(listOf(userId)).getOrNull() ?: return null
+        val chat = conversation.create(userId).getOrNull() ?: return null
+        _chat.tryEmit(chat)
+        return chat
+    }
+
+    suspend fun setChat(userIds: List<String>, chatId: String): ChatUI? {
+        val conversation = conversation.first()
+        val chat = conversation.create(userIds, chatId).getOrNull() ?: return null
         _chat.tryEmit(chat)
         return chat
     }

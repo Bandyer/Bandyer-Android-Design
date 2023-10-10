@@ -41,7 +41,6 @@ class CallActionsMapperTest {
         every { callFlow.hasVirtualBackground() } returns flowOf(false)
         every { callFlow.hasAudio() } returns flowOf(true)
         every { callFlow.isAudioOnly() } returns flowOf(false)
-        every { callFlow.isGroupCall(any()) } returns flowOf(false)
     }
 
     @After
@@ -125,15 +124,6 @@ class CallActionsMapperTest {
         val result = callFlow.toCallActions(flowOf("companyId"))
         val actual = result.first()
         assertEquals(listOf<CallAction>(CallAction.Chat()), actual)
-    }
-
-    @Test
-    fun chatActionAndItIsGroupCall_toCallActions_emptyList() = runTest {
-        every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.OpenChat.Full))
-        every { callFlow.isGroupCall(any()) } returns flowOf(true)
-        val result = callFlow.toCallActions(flowOf("companyId"))
-        val actual = result.first()
-        assertEquals(listOf<CallAction>(), actual)
     }
 
     @Test

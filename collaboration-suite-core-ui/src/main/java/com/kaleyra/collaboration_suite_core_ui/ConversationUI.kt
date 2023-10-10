@@ -102,20 +102,38 @@ class ConversationUI(
             val userIds = chat.participants.value.list.map { it.userId }
             ContactDetailsManager.refreshContactDetails(*userIds.toTypedArray())
         }
-        UIProvider.showChat(context, chatActivityClazz, chat.participants.value.others.first().userId)
+        UIProvider.showChat(
+            context,
+            chatActivityClazz,
+            chat.participants.value.others.map { it.userId },
+            chat.id.takeIf { chat.participants.value.others.size > 1 }
+        )
     }
 
     /**
      * @suppress
      */
-    override fun create(userIDs: List<String>): Result<ChatUI> = conversation.create(userIDs).map { getOrCreateChatUI(it) }
+    override fun create(userId: String): Result<ChatUI> = conversation.create(userId).map { getOrCreateChatUI(it) }
+
+    /**
+     * @suppress
+     */
+    override fun create(userIds: List<String>, chatId: String): Result<ChatUI> = conversation.create(userIds, chatId).map { getOrCreateChatUI(it) }
 
     /**
      * Given a user, open a chat ui.
      * @param context launching context of the chat ui
-     * @param userIDs The users with whom you want to chat.
+     * @param userId the user id of the user to chat with
      */
-    fun chat(context: Context, userIDs: List<String>): Result<ChatUI> = create(userIDs).onSuccess { show(context, it) }
+    fun chat(context: Context, userId: String): Result<ChatUI> = create(userId).onSuccess { show(context, it) }
+
+    /**
+     * Given a user, open a chat ui.
+     * @param context launching context of the chat ui
+     * @param userIds the ids of the users to chat with
+     * @param chatId the id of the requested group chat
+     */
+    fun chat(context: Context, userIds: List<String>, chatId: String): Result<ChatUI> = create(userIds, chatId).onSuccess { show(context, it) }
 
     private fun listenToMessages() {
         var msgsScope: CoroutineScope? = null

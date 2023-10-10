@@ -37,21 +37,22 @@ abstract class ChatActivity : FragmentActivity() {
     }
 
     private fun setChatOrCloseActivity(intent: Intent) = lifecycleScope.launch {
-        val isCollaborationConfigured = viewModel.isCollaborationConfigured.first()
-        if (isCollaborationConfigured) setChat(intent)
-        else {
-            finishAndRemoveTask()
-            ContextRetainer.context.goToLaunchingActivity()
+        when {
+            !viewModel.isCollaborationConfigured.first() -> ContextRetainer.context.goToLaunchingActivity()
+            setChat(intent) -> return@launch
         }
+        finishAndRemoveTask()
     }
 
-    private fun setChat(intent: Intent) {
-        lifecycleScope.launch {
-            val userId = intent.extras?.getString("userId") ?: return@launch
-            val chat = viewModel.setChat(userId) ?: return@launch
-            chatId = chat.id
-            sendChatAction(DisplayedChatActivity.ACTION_CHAT_VISIBLE, chat.id)
-        }
+    private suspend fun setChat(intent: Intent): Boolean {
+        val userIds = intent.extras?.getStringArray("userId") ?: return false
+        val chatId = intent.extras?.getString("chatId")
+        if (userIds.size > 1 && chatId == null) return false
+        val chat = if (userIds.size > 1) viewModel.setChat(userIds.toList(), chatId!!) ?: return false
+        else viewModel.setChat(userIds.first()) ?: return false
+        this@ChatActivity.chatId = chat.id
+        sendChatAction(DisplayedChatActivity.ACTION_CHAT_VISIBLE, chat.id)
+        return true
     }
 
     private fun sendChatAction(action: String, chatId: String? = null) {

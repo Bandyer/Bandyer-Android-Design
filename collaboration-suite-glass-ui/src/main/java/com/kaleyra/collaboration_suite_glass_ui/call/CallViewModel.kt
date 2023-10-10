@@ -34,6 +34,7 @@ import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
+import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel
 import com.kaleyra.collaboration_suite_core_ui.Configuration
@@ -303,7 +304,13 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
     private val chat: StateFlow<ChatUI?> =
         participants
             .filter { it.others.isNotEmpty() }
-            .map { KaleyraVideo.conversation.create(it.others.map { it.userId }).getOrNull() }
+            .map {
+                if (it.others.size == 1) {
+                    KaleyraVideo.conversation.create(it.others.first().userId).getOrNull()
+                } else {
+                    KaleyraVideo.conversation.create(it.others.map { it.userId }, call.replayCache.firstOrNull()?.id!!).getOrNull()
+                }
+            }
             .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val areThereNewMessages = chat
@@ -323,7 +330,7 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
 
     private val currentCall: Call get() = call.replayCache.first()
 
-    val volume: Volume get() = callAudioManager?.let { Volume(it.currentVolume, it.minVolume, it.maxVolume) } ?: Volume(0,0,0)
+    val volume: Volume get() = callAudioManager?.let { Volume(it.currentVolume, it.minVolume, it.maxVolume) } ?: Volume(0, 0, 0)
 
     fun onRequestMicPermission(context: FragmentActivity) {
         context.lifecycleScope.launchWhenResumed {
