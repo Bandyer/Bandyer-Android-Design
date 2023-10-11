@@ -260,7 +260,7 @@ internal fun CallScreen(
     ),
     shouldShowFileShareComponent: Boolean,
     isInPipMode: Boolean,
-    onEnterPip: () -> Unit,
+    enterPip: () -> Unit,
     onPipAspectRatio: (Rational) -> Unit,
     onFileShareVisibility: (Boolean) -> Unit,
     onWhiteboardVisibility: (Boolean) -> Unit,
@@ -300,7 +300,7 @@ internal fun CallScreen(
             activity.finishAndRemoveTask()
         }
     }
-    val onBackPressed by remember(onFinishActivity, onEnterPip) {
+    val onBackPressed by remember(onFinishActivity, enterPip) {
         derivedStateOf {
             {
                 when {
@@ -309,7 +309,7 @@ internal fun CallScreen(
                         viewModel.fullscreenStream(null)
                     }
 
-                    else                                                    -> onEnterPip()
+                    else                                                    -> enterPip()
                 }
             }
         }

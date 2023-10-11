@@ -66,7 +66,7 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
             CallScreen(
                 shouldShowFileShareComponent = shouldShowFileShare.collectAsStateWithLifecycle().value,
                 isInPipMode = isInPipMode.collectAsStateWithLifecycle().value,
-                onEnterPip = ::onUserLeaveHint,
+                enterPip = ::enterPipModeIfSupported,
                 onFileShareVisibility = {
                     isFileShareDisplayed = it
                     if (it) shouldShowFileShare.value = false
