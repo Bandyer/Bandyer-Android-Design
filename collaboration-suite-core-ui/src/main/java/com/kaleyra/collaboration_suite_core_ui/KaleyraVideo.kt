@@ -199,6 +199,8 @@ object KaleyraVideo : Connector {
             collaboration ?: return@launch
             mainScope?.cancel()
             collaborationUIConnector?.disconnect(true)
+            _conference?.dispose(true)
+            _conversation?.dispose(true)
             termsAndConditionsRequester?.dispose()
             collaboration = null
             _conference = null
