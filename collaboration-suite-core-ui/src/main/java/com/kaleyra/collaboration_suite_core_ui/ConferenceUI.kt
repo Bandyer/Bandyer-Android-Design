@@ -101,8 +101,8 @@ class ConferenceUI(
      */
     override fun disconnect(clearSavedData: Boolean) = conference.disconnect(clearSavedData)
 
-    internal fun dispose() {
-        disconnect()
+    internal fun dispose(clearSavedData: Boolean) {
+        disconnect(clearSavedData)
         disableAudioRouting(logger)
         callScope.cancel()
     }
