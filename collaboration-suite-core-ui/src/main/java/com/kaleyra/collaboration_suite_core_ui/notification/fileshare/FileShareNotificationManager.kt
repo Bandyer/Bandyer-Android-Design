@@ -67,7 +67,7 @@ internal interface FileShareNotificationManager {
             this.action = Intent.ACTION_MAIN
             this.addCategory(Intent.CATEGORY_LAUNCHER)
             this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            this.putExtra("action", FileShareNotificationActionReceiver.ACTION_DOWNLOAD)
+            this.putExtra("notificationAction", FileShareNotificationActionReceiver.ACTION_DOWNLOAD)
             intentExtras?.let { this.putExtras(it) }
         }
         return PendingIntent.getActivity(

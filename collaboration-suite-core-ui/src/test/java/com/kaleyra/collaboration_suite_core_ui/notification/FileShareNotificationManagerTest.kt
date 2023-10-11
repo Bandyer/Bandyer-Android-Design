@@ -63,7 +63,7 @@ class FileShareNotificationManagerTest {
                 assertEquals(Intent.ACTION_MAIN, intent.action)
                 assert(intent.hasCategory(Intent.CATEGORY_LAUNCHER))
                 assertEquals(Intent.FLAG_ACTIVITY_NEW_TASK, intent.flags)
-                assertEquals(FileShareNotificationActionReceiver.ACTION_DOWNLOAD, intent.getStringExtra("action"))
+                assertEquals(FileShareNotificationActionReceiver.ACTION_DOWNLOAD, intent.getStringExtra("notificationAction"))
             })
         }
         verify(exactly = 1) {
@@ -73,7 +73,7 @@ class FileShareNotificationManagerTest {
                 assertEquals(Intent.ACTION_MAIN, intent.action)
                 assert(intent.hasCategory(Intent.CATEGORY_LAUNCHER))
                 assertEquals(Intent.FLAG_ACTIVITY_NEW_TASK, intent.flags)
-                assertEquals(FileShareNotificationActionReceiver.ACTION_DOWNLOAD, intent.getStringExtra("action"))
+                assertEquals(FileShareNotificationActionReceiver.ACTION_DOWNLOAD, intent.getStringExtra("notificationAction"))
                 assertEquals("downloadId", intent.getStringExtra(EXTRA_DOWNLOAD_ID))
             })
         }

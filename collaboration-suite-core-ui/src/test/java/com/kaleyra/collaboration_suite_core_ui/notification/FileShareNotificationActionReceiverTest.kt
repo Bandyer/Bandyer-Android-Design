@@ -50,7 +50,7 @@ internal class FileShareNotificationActionReceiverTest {
         mockkStatic("com.kaleyra.collaboration_suite_core_ui.KaleyraVideoKt")
         every { KaleyraVideo.onCallReady(any(), captureLambda()) } answers { lambda<(CallUI) -> Unit>().invoke(callMock) }
         every { contextMock.goToLaunchingActivity() } returns Unit
-        every { callMock.sharedFolder.download(any()) } returns mockk(relaxed = true)
+        every { callMock.sharedFolder.download(any()) } returns Result.success(mockk(relaxed = true))
         every { NotificationManager.cancel(any()) } returns Unit
         coEvery { fileShareNotificationActionReceiver.goAsync() } returns mockk(relaxed = true)
     }
@@ -63,7 +63,8 @@ internal class FileShareNotificationActionReceiverTest {
     @Test
     fun testOnReceiveWithCollaborationConfigured() = runTest {
         val downloadId = "downloadId"
-        val intent = Intent(ACTION_DOWNLOAD).apply {
+        val intent = Intent().apply {
+            putExtra("notificationAction", ACTION_DOWNLOAD)
             putExtra(EXTRA_DOWNLOAD_ID, downloadId)
         }
         coEvery { fileShareNotificationActionReceiver.requestConfigure() } returns true
