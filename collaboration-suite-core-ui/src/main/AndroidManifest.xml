@@ -42,11 +42,6 @@
         <receiver
             android:name=".notification.CallNotificationActionReceiver"
             android:exported="false">
-            <intent-filter>
-                <action android:name="com.kaleyra.collaboration_suite_core_ui.HANGUP" />
-                <action android:name="com.kaleyra.collaboration_suite_core_ui.ANSWER" />
-                <action android:name="com.kaleyra.collaboration_suite_core_ui.STOP_SCREEN_SHARE" />
-            </intent-filter>
         </receiver>
         <receiver
             android:name=".notification.ChatNotificationActionReceiver"
@@ -67,9 +62,6 @@
         <receiver
             android:name=".notification.fileshare.FileShareNotificationActionReceiver"
             android:exported="false">
-            <intent-filter>
-                <action android:name="com.kaleyra.collaboration_suite_core_ui.DOWNLOAD" />
-            </intent-filter>
         </receiver>
         <receiver
             android:name=".notification.fileshare.FileShareVisibilityObserver"
