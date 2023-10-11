@@ -58,31 +58,31 @@ internal interface ChatNotificationManager {
     /**
      * Build the chat notification
      *
-     * @param userId The user id
-     * @param username The user name
-     * @param avatar The user avatar
+     * @param myUserId The user id
+     * @param myUsername The user name
+     * @param myAvatar The user avatar
      * @param messages The list of messages
      * @param activityClazz The chat activity Class<*>
      * @param fullScreenIntentClazz The fullscreen intent activity Class<*>?
      * @return Notification
      */
     fun buildChatNotification(
-        userId: String,
-        username: String,
-        avatar: Uri,
-//        chatId: String,
+        myUserId: String,
+        myUsername: String,
+        myAvatar: Uri,
+        chatId: String?,
         messages: List<ChatNotificationMessage>,
         activityClazz: Class<*>,
         fullScreenIntentClazz: Class<*>? = null,
     ): Notification {
         val context = ContextRetainer.context
 
-        val otherUserId = messages.firstOrNull()?.userId ?: ""
-        val contentIntent = contentPendingIntent(context, activityClazz, otherUserId)
+        val otherUserIds = messages.map { it.userId }.distinct()
+        val contentIntent = contentPendingIntent(context, activityClazz, otherUserIds, chatId)
         // Pending intent =
         //      API <24 (M and below): activity so the lock-screen presents the auth challenge.
         //      API 24+ (N and above): this should be a Service or BroadcastReceiver.
-        val replyIntent = replyPendingIntent(context, otherUserId) ?: contentIntent
+        val replyIntent = replyPendingIntent(context, otherUserIds, chatId) ?: contentIntent
 
         val builder = ChatNotification
             .Builder(
@@ -90,9 +90,9 @@ internal interface ChatNotificationManager {
                 DEFAULT_CHANNEL_ID,
                 context.resources.getString(R.string.kaleyra_notification_chat_channel_name)
             )
-            .userId(userId)
-            .username(username)
-            .avatar(avatar)
+            .userId(myUserId)
+            .username(myUsername)
+            .avatar(myAvatar)
             .isGroupChat(true) // Always true because of a notification ui bug
 //            .isGroupChat(messages.map { it.userId }.distinct().count() > 1)
             .contentIntent(contentIntent)
@@ -100,26 +100,28 @@ internal interface ChatNotificationManager {
 //            .markAsReadIntent(markAsReadIntent(context, otherUserId))
             .messages(messages)
 
-        fullScreenIntentClazz?.let { builder.fullscreenIntent(fullScreenPendingIntent(context, it, otherUserId)) }
+        fullScreenIntentClazz?.let { builder.fullscreenIntent(fullScreenPendingIntent(context, it, otherUserIds, chatId)) }
         return builder.build()
     }
 
-    private fun contentPendingIntent(context: Context, activityClazz: Class<*>, userId: String) =
-        createChatActivityPendingIntent(context, CONTENT_REQUEST_CODE + userId.hashCode(), activityClazz, userId)
+    private fun contentPendingIntent(context: Context, activityClazz: Class<*>, userIds: List<String>, chatId: String?) =
+        createChatActivityPendingIntent(context, CONTENT_REQUEST_CODE + userIds.hashCode(), activityClazz, userIds, chatId)
 
-    private fun fullScreenPendingIntent(context: Context, activityClazz: Class<*>, userId: String) =
-        createChatActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE + userId.hashCode(), activityClazz, userId)
+    private fun fullScreenPendingIntent(context: Context, activityClazz: Class<*>, userIds: List<String>, chatId: String?) =
+        createChatActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE + userIds.hashCode(), activityClazz, userIds, chatId)
 
     private fun <T> createChatActivityPendingIntent(
         context: Context,
         requestCode: Int,
         activityClazz: Class<T>,
-        userId: String
+        userIds: List<String>,
+        chatId: String?
     ): PendingIntent {
         val applicationContext = context.applicationContext
         val intent = Intent(applicationContext, activityClazz).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            putExtra("userId", userId)
+            putExtra("userIds", userIds.toTypedArray())
+            chatId?.let { putExtra("chatId", it) }
         }
         return PendingIntent.getActivity(
             applicationContext,
@@ -129,29 +131,31 @@ internal interface ChatNotificationManager {
         )
     }
 
-    private fun replyPendingIntent(context: Context, userId: String) =
+    private fun replyPendingIntent(context: Context, userIds: List<String>, chatId: String?) =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val intent = Intent(
                 context.applicationContext,
                 ChatNotificationActionReceiver::class.java
             ).apply {
                 action = ChatNotificationActionReceiver.ACTION_REPLY
-                putExtra("userId", userId)
+                putExtra("userIds", userIds.toTypedArray())
+                chatId?.let { putExtra("chatId", it) }
             }
             PendingIntent.getBroadcast(
                 context.applicationContext,
-                REPLY_REQUEST_CODE + userId.hashCode(),
+                REPLY_REQUEST_CODE + userIds.hashCode(),
                 intent,
                 PendingIntentExtensions.mutableFlags
             )
         } else null
 
-    private fun markAsReadIntent(context: Context, userId: String): PendingIntent {
+    private fun markAsReadIntent(context: Context, userIds: String, chatId: String?): PendingIntent {
         val intent = Intent(context, ChatNotificationActionReceiver::class.java).apply {
             action = ChatNotificationActionReceiver.ACTION_MARK_AS_READ
-            putExtra("userId", userId)
+            putExtra("userIds", userIds)
+            chatId?.let { putExtra("chatId", it) }
         }
-        return createBroadcastPendingIntent(context, MARK_AS_READ_REQUEST_CODE + userId.hashCode(), intent)
+        return createBroadcastPendingIntent(context, MARK_AS_READ_REQUEST_CODE + userIds.hashCode(), intent)
     }
 
     private fun createBroadcastPendingIntent(context: Context, requestCode: Int, intent: Intent) =

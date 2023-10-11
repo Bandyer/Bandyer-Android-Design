@@ -45,7 +45,7 @@ abstract class ChatActivity : FragmentActivity() {
     }
 
     private suspend fun setChat(intent: Intent): Boolean {
-        val userIds = intent.extras?.getStringArray("userId") ?: return false
+        val userIds = intent.extras?.getStringArray("userIds") ?: return false
         val chatId = intent.extras?.getString("chatId")
         if (userIds.size > 1 && chatId == null) return false
         val chat = if (userIds.size > 1) viewModel.setChat(userIds.toList(), chatId!!) ?: return false

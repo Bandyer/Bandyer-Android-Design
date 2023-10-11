@@ -39,7 +39,7 @@ internal object UIProvider {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             putExtra("enableTilt", isSmartGlass)
             putExtra("chatId", chatId)
-            putExtra("userId", userIds.toTypedArray())
+            putExtra("userIds", userIds.toTypedArray())
         }
         startActivity(intent)
     }
