@@ -150,19 +150,17 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
     }
 
     private fun handleIntentAction(intent: Intent): Boolean {
-        val action = intent.extras?.getString("action") ?: return false
-        return when (action) {
+        return when (intent.extras?.getString("notificationAction")) {
             CallNotificationActionReceiver.ACTION_ANSWER, CallNotificationActionReceiver.ACTION_HANGUP -> {
                 sendBroadcast(Intent(this, CallNotificationActionReceiver::class.java).apply {
-                    this.action = action
+                    putExtras(intent)
                 })
                 true
             }
 
             FileShareNotificationActionReceiver.ACTION_DOWNLOAD -> {
                 sendBroadcast(Intent(this, FileShareNotificationActionReceiver::class.java).apply {
-                    this.action = action
-                    this.putExtras(intent)
+                    putExtras(intent)
                 })
                 shouldShowFileShare.value = true
                 true

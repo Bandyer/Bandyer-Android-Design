@@ -42,6 +42,7 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
+import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
@@ -580,9 +581,10 @@ internal class GlassCallActivity :
     }
 
     private fun handleIntentAction(intent: Intent) {
-        val action = intent.extras?.getString("action") ?: return
+        val notificationAction = intent.extras?.getString("notificationAction")
+        if (notificationAction != CallNotificationActionReceiver.ACTION_ANSWER && notificationAction != CallNotificationActionReceiver.ACTION_HANGUP) return
         sendBroadcast(Intent(this, CallNotificationActionReceiver::class.java).apply {
-            this.action = action
+            putExtras(intent)
         })
     }
 

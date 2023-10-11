@@ -59,7 +59,8 @@ class CallNotificationActionReceiver : KaleyraVideoBroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val pendingResult = goAsync()
         CoroutineScope(Dispatchers.IO).launch {
-            if (intent.action == ACTION_HANGUP) {
+            val notificationAction = intent.extras?.getString("notificationAction")
+            if (notificationAction == ACTION_HANGUP) {
                 NotificationManager.cancel(CALL_NOTIFICATION_ID)
             }
             requestConfigure().let {
@@ -68,7 +69,7 @@ class CallNotificationActionReceiver : KaleyraVideoBroadcastReceiver() {
                     return@let ContextRetainer.context.goToLaunchingActivity()
                 }
                 KaleyraVideo.onCallReady(this) { call ->
-                    when (intent.action) {
+                    when (notificationAction) {
                         ACTION_ANSWER            -> call.connect()
                         ACTION_HANGUP            -> call.end()
                         ACTION_STOP_SCREEN_SHARE -> TODO()

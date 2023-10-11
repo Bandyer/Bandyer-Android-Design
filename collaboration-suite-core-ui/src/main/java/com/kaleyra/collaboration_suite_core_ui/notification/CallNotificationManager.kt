@@ -208,7 +208,7 @@ internal interface CallNotificationManager {
             this.addCategory(Intent.CATEGORY_LAUNCHER)
             this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             this.putExtra("enableTilt", DeviceUtils.isSmartGlass)
-            action?.also { this.putExtra("action", it) }
+            action?.also { this.putExtra("notificationAction", it) }
         }
         return PendingIntent.getActivity(
             applicationContext,
