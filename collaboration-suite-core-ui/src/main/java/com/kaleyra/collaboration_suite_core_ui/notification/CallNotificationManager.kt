@@ -223,7 +223,7 @@ internal interface CallNotificationManager {
             context,
             requestCode,
             Intent(context, CallNotificationActionReceiver::class.java).apply {
-                this.action = action
+                putExtra("notificationAction", action)
             },
             PendingIntentExtensions.updateFlags
         )
