@@ -23,7 +23,8 @@ import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.video_networking.connector.AccessTokenProvider
 import com.kaleyra.video_networking.connector.ConnectedUser
 import com.kaleyra.video_networking.connector.Connector.*
-import com.kaleyra.video_networking.connector.Connector.State.Connected
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -55,8 +56,7 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
 
     private var lastAction: Action? = null
 
-    private var wasConferenceConnected = false
-    private var wasConversationConnected = false
+    private var wasConnected = false
 
     private var endedCallIds = mutableSetOf<String>()
 
@@ -66,45 +66,76 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
         syncWithAppLifecycle(parentScope)
     }
 
-    /**
-     * Connect the collaboration
-     */
-    fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<ConnectedUser> = collaboration.connect(userId, accessTokenProvider).apply {
-        resume()
+
+    inner class Session {
+
+        private var userId: String? = null
+        private var accessLink: String? = null
+        private var accessTokenProvider: AccessTokenProvider? = null
+
+        constructor(userId: String, accessTokenProvider: AccessTokenProvider) {
+            this.userId = userId
+            this.accessTokenProvider = accessTokenProvider
+        }
+
+        constructor(accessLink: String) {
+            this.accessLink = accessLink
+        }
+
+        fun connect(): Deferred<ConnectedUser> = when {
+            accessLink != null                            -> collaboration.connect(accessLink!!)
+            userId != null && accessTokenProvider != null -> collaboration.connect(userId!!, accessTokenProvider!!)
+            else                                          -> CompletableDeferred<ConnectedUser>().apply { completeExceptionally(CancellationException("Connection parameters not correct!")) }
+        }
+
+        fun disconnect(clearSavedData: Boolean) {
+            collaboration.disconnect(clearSavedData)
+            if (!clearSavedData) return
+            userId = null
+            accessTokenProvider = null
+            accessLink = null
+        }
     }
+
+    private var session: Session? = null
 
     /**
      * Connect the collaboration
      */
-    fun connect(accessLink: String): Deferred<ConnectedUser> = collaboration.connect(accessLink).apply {
+    fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<ConnectedUser> = Session(userId, accessTokenProvider).apply {
+        session = this
         resume()
-    }
+    }.connect()
 
     /**
      * Disconnect the collaboration
      */
     fun disconnect(clearSavedData: Boolean = false) {
-        collaboration.disconnect(clearSavedData)
-        wasConferenceConnected = false
-        wasConversationConnected = false
+        session?.disconnect(clearSavedData)
+        wasConnected = false
         scope.coroutineContext.cancelChildren()
         if (clearSavedData) NotificationManager.cancelAll()
     }
 
     private fun pause() {
-        wasConferenceConnected = collaboration.conference.state.value.let { it !is State.Disconnected && it !is State.Disconnecting }
-        wasConversationConnected = collaboration.conversation.state.value.let { it !is State.Disconnected && it !is State.Disconnecting }
-        collaboration.conference.disconnect()
-        collaboration.conversation.disconnect()
+        wasConnected = collaboration.state.value.let { it !is State.Disconnected && it !is State.Disconnecting }
+        session?.disconnect(false)
         scope.coroutineContext.cancelChildren()
     }
+
+    /**
+     * Connect the collaboration
+     */
+    fun connect(accessLink: String): Deferred<ConnectedUser> = Session(accessLink).apply {
+        session = this
+        resume()
+    }.connect()
 
     private fun resume() {
         scope.coroutineContext.cancelChildren()
         syncWithCallState(scope)
         syncWithChatMessages(scope)
-        if (wasConferenceConnected) collaboration.conference.connect()
-        if (wasConversationConnected) collaboration.conversation.connect()
+        if (wasConnected) session?.connect()
     }
 
     private fun syncWithAppLifecycle(scope: CoroutineScope) {
@@ -113,7 +144,8 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
             .onEach { isInForeground ->
                 if (isInForeground) performAction(Action.RESUME)
                 else {
-                    val isInCall = collaboration.conference.call.replayCache.firstOrNull()?.state !is Call.State.Disconnected.Ended
+                    val currentCall = collaboration.conference.call.replayCache.firstOrNull()
+                    val isInCall = currentCall != null && currentCall.state !is Call.State.Disconnected.Ended
                     if (!isInCall) performAction(Action.PAUSE)
                 }
             }

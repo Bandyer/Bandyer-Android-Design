@@ -23,6 +23,7 @@ import android.os.Looper
 import android.widget.Toast
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Conference
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo.disconnect
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isDND
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
@@ -91,22 +92,10 @@ class ConferenceUI(
         listenToCalls()
     }
 
-    /**
-     * @suppress
-     */
-    override fun connect() = conference.connect()
-
-    /**
-     * @suppress
-     */
-    override fun disconnect(clearSavedData: Boolean) = conference.disconnect(clearSavedData)
-
-    internal fun dispose(clearSavedData: Boolean) {
-        disconnect(clearSavedData)
+    internal fun dispose() {
         disableAudioRouting(logger)
         callScope.cancel()
     }
-
     /**
      * Call
      *
