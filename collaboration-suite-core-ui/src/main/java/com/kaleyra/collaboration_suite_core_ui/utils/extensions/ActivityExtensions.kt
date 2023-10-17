@@ -16,8 +16,8 @@
 
 package com.kaleyra.collaboration_suite_core_ui.utils.extensions
 
-import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.view.WindowManager
 
@@ -31,15 +31,14 @@ object ActivityExtensions {
      *
      * @receiver Activity
      */
-    @SuppressLint("WakelockTimeout")
+    @Suppress("DEPRECATION")
     fun Activity.turnScreenOn() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
         } else {
             window.addFlags(
-                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
-                        or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
             )
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -50,9 +49,13 @@ object ActivityExtensions {
      *
      * @receiver Activity
      */
+    @Suppress("DEPRECATION")
     fun Activity.turnScreenOff() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) setTurnScreenOn(false)
         else window.clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
     }
+
+    fun Activity.moveToFront() =
+        startActivity(intent.apply { flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT })
 }
