@@ -21,7 +21,7 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
 
     val conference = _configuration.mapSuccess { it.conference }.shareInEagerly(viewModelScope)
 
-    val conversation = _configuration.mapSuccess { it.conversationUI }.shareInEagerly(viewModelScope)
+    val conversation = _configuration.mapSuccess { it.conversation }.shareInEagerly(viewModelScope)
 
     val company = _configuration.mapSuccess { it.company }.shareInEagerly(viewModelScope)
 
@@ -42,7 +42,7 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
 }
 
 sealed class Configuration {
-    data class Success(val conference: ConferenceUI, val conversationUI: ConversationUI, val company: Company) : Configuration()
+    data class Success(val conference: ConferenceUI, val conversation: ConversationUI, val company: Company) : Configuration()
     object Failure : Configuration()
 }
 
