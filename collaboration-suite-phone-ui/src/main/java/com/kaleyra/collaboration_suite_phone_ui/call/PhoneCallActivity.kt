@@ -87,6 +87,8 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
     override fun onResume() {
         super.onResume()
         isInForeground = true
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
+        isInPipMode.value = isInPictureInPictureMode
     }
 
     override fun onPause() {
@@ -107,7 +109,7 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 
-    @SuppressLint("MissingSuperCall")
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onPictureInPictureModeChanged(
         isInPictureInPictureMode: Boolean,
         newConfig: Configuration
