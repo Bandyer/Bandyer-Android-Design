@@ -233,7 +233,6 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             onPipAspectRatio.emit(block)
         }
     }
-    }
 
     fun setOnAudioOrVideoChanged(block: (isAudioEnabled: Boolean, isVideoEnabled: Boolean) -> Unit) {
         viewModelScope.launch {
