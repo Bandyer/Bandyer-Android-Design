@@ -72,7 +72,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
     private var onCallEnded: (suspend (Boolean, Boolean, Boolean) -> Unit)? = null
 
-    private var onPipAspectRatio: ((Rational) -> Unit)? = null
+    private var onPipAspectRatio:  MutableSharedFlow<(Rational) -> Unit> = MutableSharedFlow(replay = 1)
 
     private var onAudioOrVideoChanged: MutableSharedFlow<(Boolean, Boolean) -> Unit> = MutableSharedFlow(replay = 1)
 
@@ -167,7 +167,10 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
         uiState
             .toPipAspectRatio()
-            .onEach { onPipAspectRatio?.invoke(it) }
+            .onEach { aspectRatio ->
+                val onPipAspectRatio = onPipAspectRatio.first()
+                onPipAspectRatio.invoke(aspectRatio)
+            }
             .launchIn(viewModelScope)
 
         combine(
@@ -225,7 +228,10 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     }
 
     fun setOnPipAspectRatio(block: (Rational) -> Unit) {
-        onPipAspectRatio = block
+        viewModelScope.launch {
+            onPipAspectRatio.emit(block)
+        }
+    }
     }
 
     fun setOnAudioOrVideoChanged(block: (isAudioEnabled: Boolean, isVideoEnabled: Boolean) -> Unit) {
