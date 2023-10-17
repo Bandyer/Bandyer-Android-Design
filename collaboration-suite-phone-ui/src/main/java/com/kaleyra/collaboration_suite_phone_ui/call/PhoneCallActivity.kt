@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call
 
-import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -67,17 +66,9 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
                 shouldShowFileShareComponent = shouldShowFileShare.collectAsStateWithLifecycle().value,
                 isInPipMode = isInPipMode.collectAsStateWithLifecycle().value,
                 enterPip = ::enterPipModeIfSupported,
-                onFileShareVisibility = {
-                    isFileShareDisplayed = it
-                    if (it) shouldShowFileShare.value = false
-                },
+                onFileShareVisibility = ::onFileShareVisibility,
                 onWhiteboardVisibility = { isWhiteboardDisplayed = it },
-                onPipAspectRatio = { aspectRatio ->
-                    pictureInPictureAspectRatio = if (aspectRatio == Rational.NaN) getScreenAspectRatio() else aspectRatio.coerceRationalForPip()
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        updatePipParams()?.let { setPictureInPictureParams(it) }
-                    }
-                },
+                onPipAspectRatio = ::onAspectRatio,
                 onActivityFinishing = { isActivityFinishing = true },
             )
         }
@@ -172,6 +163,16 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
         }
     }
 
+    private fun onFileShareVisibility(isFileShareVisible: Boolean) {
+        isFileShareDisplayed = isFileShareVisible
+        if (isFileShareVisible) shouldShowFileShare.value = false
+    }
+
+    private fun onAspectRatio(aspectRatio: Rational) {
+        pictureInPictureAspectRatio = if (aspectRatio == Rational.NaN) getScreenAspectRatio() else aspectRatio.coerceRationalForPip()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+        updatePipParams()?.let { setPictureInPictureParams(it) }
+    }
     private fun restartActivityIfCurrentCallIsEnded(intent: Intent) {
         if (isActivityFinishing && Intent.FLAG_ACTIVITY_NEW_TASK.let { intent.flags.and(it) == it }) {
             finishAndRemoveTask()
