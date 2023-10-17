@@ -64,6 +64,8 @@ internal interface FileShareNotificationManager {
     ): PendingIntent {
         val applicationContext = context.applicationContext
         val intent = Intent(applicationContext, activityClazz).apply {
+            // Setting main action and category launcher allows to open activity
+            // from notification if there is already an instance, instead of a creating a new one
             this.action = Intent.ACTION_MAIN
             this.addCategory(Intent.CATEGORY_LAUNCHER)
             this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
