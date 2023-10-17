@@ -102,7 +102,7 @@ class ConversationUI(
             val userIds = chat.participants.value.list.map { it.userId }
             ContactDetailsManager.refreshContactDetails(*userIds.toTypedArray())
         }
-        UIProvider.showChat(
+        KaleyraUIProvider.startChatActivity(
             context,
             chatActivityClazz,
             chat.participants.value.others.map { it.userId },

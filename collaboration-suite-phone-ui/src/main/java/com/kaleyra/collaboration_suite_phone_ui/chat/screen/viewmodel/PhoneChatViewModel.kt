@@ -190,8 +190,8 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
     }
 
     fun showCall() {
-        val conference = conference.getValue() ?: return
-        conference.showCall()
+        val call = call.getValue() ?: return
+        call.show()
     }
 
     private fun updateUnreadMessagesCount(count: Int) {

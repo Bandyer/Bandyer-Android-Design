@@ -16,15 +16,20 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
+import android.content.Context
 import android.os.Parcelable
-import androidx.annotation.Keep
 import com.kaleyra.collaboration_suite.conference.Call
-import com.kaleyra.collaboration_suite.conference.Call.PreferredType
-import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
+import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isDND
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
+import com.kaleyra.video_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -35,6 +40,7 @@ import kotlinx.parcelize.Parcelize
  */
 class CallUI(
     private val call: Call,
+    val activityClazz: Class<*>,
     val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(Action.default)
 ) : Call by call {
 
@@ -54,9 +60,36 @@ class CallUI(
     var disableProximitySensor: Boolean = false
 
     /**
+     * Show the call ui
+     */
+    fun show() {
+        if (!AppLifecycle.isInForeground.value) return
+        KaleyraUIProvider.startCallActivity(activityClazz)
+    }
+
+    internal fun internalShow() {
+        if (!canShowCallActivity(ContextRetainer.context, this)) return
+        KaleyraUIProvider.startCallActivity(activityClazz)
+    }
+
+    private fun canShowCallActivity(context: Context, call: CallUI): Boolean {
+        val participants = call.participants.value
+        val creator = participants.creator()
+        val isOutgoing = creator == participants.me
+        return AppLifecycle.isInForeground.value && (!context.isDND() || (context.isDND() && isOutgoing)) && (!context.isSilent() || (context.isSilent() && (isOutgoing || call.isLink)))
+    }
+
+    sealed class DisplayMode {
+        data object PictureInPicture: DisplayMode()
+
+        data object Foreground: DisplayMode()
+
+        data object Background: DisplayMode()
+    }
+
+    /**
      * The call action sealed class
      */
-    @Keep
     sealed class Action : Parcelable {
 
         /**

@@ -16,23 +16,18 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
-import android.content.Context
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Conference
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isDND
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.video_utils.ContextRetainer
 import com.kaleyra.video_utils.logging.PriorityLogger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -44,8 +39,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 
 /**
  * Conference UI
@@ -138,80 +131,49 @@ class ConferenceUI(
         }
     }
 
-    /**
-     * Show the call ui
-     */
-    fun showCall() {
-        if (!AppLifecycle.isInForeground.value) return
-        UIProvider.showCall(callActivityClazz)
-    }
-
-    private fun internalShow(call: CallUI) {
-        if (!canShowCallActivity(ContextRetainer.context, call)) return
-        UIProvider.showCall(callActivityClazz)
-    }
-
     private fun listenToCalls() {
-        var serviceJob: Job? = null
         var currentCall: CallUI? = null
-        val mutex = Mutex()
         call.onEach { call ->
-            when {
-                mutex.withLock { currentCall == null } -> {
-                    if (call.state.value is Call.State.Disconnected.Ended || !withUI) return@onEach
-                    mutex.withLock { currentCall = call }
-                    serviceJob?.cancel()
-                    serviceJob = callService(call, callScope) {
-                        mutex.withLock { currentCall = null }
-                    }
-                    call.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope, isLink = call.isLink)
-                    if (call.isLink) showOnAppResumed(call) else internalShow(call)
-                }
-                call.isLink                            -> showCannotJoinUrl()
+            if (call.state.value is Call.State.Disconnected.Ended) return@onEach
+
+            if (currentCall != call && call.isLink) {
+                showCannotJoinUrl()
+                return@onEach
             }
+
+            CallService.stop()
+            CallService.start()
+
+            call.enableAudioRouting(
+                withCallSounds = true,
+                logger = logger,
+                coroutineScope = callScope,
+                isLink = call.isLink
+            )
+
+            when {
+                withUI && call.isLink -> showOnAppResumed(call)
+                withUI -> call.internalShow()
+            }
+
+            currentCall = call
         }.onCompletion {
-            with(ContextRetainer.context) { stopService(Intent(this, CallService::class.java)) }
+            CallService.stop()
         }.launchIn(callScope)
     }
 
-    private fun callService(call: CallUI, scope: CoroutineScope, onServiceStopped: suspend () -> Unit): Job = with(ContextRetainer.context) {
-        var isCallServiceStarted = false
-        call.state
-            .onEach { state ->
-                when {
-                    state is Call.State.Disconnected.Ended -> {
-                        stopService(Intent(this, CallService::class.java))
-                        onServiceStopped()
-                    }
-                    !isCallServiceStarted                  -> {
-                        val intent = Intent(this, CallService::class.java)
-                        intent.putExtra(CallService.CALL_ACTIVITY_CLASS, callActivityClazz)
-                        startService(intent)
-                        isCallServiceStarted = true
-                    }
-                }
-            }
-            .launchIn(scope)
+    private fun showCannotJoinUrl() = Handler(Looper.getMainLooper()).post {
+        Toast.makeText(ContextRetainer.context, R.string.kaleyra_call_join_url_already_in_call_error, Toast.LENGTH_SHORT).show()
     }
 
-    private fun canShowCallActivity(context: Context, call: CallUI): Boolean {
-        val participants = call.participants.value
-        val creator = participants.creator()
-        val isOutgoing = creator == participants.me
-        return AppLifecycle.isInForeground.value &&
-                (!context.isDND() || (context.isDND() && isOutgoing)) &&
-                (!context.isSilent() || (context.isSilent() && (isOutgoing || call.isLink)))
+    private fun showOnAppResumed(call: CallUI): Unit = let {
+        AppLifecycle.isInForeground.dropWhile { !it }.take(1).onEach { call.internalShow() }.launchIn(callScope)
     }
-
-    private fun showCannotJoinUrl() {
-        Handler(Looper.getMainLooper()).post {
-            Toast.makeText(ContextRetainer.context, R.string.kaleyra_call_join_url_already_in_call_error, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun showOnAppResumed(call: CallUI): Unit = let { AppLifecycle.isInForeground.dropWhile { !it }.take(1).onEach { internalShow(call) }.launchIn(callScope) }
 
     private fun getOrCreateCallUI(call: Call): CallUI = synchronized(this) { mappedCalls.firstOrNull { it.id == call.id } ?: createCallUI(call) }
 
-    private fun createCallUI(call: Call): CallUI = CallUI(call = call, actions = MutableStateFlow(callActions)).apply { mappedCalls = mappedCalls + this }
+    private fun createCallUI(call: Call): CallUI =
+        CallUI(call = call, activityClazz = callActivityClazz, actions = MutableStateFlow(callActions)).apply {
+            mappedCalls = mappedCalls + this
+        }
 }
