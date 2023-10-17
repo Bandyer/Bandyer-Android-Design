@@ -56,7 +56,8 @@
             android:launchMode="singleInstance"
             android:resizeableActivity="false"
             android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.fileshare.filepick.FilePickActivity"
-            android:theme="@style/Theme.AppCompat" />
+            android:theme="@style/Theme.AppCompat"
+            tools:targetApi="n" />
     </application>
 
 </manifest>
