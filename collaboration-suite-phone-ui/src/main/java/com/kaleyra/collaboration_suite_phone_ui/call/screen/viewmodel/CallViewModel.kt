@@ -173,12 +173,13 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             }
             .launchIn(viewModelScope)
 
-        combine(
-            call.flatMapLatest { it.preferredType },
-            onAudioOrVideoChanged
-        ) { preferredType, onAudioOrVideoChanged ->
-            onAudioOrVideoChanged.invoke(preferredType.isAudioEnabled(), preferredType.isVideoEnabled())
-        }.launchIn(viewModelScope)
+        call
+            .flatMapLatest { it.preferredType }
+            .onEach { preferredType ->
+                val onAudioOrVideoChanged = onAudioOrVideoChanged.first()
+                onAudioOrVideoChanged.invoke(preferredType.isAudioEnabled(), preferredType.isVideoEnabled())
+            }
+            .launchIn(viewModelScope)
     }
 
     override fun onCleared() {
