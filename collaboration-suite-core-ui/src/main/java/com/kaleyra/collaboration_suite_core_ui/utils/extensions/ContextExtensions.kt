@@ -17,6 +17,7 @@
 package com.kaleyra.collaboration_suite_core_ui.utils.extensions
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.AppOpsManager
 import android.app.KeyguardManager
 import android.content.Context
@@ -273,7 +274,7 @@ object ContextExtensions {
         startActivity(mainIntent)
     }
 
-    fun Context.doesFileExists(uri:   Uri): Boolean =
+    fun Context.doesFileExists(uri: Uri): Boolean =
         kotlin.runCatching {
             this.contentResolver.query(uri, null, null, null, null)?.use {
                 it.moveToFirst()
@@ -299,6 +300,22 @@ object ContextExtensions {
             context.startActivity(intent)
         }.onFailure {
             onFailure.invoke()
+        }
+    }
+
+    /**
+     * Check if an activity is running
+     *
+     * @receiver Context
+     * @param activityClazz Class<*> The activity class to check
+     * @return Boolean True if the activity is running, false otherwise
+     */
+    fun Context.isActivityRunning(activityClazz: Class<*>) : Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            manager.appTasks.any { it.taskInfo.topActivity?.className == activityClazz.name }
+        } else {
+            manager.getRunningTasks(Int.MAX_VALUE).any { it.topActivity?.className == activityClazz.name }
         }
     }
 }

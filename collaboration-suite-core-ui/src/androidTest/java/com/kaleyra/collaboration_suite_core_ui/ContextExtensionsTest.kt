@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
@@ -11,6 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.doesFileExists
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isActivityRunning
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.tryToOpenFile
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.UriExtensions.getMimeType
@@ -68,5 +70,20 @@ class ContextExtensionsTest {
             .appendPath(getResourceTypeName(resourceId))
             .appendPath(getResourceEntryName(resourceId))
             .build()
+    }
+
+    @Test
+    fun activityDestroyed_isActivityRunning_false() {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        val scenario = ActivityScenario.launch(DummyActivity::class.java)
+        scenario.close()
+        assertEquals(false, context.isActivityRunning(DummyActivity::class.java))
+    }
+
+    @Test
+    fun activityLaunched_isActivityRunning_true() {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        ActivityScenario.launch(DummyActivity::class.java)
+        assertEquals(true, context.isActivityRunning(DummyActivity::class.java))
     }
 }
