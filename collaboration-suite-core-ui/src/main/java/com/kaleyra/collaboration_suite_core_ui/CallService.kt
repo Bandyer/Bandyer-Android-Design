@@ -139,6 +139,7 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
     override fun onActivityResumed(activity: Activity) = Unit
 
     override fun onActivityPaused(activity: Activity) = Unit
+
     override fun onActivityStopped(activity: Activity) = Unit
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit

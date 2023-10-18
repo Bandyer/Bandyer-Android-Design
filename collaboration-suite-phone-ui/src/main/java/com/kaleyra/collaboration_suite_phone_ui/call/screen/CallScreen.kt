@@ -294,17 +294,17 @@ internal fun CallScreen(
     val cameraPermissionState = rememberPermissionState(permission = CameraPermission) { isGranted ->
         if (isGranted) viewModel.startCamera(activity)
     }
-    val onFinishActivity = remember(activity) {
+    val finishActivity = remember(activity) {
         {
             onActivityFinishing()
             activity.finishAndRemoveTask()
         }
     }
-    val onBackPressed by remember(onFinishActivity, enterPip) {
+    val onBackPressed by remember(finishActivity, enterPip) {
         derivedStateOf {
             {
                 when {
-                    callUiState.callState is CallStateUi.Disconnected.Ended -> onFinishActivity()
+                    callUiState.callState is CallStateUi.Disconnected.Ended -> finishActivity()
                     callUiState.fullscreenStream != null                    -> {
                         viewModel.fullscreenStream(null)
                     }
@@ -353,7 +353,7 @@ internal fun CallScreen(
             onUserFeedback = viewModel::sendUserFeedback,
             onConfigurationChange = viewModel::updateStreamsArrangement,
             onBackPressed = onBackPressed,
-            onFinishActivity = onFinishActivity,
+            onCallEndedBack = finishActivity,
             isInPipMode = isInPipMode,
             isDarkTheme = isDarkTheme,
             onFileShareVisibility = onFileShareVisibility,
@@ -374,7 +374,7 @@ internal fun CallScreen(
     onThumbnailStreamDoubleClick: (String) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
-    onFinishActivity: () -> Unit,
+    onCallEndedBack: () -> Unit,
     onFileShareVisibility: (Boolean) -> Unit,
     onWhiteboardVisibility: (Boolean) -> Unit,
     isTesting: Boolean = false
@@ -455,7 +455,7 @@ internal fun CallScreen(
             onThumbnailStreamDoubleClick = onThumbnailStreamDoubleClick,
             onFullscreenStreamClick = onFullscreenStreamClick,
             onUserFeedback = onUserFeedback,
-            onFinishActivity = onFinishActivity,
+            onCallEndedBack = onCallEndedBack,
             isDarkTheme = isDarkTheme,
             isTesting = isTesting
         )
@@ -538,7 +538,7 @@ internal fun DefaultCallScreen(
     onThumbnailStreamDoubleClick: (String) -> Unit,
     onFullscreenStreamClick: (String?) -> Unit,
     onUserFeedback: (Float, String) -> Unit,
-    onFinishActivity: () -> Unit,
+    onCallEndedBack: () -> Unit,
     isDarkTheme: Boolean,
     isTesting: Boolean = false
 ) {
@@ -546,7 +546,7 @@ internal fun DefaultCallScreen(
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
 
     when {
-        callUiState.callState is CallStateUi.Disconnected.Ended -> BackHandler(onBack = onFinishActivity)
+        callUiState.callState is CallStateUi.Disconnected.Ended -> BackHandler(onBack = onCallEndedBack)
         callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackHandler(onBack = callScreenState::navigateToCallActionsComponent)
         !callScreenState.isSheetNotDraggableDown -> BackHandler(onBack = callScreenState::collapseSheet)
         callUiState.fullscreenStream != null -> BackHandler(onBack = { onFullscreenStreamClick(null) })
@@ -617,14 +617,14 @@ internal fun DefaultCallScreen(
         if (callUiState.showFeedback && (callState is CallStateUi.Disconnected.Ended.HungUp || callState is CallStateUi.Disconnected.Ended.Error)) {
             val activity = LocalContext.current.findActivity() as ComponentActivity
             if (activity.isAtLeastResumed()) {
-                UserFeedbackDialog(onUserFeedback = onUserFeedback, onDismiss = onFinishActivity)
+                UserFeedbackDialog(onUserFeedback = onUserFeedback, onDismiss = onCallEndedBack)
             }
         }
 
         if (callState is CallStateUi.Disconnected.Ended.Kicked) {
             val activity = LocalContext.current.findActivity() as ComponentActivity
             if (activity.isAtLeastResumed()) {
-                KickedMessageDialog(adminName = callState.adminName, onDismiss = onFinishActivity)
+                KickedMessageDialog(adminName = callState.adminName, onDismiss = onCallEndedBack)
             }
         }
     }
