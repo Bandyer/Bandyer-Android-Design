@@ -137,55 +137,55 @@ class CallUI(
          * Change volume action
          */
         @Parcelize
-        object ChangeVolume : Action()
+        data object ChangeVolume : Action()
 
         /**
          * Toggle camera action
          */
         @Parcelize
-        object ToggleCamera : Action()
+        data object ToggleCamera : Action()
 
         /**
          * Toggle microphone action
          */
         @Parcelize
-        object ToggleMicrophone : Action()
+        data object ToggleMicrophone : Action()
 
         /**
          * Switch camera action
          */
         @Parcelize
-        object SwitchCamera : Action()
+        data object SwitchCamera : Action()
 
         @Parcelize
-        object HangUp : Action()
+        data object HangUp : Action()
 
         @Parcelize
-        object FileShare : Action()
+        data object FileShare : Action()
 
         @Parcelize
-        object ScreenShare : Action()
+        data object ScreenShare : Action()
 
         @Parcelize
-        object Audio : Action()
+        data object Audio : Action()
 
         /**
          * Change zoom action
          */
         @Parcelize
-        object ChangeZoom : Action()
+        data object ChangeZoom : Action()
 
         /**
          * Toggle flashlight action
          */
         @Parcelize
-        object ToggleFlashlight : Action()
+        data object ToggleFlashlight : Action()
 
         /**
          * Show participants action
          */
         @Parcelize
-        object ShowParticipants : Action()
+        data object ShowParticipants : Action()
 
         /**
          * Open chat action
@@ -195,10 +195,10 @@ class CallUI(
              * Open chat action with view only
              */
             @Parcelize
-            object ViewOnly : OpenChat()
+            data object ViewOnly : OpenChat()
 
             @Parcelize
-            object Full : OpenChat()
+            data object Full : OpenChat()
         }
 
         /**
@@ -209,11 +209,10 @@ class CallUI(
              * Open whiteboard action with view only
              */
             @Parcelize
-            object ViewOnly : OpenWhiteboard()
+            data object ViewOnly : OpenWhiteboard()
 
             @Parcelize
-            object Full : OpenChat()
+            data object Full : OpenChat()
         }
     }
 }
-
