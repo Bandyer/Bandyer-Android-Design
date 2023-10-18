@@ -43,7 +43,7 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
 
 sealed class Configuration {
     data class Success(val conference: ConferenceUI, val conversation: ConversationUI, val company: Company) : Configuration()
-    object Failure : Configuration()
+    data object Failure : Configuration()
 }
 
 suspend fun requestConfiguration(): Configuration {
