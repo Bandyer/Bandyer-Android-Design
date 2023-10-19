@@ -300,6 +300,8 @@ internal fun CallScreen(
             activity.finishAndRemoveTask()
         }
     }
+    // code executed when pressing the back button in the call ui
+    // the system back gesture or system back button are handled using the BackHandler composable
     val onBackPressed by remember(finishActivity, enterPip) {
         derivedStateOf {
             {
