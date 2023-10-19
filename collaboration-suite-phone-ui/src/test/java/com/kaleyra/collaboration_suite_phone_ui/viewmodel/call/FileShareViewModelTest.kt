@@ -157,7 +157,7 @@ class FileShareViewModelTest {
     fun testUploadOnFilePick() = runTest {
         advanceUntilIdle()
         verify { sharedFolderMock.upload(uriMock) }
-        verify { conferenceMock.showCall() }
+        verify { callMock.show() }
     }
 
     @Test
