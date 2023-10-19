@@ -3,6 +3,15 @@ package com.kaleyra.collaboration_suite_core_ui.utils
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.CallParticipants
 import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isDND
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
+import com.kaleyra.video_utils.ContextRetainer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 
 internal object CallExtensions {
 
@@ -50,4 +59,18 @@ internal object CallExtensions {
     }
 
     fun Call.getMyInternalCamera() = inputs.availableInputs.value.firstOrNull { it is Input.Video.Camera.Internal }
+
+    fun CallUI.shouldShowAsActivity(): Boolean {
+        val context = ContextRetainer.context
+        return (!context.isDND() && !context.isSilent()) || isOutgoing(state.value, participants.value) || isLink
+    }
+
+    fun CallUI.showOnAppResumed(coroutineScope: CoroutineScope) {
+        AppLifecycle
+            .isInForeground
+            .dropWhile { !it }
+            .take(1)
+            .onEach { show() }
+            .launchIn(coroutineScope)
+    }
 }

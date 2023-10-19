@@ -1,10 +1,18 @@
 package com.kaleyra.collaboration_suite_core_ui
 
+import android.content.Context
+import android.net.Uri
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.CallParticipant
 import com.kaleyra.collaboration_suite.conference.CallParticipants
+import com.kaleyra.collaboration_suite.conference.Effects
 import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite.conference.Inputs
 import com.kaleyra.collaboration_suite.conference.Stream
+import com.kaleyra.collaboration_suite.sharedfolder.SharedFile
+import com.kaleyra.collaboration_suite.sharedfolder.SharedFolder
+import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
+import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.getMyInternalCamera
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.hasUsbInput
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.hasUsersWithCameraEnabled
@@ -15,37 +23,77 @@ import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isMyScreenSh
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isNotConnected
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isOngoing
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isOutgoing
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.shouldShowAsActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.showOnAppResumed
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isDND
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
+import com.kaleyra.video_utils.ContextRetainer
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
+import io.mockk.spyk
+import io.mockk.unmockkAll
+import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import java.util.Date
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CallExtensionsTest {
+
+    @get:Rule
+    val mainCoroutineDispatcherRule = MainDispatcherRule(UnconfinedTestDispatcher())
+
+    private val call = mockk<CallUI>(relaxed = true)
+
+    private val callParticipants = mockk<CallParticipants>(relaxed = true)
+
+    private val me = mockk<CallParticipant.Me>(relaxed = true)
+
+    private val context = mockk<Context>(relaxed = true)
+
+    @Before
+    fun setUp() {
+        mockkObject(ContextRetainer)
+        mockkObject(AppLifecycle)
+        every { ContextRetainer.context } returns context
+        every { call.participants } returns MutableStateFlow(callParticipants)
+        every { callParticipants.me } returns me
+    }
+
+    @After
+    fun tearDown() {
+        unmockkAll()
+    }
 
     @Test
     fun callHasUsbInput_hasUsbInput_true() {
-        val call = mockk<Call>()
         every { call.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Usb>()))
         assertEquals(true, call.hasUsbInput())
     }
 
     @Test
     fun callDoesNotHaveUsbInput_hasUsbInput_false() {
-        val call = mockk<Call>()
         every { call.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Internal>()))
         assertEquals(false, call.hasUsbInput())
     }
 
     @Test
     fun myStreamHasInternalCameraEnabled_isMyCameraEnabled_true() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
         val myStream = mockk<Stream.Mutable>()
         val video = mockk<Input.Video.Camera.Internal>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
-        every { callParticipants.me } returns me
         every { me.streams } returns MutableStateFlow(listOf(myStream))
         every { myStream.video } returns MutableStateFlow(video)
         every { video.enabled } returns MutableStateFlow(true)
@@ -54,13 +102,8 @@ class CallExtensionsTest {
 
     @Test
     fun myStreamHasInternalCameraDisabled_isMyCameraEnabled_false() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
         val myStream = mockk<Stream.Mutable>()
         val video = mockk<Input.Video.Camera.Internal>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
-        every { callParticipants.me } returns me
         every { me.streams } returns MutableStateFlow(listOf(myStream))
         every { myStream.video } returns MutableStateFlow(video)
         every { video.enabled } returns MutableStateFlow(false)
@@ -69,13 +112,8 @@ class CallExtensionsTest {
 
     @Test
     fun myStreamGenericVideoEnabled_isMyCameraEnabled_false() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
         val myStream = mockk<Stream.Mutable>()
         val video = mockk<Input.Video.My>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
-        every { callParticipants.me } returns me
         every { me.streams } returns MutableStateFlow(listOf(myStream))
         every { myStream.video } returns MutableStateFlow(video)
         every { video.enabled } returns MutableStateFlow(true)
@@ -84,14 +122,9 @@ class CallExtensionsTest {
 
     @Test
     fun myStreamHasInternalCameraWithFrontLens_isMyInternalCameraUsingFrontLens_true() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
         val myStream = mockk<Stream.Mutable>()
         val video = mockk<Input.Video.Camera.Internal>()
         val lens = mockk<Input.Video.Camera.Internal.Lens>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
-        every { callParticipants.me } returns me
         every { me.streams } returns MutableStateFlow(listOf(myStream))
         every { myStream.video } returns MutableStateFlow(video)
         every { video.currentLens } returns MutableStateFlow(lens)
@@ -101,14 +134,9 @@ class CallExtensionsTest {
 
     @Test
     fun myStreamHasInternalCameraWithRearLens_isMyInternalCameraUsingFrontLens_false() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
         val myStream = mockk<Stream.Mutable>()
         val video = mockk<Input.Video.Camera.Internal>()
         val lens = mockk<Input.Video.Camera.Internal.Lens>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
-        every { callParticipants.me } returns me
         every { me.streams } returns MutableStateFlow(listOf(myStream))
         every { myStream.video } returns MutableStateFlow(video)
         every { video.currentLens } returns MutableStateFlow(lens)
@@ -118,13 +146,8 @@ class CallExtensionsTest {
 
     @Test
     fun myStreamHasGenericVideo_isMyInternalCameraUsingFrontLens_false() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
         val myStream = mockk<Stream.Mutable>()
         val video = mockk<Input.Video.My>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
-        every { callParticipants.me } returns me
         every { me.streams } returns MutableStateFlow(listOf(myStream))
         every { myStream.video } returns MutableStateFlow(video)
         assertEquals(false, call.isMyInternalCameraUsingFrontLens())
@@ -132,13 +155,8 @@ class CallExtensionsTest {
 
     @Test
     fun screenShareStream_isMyScreenShareEnabled_true() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
         val myStream = mockk<Stream.Mutable>()
         val video = mockk<Input.Video.Screen.My>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
-        every { callParticipants.me } returns me
         every { me.streams } returns MutableStateFlow(listOf(myStream))
         every { myStream.video } returns MutableStateFlow(video)
         assertEquals(true, call.isMyScreenShareEnabled())
@@ -146,13 +164,8 @@ class CallExtensionsTest {
 
     @Test
     fun applicationScreenShareStream_isMyScreenShareEnabled_true() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
         val myStream = mockk<Stream.Mutable>()
         val video = mockk<Input.Video.Application>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
-        every { callParticipants.me } returns me
         every { me.streams } returns MutableStateFlow(listOf(myStream))
         every { myStream.video } returns MutableStateFlow(video)
         assertEquals(true, call.isMyScreenShareEnabled())
@@ -160,13 +173,8 @@ class CallExtensionsTest {
 
     @Test
     fun cameraStream_isMyScreenShareEnabled_false() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
         val myStream = mockk<Stream.Mutable>()
         val video = mockk<Input.Video.Camera.Internal>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
-        every { callParticipants.me } returns me
         every { me.streams } returns MutableStateFlow(listOf(myStream))
         every { myStream.video } returns MutableStateFlow(video)
         assertEquals(false, call.isMyScreenShareEnabled())
@@ -174,31 +182,24 @@ class CallExtensionsTest {
 
     @Test
     fun callIsNotConnected_isNotConnected_true() {
-        val call = mockk<Call>()
         every { call.state } returns MutableStateFlow(Call.State.Disconnected)
         assertEquals(true, call.isNotConnected())
     }
 
     @Test
     fun callIsConnected_isNotConnected_false() {
-        val call = mockk<Call>()
         every { call.state } returns MutableStateFlow(Call.State.Connected)
         assertEquals(false, call.isNotConnected())
     }
 
     @Test
     fun callDisconnectedAndIAmCallNotCreator_isIncoming_true() {
-        val callParticipants = mockk<CallParticipants>()
-        every { callParticipants.me } returns mockk()
         every { callParticipants.creator() } returns mockk()
         assertEquals(true, isIncoming(Call.State.Disconnected, callParticipants))
     }
 
     @Test
     fun callDisconnectedAndIAmCallCreator_isIncoming_false() {
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
-        every { callParticipants.me } returns me
         every { callParticipants.creator() } returns me
         assertEquals(false, isIncoming(Call.State.Disconnected, callParticipants))
     }
@@ -210,17 +211,12 @@ class CallExtensionsTest {
 
     @Test
     fun callConnectingAndIAmCallCreator_isOutgoing_true() {
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
-        every { callParticipants.me } returns me
         every { callParticipants.creator() } returns me
         assertEquals(true, isOutgoing(Call.State.Connecting, callParticipants))
     }
 
     @Test
     fun callConnectingAndIAmNotCallCreator_isOutgoing_false() {
-        val callParticipants = mockk<CallParticipants>()
-        every { callParticipants.me } returns mockk()
         every { callParticipants.creator() } returns mockk()
         assertEquals(false, isOutgoing(Call.State.Connecting, callParticipants))
     }
@@ -242,7 +238,6 @@ class CallExtensionsTest {
 
     @Test
     fun callDoesNotHaveCreator_isOngoing_true() {
-        val callParticipants = mockk<CallParticipants>()
         every { callParticipants.creator() } returns null
         assertEquals(true, isOngoing(Call.State.Disconnected, callParticipants))
     }
@@ -254,12 +249,8 @@ class CallExtensionsTest {
 
     @Test
     fun myCameraEnabled_hasUsersWithCameraEnabled_true() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
         val stream = mockk<Stream.Mutable>()
         val video = mockk<Input.Video.Camera.Internal>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
         every { callParticipants.list } returns listOf(me)
         every { me.streams } returns MutableStateFlow(listOf(stream))
         every { stream.video } returns MutableStateFlow(video)
@@ -269,12 +260,8 @@ class CallExtensionsTest {
 
     @Test
     fun myCameraDisabled_hasUsersWithCameraEnabled_false() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
-        val me = mockk<CallParticipant.Me>()
         val stream = mockk<Stream.Mutable>()
         val video = mockk<Input.Video.Camera.Internal>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
         every { callParticipants.list } returns listOf(me)
         every { me.streams } returns MutableStateFlow(listOf(stream))
         every { stream.video } returns MutableStateFlow(video)
@@ -284,12 +271,9 @@ class CallExtensionsTest {
 
     @Test
     fun otherUserCameraEnabled_hasUsersWithCameraEnabled_true() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
         val user = mockk<CallParticipant>()
         val stream = mockk<Stream>()
         val video = mockk<Input.Video.Camera>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
         every { callParticipants.list } returns listOf(user)
         every { user.streams } returns MutableStateFlow(listOf(stream))
         every { stream.video } returns MutableStateFlow(video)
@@ -299,12 +283,9 @@ class CallExtensionsTest {
 
     @Test
     fun otherUserCameraDisabled_hasUsersWithCameraEnabled_false() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
         val user = mockk<CallParticipant>()
         val stream = mockk<Stream>()
         val video = mockk<Input.Video.Camera>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
         every { callParticipants.list } returns listOf(user)
         every { user.streams } returns MutableStateFlow(listOf(stream))
         every { stream.video } returns MutableStateFlow(video)
@@ -314,11 +295,8 @@ class CallExtensionsTest {
 
     @Test
     fun onlyNullVideo_hasUsersWithCameraEnabled_false() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
         val user = mockk<CallParticipant>()
         val stream = mockk<Stream>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
         every { callParticipants.list } returns listOf(user)
         every { user.streams } returns MutableStateFlow(listOf(stream))
         every { stream.video } returns MutableStateFlow(null)
@@ -327,12 +305,9 @@ class CallExtensionsTest {
 
     @Test
     fun onlyScreenShareVideo_hasUsersWithCameraEnabled_false() {
-        val call = mockk<Call>()
-        val callParticipants = mockk<CallParticipants>()
         val user = mockk<CallParticipant>()
         val stream = mockk<Stream>()
         val video = mockk<Input.Video.Screen>()
-        every { call.participants } returns MutableStateFlow(callParticipants)
         every { callParticipants.list } returns listOf(user)
         every { user.streams } returns MutableStateFlow(listOf(stream))
         every { stream.video } returns MutableStateFlow(video)
@@ -342,9 +317,64 @@ class CallExtensionsTest {
 
     @Test
     fun testGetMyInternalCamera() {
-        val call = mockk<Call>()
         val camera = mockk<Input.Video.Camera.Internal>()
         every { call.inputs.availableInputs } returns MutableStateFlow(setOf(camera))
         assertEquals(camera, call.getMyInternalCamera())
+    }
+
+    @Test
+    fun callOutgoing_shouldShowAsActivity_true() {
+        mockkObject(ContextExtensions)
+        every { callParticipants.creator() } returns me
+        every { call.state } returns MutableStateFlow(Call.State.Connecting)
+        every { context.isDND() } returns true
+        every { context.isSilent() } returns true
+        every { ContextRetainer.context } returns context
+        val result = call.shouldShowAsActivity()
+        assertEquals(true, result)
+    }
+
+    @Test
+    fun dndEnabled_shouldShowAsActivity_false() {
+        mockkObject(ContextExtensions)
+        every { call.state } returns MutableStateFlow(Call.State.Disconnected)
+        every { context.isDND() } returns true
+        every { context.isSilent() } returns false
+        val result = call.shouldShowAsActivity()
+        assertEquals(false, result)
+    }
+
+    @Test
+    fun silentEnabled_shouldShowAsActivity_false() {
+        mockkObject(ContextExtensions)
+        every { call.state } returns MutableStateFlow(Call.State.Disconnected)
+        every { context.isDND() } returns false
+        every { context.isSilent() } returns true
+        val result = call.shouldShowAsActivity()
+        assertEquals(false, result)
+    }
+
+    @Test
+    fun linkCall_shouldShowAsActivity_true() {
+        mockkObject(ContextExtensions)
+        every { call.isLink } returns true
+        every { call.state } returns MutableStateFlow(Call.State.Disconnected)
+        every { context.isDND() } returns true
+        every { context.isSilent() } returns true
+        val result = call.shouldShowAsActivity()
+        assertEquals(true, result)
+    }
+
+    @Test
+    fun testShowOnAppResumed() = runTest {
+        val isInForeground = MutableStateFlow(false)
+        every { AppLifecycle.isInForeground } returns isInForeground
+        every { call.show() } returns true
+        call.showOnAppResumed(this)
+        runCurrent()
+        verify(exactly = 0) { call.show() }
+        isInForeground.value = true
+        runCurrent()
+        verify(exactly = 1) { call.show() }
     }
 }
