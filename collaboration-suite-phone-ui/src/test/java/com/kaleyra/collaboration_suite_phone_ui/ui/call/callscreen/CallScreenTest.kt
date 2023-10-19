@@ -61,7 +61,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
-
 @RunWith(RobolectricTestRunner::class)
 class CallScreenTest: ComposeViewModelsMockTest() {
 
@@ -111,7 +110,7 @@ class CallScreenTest: ComposeViewModelsMockTest() {
                 onFullscreenStreamClick = { },
                 onFileShareVisibility = { fileShareDisplayed = it },
                 onWhiteboardVisibility = { whiteboardDisplayed = it },
-                onFinishActivity = { finishActivity = true },
+                onCallEndedBack = { finishActivity = true },
                 onUserFeedback = { _,_ -> },
                 isTesting = true
             )
