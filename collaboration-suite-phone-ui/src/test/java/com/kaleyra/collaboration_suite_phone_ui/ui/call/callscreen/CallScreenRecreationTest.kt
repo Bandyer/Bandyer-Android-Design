@@ -41,15 +41,15 @@ class CallScreenRecreationTest : ComposeViewModelsMockTest() {
                         initialLineState = LineState.Expanded
                     )
                 ),
+                onBackPressed = { },
+                onConfigurationChange = { },
                 onThumbnailStreamClick = { },
                 onThumbnailStreamDoubleClick = { },
                 onFullscreenStreamClick = { },
+                onUserFeedback = { _,_ -> },
+                onCallEndedBack = {  },
                 onFileShareVisibility = { },
                 onWhiteboardVisibility = { },
-                onConfigurationChange = { },
-                onBackPressed = { },
-                onFinishActivity = {},
-                onUserFeedback = {_,_ ->},
                 isTesting = true
             )
         }
