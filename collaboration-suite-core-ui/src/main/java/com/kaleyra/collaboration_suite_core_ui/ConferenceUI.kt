@@ -21,7 +21,9 @@ import android.os.Looper
 import android.widget.Toast
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Conference
-import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Companion.toUI
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.shouldShowAsActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.showOnAppResumed
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.video_utils.ContextRetainer
@@ -32,13 +34,11 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.take
 
 /**
  * Conference UI
@@ -56,19 +56,17 @@ class ConferenceUI(
 
     private val callScope = CoroutineScope(Dispatchers.IO)
 
-    private var mappedCalls: List<CallUI> = listOf()
+    private var callUIMap: HashMap<String, CallUI> = HashMap()
 
     /**
      * @suppress
      */
-
     override val call: SharedFlow<CallUI> = conference.call.map { getOrCreateCallUI(it) }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
 
     /**
      * @suppress
      */
-    override val callHistory: SharedFlow<List<CallUI>> = conference.callHistory.map { it.map { getOrCreateCallUI(it) } }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
-
+    override val callHistory: SharedFlow<List<CallUI>> = conference.callHistory.map { calls -> calls.map { getOrCreateCallUI(it) } }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
 
     /**
      * WithUI flag, set to true to automatically show the call ui on a new call, false otherwise
@@ -118,62 +116,47 @@ class ConferenceUI(
     /**
      * @suppress
      */
-    override fun create(url: String): Result<CallUI> = synchronized(this) {
-        conference.create(url).map { createCallUI(it) }
-    }
+    override fun create(url: String): Result<CallUI> =
+        conference.create(url).map { getOrCreateCallUI(it) }
 
     /**
      * @suppress
      */
-    override fun create(userIDs: List<String>, conf: (Conference.CreationOptions.() -> Unit)?): Result<CallUI> = synchronized(this) {
-        conference.create(userIDs, conf).map {
-            createCallUI(it)
-        }
-    }
+    override fun create(userIDs: List<String>, conf: (Conference.CreationOptions.() -> Unit)?): Result<CallUI> =
+        conference.create(userIDs, conf).map { getOrCreateCallUI(it) }
 
     private fun listenToCalls() {
         var currentCall: CallUI? = null
-        call.onEach { call ->
-            if (call.state.value is Call.State.Disconnected.Ended) return@onEach
+        call
+            .onEach { call ->
+                if (call.state.value is Call.State.Disconnected.Ended) return@onEach
 
-            if (currentCall != call && call.isLink) {
-                showCannotJoinUrl()
-                return@onEach
+                if (currentCall != call && call.isLink) {
+                    showCannotJoinUrl()
+                    return@onEach
+                }
+
+                CallService.start()
+                call.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope, isLink = call.isLink)
+                when {
+                    !withUI -> Unit
+                    call.isLink -> call.showOnAppResumed(callScope)
+                    call.shouldShowAsActivity() -> call.show()
+                }
+                currentCall = call
             }
-
-            CallService.stop()
-            CallService.start()
-
-            call.enableAudioRouting(
-                withCallSounds = true,
-                logger = logger,
-                coroutineScope = callScope,
-                isLink = call.isLink
-            )
-
-            when {
-                withUI && call.isLink -> showOnAppResumed(call)
-                withUI -> call.internalShow()
-            }
-
-            currentCall = call
-        }.onCompletion {
-            CallService.stop()
-        }.launchIn(callScope)
+            .onCompletion { CallService.stop() }
+            .launchIn(callScope)
     }
 
     private fun showCannotJoinUrl() = Handler(Looper.getMainLooper()).post {
         Toast.makeText(ContextRetainer.context, R.string.kaleyra_call_join_url_already_in_call_error, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showOnAppResumed(call: CallUI): Unit = let {
-        AppLifecycle.isInForeground.dropWhile { !it }.take(1).onEach { call.internalShow() }.launchIn(callScope)
+    private fun getOrCreateCallUI(call: Call): CallUI = synchronized(this) {
+        callUIMap[call.id] ?: call
+            .toUI(activityClazz = callActivityClazz, actions = MutableStateFlow(callActions))
+            .apply { callUIMap[id] = this }
     }
 
-    private fun getOrCreateCallUI(call: Call): CallUI = synchronized(this) { mappedCalls.firstOrNull { it.id == call.id } ?: createCallUI(call) }
-
-    private fun createCallUI(call: Call): CallUI =
-        CallUI(call = call, activityClazz = callActivityClazz, actions = MutableStateFlow(callActions)).apply {
-            mappedCalls = mappedCalls + this
-        }
 }
