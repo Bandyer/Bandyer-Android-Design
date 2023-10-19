@@ -17,6 +17,7 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.Application.ActivityLifecycleCallbacks
 import android.app.Notification
 import android.content.Context
@@ -68,6 +69,7 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
 
     companion object {
         fun start() = with(ContextRetainer.context) {
+            stop()
             val intent = Intent(this, CallService::class.java)
             startService(intent)
         }
