@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 
 internal object CallActionsMapper {
 
-    fun Flow<CallUI>.toCallActions(companyId: Flow<String>): Flow<List<CallAction>> =
+    fun Flow<CallUI>.toCallActions(): Flow<List<CallAction>> =
         combine(
             flatMapLatest { it.actions },
             hasVirtualBackground(),

@@ -36,7 +36,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
     override fun initialState() = CallActionsUiState()
 
     private val callActions = call
-        .toCallActions(company.flatMapLatest { it.id })
+        .toCallActions()
         .shareInEagerly(viewModelScope)
 
     private val isCallConnected = call
