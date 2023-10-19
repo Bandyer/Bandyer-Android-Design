@@ -37,7 +37,7 @@
         <activity
             android:name=".call.PhoneCallActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:showForAllUsers="true"
             android:showOnLockScreen="true"
             android:showWhenLocked="true"

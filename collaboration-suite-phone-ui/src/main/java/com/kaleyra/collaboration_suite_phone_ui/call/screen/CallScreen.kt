@@ -49,6 +49,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -262,6 +263,7 @@ internal fun CallScreen(
     isInPipMode: Boolean,
     enterPip: () -> Unit,
     onPipAspectRatio: (Rational) -> Unit,
+    onDisplayMode: (CallUI.DisplayMode) -> Unit,
     onFileShareVisibility: (Boolean) -> Unit,
     onWhiteboardVisibility: (Boolean) -> Unit,
     onActivityFinishing: () -> Unit
@@ -333,6 +335,10 @@ internal fun CallScreen(
 
     LaunchedEffect(onPipAspectRatio) {
         viewModel.setOnPipAspectRatio(onPipAspectRatio)
+    }
+
+    LaunchedEffect(onDisplayMode) {
+        viewModel.setOnDisplayMode(onDisplayMode)
     }
 
     LaunchedEffect(inputPermissionsState) {

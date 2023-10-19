@@ -1,5 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call
 
+import android.app.Activity
+import android.app.Application.ActivityLifecycleCallbacks
 import android.app.PictureInPictureParams
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,9 +17,11 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityCallActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.moveToFront
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenAspectRatio
@@ -68,6 +72,7 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
                 enterPip = ::enterPipModeIfSupported,
                 onFileShareVisibility = ::onFileShareVisibility,
                 onWhiteboardVisibility = { isWhiteboardDisplayed = it },
+                onDisplayMode = ::onDisplayMode,
                 onPipAspectRatio = ::onAspectRatio,
                 onActivityFinishing = { isActivityFinishing = true },
             )
@@ -173,6 +178,46 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         updatePipParams()?.let { setPictureInPictureParams(it) }
     }
+
+    private fun onDisplayMode(displayMode: CallUI.DisplayMode) {
+            when (displayMode) {
+                is CallUI.DisplayMode.PictureInPicture -> {
+                    when {
+                        isInPipMode.value -> return
+                        isInForeground -> enterPipModeIfSupported()
+                        else -> tryEnterPipFromBackground()
+                    }
+                }
+
+                is CallUI.DisplayMode.Foreground -> {
+                    if (isInForeground) return
+                    moveToFront()
+                }
+
+                is CallUI.DisplayMode.Background -> moveTaskToBack(true)
+
+                else -> Unit
+            }
+    }
+
+    private fun tryEnterPipFromBackground() {
+        application.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+            override fun onActivityStarted(activity: Activity) = Unit
+            override fun onActivityResumed(activity: Activity) {
+                if (activity != this@PhoneCallActivity) return
+                enterPipModeIfSupported()
+                application.unregisterActivityLifecycleCallbacks(this)
+            }
+            override fun onActivityPaused(activity: Activity) = Unit
+            override fun onActivityStopped(activity: Activity) = Unit
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+            override fun onActivityDestroyed(activity: Activity) = Unit
+
+        })
+        moveToFront()
+    }
+
     private fun restartActivityIfCurrentCallIsEnded(intent: Intent) {
         if (isActivityFinishing && Intent.FLAG_ACTIVITY_NEW_TASK.let { intent.flags.and(it) == it }) {
             finishAndRemoveTask()

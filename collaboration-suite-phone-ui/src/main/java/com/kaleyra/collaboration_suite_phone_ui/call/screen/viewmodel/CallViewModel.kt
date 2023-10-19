@@ -6,16 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.conference.*
+import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.DisplayModeEvent
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
-import com.kaleyra.collaboration_suite_phone_ui.call.utils.CallExtensions.toMyCameraStream
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
-import com.kaleyra.collaboration_suite_phone_ui.call.stream.arrangement.StreamsHandler
-import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel
-import com.kaleyra.collaboration_suite_phone_ui.common.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallStateMapper.isConnected
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallStateMapper.toCallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallUiStateMapper.toPipAspectRatio
@@ -28,16 +23,22 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.amIAlon
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.hasAtLeastAVideoEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WatermarkMapper.toWatermarkInfo
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.arrangement.StreamsHandler
+import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.CallExtensions.toMyCameraStream
+import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
-import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.common.viewmodel.UserMessageViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 
-internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallUiState>(configure),
-    UserMessageViewModel {
+internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallUiState>(configure), UserMessageViewModel {
 
     override fun initialState() = CallUiState()
 
@@ -73,6 +74,8 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     private var onCallEnded: (suspend (Boolean, Boolean, Boolean) -> Unit)? = null
 
     private var onPipAspectRatio:  MutableSharedFlow<(Rational) -> Unit> = MutableSharedFlow(replay = 1)
+
+    private var onDisplayMode: MutableSharedFlow<(CallUI.DisplayMode) -> Unit> = MutableSharedFlow(replay = 1)
 
     private var onAudioOrVideoChanged: MutableSharedFlow<(Boolean, Boolean) -> Unit> = MutableSharedFlow(replay = 1)
 
@@ -156,6 +159,18 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .launchIn(viewModelScope)
 
         call
+            .flatMapLatest { it.displayModeEvent }
+            .onEach { event ->
+                if (lastDisplayModeEvent?.id == event.id) return@onEach
+                lastDisplayModeEvent = event
+                val onDisplayMode = onDisplayMode.first()
+                onDisplayMode.invoke(event.displayMode)
+            }
+            .combine(callState) { _, callState -> callState}
+            .takeWhile { it !is CallStateUi.Disconnected.Ended  }
+            .launchIn(viewModelScope)
+
+        call
             .map { it.withFeedback }
             .combine(call.isConnected()) { withFeedback, isConnected ->
                 val showFeedback = withFeedback && isConnected
@@ -234,6 +249,12 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
         }
     }
 
+    fun setOnDisplayMode(block: (CallUI.DisplayMode) -> Unit) {
+        viewModelScope.launch {
+            onDisplayMode.emit(block)
+        }
+    }
+
     fun setOnAudioOrVideoChanged(block: (isAudioEnabled: Boolean, isVideoEnabled: Boolean) -> Unit) {
         viewModelScope.launch {
             onAudioOrVideoChanged.emit(block)
@@ -241,6 +262,8 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     }
 
     companion object {
+
+        private var lastDisplayModeEvent: DisplayModeEvent? = null
 
         const val DEFAULT_FEATURED_STREAMS_COUNT = 2
         const val SINGLE_STREAM_DEBOUNCE_MILLIS = 5000L

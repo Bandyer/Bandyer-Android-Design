@@ -49,6 +49,7 @@ class CallUI(
         }
     }
 
+    private val _displayModeEvent = MutableSharedFlow<DisplayModeEvent>(1, 1, BufferOverflow.DROP_OLDEST)
 
     /**
      * A property that returns true if the call is a link call.
@@ -65,9 +66,28 @@ class CallUI(
      **/
     var disableProximitySensor: Boolean = false
 
+    /**
+     * The display events successfully sent
+     */
+    val displayModeEvent: SharedFlow<DisplayModeEvent> = _displayModeEvent.asSharedFlow()
 
-
-
+    /**
+     * Set the activity display mode
+     *
+     * @param displayMode The DisplayMode
+     * @return Boolean True if the activity was running and the display mode was successfully applied, false otherwise
+     */
+    fun setDisplayMode(displayMode: DisplayMode): Boolean {
+        val context = ContextRetainer.context
+        val isCallActivityRunning = context.isActivityRunning(activityClazz)
+        // emit the value only if the call activity is currently running
+        // to avoid the value is read from the shared flow when recreating the activity again
+        // (e.g. tap the call notification when the call activity was previously destroyed)
+        if (isCallActivityRunning) {
+            _displayModeEvent.tryEmit(DisplayModeEvent(UUID.randomUUID().toString(), displayMode))
+        }
+        return isCallActivityRunning
+    }
 
     /**
      * Show the call ui
@@ -81,11 +101,11 @@ class CallUI(
     }
 
     sealed class DisplayMode {
-        data object PictureInPicture: DisplayMode()
+        data object PictureInPicture : DisplayMode()
 
-        data object Foreground: DisplayMode()
+        data object Foreground : DisplayMode()
 
-        data object Background: DisplayMode()
+        data object Background : DisplayMode()
     }
 
     /**
