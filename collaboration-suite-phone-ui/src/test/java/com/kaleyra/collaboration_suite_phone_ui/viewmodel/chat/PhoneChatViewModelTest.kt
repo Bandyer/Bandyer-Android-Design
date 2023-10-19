@@ -332,7 +332,7 @@ class PhoneChatViewModelTest {
     fun testShowCall() = runTest {
         advanceUntilIdle()
         viewModel.showCall()
-        verify { conferenceMock.showCall() }
+        verify { callMock.show() }
     }
 
     private suspend fun areChatParticipantDetailsEquals(expected: ChatParticipantDetails,  actual: ChatParticipantDetails) {
