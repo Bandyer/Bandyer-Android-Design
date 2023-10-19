@@ -16,21 +16,20 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
-import android.content.Context
 import android.os.Parcelable
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isDND
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isActivityRunning
 import com.kaleyra.video_utils.ContextRetainer
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.parcelize.Parcelize
+import java.util.UUID
+
+data class DisplayModeEvent(val id: String, val displayMode: CallUI.DisplayMode)
 
 /**
  * The Call UI
@@ -43,6 +42,13 @@ class CallUI(
     val activityClazz: Class<*>,
     val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(Action.default)
 ) : Call by call {
+
+    companion object {
+        internal fun Call.toUI(activityClazz: Class<*>, actions: MutableStateFlow<Set<Action>>): CallUI {
+            return CallUI(call = this, activityClazz = activityClazz, actions = actions)
+        }
+    }
+
 
     /**
      * A property that returns true if the call is a link call.
@@ -59,24 +65,19 @@ class CallUI(
      **/
     var disableProximitySensor: Boolean = false
 
+
+
+
+
     /**
      * Show the call ui
      */
-    fun show() {
-        if (!AppLifecycle.isInForeground.value) return
-        KaleyraUIProvider.startCallActivity(activityClazz)
-    }
-
-    internal fun internalShow() {
-        if (!canShowCallActivity(ContextRetainer.context, this)) return
-        KaleyraUIProvider.startCallActivity(activityClazz)
-    }
-
-    private fun canShowCallActivity(context: Context, call: CallUI): Boolean {
-        val participants = call.participants.value
-        val creator = participants.creator()
-        val isOutgoing = creator == participants.me
-        return AppLifecycle.isInForeground.value && (!context.isDND() || (context.isDND() && isOutgoing)) && (!context.isSilent() || (context.isSilent() && (isOutgoing || call.isLink)))
+    fun show(): Boolean {
+        val isInForeground = AppLifecycle.isInForeground.value
+        if (isInForeground) {
+            KaleyraUIProvider.startCallActivity(activityClazz)
+        }
+        return isInForeground
     }
 
     sealed class DisplayMode {
