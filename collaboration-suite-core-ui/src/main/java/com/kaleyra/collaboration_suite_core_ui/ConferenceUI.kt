@@ -21,7 +21,6 @@ import android.os.Looper
 import android.widget.Toast
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Conference
-import com.kaleyra.collaboration_suite_core_ui.CallUI.Companion.toUI
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.shouldShowAsActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.showOnAppResumed
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
