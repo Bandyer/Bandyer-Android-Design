@@ -82,22 +82,10 @@ class ConferenceUI(
         listenToCalls()
     }
 
-    /**
-     * @suppress
-     */
-    override fun connect() = conference.connect()
-
-    /**
-     * @suppress
-     */
-    override fun disconnect(clearSavedData: Boolean) = conference.disconnect(clearSavedData)
-
-    internal fun dispose(clearSavedData: Boolean) {
-        disconnect(clearSavedData)
+    internal fun dispose() {
         disableAudioRouting(logger)
         callScope.cancel()
     }
-
     /**
      * Call
      *

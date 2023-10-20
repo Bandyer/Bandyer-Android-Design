@@ -20,6 +20,7 @@ import android.content.Context
 import com.kaleyra.collaboration_suite.conversation.Chat
 import com.kaleyra.collaboration_suite.conversation.Conversation
 import com.kaleyra.collaboration_suite.conversation.Message
+import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo.disconnect
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,18 +78,7 @@ class ConversationUI(
         listenToMessages()
     }
 
-    /**
-     * @suppress
-     */
-    override fun connect() = conversation.connect()
-
-    /**
-     * @suppress
-     */
-    override fun disconnect(clearSavedData: Boolean) = conversation.disconnect(clearSavedData)
-
-    internal fun dispose(clearSavedData: Boolean) {
-        disconnect(clearSavedData)
+    internal fun dispose() {
         chatScope.cancel()
     }
 
