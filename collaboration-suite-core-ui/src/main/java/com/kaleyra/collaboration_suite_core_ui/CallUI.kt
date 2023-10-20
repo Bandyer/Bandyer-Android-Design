@@ -43,12 +43,6 @@ class CallUI(
     val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(Action.default)
 ) : Call by call {
 
-    companion object {
-        internal fun Call.toUI(activityClazz: Class<*>, actions: MutableStateFlow<Set<Action>>): CallUI {
-            return CallUI(call = this, activityClazz = activityClazz, actions = actions)
-        }
-    }
-
     private val _displayModeEvent = MutableSharedFlow<DisplayModeEvent>(1, 1, BufferOverflow.DROP_OLDEST)
 
     /**

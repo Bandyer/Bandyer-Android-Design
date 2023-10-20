@@ -142,9 +142,11 @@ class ConferenceUI(
     }
 
     private fun getOrCreateCallUI(call: Call): CallUI = synchronized(this) {
-        callUIMap[call.id] ?: call
-            .toUI(activityClazz = callActivityClazz, actions = MutableStateFlow(callActions))
-            .apply { callUIMap[id] = this }
+        callUIMap[call.id] ?: CallUI(
+            call = call,
+            activityClazz = callActivityClazz,
+            actions = MutableStateFlow(callActions)
+        ).apply { callUIMap[id] = this }
     }
 
 }
