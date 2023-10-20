@@ -56,6 +56,11 @@ object ActivityExtensions {
         else window.clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
     }
 
+    /**
+     * Move the current activity back to front
+     *
+     * @receiver Activity
+     */
     fun Activity.moveToFront() =
         startActivity(intent.apply { flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT })
 }
