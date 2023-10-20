@@ -19,6 +19,7 @@ object ConversationStateMapper {
                     conversationState is Connector.State.Connecting && previousConversationState is Connector.State.Connected -> ConnectionState.Offline
                     conversationState is Connector.State.Connecting -> ConnectionState.Connecting
                     conversationState is Connector.State.Connected -> ConnectionState.Connected
+                    conversationState is Connector.State.Disconnected.Error -> ConnectionState.Error
                     else -> ConnectionState.Unknown
                 }.also {
                     previousConversationState = conversationState

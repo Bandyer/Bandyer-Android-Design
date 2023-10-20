@@ -5,12 +5,14 @@ import androidx.compose.runtime.Immutable
 @Immutable
 sealed class ConnectionState {
 
-    object Connecting : ConnectionState()
+    data object Connecting : ConnectionState()
 
-    object Connected: ConnectionState()
+    data object Connected: ConnectionState()
 
-    object Offline : ConnectionState()
+    data object Offline : ConnectionState()
 
-    object Unknown : ConnectionState()
+    data object Error : ConnectionState()
+
+    data object Unknown : ConnectionState()
 }
 

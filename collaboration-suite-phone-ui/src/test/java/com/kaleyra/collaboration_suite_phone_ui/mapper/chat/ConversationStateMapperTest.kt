@@ -54,27 +54,27 @@ class ConversationStateMapperTest {
     }
 
     @Test
-    fun conversationDisconnected_toConnectionState_none() = runTest {
+    fun conversationDisconnected_toConnectionState_unknown() = runTest {
         Mocks.conversationState.value = Connector.State.Disconnected
         Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Unknown)
     }
 
     @Test
-    fun conversationStateUserInactive_toConnectionState_none() = runTest {
+    fun conversationStateUserInactive_toConnectionState_error() = runTest {
         Mocks.conversationState.value = Connector.State.Disconnected.Error.UserInactive
-        Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Unknown)
+        Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Error)
     }
 
     @Test
-    fun conversationStateUnsupportedVersion_toConnectionState_none() = runTest {
+    fun conversationStateUnsupportedVersion_toConnectionState_error() = runTest {
         Mocks.conversationState.value = Connector.State.Disconnected.Error.UnsupportedVersion
-        Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Unknown)
+        Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Error)
     }
 
     @Test
-    fun conversationStateUnknown_toConnectionState_none() = runTest {
+    fun conversationStateUnknown_toConnectionState_error() = runTest {
         Mocks.conversationState.value = Connector.State.Disconnected.Error.Unknown("")
-        Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Unknown)
+        Assert.assertEquals(flowOf(Mocks.conversationMock).toConnectionState().first(), ConnectionState.Error)
     }
 
     @Test
