@@ -118,7 +118,7 @@ class ConferenceUI(
             .onEach { call ->
                 if (call.state.value is Call.State.Disconnected.Ended) return@onEach
 
-                if (currentCall != call && call.isLink) {
+                if (currentCall != null && currentCall?.state?.value !is Call.State.Disconnected.Ended && call.isLink) {
                     showCannotJoinUrl()
                     return@onEach
                 }
