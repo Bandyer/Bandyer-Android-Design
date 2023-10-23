@@ -17,11 +17,11 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import android.app.Activity
-import android.app.ActivityManager
 import android.app.Application.ActivityLifecycleCallbacks
 import android.app.Notification
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.Bundle
 import androidx.lifecycle.LifecycleService
@@ -45,13 +45,11 @@ import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.video_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -228,7 +226,16 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
             .filter { it }
             .onEach {
                 kotlin.runCatching {
-                    startForeground(CALL_NOTIFICATION_ID, notification!!)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        startForeground(
+                            CALL_NOTIFICATION_ID,
+                            notification!!,
+                            ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL or
+                                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION or
+                                ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA or
+                                ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
+                        )
+                    } else startForeground(CALL_NOTIFICATION_ID, notification!!)
                 }
             }
             .launchIn(lifecycleScope)
