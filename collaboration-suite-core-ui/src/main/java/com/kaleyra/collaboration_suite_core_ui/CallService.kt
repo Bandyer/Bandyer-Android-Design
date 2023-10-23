@@ -186,7 +186,6 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
             call.state
                 .takeWhile { it !is Call.State.Disconnected.Ended }
                 .onCompletion {
-                    call.inputs.releaseAll()
                     stopSelf()
                     screenShareScope = null
                 }
