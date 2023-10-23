@@ -127,11 +127,15 @@ internal interface CallNotificationManager {
 
     /**
      * Utility function which builds an ongoing notification
-     *
+     * 
      * @param username The callee/caller
      * @param isGroupCall True if the call is group call, false otherwise
      * @param isCallRecorded True if the call is recorded, false otherwise
      * @param activityClazz The call ui activity class
+     * @param isLink Boolean True if the call is a link call, false otherwise
+     * @param isSharingScreen Boolean True if is currently sharing screen, false otherwise
+     * @param isConnecting Boolean True if the call is connecting, false otherwise
+     * @param enableCallStyle Boolean True if should enable call notification style, false otherwise
      * @return Notification
      */
     fun buildOngoingCallNotification(

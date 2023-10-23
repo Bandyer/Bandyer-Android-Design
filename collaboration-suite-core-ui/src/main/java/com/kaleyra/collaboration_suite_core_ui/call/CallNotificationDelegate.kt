@@ -18,10 +18,14 @@ package com.kaleyra.collaboration_suite_core_ui.call
 
 import android.app.Notification
 import android.net.Uri
+import android.util.Log
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.CallParticipants
+import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
+import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.isAnyScreenInputActive
+import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.isInputActive
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.CallExtensions.isIncoming
@@ -32,9 +36,20 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtension
 import com.kaleyra.video_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
 /**
@@ -77,9 +92,22 @@ interface CallNotificationDelegate {
         activityClazz: Class<*>,
         scope: CoroutineScope
     ) {
-        combine(call.state, call.participants, call.recording) { callState, participants, recording ->
+        combine(
+            call.state,
+            call.participants,
+            call.recording,
+            flowOf(call).isAnyScreenInputActive()
+        ) { callState, participants, recording, isAnyScreenInputActive ->
             ContactDetailsManager.refreshContactDetails(*participants.list.map { it.userId }.toTypedArray())
-            val notification = buildNotification(callState, participants, recording, activityClazz)
+
+            val notification = buildNotification(
+                callState,
+                participants,
+                recording,
+                activityClazz,
+                isAnyScreenInputActive
+            )
+
             if (notification != null) showNotification(notification)
             callState
         }
@@ -92,7 +120,8 @@ interface CallNotificationDelegate {
         callState: Call.State,
         participants: CallParticipants,
         recording: Call.Recording,
-        activityClazz: Class<*>
+        activityClazz: Class<*>,
+        isAnyScreenInputActive: Boolean,
     ): Notification? {
         val context = ContextRetainer.context
         val isGroupCall = participants.others.count() > 1
@@ -110,6 +139,7 @@ interface CallNotificationDelegate {
                     enableCallStyle = enableCallStyle
                 )
             }
+
             isOutgoing(callState, participants) -> {
                 NotificationManager.buildOutgoingCallNotification(
                     calleeDescription,
@@ -118,18 +148,20 @@ interface CallNotificationDelegate {
                     enableCallStyle = enableCallStyle
                 )
             }
+
             isOngoing(callState, participants) -> {
                 NotificationManager.buildOngoingCallNotification(
                     calleeDescription,
                     isLink = participants.creator() == null,
                     isGroupCall,
                     isCallRecorded = recording.type == Call.Recording.Type.OnConnect,
-                    isSharingScreen = false,
+                    isSharingScreen = isAnyScreenInputActive,
                     callState is Call.State.Connecting,
                     activityClazz,
                     enableCallStyle = enableCallStyle
                 )
             }
+
             else -> null
         }
     }

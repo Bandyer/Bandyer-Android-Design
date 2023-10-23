@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 
 import android.content.Context
 import android.content.Intent
+import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideoBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Companion.CALL_NOTIFICATION_ID
@@ -70,10 +71,25 @@ class CallNotificationActionReceiver : KaleyraVideoBroadcastReceiver() {
                 }
                 KaleyraVideo.onCallReady(this) { call ->
                     when (notificationAction) {
-                        ACTION_ANSWER            -> call.connect()
-                        ACTION_HANGUP            -> call.end()
-                        ACTION_STOP_SCREEN_SHARE -> TODO()
-                        else                     -> Unit
+                        ACTION_ANSWER -> call.connect()
+                        ACTION_HANGUP -> call.end()
+                        ACTION_STOP_SCREEN_SHARE -> {
+                            val screenShareInputs =
+                                call.inputs.availableInputs.value
+                                    .filter { input -> input is Input.Video.Screen || input is Input.Video.Application }
+                                    .filter { input -> input.enabled.value }
+
+                            val me = call.participants.value.me ?: return@onCallReady
+                            val streams = me.streams.value
+                            val screenShareStreams = streams
+                                .filter { stream ->
+                                    stream.video.value is Input.Video.Application || stream.video.value is Input.Video.Screen
+                                }
+                            screenShareStreams.forEach { stream -> me.removeStream(stream) }
+                            screenShareInputs.forEach { input -> input.tryDisable() }
+                        }
+
+                        else -> Unit
                     }
                 }
             }
