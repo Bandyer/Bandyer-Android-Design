@@ -84,7 +84,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             val result = withTimeoutOrNull(NULL_CALL_TIMEOUT) {
                 call.firstOrNull()
             }
-            result ?: onCallEnded?.first()?.invoke(false, false, false)
+            result ?: onCallEnded.first().invoke(false, false, false)
         }
 
         CallUserMessagesProvider.start(call)
@@ -162,12 +162,12 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .onEach { rec -> _uiState.update { it.copy(recording = rec) } }
             .launchIn(viewModelScope)
 
-        call
-            .flatMapLatest { it.displayModeEvent }
-            .onEach { event ->
-                if (lastDisplayModeEvent?.id == event.id) return@onEach
+        combine(
+            call.flatMapLatest { it.displayModeEvent },
+            onDisplayMode
+        ) { event, onDisplayMode ->
+                if (lastDisplayModeEvent?.id == event.id) return@combine
                 lastDisplayModeEvent = event
-                val onDisplayMode = onDisplayMode.first()
                 onDisplayMode.invoke(event.displayMode)
             }
             .combine(callState) { _, callState -> callState}
@@ -184,21 +184,22 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .takeWhile { !it }
             .launchIn(viewModelScope)
 
-        uiState
-            .toPipAspectRatio()
-            .onEach { aspectRatio ->
-                val onPipAspectRatio = onPipAspectRatio.first()
-                onPipAspectRatio.invoke(aspectRatio)
-            }
-            .launchIn(viewModelScope)
+        combine(
+            uiState.toPipAspectRatio(),
+            onPipAspectRatio
+        ) { aspectRatio, onPipAspectRatio ->
+            onPipAspectRatio.invoke(aspectRatio)
+        }.launchIn(viewModelScope)
 
-        call
-            .flatMapLatest { it.preferredType }
-            .onEach { preferredType ->
-                val onAudioOrVideoChanged = onAudioOrVideoChanged.first()
-                onAudioOrVideoChanged.invoke(preferredType.isAudioEnabled(), preferredType.isVideoEnabled())
-            }
-            .launchIn(viewModelScope)
+        combine(
+            call.flatMapLatest { it.preferredType },
+            onAudioOrVideoChanged
+        ) { preferredType, onAudioOrVideoChanged ->
+            onAudioOrVideoChanged.invoke(
+                preferredType.isAudioEnabled(),
+                preferredType.isVideoEnabled()
+            )
+        }.launchIn(viewModelScope)
     }
 
     override fun onCleared() {

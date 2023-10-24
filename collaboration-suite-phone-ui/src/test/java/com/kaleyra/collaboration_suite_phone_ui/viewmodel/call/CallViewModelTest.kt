@@ -1,6 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 
 import android.net.Uri
+import android.util.Rational
+import android.util.Size
 import androidx.fragment.app.FragmentActivity
 import com.kaleyra.collaboration_suite.Company
 import com.kaleyra.collaboration_suite.conference.*
@@ -9,6 +11,7 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI.Theme
 import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration.Success
+import com.kaleyra.collaboration_suite_core_ui.DisplayModeEvent
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
@@ -39,6 +42,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.*
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CallViewModelTest {
@@ -492,15 +496,64 @@ class CallViewModelTest {
     }
 
     @Test
-    fun `set call ended callback after call state is set to ended, the lambda is invoked`() = runTest {
-        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnected.Ended)
+    fun `if the onCallEnded callback is set after the call state is set to ended, the lambda is immediately invoked`() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnected.Ended.Error)
         advanceUntilIdle()
-        var isInvoked = false
-        viewModel.setOnCallEnded { _, _, _ ->
-            isInvoked = true
+        var hasFeedback: Boolean? = null
+        var hasErrorOccurred: Boolean? = null
+        var hasBeenKicked: Boolean? = null
+        viewModel.setOnCallEnded { feedback, error, kicked ->
+            hasFeedback = feedback
+            hasErrorOccurred = error
+            hasBeenKicked = kicked
         }
         advanceUntilIdle()
-        assertEquals(true, isInvoked)
+        assertEquals(false, hasFeedback)
+        assertEquals(true, hasErrorOccurred)
+        assertEquals(false, hasBeenKicked)
+    }
+
+    @Test
+    fun `if the onAspectRatio callback is set after the new aspect ratio is received, the lambda is immediately invoked`() = runTest {
+        val mockSize = mockk<Size> {
+            every { width } returns 1080
+            every { height } returns 1920
+        }
+        every { viewMock.videoSize } returns MutableStateFlow(mockSize)
+        advanceUntilIdle()
+        var actual: Rational? = null
+        viewModel.setOnPipAspectRatio {
+            actual = it
+        }
+        advanceUntilIdle()
+        assertNotEquals(null, actual)
+    }
+
+    @Test
+    fun `if the onAudioOrVideoChanged callback is set after the preferred type is received, the lambda is immediately invoked`() = runTest {
+        every { callMock.preferredType } returns MutableStateFlow(Call.PreferredType.audioVideo())
+        advanceUntilIdle()
+        var actualAudio = false
+        var actualVideo = false
+        viewModel.setOnAudioOrVideoChanged { audio, video ->
+            actualAudio = audio
+            actualVideo = video
+        }
+        advanceUntilIdle()
+        assertEquals(true, actualAudio)
+        assertEquals(true, actualVideo)
+    }
+
+    @Test
+    fun `if the onDisplayMode callback is set after the displayModeEvent is received, the lambda is immediately invoked`() = runTest {
+        every { callMock.displayModeEvent } returns MutableStateFlow(DisplayModeEvent("id", CallUI.DisplayMode.PictureInPicture))
+        advanceUntilIdle()
+        var actual: CallUI.DisplayMode? = null
+        viewModel.setOnDisplayMode { displayMode ->
+            actual = displayMode
+        }
+        advanceUntilIdle()
+        assertEquals(CallUI.DisplayMode.PictureInPicture, actual)
     }
 
     @Test
