@@ -1,12 +1,12 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.chat
 
 import android.net.Uri
+import com.kaleyra.collaboration_suite.State
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conversation.ChatParticipant
-import com.kaleyra.collaboration_suite.conversation.Conversation
 import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
-import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel.Configuration
 import com.kaleyra.collaboration_suite_core_ui.MessagesUI
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
@@ -41,7 +41,6 @@ import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.Immu
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.MutedMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
-import com.kaleyra.video_networking.connector.Connector
 import io.mockk.*
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -243,7 +242,7 @@ class PhoneChatViewModelTest {
 
     @Test
     fun testChatUiState_connectionStateUpdated() = runTest {
-        every { conversationMock.state } returns MutableStateFlow(Connector.State.Connecting)
+        every { conversationMock.state } returns MutableStateFlow(State.Connecting)
         val current = viewModel.uiState.first().connectionState
         Assert.assertEquals(ConnectionState.Unknown, current)
         advanceUntilIdle()

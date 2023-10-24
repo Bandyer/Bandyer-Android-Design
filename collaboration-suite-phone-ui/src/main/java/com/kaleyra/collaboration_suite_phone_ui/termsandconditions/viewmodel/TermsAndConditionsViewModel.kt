@@ -3,10 +3,10 @@ package com.kaleyra.collaboration_suite_phone_ui.termsandconditions.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite.State
+import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.model.TermsAndConditionsUiState
-import com.kaleyra.video_networking.connector.Connector
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
@@ -22,7 +22,7 @@ class TermsAndConditionsViewModel(configure: suspend () -> Configuration) : Base
         val conferenceState = conference.flatMapLatest { it.state }
         val conversationState = conversation.flatMapLatest { it.state }
         combine(conferenceState, conversationState) { pbState, cbState ->
-            pbState != Connector.State.Connecting && cbState != Connector.State.Connecting
+            pbState != State.Connecting && cbState != State.Connecting
         }
             .takeWhile { !it }
             .onCompletion { _uiState.update { it.copy(isConnected = true) } }

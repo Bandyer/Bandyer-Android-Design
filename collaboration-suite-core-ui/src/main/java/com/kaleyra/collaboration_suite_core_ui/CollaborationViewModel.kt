@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_core_ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.Company
+import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel.Configuration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,6 +15,11 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
 abstract class CollaborationViewModel(configure: suspend () -> Configuration) : ViewModel() {
+
+    sealed class Configuration {
+        data class Success(val conference: ConferenceUI, val conversation: ConversationUI, val company: Company) : Configuration()
+        data object Failure : Configuration()
+    }
 
     private val _configuration = MutableSharedFlow<Configuration>(replay = 1, extraBufferCapacity = 1)
 
@@ -39,11 +45,6 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
 
     protected fun <T> SharedFlow<T>.getValue(): T? =
         replayCache.firstOrNull()
-}
-
-sealed class Configuration {
-    data class Success(val conference: ConferenceUI, val conversation: ConversationUI, val company: Company) : Configuration()
-    data object Failure : Configuration()
 }
 
 suspend fun requestConfiguration(): Configuration {

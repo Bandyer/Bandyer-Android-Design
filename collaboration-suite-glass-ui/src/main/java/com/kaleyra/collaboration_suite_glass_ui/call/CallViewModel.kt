@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.Participant
+import com.kaleyra.collaboration_suite.State
 import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.CallParticipant
@@ -37,7 +38,7 @@ import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel
-import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel.Configuration
 import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
@@ -46,7 +47,6 @@ import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_glass_ui.call.model.StreamParticipant
 import com.kaleyra.video_utils.audio.CallAudioManager
-import com.kaleyra.video_networking.connector.Connector
 import com.kaleyra.video_utils.battery_observer.BatteryInfo
 import com.kaleyra.video_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.CoroutineName
@@ -95,8 +95,8 @@ internal class CallViewModel(configure: suspend () -> Configuration, private var
 
     val call: SharedFlow<CallUI> = conference.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
-    private val _conferenceState: MutableStateFlow<Connector.State> = MutableStateFlow(Connector.State.Disconnected)
-    val conferenceState: StateFlow<Connector.State> = _conferenceState.asStateFlow()
+    private val _conferenceState: MutableStateFlow<State> = MutableStateFlow(State.Disconnected)
+    val conferenceState: StateFlow<State> = _conferenceState.asStateFlow()
 
     val preferredCallType: StateFlow<Call.PreferredType?> =
         call.flatMapLatest { it.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)

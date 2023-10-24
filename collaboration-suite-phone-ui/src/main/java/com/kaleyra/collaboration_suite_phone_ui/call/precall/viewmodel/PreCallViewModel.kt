@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.precall.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel.Configuration
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel

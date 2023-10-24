@@ -1,8 +1,8 @@
 package com.kaleyra.collaboration_suite_core_ui.termsandconditions
 
+import com.kaleyra.collaboration_suite.State
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
-import com.kaleyra.video_networking.connector.Connector.State
 import com.kaleyra.video_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope

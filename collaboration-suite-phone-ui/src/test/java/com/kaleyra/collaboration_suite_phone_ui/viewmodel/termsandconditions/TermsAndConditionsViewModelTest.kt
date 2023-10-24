@@ -1,11 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.viewmodel.termsandconditions
 
+import com.kaleyra.collaboration_suite.State
 import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
-import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel.Configuration
 import com.kaleyra.collaboration_suite_core_ui.ConversationUI
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.termsandconditions.viewmodel.TermsAndConditionsViewModel
-import com.kaleyra.video_networking.connector.Connector.State
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll

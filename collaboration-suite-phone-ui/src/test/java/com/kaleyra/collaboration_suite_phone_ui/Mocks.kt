@@ -2,10 +2,10 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.Contact
+import com.kaleyra.collaboration_suite.State
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conversation.ChatParticipant
 import com.kaleyra.collaboration_suite.conversation.ChatParticipants
-import com.kaleyra.collaboration_suite.conversation.Conversation
 import com.kaleyra.collaboration_suite.conversation.Message
 import com.kaleyra.collaboration_suite.conversation.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -13,7 +13,6 @@ import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.ConferenceUI
 import com.kaleyra.collaboration_suite_core_ui.ConversationUI
 import com.kaleyra.collaboration_suite_core_ui.MessagesUI
-import com.kaleyra.video_networking.connector.Connector
 import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +29,7 @@ object Mocks {
     val chatMock = mockk<ChatUI>(relaxed = true)
 
     val callState = MutableStateFlow<Call.State>(Call.State.Connected)
-    val conversationState = MutableStateFlow<Connector.State>(Connector.State.Connected)
+    val conversationState = MutableStateFlow<State>(State.Connected)
     val otherParticipantState = MutableStateFlow<ChatParticipant.State>(ChatParticipant.State.Invited)
     val otherParticipantState2 = MutableStateFlow<ChatParticipant.State>(ChatParticipant.State.Joined.Online)
     val myParticipantState = MutableStateFlow<ChatParticipant.State>(ChatParticipant.State.Invited)

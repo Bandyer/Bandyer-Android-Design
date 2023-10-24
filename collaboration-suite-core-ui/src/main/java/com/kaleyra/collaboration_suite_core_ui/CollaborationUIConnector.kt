@@ -16,13 +16,14 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
+import com.kaleyra.collaboration_suite.AccessTokenProvider
 import com.kaleyra.collaboration_suite.Collaboration
+import com.kaleyra.collaboration_suite.State
+import com.kaleyra.collaboration_suite.Synchronization
+import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
-import com.kaleyra.video_networking.connector.AccessTokenProvider
-import com.kaleyra.video_networking.connector.ConnectedUser
-import com.kaleyra.video_networking.connector.Connector.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
@@ -82,10 +83,10 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
             this.accessLink = accessLink
         }
 
-        fun connect(): Deferred<ConnectedUser> = when {
+        fun connect(): Deferred<User> = when {
             accessLink != null                            -> collaboration.connect(accessLink!!)
             userId != null && accessTokenProvider != null -> collaboration.connect(userId!!, accessTokenProvider!!)
-            else                                          -> CompletableDeferred<ConnectedUser>().apply { completeExceptionally(CancellationException("Connection parameters not correct!")) }
+            else                                          -> CompletableDeferred<User>().apply { completeExceptionally(CancellationException("Connection parameters not correct!")) }
         }
 
         fun disconnect(clearSavedData: Boolean) {
@@ -102,7 +103,7 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     /**
      * Connect the collaboration
      */
-    fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<ConnectedUser> = Session(userId, accessTokenProvider).apply {
+    fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<User> = Session(userId, accessTokenProvider).apply {
         session = this
         resume()
     }.connect()
@@ -126,7 +127,7 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     /**
      * Connect the collaboration
      */
-    fun connect(accessLink: String): Deferred<ConnectedUser> = Session(accessLink).apply {
+    fun connect(accessLink: String): Deferred<User> = Session(accessLink).apply {
         session = this
         resume()
     }.connect()

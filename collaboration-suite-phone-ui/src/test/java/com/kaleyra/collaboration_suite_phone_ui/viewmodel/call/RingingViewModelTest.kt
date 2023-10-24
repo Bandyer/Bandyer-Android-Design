@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.viewmodel.call
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.CallParticipant
 import com.kaleyra.collaboration_suite.conference.Stream
-import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.viewmodel.RingingViewModel

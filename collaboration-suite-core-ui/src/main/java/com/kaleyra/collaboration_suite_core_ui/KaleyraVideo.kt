@@ -16,16 +16,15 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
+import com.kaleyra.collaboration_suite.AccessTokenProvider
 import com.kaleyra.collaboration_suite.Collaboration
-import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite.Company
+import com.kaleyra.collaboration_suite.State
+import com.kaleyra.collaboration_suite.Synchronization
+import com.kaleyra.collaboration_suite.User
+import com.kaleyra.collaboration_suite.configuration.Configuration
 import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
-import com.kaleyra.video_networking.connector.AccessTokenProvider
-import com.kaleyra.video_networking.connector.ConnectedUser
-import com.kaleyra.video_networking.connector.Connector
-import com.kaleyra.video_networking.connector.Connector.State
-import com.kaleyra.video_networking.connector.Connector.Synchronization
 import com.kaleyra.video_utils.cached
 import com.kaleyra.video_utils.getValue
 import com.kaleyra.video_utils.setValue
@@ -49,7 +48,7 @@ import java.util.concurrent.Executors
  *
  * This object allows the usage of a KaleyraVideo
  */
-object KaleyraVideo : Connector {
+object KaleyraVideo {
 
     /**
      * Collaboration
@@ -141,19 +140,19 @@ object KaleyraVideo : Connector {
         return true
     }
 
-    override val state: StateFlow<State>
+    val state: StateFlow<State>
         get() {
             require(collaboration != null) { "You need to configure the KaleyraVideo to get the state" }
             return collaboration!!.state
         }
 
-    override val synchronization: StateFlow<Synchronization>
+    val synchronization: StateFlow<Synchronization>
         get() {
             require(collaboration != null) { "You need to configure the KaleyraVideo to get the synchronization" }
             return collaboration!!.synchronization
         }
 
-    override val connectedUser: StateFlow<ConnectedUser?>
+    val connectedUser: StateFlow<User?>
         get() {
             require(collaboration != null) { "You need to configure the KaleyraVideo to get the connectedUser" }
             return collaboration!!.connectedUser
@@ -162,7 +161,7 @@ object KaleyraVideo : Connector {
     /**
      * Connect
      */
-    override fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<ConnectedUser> = CompletableDeferred<ConnectedUser>().apply {
+    fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<User> = CompletableDeferred<User>().apply {
         serialScope.launch {
             val connect = collaborationUIConnector?.connect(userId, accessTokenProvider) ?: return@launch
             connect.invokeOnCompletion {
@@ -173,7 +172,7 @@ object KaleyraVideo : Connector {
         }
     }
 
-    override fun connect(accessLink: String): Deferred<ConnectedUser> = CompletableDeferred<ConnectedUser>().apply {
+    fun connect(accessLink: String): Deferred<User> = CompletableDeferred<User>().apply {
         serialScope.launch {
             val connect = collaborationUIConnector?.connect(accessLink) ?: return@launch
             connect.invokeOnCompletion {
@@ -184,7 +183,7 @@ object KaleyraVideo : Connector {
         }
     }
 
-    override fun disconnect(clearSavedData: Boolean) {
+    fun disconnect(clearSavedData: Boolean = false) {
         serialScope.launch {
             collaborationUIConnector?.disconnect(clearSavedData)
             termsAndConditionsRequester?.dispose()
