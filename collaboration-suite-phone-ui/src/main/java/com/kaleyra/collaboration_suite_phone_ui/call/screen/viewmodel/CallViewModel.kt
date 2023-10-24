@@ -71,7 +71,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
     private var fullscreenStreamId = MutableStateFlow<String?>(null)
 
-    private var onCallEnded: (suspend (Boolean, Boolean, Boolean) -> Unit)? = null
+    private var onCallEnded: MutableSharedFlow<(suspend (Boolean, Boolean, Boolean) -> Unit)> = MutableSharedFlow(replay = 1)
 
     private var onPipAspectRatio:  MutableSharedFlow<(Rational) -> Unit> = MutableSharedFlow(replay = 1)
 
@@ -84,7 +84,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             val result = withTimeoutOrNull(NULL_CALL_TIMEOUT) {
                 call.firstOrNull()
             }
-            result ?: onCallEnded?.invoke(false, false, false)
+            result ?: onCallEnded?.first()?.invoke(false, false, false)
         }
 
         CallUserMessagesProvider.start(call)
@@ -118,19 +118,23 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .launchIn(viewModelScope)
 
         callState
-            .onEach { callState ->
-                _uiState.update { it.copy(callState = callState) }
-                when (callState) {
-                    is CallStateUi.Disconnected.Ended -> onCallEnded?.invoke(
-                        uiState.value.showFeedback,
-                        callState is CallStateUi.Disconnected.Ended.Error,
-                        callState is CallStateUi.Disconnected.Ended.Kicked
-                    )
-
-                    is CallStateUi.Reconnecting -> fullscreenStream(null)
-                    else                              -> Unit
-                }
+            .filter { it is CallStateUi.Disconnected.Ended }
+            .combine(onCallEnded) { callState, onCallEnded ->
+                onCallEnded.invoke(
+                    uiState.value.showFeedback,
+                    callState is CallStateUi.Disconnected.Ended.Error,
+                    callState is CallStateUi.Disconnected.Ended.Kicked
+                )
             }
+            .launchIn(viewModelScope)
+
+        callState
+            .filter { it is CallStateUi.Reconnecting }
+            .onEach { fullscreenStream(null) }
+            .launchIn(viewModelScope)
+
+        callState
+            .onEach { callState -> _uiState.update { it.copy(callState = callState) } }
             .launchIn(viewModelScope)
 
         combine(
@@ -240,7 +244,9 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     }
 
     fun setOnCallEnded(block: suspend (hasFeedback: Boolean, hasErrorOccurred: Boolean, hasBeenKicked: Boolean) -> Unit) {
-        onCallEnded = block
+        viewModelScope.launch {
+            onCallEnded.emit(block)
+        }
     }
 
     fun setOnPipAspectRatio(block: (Rational) -> Unit) {

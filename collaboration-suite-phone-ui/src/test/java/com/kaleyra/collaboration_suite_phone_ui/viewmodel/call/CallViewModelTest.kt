@@ -492,6 +492,18 @@ class CallViewModelTest {
     }
 
     @Test
+    fun `set call ended callback after call state is set to ended, the lambda is invoked`() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnected.Ended)
+        advanceUntilIdle()
+        var isInvoked = false
+        viewModel.setOnCallEnded { _, _, _ ->
+            isInvoked = true
+        }
+        advanceUntilIdle()
+        assertEquals(true, isInvoked)
+    }
+
+    @Test
     fun fullscreenStreamRemovedFromStreams_fullscreenStreamIsNull() = runTest {
         val participantStreams = MutableStateFlow(listOf(streamMock1, streamMock2))
         every { participantMock1.streams } returns participantStreams
