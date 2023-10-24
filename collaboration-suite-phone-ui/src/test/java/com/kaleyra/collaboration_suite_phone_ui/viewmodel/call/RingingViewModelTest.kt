@@ -7,6 +7,7 @@ import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.viewmodel.RingingViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.ringing.viewmodel.RingingViewModel.Companion.AM_I_WAITING_FOR_OTHERS_DEBOUNCE_MILLIS
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
@@ -14,6 +15,7 @@ import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -101,6 +103,33 @@ internal class RingingViewModelTest : PreCallViewModelTest<RingingViewModel, Rin
         advanceUntilIdle()
         val new = viewModel.uiState.first().amIWaitingOthers
         assertEquals(true, new)
+    }
+
+    @Test
+    fun `amIWaitingForOthers is updated after a debounce of 2 seconds`() = runTest {
+        with(callMock) {
+            every { state } returns MutableStateFlow(Call.State.Connected)
+            every { participants } returns MutableStateFlow(callParticipantsMock)
+        }
+        with(participantMock1) {
+            every { streams } returns MutableStateFlow(listOf())
+            every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
+        }
+        with(participantMeMock) {
+            every { streams } returns MutableStateFlow(listOf())
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+        }
+        with(callParticipantsMock) {
+            every { me } returns participantMeMock
+            every { others } returns listOf(participantMock1)
+            every { creator() } returns mockk()
+        }
+        val current = viewModel.uiState.first().amIWaitingOthers
+        assertEquals(false, current)
+        advanceTimeBy(AM_I_WAITING_FOR_OTHERS_DEBOUNCE_MILLIS)
+        assertEquals(false, viewModel.uiState.first().amIWaitingOthers)
+        advanceTimeBy(1)
+        assertEquals(true, viewModel.uiState.first().amIWaitingOthers)
     }
 
     @Test

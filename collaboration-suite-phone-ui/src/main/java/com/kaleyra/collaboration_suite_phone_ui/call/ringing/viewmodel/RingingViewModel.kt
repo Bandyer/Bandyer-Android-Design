@@ -10,6 +10,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRe
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.amIWaitingOthers
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.precall.viewmodel.PreCallViewModel
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -33,6 +34,7 @@ internal class RingingViewModel(configure: suspend () -> Configuration): PreCall
 
         call
             .amIWaitingOthers()
+            .debounce(AM_I_WAITING_FOR_OTHERS_DEBOUNCE_MILLIS)
             .onEach { amIWaitingOthers -> _uiState.update { it.copy(amIWaitingOthers = amIWaitingOthers) } }
             .launchIn(viewModelScope)
     }
@@ -46,6 +48,9 @@ internal class RingingViewModel(configure: suspend () -> Configuration): PreCall
     }
 
     companion object {
+
+        const val AM_I_WAITING_FOR_OTHERS_DEBOUNCE_MILLIS = 2000L
+        
         fun provideFactory(configure: suspend () -> Configuration) =
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
