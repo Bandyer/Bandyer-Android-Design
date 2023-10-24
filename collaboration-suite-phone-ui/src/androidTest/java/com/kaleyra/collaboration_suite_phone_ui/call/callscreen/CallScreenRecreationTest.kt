@@ -50,7 +50,7 @@ class CallScreenRecreationTest {
                 onWhiteboardVisibility = { },
                 onConfigurationChange = { },
                 onBackPressed = { },
-                onFinishActivity = {},
+                onCallEndedBack = {},
                 onUserFeedback = {_,_ ->}
             )
         }

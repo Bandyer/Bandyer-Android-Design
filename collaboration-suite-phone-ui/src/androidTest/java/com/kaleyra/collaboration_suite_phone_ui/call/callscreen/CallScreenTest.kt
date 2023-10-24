@@ -114,7 +114,7 @@ class CallScreenTest {
                 onFullscreenStreamClick = { },
                 onFileShareVisibility = { fileShareDisplayed = it },
                 onWhiteboardVisibility = { whiteboardDisplayed = it },
-                onFinishActivity = { finishActivity = true },
+                onCallEndedBack = { finishActivity = true },
                 onUserFeedback = { _,_ -> }
             )
             LaunchedEffect(sideEffect) {
