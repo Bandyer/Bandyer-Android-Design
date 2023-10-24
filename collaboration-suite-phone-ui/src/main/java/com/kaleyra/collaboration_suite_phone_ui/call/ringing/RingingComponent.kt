@@ -75,7 +75,6 @@ internal fun RingingComponent(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun RingingComponent(
     uiState: RingingUiState,
@@ -95,7 +94,7 @@ internal fun RingingComponent(
         modifier = modifier.testTag(RingingContentTag)
     ) {
         if (uiState.amIWaitingOthers) {
-            val padding by animateDpAsState(targetValue = if (uiState.video?.isEnabled == false) WaitingForOtherAvatarPadding else 0.dp)
+            val padding by animateDpAsState(targetValue = if (uiState.video?.view == null || !uiState.video.isEnabled) WaitingForOtherAvatarPadding else 0.dp, label = "waitingOtherPadding")
             Text(
                 text = stringResource(id = R.string.kaleyra_waiting_for_other_participants),
                 style = LocalTextStyle.current.shadow(),
