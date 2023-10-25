@@ -1,8 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.audiooutput
 
 import android.content.res.Configuration
+import android.os.Build
+import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -17,11 +20,20 @@ import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.viewmodel.Audio
 import com.kaleyra.collaboration_suite_phone_ui.call.subfeaturelayout.SubFeatureLayout
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.BluetoothConnectPermission
+import com.kaleyra.collaboration_suite_phone_ui.call.utils.BluetoothScanPermission
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
+@ChecksSdkIntAtLeast(api = 34)
+private val ShouldAskBluetoothPermissionImmediately = Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU
+private val ShouldAskBluetoothPermissionOnClick = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU
+
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 internal fun AudioOutputComponent(
     viewModel: AudioOutputViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
@@ -29,20 +41,29 @@ internal fun AudioOutputComponent(
     ),
     onDeviceConnected: () -> Unit,
     onCloseClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isTesting: Boolean = false
 ) {
-    val scope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val permissionsState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        rememberMultiplePermissionsState(permissions = listOf(BluetoothScanPermission, BluetoothConnectPermission))
+    } else null
+
+    if (ShouldAskBluetoothPermissionImmediately && !isTesting) {
+        LaunchedEffect(Unit) {
+            permissionsState?.launchMultiplePermissionRequest()
+        }
+    }
 
     AudioOutputComponent(
         uiState = uiState,
-        onItemClick = remember(scope, viewModel, onDeviceConnected) {
+        onItemClick = remember(viewModel, onDeviceConnected) {
             {
-                scope.coroutineContext.cancelChildren()
-                scope.launch {
-                    viewModel.setDevice(it)
-                    onDeviceConnected()
+                if (it is AudioDeviceUi.Bluetooth && ShouldAskBluetoothPermissionOnClick && !isTesting) {
+                    permissionsState?.launchMultiplePermissionRequest()
                 }
+                viewModel.setDevice(it)
+                onDeviceConnected()
             }
         },
         onCloseClick = onCloseClick,

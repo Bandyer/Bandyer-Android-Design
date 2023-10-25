@@ -32,7 +32,7 @@ internal class AudioOutputViewModel(configure: suspend () -> Configuration) : Ba
             .launchIn(viewModelScope)
     }
 
-    suspend fun setDevice(device: AudioDeviceUi) {
+    fun setDevice(device: AudioDeviceUi) {
         val call = call.getValue()
         val devices = call?.audioOutputDevicesList?.getValue() ?: return
         val outputDevice = when (device) {
@@ -48,7 +48,6 @@ internal class AudioOutputViewModel(configure: suspend () -> Configuration) : Ba
         }
         _uiState.update { it.copy(playingDeviceId = device.id) }
         call.setAudioOutputDevice(outputDevice)
-        call.currentAudioOutputDevice.filterNotNull().first { it::class == outputDevice::class }
     }
 
     private fun shouldRestoreParticipantsAudio(selectedDevice: AudioDeviceUi) = uiState.value.playingDeviceId == AudioDeviceUi.Muted.id && selectedDevice.id != AudioDeviceUi.Muted.id
