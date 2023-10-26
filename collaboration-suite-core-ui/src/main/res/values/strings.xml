@@ -42,6 +42,7 @@
     <string name="kaleyra_notification_chat_mark_as_read">Mark as read</string>
     <string name="kaleyra_notification_user_sharing_file">%1$s wants to share a file with you.</string>
     <string name="kaleyra_notification_download_file">Do you want to download the file?</string>
+    <string name="kaleyra_call_waiting_for_other_participants">Waiting for other participants…</string>
 
     <!-- CALL PARTICIPANT REMOVED -->
 

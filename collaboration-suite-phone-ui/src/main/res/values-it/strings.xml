@@ -110,7 +110,6 @@
     <string name="kaleyra_ongoing_call_label">Tocca per tornare alla chiamata</string>
     <string name="kaleyra_call_left_alone">Sei rimasto da solo</string>
     <string name="kaleyra_call_offline">Sei offline</string>
-    <string name="kaleyra_call_waiting_for_other_participants">In attesa di altri partecipanti…</string>
 
     <string name="kaleyra_error_button_reload">Riprova</string>
     <string name="kaleyra_error_title">Si è verificato un errore</string>

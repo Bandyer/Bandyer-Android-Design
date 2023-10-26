@@ -38,6 +38,7 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.CallProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityCallActivity
+import com.kaleyra.collaboration_suite_core_ui.texttospeech.AwaitingParticipantsTextToSpeechNotifier
 import com.kaleyra.collaboration_suite_core_ui.texttospeech.CallParticipantMutedTextToSpeechNotifier
 import com.kaleyra.collaboration_suite_core_ui.texttospeech.CallRecordingTextToSpeechNotifier
 import com.kaleyra.collaboration_suite_core_ui.texttospeech.TextToSpeechNotifier
@@ -93,6 +94,8 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
 
     private var recordingTextToSpeechNotifier: TextToSpeechNotifier? = null
 
+    private var awaitingParticipantsTextToSpeechNotifier: TextToSpeechNotifier? = null
+
     private var mutedTextToSpeechNotifier: TextToSpeechNotifier? = null
 
     /**
@@ -114,9 +117,11 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
         application.unregisterActivityLifecycleCallbacks(this)
         recordingTextToSpeechNotifier?.dispose()
         mutedTextToSpeechNotifier?.dispose()
+        awaitingParticipantsTextToSpeechNotifier?.dispose()
         proximityDelegate?.destroy()
         foregroundJob?.cancel()
         call?.end()
+        awaitingParticipantsTextToSpeechNotifier = null
         recordingTextToSpeechNotifier = null
         mutedTextToSpeechNotifier = null
         proximityCallActivity = null
@@ -262,6 +267,10 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
                     proximityDelegate!!.sensor!!
                 ).apply { start(lifecycleScope) }
                 mutedTextToSpeechNotifier = CallParticipantMutedTextToSpeechNotifier(
+                    call,
+                    proximityDelegate!!.sensor!!
+                ).apply { start(lifecycleScope) }
+                awaitingParticipantsTextToSpeechNotifier = AwaitingParticipantsTextToSpeechNotifier(
                     call,
                     proximityDelegate!!.sensor!!
                 ).apply { start(lifecycleScope) }
