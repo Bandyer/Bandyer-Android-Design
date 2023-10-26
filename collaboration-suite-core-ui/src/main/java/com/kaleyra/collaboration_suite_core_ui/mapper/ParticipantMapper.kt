@@ -13,6 +13,11 @@ import kotlinx.coroutines.flow.transform
 
 object ParticipantMapper {
 
+    fun Flow<Call>.toMe(): Flow<CallParticipant.Me> =
+        this.flatMapLatest { it.participants }
+            .mapNotNull { it.me }
+            .distinctUntilChanged()
+
     fun Flow<Call>.toInCallParticipants(): Flow<List<CallParticipant>> =
         this.flatMapLatest { it.participants }
             .mapNotNull { participants -> participants.me?.let { Pair(it, participants.others) }}

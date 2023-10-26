@@ -1,12 +1,17 @@
 package com.kaleyra.collaboration_suite_core_ui.texttospeech
 
 import android.content.Context
+import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.CallParticipant
 import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
+import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper
+import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.toMuteEvents
+import com.kaleyra.collaboration_suite_core_ui.mapper.StreamMapper
+import com.kaleyra.collaboration_suite_core_ui.mapper.StreamMapper.amIWaitingOthers
 import com.kaleyra.video_utils.ContextRetainer
 import com.kaleyra.video_utils.proximity_listener.ProximitySensor
 import io.mockk.every
@@ -16,6 +21,7 @@ import io.mockk.mockkObject
 import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -36,27 +42,14 @@ class CallParticipantMutedTextToSpeechNotifierTest {
 
     private val notifier = spyk(CallParticipantMutedTextToSpeechNotifier(callMock, proximitySensorMock, callTextToSpeechMock))
 
-    private val participantMeMock = mockk<CallParticipant.Me>()
-
-    private val streamMock = mockk<Stream.Mutable>()
-
-    private val audioMock = mockk<Input.Audio>()
-
-    private val eventMock = mockk<Input.Audio.Event.Request.Mute>()
-
     @Before
     fun setUp() {
         mockkObject(ContextRetainer)
+        mockkObject(InputMapper)
         every { ContextRetainer.context } returns contextMock
         every { contextMock.getString(any()) } returns ""
         every { notifier.shouldNotify } returns true
-        every { callMock.participants } returns MutableStateFlow(mockk {
-            every { me } returns participantMeMock
-        })
-        every { participantMeMock.streams } returns MutableStateFlow(listOf(streamMock))
-        every { streamMock.audio } returns MutableStateFlow(audioMock)
-        every { streamMock.id } returns CameraStreamPublisher.CAMERA_STREAM_ID
-        every { audioMock.events } returns MutableStateFlow(eventMock)
+        every { any<Flow<Call>>().toMuteEvents() } returns MutableStateFlow(mockk())
     }
 
     @Test

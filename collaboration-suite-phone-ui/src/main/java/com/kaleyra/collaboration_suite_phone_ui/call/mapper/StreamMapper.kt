@@ -5,7 +5,7 @@ import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
-import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toMe
+import com.kaleyra.collaboration_suite_core_ui.mapper.ParticipantMapper.toMe
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VideoMapper.mapToVideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri

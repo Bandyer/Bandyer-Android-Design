@@ -2,14 +2,18 @@ package com.kaleyra.collaboration_suite_core_ui.mapper
 
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Input
+import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
+import com.kaleyra.collaboration_suite_core_ui.mapper.ParticipantMapper.toMe
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
-internal object InputMapper {
+object InputMapper {
 
     inline fun <reified T:Input> Flow<Call>.isInputActive(): Flow<Boolean> =
         flatMapLatest { it.inputs.availableInputs }
@@ -26,4 +30,17 @@ internal object InputMapper {
         combine(isDeviceScreenInputActive(), isAppScreenInputActive()) { isDeviceScreenInputActive, isAppScreenInputActive ->
             isDeviceScreenInputActive || isAppScreenInputActive
     }
+
+    fun Flow<Call>.toMuteEvents(): Flow<Input.Audio.Event.Request.Mute> =
+        this.toAudio()
+            .filterNotNull()
+            .flatMapLatest { it.events }
+            .filterIsInstance<Input.Audio.Event.Request.Mute>()
+            .distinctUntilChanged()
+
+    fun Flow<Call>.toAudio(): Flow<Input.Audio?> =
+        this.toMe()
+            .flatMapLatest { it.streams }
+            .map { streams -> streams.firstOrNull { stream -> stream.id == CameraStreamPublisher.CAMERA_STREAM_ID } }
+            .flatMapLatest { it?.audio ?: flowOf(null) }
 }

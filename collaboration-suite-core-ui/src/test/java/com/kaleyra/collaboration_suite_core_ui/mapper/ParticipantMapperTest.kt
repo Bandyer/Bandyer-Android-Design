@@ -10,6 +10,7 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_core_ui.mapper.ParticipantMapper.toInCallParticipants
+import com.kaleyra.collaboration_suite_core_ui.mapper.ParticipantMapper.toMe
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -37,6 +38,8 @@ class ParticipantMapperTest {
 
     private val participantMock2 = mockk<CallParticipant>(relaxed = true)
 
+    private val participantMeMock = mockk<CallParticipant.Me>(relaxed = true)
+
     private val uriMock1 = mockk<Uri>(relaxed = true)
 
     private val uriMock2 = mockk<Uri>(relaxed = true)
@@ -57,6 +60,12 @@ class ParticipantMapperTest {
         }
     }
 
+    @Test
+    fun testToMe() = runTest {
+        every { callParticipantsMock.me } returns participantMeMock
+        val actual = flowOf(callMock).toMe().first()
+        Assert.assertEquals(participantMeMock, actual)
+    }
 
     @Test
     fun `there are no other participant, the only participant in call it's me`() = runTest {

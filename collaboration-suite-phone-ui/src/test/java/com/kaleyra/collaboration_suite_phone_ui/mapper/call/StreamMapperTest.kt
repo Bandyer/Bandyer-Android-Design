@@ -5,8 +5,9 @@ import com.kaleyra.collaboration_suite.conference.*
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayImage
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
+import com.kaleyra.collaboration_suite_core_ui.mapper.ParticipantMapper
+import com.kaleyra.collaboration_suite_core_ui.mapper.ParticipantMapper.toMe
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
-import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.doIHaveStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.hasAtLeastAVideoEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.mapToStreamsUi
@@ -577,7 +578,7 @@ class StreamMapperTest {
     }
 
     @Test
-    fun meHasNoStreamS_doIHaveStreams_false() = runTest {
+    fun meHasNoStreams_doIHaveStreams_false() = runTest {
         mockkObject(ParticipantMapper)
         val flow = flowOf(callMock)
         with(ParticipantMapper) {

@@ -9,7 +9,6 @@ import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsMana
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.isGroupCall
-import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toMe
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toMyParticipantState
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toOtherDisplayImages
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toOtherDisplayNames
@@ -249,13 +248,6 @@ class ParticipantMapperTest {
         val newActual = result.first()
         val newExpected = listOf(uriMock1, uriMock3)
         Assert.assertEquals(newExpected, newActual)
-    }
-
-    @Test
-    fun testToMe() = runTest {
-        every { callParticipantsMock.me } returns participantMeMock
-        val actual = flowOf(callMock).toMe().first()
-        assertEquals(participantMeMock, actual)
     }
 
     @Test

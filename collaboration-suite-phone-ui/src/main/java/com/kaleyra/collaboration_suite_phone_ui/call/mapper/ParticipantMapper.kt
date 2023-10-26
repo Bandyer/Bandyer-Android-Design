@@ -71,11 +71,6 @@ object ParticipantMapper {
             }
             .distinctUntilChanged()
 
-    fun Flow<Call>.toMe(): Flow<CallParticipant.Me> =
-        this.flatMapLatest { it.participants }
-            .mapNotNull { it.me }
-            .distinctUntilChanged()
-
     fun Flow<Call>.toMyParticipantState(): Flow<CallParticipant.State> =
         this.flatMapLatest { it.participants }
             .flatMapLatestNotNull { it.me?.state }

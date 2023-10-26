@@ -4,9 +4,11 @@ import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher.Companion.CAMERA_STREAM_ID
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
+import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.toAudio
+import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.toMuteEvents
+import com.kaleyra.collaboration_suite_core_ui.mapper.ParticipantMapper.toMe
 import com.kaleyra.collaboration_suite_core_ui.utils.UsbCameraUtils
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.failedAudioOutputDevice
-import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toMe
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.doIHaveStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.AudioConnectionFailureMessage
@@ -15,7 +17,6 @@ import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UsbCam
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
@@ -38,10 +39,7 @@ internal object InputMapper {
             }
 
     fun Flow<Call>.toMutedMessage(): Flow<MutedMessage> =
-        this.toAudio()
-            .filterNotNull()
-            .flatMapLatest { it.events }
-            .filterIsInstance<Input.Audio.Event.Request.Mute>()
+        this.toMuteEvents()
             .map { event -> event.producer.combinedDisplayName.first() }
             .map { MutedMessage(it) }
 
@@ -94,11 +92,5 @@ internal object InputMapper {
                     else                                              -> UsbCameraMessage.Disconnected
                 }
             }
-
-    private fun Flow<Call>.toAudio(): Flow<Input.Audio?> =
-        this.toMe()
-            .flatMapLatest { it.streams }
-            .map { streams -> streams.firstOrNull { stream -> stream.id == CAMERA_STREAM_ID } }
-            .flatMapLatest { it?.audio ?: flowOf(null) }
 
 }
