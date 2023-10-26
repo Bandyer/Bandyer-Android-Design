@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
+import com.kaleyra.collaboration_suite.State
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite.whiteboard.Whiteboard
@@ -67,7 +68,6 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensio
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
-import com.kaleyra.video_networking.connector.Connector
 import com.kaleyra.video_utils.ContextRetainer
 import com.kaleyra.video_utils.audio.CallAudioManager
 import com.kaleyra.video_utils.battery_observer.BatteryInfo
@@ -250,7 +250,7 @@ internal class GlassCallActivity :
 
         viewModel.conferenceState
             .onEach {
-                if (it !is Connector.State.Disconnecting) return@onEach
+                if (it !is State.Disconnecting) return@onEach
                 finishAndRemoveTask()
             }
             .launchIn(lifecycleScope)
