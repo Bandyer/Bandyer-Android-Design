@@ -10,6 +10,7 @@ import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.isAppScreenInp
 import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.isDeviceScreenInputActive
 import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.isInputActive
 import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.toAudio
+import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.toMuteEvents
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
@@ -161,5 +162,17 @@ class InputMapperTests {
         val actual = result.first()
         Assert.assertEquals(null, actual)
     }
+
+    @Test
+    fun inputAudioRequestMute_toMuteEvent_inputEvent() = runTest {
+        val event = mockk<Input.Audio.Event.Request.Mute>()
+        every { streamMock.id } returns CameraStreamPublisher.CAMERA_STREAM_ID
+        every { audioMock.events } returns MutableStateFlow(event)
+        val call = MutableStateFlow(callMock)
+        val result = call.toMuteEvents()
+        val actual = result.first()
+        Assert.assertEquals(event, actual)
+    }
+
 
 }
