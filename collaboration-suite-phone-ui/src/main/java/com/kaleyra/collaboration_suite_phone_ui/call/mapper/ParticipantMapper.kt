@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.transform
 
-internal object ParticipantMapper {
+object ParticipantMapper {
 
     fun Flow<Call>.isGroupCall(companyId: Flow<String>): Flow<Boolean> =
         combine(this.flatMapLatest { it.participants }, companyId) { participants, companyId ->
@@ -66,38 +66,6 @@ internal object ParticipantMapper {
                         val values = map.values.toList().filterNotNull()
                         if (values.size == others.size) {
                             emit(values)
-                        }
-                    }
-            }
-            .distinctUntilChanged()
-
-    fun Flow<Call>.toInCallParticipants(): Flow<List<CallParticipant>> =
-        this.flatMapLatest { it.participants }
-            .mapNotNull { participants -> participants.me?.let { Pair(it, participants.others) }}
-            .flatMapLatest { (me, others) ->
-                val inCallMap = mutableMapOf<String, CallParticipant>(me.userId to me)
-                val notInCallMap = mutableMapOf<String, CallParticipant>()
-
-                if (others.isEmpty()) flowOf<List<CallParticipant>>(listOf(me))
-                else others
-                    .map { participant ->
-                        combine(participant.state, participant.streams) { state, streams ->
-                            val isInCall = state == CallParticipant.State.InCall || streams.isNotEmpty()
-                            Pair(participant, isInCall)
-                        }
-                    }
-                    .merge()
-                    .transform { (participant, isInCall) ->
-                        if (isInCall) {
-                            inCallMap[participant.userId] = participant
-                            notInCallMap.remove(participant.userId)
-                        } else {
-                            notInCallMap[participant.userId] = participant
-                            inCallMap.remove(participant.userId)
-                        }
-                        val values = (inCallMap.values + notInCallMap.values).toList()
-                        if (values.size == others.size + 1) {
-                            emit(inCallMap.values.toList())
                         }
                     }
             }

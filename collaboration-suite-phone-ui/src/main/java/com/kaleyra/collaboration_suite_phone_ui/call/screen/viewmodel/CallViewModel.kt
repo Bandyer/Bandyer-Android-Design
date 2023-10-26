@@ -8,8 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.conference.*
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.CompanyUI
-import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel.Configuration
 import com.kaleyra.collaboration_suite_core_ui.DisplayModeEvent
+import com.kaleyra.collaboration_suite_core_ui.mapper.ParticipantMapper.toInCallParticipants
+import com.kaleyra.collaboration_suite_core_ui.mapper.StreamMapper.amIAlone
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallStateMapper.isConnected
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallStateMapper.toCallStateUi
@@ -17,9 +18,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallUiStateMapper.to
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.isAudioOnly
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.isAudioVideo
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.isGroupCall
-import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.RecordingMapper.toRecordingUi
-import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.amIAlone
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.hasAtLeastAVideoEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.WatermarkMapper.toWatermarkInfo

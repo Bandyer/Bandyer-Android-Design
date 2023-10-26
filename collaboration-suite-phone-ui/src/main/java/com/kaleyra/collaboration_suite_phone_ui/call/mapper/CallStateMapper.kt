@@ -3,8 +3,8 @@ package com.kaleyra.collaboration_suite_phone_ui.call.mapper
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.CallParticipants
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
+import com.kaleyra.collaboration_suite_core_ui.mapper.StreamMapper.amIAlone
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
-import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.amIAlone
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged

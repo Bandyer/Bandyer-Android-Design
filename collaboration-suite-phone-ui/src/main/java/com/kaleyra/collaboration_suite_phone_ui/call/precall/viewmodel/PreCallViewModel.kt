@@ -2,12 +2,12 @@ package com.kaleyra.collaboration_suite_phone_ui.call.precall.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel.Configuration
+import com.kaleyra.collaboration_suite_core_ui.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.collaboration_suite_core_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.common.viewmodel.UserMessageViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.isVideoIncoming
-import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toOtherDisplayImages
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.ParticipantMapper.toOtherDisplayNames
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.StreamMapper.toMyStreamsUi

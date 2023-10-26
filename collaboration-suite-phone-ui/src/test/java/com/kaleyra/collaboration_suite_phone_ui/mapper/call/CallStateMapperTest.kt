@@ -5,6 +5,7 @@ import com.kaleyra.collaboration_suite.conference.CallParticipant
 import com.kaleyra.collaboration_suite.conference.CallParticipants
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager.combinedDisplayName
+import com.kaleyra.collaboration_suite_core_ui.mapper.StreamMapper.amIAlone
 import com.kaleyra.collaboration_suite_phone_ui.MainDispatcherRule
 import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallStateMapper.isConnected
