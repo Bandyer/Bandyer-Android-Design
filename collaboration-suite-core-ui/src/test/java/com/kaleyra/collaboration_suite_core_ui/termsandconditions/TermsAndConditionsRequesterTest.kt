@@ -1,6 +1,6 @@
 package com.kaleyra.collaboration_suite_core_ui.termsandconditions
 
-import com.kaleyra.video_networking.connector.Connector
+import com.kaleyra.collaboration_suite.State
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
@@ -14,7 +14,7 @@ class TermsAndConditionsRequesterTest {
     fun `session state job is cancelled on session authenticated state`() = runTest {
         withTimeout(100) {
             val requester = TermsAndConditionsRequester(this::class.java, this)
-            requester.setUp(MutableStateFlow(Connector.State.Connected)) {}
+            requester.setUp(MutableStateFlow(State.Connected)) {}
         }
     }
 
