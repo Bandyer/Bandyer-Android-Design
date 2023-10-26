@@ -30,9 +30,11 @@ class CallParticipantMutedTextToSpeechNotifierTest {
 
     private val proximitySensorMock = mockk<ProximitySensor>()
 
+    private val callTextToSpeechMock = mockk<CallTextToSpeech>(relaxed = true)
+
     private val contextMock = mockk<Context>(relaxed = true)
 
-    private val notifier = spyk(CallParticipantMutedTextToSpeechNotifier(callMock, proximitySensorMock))
+    private val notifier = spyk(CallParticipantMutedTextToSpeechNotifier(callMock, proximitySensorMock, callTextToSpeechMock))
 
     private val participantMeMock = mockk<CallParticipant.Me>()
 
@@ -45,11 +47,9 @@ class CallParticipantMutedTextToSpeechNotifierTest {
     @Before
     fun setUp() {
         mockkObject(ContextRetainer)
-        mockkConstructor(CallTextToSpeech::class)
-        every { anyConstructed<CallTextToSpeech>().speak(any()) } returns Unit
         every { ContextRetainer.context } returns contextMock
         every { contextMock.getString(any()) } returns ""
-        every { notifier.shouldNotify() } returns true
+        every { notifier.shouldNotify } returns true
         every { callMock.participants } returns MutableStateFlow(mockk {
             every { me } returns participantMeMock
         })
@@ -67,20 +67,20 @@ class CallParticipantMutedTextToSpeechNotifierTest {
 
         advanceUntilIdle()
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_call_participant_utterance_muted_by_admin) }
-        verify(exactly = 1) { anyConstructed<CallTextToSpeech>().speak("text") }
+        verify(exactly = 1) { callTextToSpeechMock.speak("text") }
     }
 
     @Test
     fun testDispose() = runTest(UnconfinedTestDispatcher()) {
         notifier.start(backgroundScope)
         notifier.dispose()
-        verify(exactly = 1) { anyConstructed<CallTextToSpeech>().dispose(false) }
+        verify(exactly = 1) { callTextToSpeechMock.dispose(false) }
     }
 
     @Test
     fun `calling start again disposes previous notifier tts`() = runTest(UnconfinedTestDispatcher()) {
         notifier.start(backgroundScope)
         notifier.start(backgroundScope)
-        verify(exactly = 1) { anyConstructed<CallTextToSpeech>().dispose(false) }
+        verify(exactly = 1) { callTextToSpeechMock.dispose(false) }
     }
 }

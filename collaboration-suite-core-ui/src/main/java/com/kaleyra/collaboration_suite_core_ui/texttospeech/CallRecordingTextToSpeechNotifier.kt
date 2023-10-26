@@ -1,10 +1,8 @@
 package com.kaleyra.collaboration_suite_core_ui.texttospeech
 
-import android.content.Context
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.video_utils.ContextRetainer
 import com.kaleyra.video_utils.proximity_listener.ProximitySensor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -16,30 +14,26 @@ import kotlinx.coroutines.flow.onEach
 
 internal class CallRecordingTextToSpeechNotifier(
     override val call: CallUI,
-    override val proximitySensor: ProximitySensor
+    override val proximitySensor: ProximitySensor,
+    override val callTextToSpeech: CallTextToSpeech = CallTextToSpeech()
 ) : TextToSpeechNotifier {
-
-    private val context: Context
-        get() = ContextRetainer.context
 
     private var currentJob: Job? = null
 
     override fun start(scope: CoroutineScope) {
         dispose()
 
-        val textToSpeech = CallTextToSpeech()
-
         currentJob = call.recording
             .onEach { recording ->
-                if (!shouldNotify()) return@onEach
+                if (!shouldNotify) return@onEach
                 when (recording.type) {
                     Call.Recording.Type.OnDemand -> {
                         val text = context.getString(R.string.kaleyra_utterance_recording_call_may_be_recorded)
-                        textToSpeech.speak(text)
+                        callTextToSpeech.speak(text)
                     }
                     Call.Recording.Type.OnConnect -> {
                         val text = context.getString(R.string.kaleyra_utterance_recording_call_will_be_recorded)
-                        textToSpeech.speak(text)
+                        callTextToSpeech.speak(text)
                     }
                     else -> Unit
                 }
@@ -47,15 +41,15 @@ internal class CallRecordingTextToSpeechNotifier(
             .flatMapLatest { it.state }
             .dropWhile { it is Call.Recording.State.Stopped }
             .onEach { state ->
-                if (!shouldNotify()) return@onEach
+                if (!shouldNotify) return@onEach
                 val text = when (state) {
                     is Call.Recording.State.Started -> context.getString(R.string.kaleyra_utterance_recording_started)
                     is Call.Recording.State.Stopped.Error -> context.getString(R.string.kaleyra_utterance_recording_failed)
                     is Call.Recording.State.Stopped -> context.getString(R.string.kaleyra_utterance_recording_stopped)
                 }
-                textToSpeech.speak(text)
+                callTextToSpeech.speak(text)
             }
-            .onCompletion { textToSpeech.dispose(instantly = false) }
+            .onCompletion { callTextToSpeech.dispose(instantly = false) }
             .launchIn(scope)
     }
 

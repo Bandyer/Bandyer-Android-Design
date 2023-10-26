@@ -27,21 +27,21 @@ class CallRecordingTextToSpeechNotifierTest {
 
     private val proximitySensorMock = mockk<ProximitySensor>()
 
+    private val callTextToSpeechMock = mockk<CallTextToSpeech>(relaxed = true)
+
     private val recordingMock = mockk<Call.Recording>(relaxed = true)
 
     private val contextMock = mockk<Context>(relaxed = true)
 
-    private val notifier = spyk(CallRecordingTextToSpeechNotifier(callMock, proximitySensorMock))
+    private val notifier = spyk(CallRecordingTextToSpeechNotifier(callMock, proximitySensorMock, callTextToSpeechMock))
 
     @Before
     fun setUp() {
         mockkObject(ContextRetainer)
-        mockkConstructor(CallTextToSpeech::class)
-        every { anyConstructed<CallTextToSpeech>().speak(any()) } returns Unit
         every { ContextRetainer.context } returns contextMock
         every { contextMock.getString(any()) } returns ""
         every { callMock.recording } returns MutableStateFlow(recordingMock)
-        every { notifier.shouldNotify() } returns true
+        every { notifier.shouldNotify } returns true
     }
 
     @Test
@@ -71,7 +71,7 @@ class CallRecordingTextToSpeechNotifierTest {
 
         advanceUntilIdle()
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_utterance_recording_started) }
-        verify(exactly = 1) { anyConstructed<CallTextToSpeech>().speak("text") }
+        verify(exactly = 1) { callTextToSpeechMock.speak("text") }
     }
 
     @Test
@@ -83,7 +83,7 @@ class CallRecordingTextToSpeechNotifierTest {
 
         advanceUntilIdle()
         verify(exactly = 0) { contextMock.getString(R.string.kaleyra_utterance_recording_stopped) }
-        verify(exactly = 0) { anyConstructed<CallTextToSpeech>().speak("text") }
+        verify(exactly = 0) { callTextToSpeechMock.speak("text") }
     }
 
     @Test
@@ -97,7 +97,7 @@ class CallRecordingTextToSpeechNotifierTest {
         state.value = mockk<Call.Recording.State.Stopped>()
         advanceUntilIdle()
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_utterance_recording_stopped) }
-        verify(exactly = 1) { anyConstructed<CallTextToSpeech>().speak("text") }
+        verify(exactly = 1) { callTextToSpeechMock.speak("text") }
     }
 
     @Test
@@ -111,14 +111,14 @@ class CallRecordingTextToSpeechNotifierTest {
         state.value = mockk<Call.Recording.State.Stopped.Error>()
         advanceUntilIdle()
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_utterance_recording_failed) }
-        verify(exactly = 1) { anyConstructed<CallTextToSpeech>().speak("text") }
+        verify(exactly = 1) { callTextToSpeechMock.speak("text") }
     }
 
     @Test
     fun testDispose() = runTest(UnconfinedTestDispatcher()) {
         notifier.start(backgroundScope)
         notifier.dispose()
-        verify(exactly = 1) { anyConstructed<CallTextToSpeech>().dispose(false) }
+        verify(exactly = 1) { callTextToSpeechMock.dispose(false) }
     }
 
     @Test
@@ -126,7 +126,7 @@ class CallRecordingTextToSpeechNotifierTest {
         every { recordingMock.state } returns MutableStateFlow(mockk<Call.Recording.State.Started>())
         notifier.start(backgroundScope)
         notifier.start(backgroundScope)
-        verify(exactly = 1) { anyConstructed<CallTextToSpeech>().dispose(false) }
+        verify(exactly = 1) { callTextToSpeechMock.dispose(false) }
     }
 
 }
