@@ -155,9 +155,13 @@ class FileShareViewModelTest {
 
     @Test
     fun testUploadOnFilePick() = runTest {
+        var onFileSelectedInvoked = false
+        viewModel.setOnFileSelected {
+            onFileSelectedInvoked = true
+        }
         advanceUntilIdle()
         verify { sharedFolderMock.upload(uriMock) }
-        verify { callMock.show() }
+        assertEquals(true, onFileSelectedInvoked)
     }
 
     @Test

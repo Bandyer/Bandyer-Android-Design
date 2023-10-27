@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,8 +44,10 @@ class FilePickBroadcastReceiverTest {
         receiver.onReceive(contextMock, Intent(FilePickBroadcastReceiver.ACTION_FILE_PICK_EVENT).apply {
             putExtra("uri", uriMock)
         })
-        val uri = FilePickBroadcastReceiver.fileUri.first()
-        assertEquals(null, uri)
+        val result = withTimeoutOrNull(100) {
+            FilePickBroadcastReceiver.fileUri.first()
+        }
+        assertEquals(null, result)
     }
 
 }
