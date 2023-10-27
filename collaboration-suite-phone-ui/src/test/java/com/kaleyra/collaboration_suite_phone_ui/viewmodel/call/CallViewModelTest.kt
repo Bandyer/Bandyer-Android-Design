@@ -185,7 +185,7 @@ class CallViewModelTest {
             }
         }
         every { companyMock.combinedTheme } returns flowOf(themeMock)
-        viewModel = spyk(CallViewModel { Success(conferenceMock, mockk(), companyMock) })
+        viewModel = spyk(CallViewModel { Success(conferenceMock, mockk(), companyMock, MutableStateFlow(mockk())) })
     }
 
     @After

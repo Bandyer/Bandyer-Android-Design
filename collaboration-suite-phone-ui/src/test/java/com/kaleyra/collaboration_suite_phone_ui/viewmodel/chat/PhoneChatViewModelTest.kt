@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui.viewmodel.chat
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.State
+import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conversation.ChatParticipant
 import com.kaleyra.collaboration_suite.conversation.Message
@@ -82,6 +83,8 @@ class PhoneChatViewModelTest {
 
     private val messagesFlow = MutableStateFlow(messagesUIMock)
 
+    private val connectedUserFlow = MutableStateFlow<User?>(mockk())
+
     @Before
     fun setUp() {
         mockkObject(ContactDetailsManager)
@@ -129,7 +132,8 @@ class PhoneChatViewModelTest {
             Configuration.Success(
                 conferenceMock,
                 conversationMock,
-                mockk(relaxed = true)
+                mockk(relaxed = true),
+                connectedUserFlow
             )
         })
         TestScope().launch { viewModel.setChat("userId") }
@@ -248,6 +252,18 @@ class PhoneChatViewModelTest {
         advanceUntilIdle()
         val new = viewModel.uiState.first().connectionState
         Assert.assertEquals(ConnectionState.Connecting, new)
+    }
+
+    @Test
+    fun testChatUiState_isUserConnectedUpdated() = runTest {
+        connectedUserFlow.value = mockk()
+        val current = viewModel.uiState.first().isUserConnected
+        Assert.assertEquals(true, current)
+
+        connectedUserFlow.value = null
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().isUserConnected
+        Assert.assertEquals(false, new)
     }
 
     @Test

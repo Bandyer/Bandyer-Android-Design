@@ -47,7 +47,7 @@ class WhiteboardViewModelTest {
     @Before
     fun setUp() {
         mockkObject(CallUserMessagesProvider)
-        viewModel = spyk(WhiteboardViewModel(configure = { Configuration.Success(conferenceMock, mockk(), mockk(relaxed = true)) }, whiteboardView = mockk(relaxed = true)))
+        viewModel = spyk(WhiteboardViewModel(configure = { Configuration.Success(conferenceMock, mockk(), mockk(relaxed = true), MutableStateFlow(mockk())) }, whiteboardView = mockk(relaxed = true)))
         every { conferenceMock.call } returns MutableStateFlow(callMock)
         every { callMock.whiteboard } returns whiteboardMock
         with(sharedFileMock) {

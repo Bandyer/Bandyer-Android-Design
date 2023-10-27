@@ -71,7 +71,7 @@ class FileShareViewModelTest {
         every { any<Uri>().getFileSize() } returns 0
         mockkObject(CallUserMessagesProvider)
         viewModel = FileShareViewModel(
-            configure = { Configuration.Success(conferenceMock, mockk(), mockk(relaxed = true)) },
+            configure = { Configuration.Success(conferenceMock, mockk(), mockk(relaxed = true), MutableStateFlow(mockk())) },
             filePickProvider = object : FilePickProvider {
                 override val fileUri: Flow<Uri> = MutableStateFlow(uriMock)
             }

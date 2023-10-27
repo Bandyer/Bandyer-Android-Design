@@ -44,7 +44,8 @@ private data class PhoneChatViewModelState(
     val participantsDetails: ImmutableMap<String, ChatParticipantDetails> = ImmutableMap(),
     val participantsState: ChatParticipantsState = ChatParticipantsState(),
     val conversationState: ConversationState = ConversationState(),
-    val isInCall: Boolean = false
+    val isInCall: Boolean = false,
+    val isUserConnected: Boolean = true
 ) {
 
     fun toUiState(): ChatUiState {
@@ -57,7 +58,8 @@ private data class PhoneChatViewModelState(
                 actions = actions,
                 connectionState = connectionState,
                 conversationState = conversationState,
-                isInCall = isInCall
+                isInCall = isInCall,
+                isUserConnected = isUserConnected
             )
         } else {
             ChatUiState.OneToOne(
@@ -65,7 +67,8 @@ private data class PhoneChatViewModelState(
                 actions = actions,
                 connectionState = connectionState,
                 conversationState = conversationState,
-                isInCall = isInCall
+                isInCall = isInCall,
+                isUserConnected = isUserConnected
             )
         }
     }
@@ -143,6 +146,10 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
         chat
             .flatMapLatest { it.unreadMessagesCount }
             .onEach { count -> updateUnreadMessagesCount(count) }
+            .launchIn(viewModelScope)
+
+        connectedUser
+            .onEach { user -> viewModelState.update { it.copy(isUserConnected = user != null) } }
             .launchIn(viewModelScope)
 
         viewModelScope.launch {

@@ -41,7 +41,7 @@ class BaseViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = BaseViewModelImpl { Configuration.Success(conferenceMock, mockk(), mockk(relaxed = true)) }
+        viewModel = BaseViewModelImpl { Configuration.Success(conferenceMock, mockk(), mockk(relaxed = true), MutableStateFlow(mockk())) }
     }
 
     @Test

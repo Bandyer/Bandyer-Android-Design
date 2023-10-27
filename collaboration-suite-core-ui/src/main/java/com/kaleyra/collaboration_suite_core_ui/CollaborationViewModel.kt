@@ -3,13 +3,17 @@ package com.kaleyra.collaboration_suite_core_ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.Company
+import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel.Configuration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flattenConcat
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
@@ -17,7 +21,7 @@ import kotlinx.coroutines.launch
 abstract class CollaborationViewModel(configure: suspend () -> Configuration) : ViewModel() {
 
     sealed class Configuration {
-        data class Success(val conference: ConferenceUI, val conversation: ConversationUI, val company: Company) : Configuration()
+        data class Success(val conference: ConferenceUI, val conversation: ConversationUI, val company: Company, val connectedUser: StateFlow<User?>) : Configuration()
         data object Failure : Configuration()
     }
 
@@ -30,6 +34,8 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
     val conversation = _configuration.mapSuccess { it.conversation }.shareInEagerly(viewModelScope)
 
     val company = _configuration.mapSuccess { it.company }.shareInEagerly(viewModelScope)
+
+    val connectedUser = _configuration.filterIsInstance<Configuration.Success>().flatMapLatest { it.connectedUser }.shareInEagerly(viewModelScope)
 
     init {
         viewModelScope.launch {
@@ -49,6 +55,13 @@ abstract class CollaborationViewModel(configure: suspend () -> Configuration) : 
 
 suspend fun requestConfiguration(): Configuration {
     if (!KaleyraVideo.isConfigured) KaleyraVideoService.get()?.onRequestKaleyraVideoConfigure()
-    return if (KaleyraVideo.isConfigured) Configuration.Success(KaleyraVideo.conference, KaleyraVideo.conversation, KaleyraVideo.collaboration?.company ?: NoOpCompany())
+    return if (KaleyraVideo.isConfigured) {
+        Configuration.Success(
+            conference = KaleyraVideo.conference,
+            conversation = KaleyraVideo.conversation,
+            company = KaleyraVideo.collaboration?.company ?: NoOpCompany(),
+            connectedUser = KaleyraVideo.connectedUser
+        )
+    }
     else Configuration.Failure
 }

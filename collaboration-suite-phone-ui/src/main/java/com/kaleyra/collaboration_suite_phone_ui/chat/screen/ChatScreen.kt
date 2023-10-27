@@ -73,7 +73,7 @@ fun ChatScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val userMessage by viewModel.userMessage.collectAsStateWithLifecycle(initialValue = null)
 
-    if(uiState.connectionState is ConnectionState.Error) {
+    if (!uiState.isUserConnected || uiState.connectionState is ConnectionState.Error) {
         LaunchedEffect(Unit) {
             activity.finishAndRemoveTask()
         }

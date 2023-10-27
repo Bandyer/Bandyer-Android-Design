@@ -35,7 +35,7 @@ class ChatViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = ChatViewModel { CollaborationViewModel.Configuration.Success(conference, conversation, mockk()) }
+        viewModel = ChatViewModel { CollaborationViewModel.Configuration.Success(conference, conversation, mockk(), MutableStateFlow(mockk())) }
         every { conversation.create(any()) } returns Result.success(chat)
         every { conversation.create(any(), any()) } returns Result.success(chat)
         every { conference.call } returns MutableStateFlow(call)

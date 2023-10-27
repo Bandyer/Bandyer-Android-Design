@@ -89,7 +89,7 @@ class CallActionsViewModelTest {
     @Before
     fun setUp() {
         viewModel = spyk(CallActionsViewModel {
-            Configuration.Success(conferenceMock, conversationMock, companyMock)
+            Configuration.Success(conferenceMock, conversationMock, companyMock, MutableStateFlow(mockk()))
         })
         every { conferenceMock.call } returns MutableStateFlow(callMock)
         every { companyMock.id } returns MutableStateFlow("companyId")
