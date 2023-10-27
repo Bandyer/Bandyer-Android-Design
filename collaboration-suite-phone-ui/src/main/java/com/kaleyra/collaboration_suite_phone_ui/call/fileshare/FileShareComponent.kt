@@ -40,8 +40,10 @@ import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMe
 import com.kaleyra.collaboration_suite_phone_ui.theme.KaleyraTheme
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.moveToFront
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.view.UserMessageSnackbarHandler
+import com.kaleyra.collaboration_suite_phone_ui.extensions.ContextExtensions.findActivity
 
 const val ProgressIndicatorTag = "ProgressIndicatorTag"
 
@@ -54,6 +56,7 @@ internal fun FileShareComponent(
     isTesting: Boolean = false
 ) {
     val context = LocalContext.current
+    val activity = context.findActivity()
     val (showUnableToOpenFileSnackBar, setShowUnableToOpenSnackBar) = remember { mutableStateOf(false) }
     val (showCancelledFileSnackBar, setShowCancelledFileSnackBar) = remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -70,6 +73,12 @@ internal fun FileShareComponent(
                 })
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+         viewModel.setOnFileSelected {
+             activity.moveToFront()
+         }
     }
 
     FileShareComponent(

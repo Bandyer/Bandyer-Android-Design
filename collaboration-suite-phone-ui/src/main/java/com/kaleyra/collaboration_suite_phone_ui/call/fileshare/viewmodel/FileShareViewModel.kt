@@ -16,6 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.UserMe
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 internal class FileShareViewModel(configure: suspend () -> Configuration, filePickProvider: FilePickProvider) : BaseViewModel<FileShareUiState>(configure),
     UserMessageViewModel {
@@ -28,14 +29,16 @@ internal class FileShareViewModel(configure: suspend () -> Configuration, filePi
     private val sharedFolder: SharedFolder?
         get() = call.getValue()?.sharedFolder
 
+    private var onFileSelected: (() -> Unit)? = null
+
     init {
         filePickProvider.fileUri
             .debounce(300)
             .onEach { uri ->
                 if (uri.getFileSize() > MaxFileUploadBytes) _uiState.update { it.copy(showFileSizeLimit = true) }
                 else {
+                    onFileSelected?.invoke()
                     upload(uri)
-                    call.getValue()?.show()
                 }
             }
             .launchIn(viewModelScope)
@@ -67,6 +70,10 @@ internal class FileShareViewModel(configure: suspend () -> Configuration, filePi
 
     fun dismissUploadLimit() {
         _uiState.update { it.copy(showFileSizeLimit = false) }
+    }
+
+    fun setOnFileSelected(block: () -> Unit) {
+        onFileSelected = block
     }
 
     companion object {
