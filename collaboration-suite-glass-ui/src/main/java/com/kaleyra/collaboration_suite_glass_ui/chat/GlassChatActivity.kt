@@ -21,6 +21,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.kaleyra.collaboration_suite.State
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatActivityGlassBinding
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
@@ -36,7 +37,6 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensi
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.video_utils.battery_observer.BatteryInfo
 import com.kaleyra.video_utils.network_observer.WiFiInfo
-import com.kaleyra.video_networking.connector.Connector
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -59,7 +59,7 @@ internal class GlassChatActivity : ChatActivity(), GlassTouchEventManager.Listen
 
         viewModel.conversationState
             .onEach {
-                if (it !is Connector.State.Disconnecting) return@onEach
+                if (it !is State.Disconnecting) return@onEach
                 finishAndRemoveTask()
             }
             .launchIn(lifecycleScope)
