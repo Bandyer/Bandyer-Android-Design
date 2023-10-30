@@ -16,7 +16,7 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.utils.extensions
 
-import com.kaleyra.collaboration_suite.Collaboration
+import com.kaleyra.collaboration_suite.configuration.Configuration
 import com.kaleyra.collaboration_suite_core_ui.KaleyraVideo
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
@@ -30,7 +30,7 @@ import com.kaleyra.collaboration_suite_glass_ui.termsandconditions.GlassTermsAnd
  * @param configuration representing a set of info necessary to instantiate the communication
  */
 fun KaleyraVideo.configure(
-    configuration: Collaboration.Configuration
+    configuration: Configuration
 ) = configure(
     configuration,
     GlassCallActivity::class.java,
