@@ -57,8 +57,6 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
 
     private var lastAction: Action? = null
 
-    private var wasConnected = false
-
     private var endedCallIds = mutableSetOf<String>()
 
     private var scope = CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.IO)
@@ -68,75 +66,37 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     }
 
 
-    inner class Session {
-
-        private var userId: String? = null
-        private var accessLink: String? = null
-        private var accessTokenProvider: AccessTokenProvider? = null
-
-        constructor(userId: String, accessTokenProvider: AccessTokenProvider) {
-            this.userId = userId
-            this.accessTokenProvider = accessTokenProvider
-        }
-
-        constructor(accessLink: String) {
-            this.accessLink = accessLink
-        }
-
-        fun connect(): Deferred<User> = when {
-            accessLink != null                            -> collaboration.connect(accessLink!!)
-            userId != null && accessTokenProvider != null -> collaboration.connect(userId!!, accessTokenProvider!!)
-            else                                          -> CompletableDeferred<User>().apply { completeExceptionally(CancellationException("Connection parameters not correct!")) }
-        }
-
-        fun disconnect(clearSavedData: Boolean) {
-            collaboration.disconnect(clearSavedData)
-            if (!clearSavedData) return
-            userId = null
-            accessTokenProvider = null
-            accessLink = null
-        }
-    }
-
-    private var session: Session? = null
-
     /**
      * Connect the collaboration
      */
-    fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<User> = Session(userId, accessTokenProvider).apply {
-        session = this
+    fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<User> = collaboration.connect(userId, accessTokenProvider).apply {
         resume()
-    }.connect()
+    }
 
     /**
      * Disconnect the collaboration
      */
     fun disconnect(clearSavedData: Boolean = false) {
-        session?.disconnect(clearSavedData)
-        wasConnected = false
+        collaboration.disconnect(clearSavedData)
         scope.coroutineContext.cancelChildren()
         if (clearSavedData) NotificationManager.cancelAll()
     }
 
     private fun pause() {
-        wasConnected = collaboration.state.value.let { it !is State.Disconnected && it !is State.Disconnecting }
-        session?.disconnect(false)
         scope.coroutineContext.cancelChildren()
     }
 
     /**
      * Connect the collaboration
      */
-    fun connect(accessLink: String): Deferred<User> = Session(accessLink).apply {
-        session = this
+    fun connect(accessLink: String): Deferred<User> = collaboration.connect(accessLink).apply {
         resume()
-    }.connect()
+    }
 
     private fun resume() {
         scope.coroutineContext.cancelChildren()
         syncWithCallState(scope)
         syncWithChatMessages(scope)
-        if (wasConnected) session?.connect()
     }
 
     private fun syncWithAppLifecycle(scope: CoroutineScope) {
