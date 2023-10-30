@@ -37,7 +37,9 @@ class DialingComponentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var uiState by mutableStateOf(DialingUiState(video = streamUiMock.video))
+    private val initialState = DialingUiState(video = streamUiMock.video, participants = ImmutableList(listOf("user1", "user2")))
+
+    private var uiState by mutableStateOf(initialState)
 
     private var userMessage by mutableStateOf<UserMessage?>(null)
 
@@ -56,7 +58,7 @@ class DialingComponentTest {
 
     @After
     fun tearDown() {
-        uiState = DialingUiState(video = streamUiMock.video)
+        uiState = initialState
         backPressed = false
     }
 
@@ -67,7 +69,7 @@ class DialingComponentTest {
 
     @Test
     fun videoNull_avatarDisplayed() {
-        uiState = DialingUiState(video = null)
+        uiState = uiState.copy(video = null)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
         composeTestRule.findAvatar().assertIsDisplayed()
     }
@@ -75,7 +77,7 @@ class DialingComponentTest {
     @Test
     fun videoViewNull_avatarDisplayed() {
         val video = VideoUi(id = "videoId", view = null, isEnabled = false)
-        uiState = DialingUiState(video = video)
+        uiState = uiState.copy(video = video)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
         composeTestRule.findAvatar().assertIsDisplayed()
     }
@@ -83,7 +85,7 @@ class DialingComponentTest {
     @Test
     fun videoViewNotNullAndDisabled_avatarIsDisplayed() {
         val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false)
-        uiState = DialingUiState(video = video)
+        uiState = uiState.copy(video = video)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
         composeTestRule.findAvatar().assertIsDisplayed()
     }
@@ -91,21 +93,28 @@ class DialingComponentTest {
     @Test
     fun videoViewNotNullAndEnabled_streamIsDisplayed() {
         val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
-        uiState = DialingUiState(video = video)
+        uiState = uiState.copy(video = video)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertIsDisplayed()
         composeTestRule.findAvatar().assertDoesNotExist()
     }
 
     @Test
+    fun participantListIsEmpty_avatarIsNotDisplay() {
+        val video = VideoUi(id = "videoId", view = null, isEnabled = false)
+        uiState = uiState.copy(video = video, participants = ImmutableList())
+        composeTestRule.findAvatar().assertDoesNotExist()
+    }
+
+    @Test
     fun isLinkTrue_connectingIsDisplayed() {
-        uiState = DialingUiState(isLink = true)
+        uiState = uiState.copy(isLink = true)
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
         composeTestRule.onNodeWithText(connecting).assertIsDisplayed()
     }
 
     @Test
     fun isConnectingTrue_connectingIsDisplayed() {
-        uiState = DialingUiState(isConnecting = true)
+        uiState = uiState.copy(isConnecting = true)
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
         composeTestRule.onNodeWithText(connecting).assertIsDisplayed()
     }
@@ -118,7 +127,7 @@ class DialingComponentTest {
 
     @Test
     fun callStateDialing_otherParticipantsUsernamesAreDisplayed() {
-        uiState = DialingUiState(participants = ImmutableList(listOf("user1", "user2")))
+        uiState = uiState.copy(participants = ImmutableList(listOf("user1", "user2")))
         composeTestRule.onNodeWithContentDescription("user1, user2").assertIsDisplayed()
     }
 
@@ -130,37 +139,37 @@ class DialingComponentTest {
 
     @Test
     fun isVideoIncomingTrueAndVideoIsNull_avatarIsNotDisplayed() {
-        uiState = DialingUiState(isVideoIncoming = true, video = null)
+        uiState = uiState.copy(isVideoIncoming = true, video = null)
         composeTestRule.findAvatar().assertDoesNotExist()
     }
 
     @Test
     fun isVideoIncomingFalseAndVideoIsNull_avatarIsDisplayed() {
-        uiState = DialingUiState(isVideoIncoming = false, video = null)
+        uiState = uiState.copy(isVideoIncoming = false, video = null)
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
     fun videoViewIsNullAndVideoIsDisabled_avatarIsDisplayed() {
-        uiState = DialingUiState(video = VideoUi(id = "videoId", view = null, isEnabled = false))
+        uiState = uiState.copy(video = VideoUi(id = "videoId", view = null, isEnabled = false))
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
     fun videoNotNullAndVideoViewIsNullAndVideoIsEnabled_avatarIsNotDisplayed() {
-        uiState = DialingUiState(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
+        uiState = uiState.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
         composeTestRule.findAvatar().assertDoesNotExist()
     }
 
     @Test
     fun videoViewIsNotNullAndVideoIsDisabled_avatarIsDisplayed() {
-        uiState = DialingUiState(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false))
+        uiState = uiState.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false))
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
     fun videoIsEnabled_avatarIsNotDisplayed() {
-        uiState = DialingUiState(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
+        uiState = uiState.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
         composeTestRule.findAvatar().assertDoesNotExist()
     }
 

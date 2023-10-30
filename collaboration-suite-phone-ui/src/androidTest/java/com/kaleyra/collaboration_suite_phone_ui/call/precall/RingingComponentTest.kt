@@ -10,6 +10,7 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.dialing.view.DialingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
 import com.kaleyra.collaboration_suite_phone_ui.call.stream.model.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.recording.model.RecordingTypeUi
@@ -34,7 +35,9 @@ class RingingComponentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var uiState by mutableStateOf(RingingUiState(video = streamUiMock.video))
+    private val initialState = RingingUiState(video = streamUiMock.video, participants = ImmutableList(listOf("user1", "user2")))
+    
+    private var uiState by mutableStateOf(initialState)
 
     private var userMessage by mutableStateOf<UserMessage?>(null)
 
@@ -62,7 +65,7 @@ class RingingComponentTest {
 
     @After
     fun tearDown() {
-        uiState = RingingUiState(video = streamUiMock.video)
+        uiState = initialState
         timerMillis = 0L
         backPressed = false
         answerClicked = false
@@ -71,7 +74,7 @@ class RingingComponentTest {
 
     @Test
     fun videoNull_avatarDisplayed() {
-        uiState = RingingUiState(video = null)
+        uiState = uiState.copy(video = null)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
         composeTestRule.findAvatar().assertIsDisplayed()
     }
@@ -79,7 +82,7 @@ class RingingComponentTest {
     @Test
     fun videoViewNull_avatarDisplayed() {
         val video = VideoUi(id = "videoId", view = null, isEnabled = false)
-        uiState = RingingUiState(video = video)
+        uiState = uiState.copy(video = video)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
         composeTestRule.findAvatar().assertIsDisplayed()
     }
@@ -87,7 +90,7 @@ class RingingComponentTest {
     @Test
     fun videoViewNotNullAndDisabled_avatarIsDisplayed() {
         val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false)
-        uiState = RingingUiState(video = video)
+        uiState = uiState.copy(video = video)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
         composeTestRule.findAvatar().assertIsDisplayed()
     }
@@ -95,21 +98,28 @@ class RingingComponentTest {
     @Test
     fun videoViewNotNullAndEnabled_streamIsDisplayed() {
         val video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true)
-        uiState = RingingUiState(video = video)
+        uiState = uiState.copy(video = video)
         composeTestRule.onNodeWithTag(StreamViewTestTag).assertIsDisplayed()
         composeTestRule.findAvatar().assertDoesNotExist()
     }
 
     @Test
+    fun participantListIsEmpty_avatarIsNotDisplay() {
+        val video = VideoUi(id = "videoId", view = null, isEnabled = false)
+        uiState = uiState.copy(video = video, participants = ImmutableList())
+        composeTestRule.findAvatar().assertDoesNotExist()
+    }
+
+    @Test
     fun isLinkTrue_connectingIsDisplayed() {
-        uiState = RingingUiState(isLink = true)
+        uiState = uiState.copy(isLink = true)
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
         composeTestRule.onNodeWithText(connecting).assertIsDisplayed()
     }
 
     @Test
     fun isConnectingTrue_connectingIsDisplayed() {
-        uiState = RingingUiState(isConnecting = true)
+        uiState = uiState.copy(isConnecting = true)
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
         composeTestRule.onNodeWithText(connecting).assertIsDisplayed()
     }
@@ -176,7 +186,7 @@ class RingingComponentTest {
 
     @Test
     fun callStateRinging_otherParticipantsUsernamesAreDisplayed() {
-        uiState = RingingUiState(participants = ImmutableList(listOf("user1", "user2")))
+        uiState = uiState.copy(participants = ImmutableList(listOf("user1", "user2")))
         composeTestRule.onNodeWithContentDescription("user1, user2").assertIsDisplayed()
     }
 
@@ -185,9 +195,9 @@ class RingingComponentTest {
         val resources = composeTestRule.activity.resources
         val ringingQuantityOne = resources.getQuantityString(R.plurals.kaleyra_call_incoming_status_ringing, 1)
         val ringingQuantityOther = resources.getQuantityString(R.plurals.kaleyra_call_incoming_status_ringing, 2)
-        uiState = RingingUiState(participants = ImmutableList(listOf("user1")))
+        uiState = uiState.copy(participants = ImmutableList(listOf("user1")))
         composeTestRule.onNodeWithText(ringingQuantityOne).assertIsDisplayed()
-        uiState = RingingUiState(participants = ImmutableList(listOf("user1", "user2")))
+        uiState = uiState.copy(participants = ImmutableList(listOf("user1", "user2")))
         composeTestRule.onNodeWithText(ringingQuantityOther).assertIsDisplayed()
     }
 
@@ -195,43 +205,43 @@ class RingingComponentTest {
     fun amIWaitingOthersTrue_waitingForOtherParticipantsIsDisplayed() {
         val text = composeTestRule.activity.getString(R.string.kaleyra_waiting_for_other_participants)
         composeTestRule.onNodeWithText(text).assertDoesNotExist()
-        uiState = RingingUiState(amIWaitingOthers = true)
+        uiState = uiState.copy(amIWaitingOthers = true)
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
     @Test
     fun isVideoIncomingTrueAndVideoIsNull_avatarIsNotDisplayed() {
-        uiState = RingingUiState(isVideoIncoming = true, video = null)
+        uiState = uiState.copy(isVideoIncoming = true, video = null)
         composeTestRule.findAvatar().assertDoesNotExist()
     }
 
     @Test
     fun isVideoIncomingFalseAndVideoIsNull_avatarIsDisplayed() {
-        uiState = RingingUiState(isVideoIncoming = false, video = null)
+        uiState = uiState.copy(isVideoIncoming = false, video = null)
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
     fun videoViewIsNullAndVideoIsDisabled_avatarIsDisplayed() {
-        uiState = RingingUiState(video = VideoUi(id = "videoId", view = null, isEnabled = false))
+        uiState = uiState.copy(video = VideoUi(id = "videoId", view = null, isEnabled = false))
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
     fun videoNotNullAndVideoViewIsNullAndVideoIsEnabled_avatarIsNotDisplayed() {
-        uiState = RingingUiState(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
+        uiState = uiState.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
         composeTestRule.findAvatar().assertDoesNotExist()
     }
 
     @Test
     fun videoViewIsNotNullAndVideoIsDisabled_avatarIsDisplayed() {
-        uiState = RingingUiState(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false))
+        uiState = uiState.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = false))
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
     fun videoIsEnabled_avatarIsNotDisplayed() {
-        uiState = RingingUiState(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
+        uiState = uiState.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
         composeTestRule.findAvatar().assertDoesNotExist()
     }
 
@@ -252,9 +262,9 @@ class RingingComponentTest {
         recordingValue: RecordingTypeUi,
         expectedText: String
     ) {
-        uiState = RingingUiState(recording = null)
+        uiState = uiState.copy(recording = null)
         onNodeWithText(expectedText).assertDoesNotExist()
-        uiState = RingingUiState(recording = recordingValue)
+        uiState = uiState.copy(recording = recordingValue)
         onNodeWithText(expectedText).assertIsDisplayed()
     }
 
