@@ -69,7 +69,7 @@ fun ChatScreen(
     viewModel: PhoneChatViewModel
 ) {
     val activity = LocalContext.current.findActivity()
-    val theme by viewModel.theme.collectAsStateWithLifecycle(CompanyUI.Theme())
+    val theme by viewModel.theme.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val userMessage by viewModel.userMessage.collectAsStateWithLifecycle(initialValue = null)
 

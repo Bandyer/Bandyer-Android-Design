@@ -268,7 +268,7 @@ internal fun CallScreen(
     onWhiteboardVisibility: (Boolean) -> Unit,
     onActivityFinishing: () -> Unit
 ) {
-    val theme by viewModel.theme.collectAsStateWithLifecycle(CompanyUI.Theme())
+    val theme by viewModel.theme.collectAsStateWithLifecycle()
     val activity = LocalContext.current.findActivity() as FragmentActivity
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberBottomSheetState(

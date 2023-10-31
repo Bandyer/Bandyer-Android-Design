@@ -44,8 +44,9 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
     override val userMessage: Flow<UserMessage>
         get() = CallUserMessagesProvider.userMessage
 
-    val theme: Flow<CompanyUI.Theme>
-        get() = company.flatMapLatest { it.combinedTheme }
+    val theme = company
+        .flatMapLatest { it.combinedTheme }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, CompanyUI.Theme())
 
     private val streams: Flow<List<StreamUi>> =
         combine(call.toInCallParticipants(), call.toStreamsUi()) { participants, streams -> participants to streams }

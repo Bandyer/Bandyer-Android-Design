@@ -84,8 +84,9 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
         .map(PhoneChatViewModelState::toUiState)
         .stateIn(viewModelScope, SharingStarted.Eagerly, viewModelState.value.toUiState())
 
-    val theme: Flow<CompanyUI.Theme>
-        get() = company.flatMapLatest { it.combinedTheme }
+    val theme = company
+        .flatMapLatest { it.combinedTheme }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, CompanyUI.Theme())
 
     override val userMessage: Flow<UserMessage>
         get() = CallUserMessagesProvider.userMessage
