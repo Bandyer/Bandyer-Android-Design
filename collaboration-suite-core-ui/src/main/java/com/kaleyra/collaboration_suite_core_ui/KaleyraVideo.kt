@@ -25,6 +25,7 @@ import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.configuration.Configuration
 import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.CoroutineExtensions.launchBlocking
 import com.kaleyra.video_utils.cached
 import com.kaleyra.video_utils.getValue
 import com.kaleyra.video_utils.setValue
@@ -34,6 +35,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,6 +43,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
 /**
@@ -162,29 +165,31 @@ object KaleyraVideo {
      * Connect
      */
     fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<User> = CompletableDeferred<User>().apply {
-        serialScope.launch {
-            val connect = collaborationUIConnector?.connect(userId, accessTokenProvider) ?: return@launch
+        serialScope.launchBlocking {
+            val connect = collaborationUIConnector?.connect(userId, accessTokenProvider) ?: return@launchBlocking
             connect.invokeOnCompletion {
                 if(it != null) completeExceptionally(it)
                 else complete(connect.getCompleted())
             }
+            connect.await()
             termsAndConditionsRequester?.setUp(state, ::disconnect)
         }
     }
 
     fun connect(accessLink: String): Deferred<User> = CompletableDeferred<User>().apply {
-        serialScope.launch {
-            val connect = collaborationUIConnector?.connect(accessLink) ?: return@launch
+        serialScope.launchBlocking {
+            val connect = collaborationUIConnector?.connect(accessLink) ?: return@launchBlocking
             connect.invokeOnCompletion {
-                if(it != null) completeExceptionally(it)
+                if (it != null) completeExceptionally(it)
                 else complete(connect.getCompleted())
             }
+            connect.await()
             termsAndConditionsRequester?.setUp(state, ::disconnect)
         }
     }
 
     fun disconnect(clearSavedData: Boolean = false) {
-        serialScope.launch {
+        serialScope.launchBlocking {
             collaborationUIConnector?.disconnect(clearSavedData)
             termsAndConditionsRequester?.dispose()
         }
@@ -194,8 +199,8 @@ object KaleyraVideo {
      * Dispose the collaboration UI and optionally clear saved data.
      */
     fun reset() {
-        serialScope.launch {
-            collaboration ?: return@launch
+        serialScope.launchBlocking {
+            collaboration ?: return@launchBlocking
             mainScope?.cancel()
             collaborationUIConnector?.disconnect(true)
             _conference?.dispose()
