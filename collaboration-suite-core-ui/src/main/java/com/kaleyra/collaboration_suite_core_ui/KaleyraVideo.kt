@@ -25,6 +25,7 @@ import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.configuration.Configuration
 import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
+import com.kaleyra.collaboration_suite_core_ui.utils.CORE_UI
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.CoroutineExtensions.launchBlocking
 import com.kaleyra.video_utils.cached
 import com.kaleyra.video_utils.getValue
@@ -35,15 +36,12 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
 /**
@@ -56,7 +54,8 @@ object KaleyraVideo {
     /**
      * Collaboration
      */
-    @get:Synchronized @set:Synchronized
+    @get:Synchronized
+    @set:Synchronized
     internal var collaboration: Collaboration? = null
 
     private val serialScope by lazy { CoroutineScope(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) }
@@ -68,16 +67,17 @@ object KaleyraVideo {
     private var termsAndConditionsActivityClazz: Class<*>? = null
     private var chatNotificationActivityClazz: Class<*>? = null
 
-    private var collaborationUIConnector: CollaborationUIConnector? = null
     private var termsAndConditionsRequester: TermsAndConditionsRequester? = null
 
-    private var _conference: ConferenceUI? by cached { ConferenceUI(collaboration!!.conference, callActivityClazz, collaboration!!.configuration.logger) }
+    private val logger = collaboration!!.configuration.logger
+    private var _conference: ConferenceUI? by cached { ConferenceUI(collaboration!!.conference, callActivityClazz, logger) }
     private var _conversation: ConversationUI? by cached { ConversationUI(collaboration!!.conversation, chatActivityClazz, chatNotificationActivityClazz) }
 
     /**
      * Users description to be used for the UI
      */
-    @get:Synchronized @set:Synchronized
+    @get:Synchronized
+    @set:Synchronized
     var userDetailsProvider: UserDetailsProvider? = null
 
     /**
@@ -136,7 +136,6 @@ object KaleyraVideo {
         this.termsAndConditionsActivityClazz = termsAndConditionsActivityClazz
         this.chatNotificationActivityClazz = chatNotificationActivityClazz
         mainScope = MainScope()
-        collaborationUIConnector = CollaborationUIConnector(collaboration!!, mainScope!!)
         termsAndConditionsActivityClazz?.also {
             termsAndConditionsRequester = TermsAndConditionsRequester(it)
         }
@@ -166,19 +165,39 @@ object KaleyraVideo {
      */
     fun connect(userId: String, accessTokenProvider: AccessTokenProvider): Deferred<User> = CompletableDeferred<User>().apply {
         serialScope.launchBlocking {
-            val connect = collaborationUIConnector?.connect(userId, accessTokenProvider) ?: return@launchBlocking
-            connect.invokeOnCompletion {
-                if(it != null) completeExceptionally(it)
-                else complete(connect.getCompleted())
+            logger?.verbose(logTarget = CORE_UI, message = "Connecting KaleyraVideo...")
+            val connect = collaboration?.connect(userId, accessTokenProvider)
+            if (connect == null) {
+                logger?.error(logTarget = CORE_UI, message = "Connecting KaleyraVideo but KaleyraCollaboration is null")
+                return@launchBlocking
             }
-            connect.await()
+
+            kotlin.runCatching {
+                logger?.verbose(logTarget = CORE_UI, message = "Connecting KaleyraVideo awaiting connect...")
+                connect.await()
+                connect.getCompleted()
+
+                (connect.getCompletionExceptionOrNull())?.let {
+                    logger?.verbose(logTarget = CORE_UI, message = "Connecting KaleyraVideo connect failed with error ${it.message}")
+                    completeExceptionally(it)
+                }
+
+                connect.getCompleted()?.let {
+                    logger?.verbose(logTarget = CORE_UI, message = "Connecting KaleyraVideo connect completed")
+                    complete(it)
+                }
+            }.onFailure {
+                logger?.error(logTarget = CORE_UI, message = "Connecting KaleyraVideo failed with error: ${it.message}")
+            }
             termsAndConditionsRequester?.setUp(state, ::disconnect)
+        }.invokeOnCompletion { completionException ->
+            logger?.verbose(logTarget = CORE_UI, message = "Connecting KaleyraVideo connect job completed ${completionException?.let { "with error: ${it.message}" }}")
         }
     }
 
     fun connect(accessLink: String): Deferred<User> = CompletableDeferred<User>().apply {
         serialScope.launchBlocking {
-            val connect = collaborationUIConnector?.connect(accessLink) ?: return@launchBlocking
+            val connect = collaboration?.connect(accessLink) ?: return@launchBlocking
             connect.invokeOnCompletion {
                 if (it != null) completeExceptionally(it)
                 else complete(connect.getCompleted())
@@ -190,7 +209,7 @@ object KaleyraVideo {
 
     fun disconnect(clearSavedData: Boolean = false) {
         serialScope.launchBlocking {
-            collaborationUIConnector?.disconnect(clearSavedData)
+            collaboration?.disconnect(clearSavedData)
             termsAndConditionsRequester?.dispose()
         }
     }
@@ -202,7 +221,7 @@ object KaleyraVideo {
         serialScope.launchBlocking {
             collaboration ?: return@launchBlocking
             mainScope?.cancel()
-            collaborationUIConnector?.disconnect(true)
+            collaboration?.disconnect(true)
             _conference?.dispose()
             _conversation?.dispose()
             termsAndConditionsRequester?.dispose()

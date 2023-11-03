@@ -496,7 +496,7 @@ class CallViewModelTest {
     }
 
     @Test
-    fun `if the onCallEnded callback is set after the call state is set to ended, the lambda is immediately invoked`() = runTest {
+    fun `if the onCallEnded callback is set after the call state is set to ended with error, the lambda is immediately invoked`() = runTest {
         every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnected.Ended.Error)
         advanceUntilIdle()
         var hasFeedback: Boolean? = null
@@ -510,6 +510,42 @@ class CallViewModelTest {
         advanceUntilIdle()
         assertEquals(false, hasFeedback)
         assertEquals(true, hasErrorOccurred)
+        assertEquals(false, hasBeenKicked)
+    }
+
+    @Test
+    fun `if the onCallEnded callback is set after the call state is set to ended, the lambda is immediately invoked`() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnected.Ended)
+        advanceUntilIdle()
+        var hasFeedback: Boolean? = null
+        var hasErrorOccurred: Boolean? = null
+        var hasBeenKicked: Boolean? = null
+        viewModel.setOnCallEnded { feedback, error, kicked ->
+            hasFeedback = feedback
+            hasErrorOccurred = error
+            hasBeenKicked = kicked
+        }
+        advanceUntilIdle()
+        assertEquals(false, hasFeedback)
+        assertEquals(false, hasErrorOccurred)
+        assertEquals(false, hasBeenKicked)
+    }
+
+    @Test
+    fun `if the onCallEnded callback is set after the call state is set to disconnecting, the lambda is immediately invoked`() = runTest {
+        every { callMock.state } returns MutableStateFlow<Call.State>(Call.State.Disconnecting)
+        advanceUntilIdle()
+        var hasFeedback: Boolean? = null
+        var hasErrorOccurred: Boolean? = null
+        var hasBeenKicked: Boolean? = null
+        viewModel.setOnCallEnded { feedback, error, kicked ->
+            hasFeedback = feedback
+            hasErrorOccurred = error
+            hasBeenKicked = kicked
+        }
+        advanceUntilIdle()
+        assertEquals(false, hasFeedback)
+        assertEquals(false, hasErrorOccurred)
         assertEquals(false, hasBeenKicked)
     }
 
