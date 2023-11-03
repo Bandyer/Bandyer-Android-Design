@@ -33,6 +33,7 @@ internal object CallStateMapper {
                 isRinging(state, participants) -> CallStateUi.Ringing(isConnecting = state != Call.State.Disconnected)
                 state is Call.State.Connected -> CallStateUi.Connected
                 state is Call.State.Reconnecting -> CallStateUi.Reconnecting
+                state is Call.State.Disconnecting -> CallStateUi.Disconnecting
                 state is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> CallStateUi.Disconnected.Ended.AnsweredOnAnotherDevice
                 state is Call.State.Disconnected.Ended.Declined -> CallStateUi.Disconnected.Ended.Declined
                 state is Call.State.Disconnected.Ended.LineBusy -> CallStateUi.Disconnected.Ended.LineBusy

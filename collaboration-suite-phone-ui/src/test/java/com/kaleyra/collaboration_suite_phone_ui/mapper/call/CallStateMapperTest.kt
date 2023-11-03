@@ -236,6 +236,13 @@ class CallStateMapperTest {
     }
 
     @Test
+    fun stateDisconnecting_toCallStateUi_callStateHungUp() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnecting)
+        val result = callFlow.toCallStateUi()
+        Assert.assertEquals(CallStateUi.Disconnecting, result.first())
+    }
+
+    @Test
     fun stateConnected_isConnected_true() = runTest {
         every { callMock.state } returns MutableStateFlow(Call.State.Connected)
         val actual = callFlow.isConnected().first()

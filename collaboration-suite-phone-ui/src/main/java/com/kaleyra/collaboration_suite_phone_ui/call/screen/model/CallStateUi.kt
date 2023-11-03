@@ -4,11 +4,13 @@ sealed class CallStateUi {
 
     data class Ringing(val isConnecting: Boolean = false) : CallStateUi()
 
-    object Dialing : CallStateUi()
+    data object Dialing : CallStateUi()
 
-    object Connected : CallStateUi()
+    data object Connected : CallStateUi()
 
-    object Reconnecting : CallStateUi()
+    data object Reconnecting : CallStateUi()
+
+    data object Disconnecting : CallStateUi()
 
     sealed class Disconnected : CallStateUi() {
 
@@ -18,25 +20,25 @@ sealed class CallStateUi {
 
             companion object : Ended()
 
-            object HungUp: Ended()
+            data object HungUp: Ended()
 
-            object Declined : Ended()
+            data object Declined : Ended()
 
             data class Kicked(val adminName: String) : Ended()
 
-            object AnsweredOnAnotherDevice : Ended()
+            data object AnsweredOnAnotherDevice : Ended()
 
-            object LineBusy : Ended()
+            data object LineBusy : Ended()
 
-            object Timeout : Ended()
+            data object Timeout : Ended()
 
             sealed class Error: Ended() {
 
                 companion object : Error()
 
-                object Server : Error()
+                data object Server : Error()
 
-                object Unknown : Error()
+                data object Unknown : Error()
             }
         }
     }

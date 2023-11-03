@@ -118,7 +118,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .launchIn(viewModelScope)
 
         callState
-            .filter { it is CallStateUi.Disconnected.Ended }
+            .filter { it is CallStateUi.Disconnecting || it is CallStateUi.Disconnected.Ended }
             .combine(onCallEnded) { callState, onCallEnded ->
                 onCallEnded.invoke(
                     uiState.value.showFeedback,
