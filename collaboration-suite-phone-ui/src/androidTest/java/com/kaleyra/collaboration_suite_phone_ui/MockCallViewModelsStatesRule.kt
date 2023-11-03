@@ -1,25 +1,21 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
-import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.mockAudioDevices
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.viewmodel.AudioOutputViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.mockCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.viewmodel.CallActionsViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.dialing.view.DialingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.dialing.viewmodel.DialingViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.ringing.viewmodel.RingingViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.screen.viewmodel.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.VirtualBackgroundUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.viewmodel.VirtualBackgroundViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.whiteboard.viewmodel.WhiteboardViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.model.ScreenShareTargetUi
-import com.kaleyra.collaboration_suite_phone_ui.call.virtualbackground.model.mockVirtualBackgrounds
 import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import io.mockk.every
 import io.mockk.mockk
