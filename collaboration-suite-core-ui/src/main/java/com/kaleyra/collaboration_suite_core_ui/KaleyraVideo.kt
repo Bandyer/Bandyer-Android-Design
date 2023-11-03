@@ -29,6 +29,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.CORE_UI
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.CoroutineExtensions.launchBlocking
 import com.kaleyra.video_utils.cached
 import com.kaleyra.video_utils.getValue
+import com.kaleyra.video_utils.logging.PriorityLogger
 import com.kaleyra.video_utils.setValue
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
@@ -57,6 +58,10 @@ object KaleyraVideo {
     @get:Synchronized
     @set:Synchronized
     internal var collaboration: Collaboration? = null
+        set(value) {
+            logger = value?.configuration?.logger
+            field = value
+        }
 
     private val serialScope by lazy { CoroutineScope(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) }
 
@@ -69,7 +74,7 @@ object KaleyraVideo {
 
     private var termsAndConditionsRequester: TermsAndConditionsRequester? = null
 
-    private val logger = collaboration!!.configuration.logger
+    private var logger: PriorityLogger? = null
     private var _conference: ConferenceUI? by cached { ConferenceUI(collaboration!!.conference, callActivityClazz, logger) }
     private var _conversation: ConversationUI? by cached { ConversationUI(collaboration!!.conversation, chatActivityClazz, chatNotificationActivityClazz) }
 
