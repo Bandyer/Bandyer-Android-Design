@@ -9,12 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.conference.Call
 import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite.conference.Inputs
-import com.kaleyra.collaboration_suite_core_ui.CollaborationViewModel.Configuration
 import com.kaleyra.collaboration_suite_core_ui.utils.FlowUtils.combine
 import com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallActionsUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.AudioOutputMapper.toCurrentAudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.CallActionsMapper.toCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.hasUsbCamera
@@ -23,14 +21,13 @@ import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.isMyMicE
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.InputMapper.isSharingScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.mapper.VirtualBackgroundMapper.isVirtualBackgroundEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
+import com.kaleyra.collaboration_suite_phone_ui.call.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.CameraRestrictionMessage
 import com.kaleyra.collaboration_suite_phone_ui.common.usermessages.provider.CallUserMessagesProvider
-import com.kaleyra.collaboration_suite_phone_ui.common.immutablecollections.ImmutableList
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.Locale.filter
 
 internal class CallActionsViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallActionsUiState>(configure) {
     override fun initialState() = CallActionsUiState()

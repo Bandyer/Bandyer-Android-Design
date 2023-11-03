@@ -24,6 +24,7 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.conference.Call
@@ -35,6 +36,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.ScreenShareOverlayDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsOpeningDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.StreamsVideoViewDelegate
 import com.kaleyra.collaboration_suite_core_ui.contactdetails.ContactDetailsManager
+import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.hasScreenSharingInput
 import com.kaleyra.collaboration_suite_core_ui.notification.fileshare.FileShareNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.CallProximityDelegate
 import com.kaleyra.collaboration_suite_core_ui.proximity.ProximityCallActivity
@@ -52,7 +54,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -226,23 +228,20 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
         // The runCatching is needed because the startForeground may fails when the app is in background but
         // the isInForeground flag is still true. This happens because the onStop of the application lifecycle is
         // dispatched 700ms after the last activity's onStop
-        foregroundJob = AppLifecycle.isInForeground
-            .filter { it }
-            .onEach {
-                kotlin.runCatching {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        startForeground(
-                            CALL_NOTIFICATION_ID,
-                            notification!!,
-                            ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL or
-                                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION or
-                                ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA or
-                                ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
-                        )
-                    } else startForeground(CALL_NOTIFICATION_ID, notification!!)
-                }
+        foregroundJob = combine(AppLifecycle.isInForeground, flowOf(call!!).hasScreenSharingInput()) { isInForeground, hasScreenSharingPermission ->
+            if (!isInForeground) return@combine
+            kotlin.runCatching {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) startForeground(CALL_NOTIFICATION_ID, notification!!, getForegroundServiceType(hasScreenSharingPermission))
+                else startForeground(CALL_NOTIFICATION_ID, notification!!)
             }
-            .launchIn(lifecycleScope)
+        }.launchIn(lifecycleScope)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun getForegroundServiceType(hasScreenSharingPermission: Boolean): Int {
+        val inputsFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA or ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE else 0
+        val screenSharingFlag = if (hasScreenSharingPermission) ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION else 0
+        return ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL or inputsFlag or screenSharingFlag
     }
 
     private fun handleProximity(call: CallUI) {

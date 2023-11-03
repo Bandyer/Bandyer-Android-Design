@@ -5,6 +5,7 @@ import com.kaleyra.collaboration_suite.conference.CallParticipant
 import com.kaleyra.collaboration_suite.conference.Input
 import com.kaleyra.collaboration_suite.conference.Stream
 import com.kaleyra.collaboration_suite_core_ui.call.CameraStreamPublisher
+import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.hasScreenSharingInput
 import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.isAnyScreenInputActive
 import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.isAppScreenInputActive
 import com.kaleyra.collaboration_suite_core_ui.mapper.InputMapper.isDeviceScreenInputActive
@@ -174,5 +175,20 @@ class InputMapperTests {
         Assert.assertEquals(event, actual)
     }
 
+    @Test
+    fun screenShareInAvailableInputs_hasScreenSharingInput_true() = runTest {
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Screen.My>()))
+        val result = flowOf(callMock).hasScreenSharingInput()
+        val actual = result.first()
+        Assert.assertEquals(true, actual)
+    }
+
+    @Test
+    fun screenShareNotInAvailableInputs_hasScreenSharingInput_false() = runTest {
+        every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Application>()))
+        val result = flowOf(callMock).hasScreenSharingInput()
+        val actual = result.first()
+        Assert.assertEquals(false, actual)
+    }
 
 }

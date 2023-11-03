@@ -43,4 +43,7 @@ object InputMapper {
             .flatMapLatest { it.streams }
             .map { streams -> streams.firstOrNull { stream -> stream.id == CameraStreamPublisher.CAMERA_STREAM_ID } }
             .flatMapLatest { it?.audio ?: flowOf(null) }
+
+    fun Flow<Call>.hasScreenSharingInput(): Flow<Boolean> =
+        this.flatMapLatest { it.inputs.availableInputs }.map { inputs -> inputs.any { it is Input.Video.Screen.My } }
 }
