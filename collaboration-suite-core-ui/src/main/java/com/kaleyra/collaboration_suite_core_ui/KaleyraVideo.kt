@@ -35,9 +35,7 @@ import com.kaleyra.video_utils.setValue
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -72,8 +70,6 @@ object KaleyraVideo {
         }
 
     private val serialScope by lazy { CoroutineScope(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) }
-
-    private var mainScope: CoroutineScope? = null
 
     private lateinit var callActivityClazz: Class<*>
     private lateinit var chatActivityClazz: Class<*>
@@ -151,7 +147,6 @@ object KaleyraVideo {
         this.callActivityClazz = callActivityClazz
         this.termsAndConditionsActivityClazz = termsAndConditionsActivityClazz
         this.chatNotificationActivityClazz = chatNotificationActivityClazz
-        mainScope = MainScope()
         termsAndConditionsActivityClazz?.also {
             termsAndConditionsRequester = TermsAndConditionsRequester(it)
         }
@@ -236,7 +231,6 @@ object KaleyraVideo {
     fun reset() {
         serialScope.launchBlocking {
             collaboration ?: return@launchBlocking
-            mainScope?.cancel()
             collaboration?.disconnect(true)
             _conference?.dispose()
             _conversation?.dispose()
@@ -244,7 +238,6 @@ object KaleyraVideo {
             collaboration = null
             _conference = null
             _conversation = null
-            mainScope = null
         }
     }
 }
