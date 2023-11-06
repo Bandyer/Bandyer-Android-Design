@@ -27,6 +27,7 @@ import com.kaleyra.collaboration_suite_core_ui.model.UserDetailsProvider
 import com.kaleyra.collaboration_suite_core_ui.termsandconditions.TermsAndConditionsRequester
 import com.kaleyra.collaboration_suite_core_ui.utils.CORE_UI
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.CoroutineExtensions.launchBlocking
+import com.kaleyra.video_utils.ContextRetainer
 import com.kaleyra.video_utils.cached
 import com.kaleyra.video_utils.getValue
 import com.kaleyra.video_utils.logging.PriorityLogger
@@ -51,6 +52,13 @@ import java.util.concurrent.Executors
  * This object allows the usage of a KaleyraVideo
  */
 object KaleyraVideo {
+
+    /**
+     * Is configured
+     */
+    @get:Synchronized
+    val isConfigured
+        get() = collaboration != null
 
     /**
      * Collaboration
@@ -79,15 +87,9 @@ object KaleyraVideo {
     private var _conversation: ConversationUI? by cached { ConversationUI(collaboration!!.conversation, chatActivityClazz, chatNotificationActivityClazz) }
 
     /**
-     * Users description to be used for the UI
-     */
-    @get:Synchronized
-    @set:Synchronized
-    var userDetailsProvider: UserDetailsProvider? = null
-
-    /**
      * Conference
      */
+    @get:Synchronized
     val conference: ConferenceUI
         get() {
             require(collaboration != null) { "configure the CollaborationUI to use the conference" }
@@ -95,14 +97,9 @@ object KaleyraVideo {
         }
 
     /**
-     * Is configured
-     */
-    val isConfigured
-        get() = collaboration != null
-
-    /**
      * Conversation
      */
+    @get:Synchronized
     val conversation: ConversationUI
         get() {
             require(collaboration != null) { "configure the KaleyraVideo to use the conversation" }
@@ -113,6 +110,15 @@ object KaleyraVideo {
 
     val companyTheme: SharedFlow<Company.Theme> by lazy { collaboration?.company?.theme ?: MutableSharedFlow() }
 
+    /**
+     * Users description to be used for the UI
+     */
+    @get:Synchronized
+    @set:Synchronized
+    var userDetailsProvider: UserDetailsProvider? = null
+
+    @get:Synchronized
+    @set:Synchronized
     var theme: CompanyUI.Theme? = null
 
     /**
@@ -131,7 +137,12 @@ object KaleyraVideo {
         chatActivityClazz: Class<*>,
         termsAndConditionsActivityClazz: Class<*>? = null,
         chatNotificationActivityClazz: Class<*>? = null
-    ): Boolean {
+    ): Boolean = synchronized(this) {
+        kotlin.runCatching { ContextRetainer.context }.onFailure {
+            configuration.logger?.error(logTarget = CORE_UI, message = "You are trying to configure KaleyraVideo SDK in a multi-process application.\nPlease call enableMultiProcess method.")
+            return false
+        }
+
         if (isConfigured) return false
         Collaboration.create(configuration).apply {
             collaboration = this
