@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
@@ -125,9 +126,10 @@ interface CallNotificationDelegate {
     ): Notification? {
         val context = ContextRetainer.context
         val isGroupCall = participants.others.count() > 1
+
         val enableCallStyle = !DeviceUtils.isSmartGlass
-        val callerDescription = participants.creator()?.combinedDisplayName?.firstOrNull() ?: ""
-        val calleeDescription = participants.others.map { it.combinedDisplayName.firstOrNull() ?: Uri.EMPTY }.joinToString()
+        val callerDescription = participants.creator()?.combinedDisplayName?.filterNotNull()?.firstOrNull() ?: ""
+        val calleeDescription = participants.others.map { it.combinedDisplayName.filterNotNull().firstOrNull() ?: Uri.EMPTY }.joinToString()
 
         return when {
             isIncoming(callState, participants) -> {
