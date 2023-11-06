@@ -125,7 +125,7 @@ object KaleyraVideo {
      * @param chatActivityClazz class of the chat activity
      * @param termsAndConditionsActivityClazz class of the terms and conditions activity
      * @param chatNotificationActivityClazz class of the chat notification fullscreen activity
-     * @return
+     * @return Boolean true if KaleyraVideo has been configured, false if already configured
      */
     fun configure(
         configuration: Configuration,
