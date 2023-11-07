@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -58,6 +59,19 @@ class AwaitingParticipantsTextToSpeechNotifierTest {
         advanceTimeBy(1)
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_call_waiting_for_other_participants) }
         verify(exactly = 1) { callTextToSpeechMock.speak("text") }
+    }
+
+    @Test
+    fun `test i am waiting others utterance not played`() = runTest {
+        every { any<Flow<Call>>().amIWaitingOthers() } returns MutableStateFlow(false)
+        every { contextMock.getString(R.string.kaleyra_call_waiting_for_other_participants) } returns "text"
+
+        notifier.start(backgroundScope)
+
+        advanceTimeBy(AwaitingParticipantsTextToSpeechNotifier.AM_I_WAITING_FOR_OTHERS_DEBOUNCE_MILLIS)
+        runCurrent()
+        verify(exactly = 0) { contextMock.getString(R.string.kaleyra_call_waiting_for_other_participants) }
+        verify(exactly = 0) { callTextToSpeechMock.speak("text") }
     }
 
     @Test
