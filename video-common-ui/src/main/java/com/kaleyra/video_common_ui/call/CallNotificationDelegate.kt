@@ -112,6 +112,7 @@ interface CallNotificationDelegate {
     ): Notification? {
         val context = ContextRetainer.context
         val isGroupCall = participants.others.count() > 1
+
         val enableCallStyle = !DeviceUtils.isSmartGlass
         val callerDescription = participants.creator()?.combinedDisplayName?.firstOrNull() ?: ""
         val calleeDescription = participants.others.map { it.combinedDisplayName.firstOrNull() ?: Uri.EMPTY }.joinToString()

@@ -6,6 +6,7 @@ import com.kaleyra.video_common_ui.mapper.StreamMapper.amIWaitingOthers
 import com.kaleyra.video_utils.proximity_listener.ProximitySensor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
@@ -17,6 +18,10 @@ internal class AwaitingParticipantsTextToSpeechNotifier(
     override val callTextToSpeech: CallTextToSpeech = CallTextToSpeech()
 ): TextToSpeechNotifier {
 
+    companion object {
+        const val AM_I_WAITING_FOR_OTHERS_DEBOUNCE_MILLIS = 2000L
+    }
+
     private var currentJob: Job? = null
 
     override fun start(scope: CoroutineScope) {
@@ -24,6 +29,7 @@ internal class AwaitingParticipantsTextToSpeechNotifier(
 
         currentJob = flowOf(call)
             .amIWaitingOthers()
+            .debounce(AM_I_WAITING_FOR_OTHERS_DEBOUNCE_MILLIS)
             .onEach {
                 if (!shouldNotify) return@onEach
                 val text = context.getString(R.string.kaleyra_call_waiting_for_other_participants)

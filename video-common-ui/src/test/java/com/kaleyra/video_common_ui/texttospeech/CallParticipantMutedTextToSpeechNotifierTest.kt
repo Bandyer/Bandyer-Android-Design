@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -46,12 +47,12 @@ class CallParticipantMutedTextToSpeechNotifierTest {
     }
 
     @Test
-    fun `test participant muted utterance`() = runTest(UnconfinedTestDispatcher()) {
+    fun `test participant muted utterance`() = runTest {
         every { contextMock.getString(R.string.kaleyra_call_participant_utterance_muted_by_admin) } returns "text"
 
         notifier.start(backgroundScope)
 
-        advanceUntilIdle()
+        runCurrent()
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_call_participant_utterance_muted_by_admin) }
         verify(exactly = 1) { callTextToSpeechMock.speak("text") }
     }

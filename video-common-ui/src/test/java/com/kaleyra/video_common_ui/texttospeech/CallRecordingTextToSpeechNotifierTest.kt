@@ -15,6 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -53,34 +54,35 @@ class CallRecordingTextToSpeechNotifierTest {
     }
 
     @Test
-    fun `test recording on connect utterance`() = runTest(UnconfinedTestDispatcher()) {
+    fun `test recording on connect utterance`() = runTest {
         val recordingMock = mockk<Call.Recording>(relaxed = true)
         every { recordingMock.type } returns Call.Recording.Type.OnConnect
         every { callMock.recording } returns MutableStateFlow(recordingMock)
         notifier.start(backgroundScope)
+        runCurrent()
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_utterance_recording_call_will_be_recorded) }
     }
 
     @Test
-    fun `test recording started utterance`() = runTest(UnconfinedTestDispatcher()) {
+    fun `test recording started utterance`() = runTest {
         every { recordingMock.state } returns MutableStateFlow(mockk<Call.Recording.State.Started>())
         every { contextMock.getString(R.string.kaleyra_utterance_recording_started) } returns "text"
 
         notifier.start(backgroundScope)
 
-        advanceUntilIdle()
+        runCurrent()
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_utterance_recording_started) }
         verify(exactly = 1) { callTextToSpeechMock.speak("text") }
     }
 
     @Test
-    fun `initial recording stopped state is ignored`() = runTest(UnconfinedTestDispatcher()) {
+    fun `initial recording stopped state is ignored`() = runTest {
         every { recordingMock.state } returns MutableStateFlow(mockk<Call.Recording.State.Stopped>())
         every { contextMock.getString(R.string.kaleyra_utterance_recording_stopped) } returns "text"
 
         notifier.start(backgroundScope)
 
-        advanceUntilIdle()
+        runCurrent()
         verify(exactly = 0) { contextMock.getString(R.string.kaleyra_utterance_recording_stopped) }
         verify(exactly = 0) { callTextToSpeechMock.speak("text") }
     }
@@ -94,7 +96,6 @@ class CallRecordingTextToSpeechNotifierTest {
         notifier.start(backgroundScope)
 
         state.value = mockk<Call.Recording.State.Stopped>()
-        advanceUntilIdle()
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_utterance_recording_stopped) }
         verify(exactly = 1) { callTextToSpeechMock.speak("text") }
     }
@@ -108,7 +109,6 @@ class CallRecordingTextToSpeechNotifierTest {
         notifier.start(backgroundScope)
 
         state.value = mockk<Call.Recording.State.Stopped.Error>()
-        advanceUntilIdle()
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_utterance_recording_failed) }
         verify(exactly = 1) { callTextToSpeechMock.speak("text") }
     }
