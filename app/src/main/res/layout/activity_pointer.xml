@@ -36,7 +36,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-   <com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
+   <com.kaleyra.video_common_ui.call.widget.LivePointerView
         android:id="@+id/pointerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

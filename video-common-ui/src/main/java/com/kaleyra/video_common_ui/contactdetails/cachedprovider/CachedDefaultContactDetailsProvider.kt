@@ -1,0 +1,5 @@
+package com.kaleyra.video_common_ui.contactdetails.cachedprovider
+
+import com.kaleyra.video_common_ui.contactdetails.provider.DefaultContactDetailsProvider
+
+internal class CachedDefaultContactDetailsProvider : CachedContactDetailsProvider(DefaultContactDetailsProvider())

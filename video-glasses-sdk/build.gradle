@@ -1,0 +1,91 @@
+import com.github.jk1.license.render.JsonReportRenderer
+
+/*
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'maven-publish'
+    id 'androidx.navigation.safeargs.kotlin'
+    alias(catalog.plugins.dokka)
+    alias(catalog.plugins.licenseReport)
+}
+
+apply from: '../versions.gradle'
+apply from: '../android.gradle'
+apply from: '../licenses.gradle'
+apply from: '../publish.gradle'
+apply from: '../moveIcons.gradle'
+
+dependencies {
+    coreLibraryDesugaring catalog.desugar
+
+    testImplementation catalog.junit
+    androidTestImplementation catalog.androidxTestEspressoCore
+
+    // Platform
+    implementation catalog.coroutines
+    implementation catalog.androidxLifecycleRuntime
+    implementation catalog.androidxCoreKtx
+    implementation catalog.androidxFragment
+    implementation catalog.androidxActivity
+    implementation catalog.androidxNavigationFragmentKtx
+    implementation catalog.androidxNavigationUiKtx
+    implementation catalog.material
+    implementation catalog.androidxDataBindingCommon
+
+    // UI
+    api catalog.fastadapter
+    api catalog.fastadapterExtensionsDiff
+    api project(':video-common-ui')
+
+    /** Kaleyra **/
+//    implementation kaleyraCatalog.kaleyraCollaborationSuite
+//    implementation kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
+    api project(":video")
+    api project(":video-extension-audio")
+}
+
+licenseReport {
+    // Set output directory for the report data.
+    // Defaults to ${project.buildDir}/reports/dependency-license.
+    outputDir = "$projectDir/build/licenses"
+
+    // Select projects to examine for dependencies.
+    // Defaults to current project and all its subprojects
+    projects = [project] + project.subprojects
+
+    // Adjust the configurations to fetch dependencies. Default is 'runtimeClasspath'
+    // For Android projects use 'releaseRuntimeClasspath' or 'yourFlavorNameReleaseRuntimeClasspath'
+    // Use 'ALL' to dynamically resolve all configurations:
+    // configurations = ALL
+    configurations = ['releaseRuntimeClasspath']
+
+    // Set custom report renderer, implementing ReportRenderer.
+    // Yes, you can write your own to support any format necessary.
+    renderers = [new JsonReportRenderer('licenses.json', false)]
+}
+
+// workaround for mockk spyk(proxy)
+// https://mockk.io/doc/md/jdk16-access-exceptions.html
+tasks.withType(Test) {
+    jvmArgs(
+            "--add-opens", "java.base/java.time=ALL-UNNAMED",
+            "--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED"
+    )
+}

@@ -45,7 +45,7 @@ import com.bandyer.android_audiosession.session.AudioCallSessionListener
 import com.bandyer.android_audiosession.session.AudioCallSessionState
 import com.bandyer.android_audiosession.session.audioCallSessionOptions
 import com.google.android.material.snackbar.Snackbar
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
+import com.kaleyra.video_common_ui.utils.extensions.ContextExtensions.getScreenSize
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.KaleyraBottomSheet
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.view.AudioRouteState
@@ -59,10 +59,10 @@ import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallActi
 import com.kaleyra.collaboration_suite_phone_ui.call.widgets.KaleyraCallActionWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.widgets.KaleyraCallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.widgets.KaleyraCallUserInfoWidget
-import com.kaleyra.collaboration_suite_core_ui.overlay.AppViewOverlay
-import com.kaleyra.collaboration_suite_core_ui.overlay.StatusBarOverlayView
+import com.kaleyra.video_common_ui.overlay.AppViewOverlay
+import com.kaleyra.video_common_ui.overlay.StatusBarOverlayView
 import com.kaleyra.collaboration_suite_phone_ui.screensharing.dialog.KaleyraScreenSharePickerDialog
-import com.kaleyra.collaboration_suite_core_ui.overlay.ViewOverlayAttacher
+import com.kaleyra.video_common_ui.overlay.ViewOverlayAttacher
 import com.kaleyra.collaboration_suite_phone_ui.virtualbackground.KaleyraVirtualBackgroundPickerDialog
 import java.util.UUID
 

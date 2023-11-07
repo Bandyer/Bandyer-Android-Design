@@ -4,7 +4,6 @@ if (project.rootProject.file("local.properties").exists()) {
 }
 
 afterEvaluate {
-//    tasks["dokkaHtml"].dependsOn(tasks.getByName("kaptReleaseKotlin"), tasks.getByName("kaptDebugKotlin"))
     publishing {
         repositories {
             maven {

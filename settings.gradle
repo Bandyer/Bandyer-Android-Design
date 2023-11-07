@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-include ':collaboration-suite-core-ui',
-        ':collaboration-suite-phone-ui',
-        ':collaboration-suite-glass-ui',
-        ':collaboration-suite',
-        ':collaboration-suite-extension-audio'
+include ':video-common-ui',
+        ':video-sdk',
+        ':video-glasses-sdk',
+        ':video',
+        ':video-extension-audio'
 //        ':communication_center'
 //        ':extension_live_pointer',
 //        ':extension_file_share',
@@ -28,8 +28,8 @@ include ':collaboration-suite-core-ui',
 //        ':macrobenchmark',
 //        ':app'
 
-project(':collaboration-suite').projectDir = file('../bandyer-android-collaborationcenter/collaboration-suite/')
-project(':collaboration-suite-extension-audio').projectDir = file('../bandyer-android-collaborationcenter/collaboration-suite-extension-audio/')
+project(':video').projectDir = file('../bandyer-android-collaborationcenter/video/')
+project(':video-extension-audio').projectDir = file('../bandyer-android-collaborationcenter/video-extension-audio/')
 //project(':bandyer-android-chat').projectDir = file('../Bandyer-Android-Chat-SDK/bandyer-android-chat/')
 //project(':collaboration-suite-utils').projectDir = file('../Collaboration-Suite-Utils/collaboration-suite-utils')
 //project(':communication_center').projectDir = file('../Bandyer-Android-CommunicationCenter/communication_center/')

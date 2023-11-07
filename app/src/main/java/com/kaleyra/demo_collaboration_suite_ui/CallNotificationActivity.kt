@@ -24,9 +24,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.kaleyra.collaboration_suite_core_ui.notification.CallNotification
-import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
-import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.video_common_ui.notification.CallNotification
+import com.kaleyra.video_common_ui.notification.CallNotificationActionReceiver
+import com.kaleyra.video_common_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.demo_collaboration_suite_ui.databinding.ActivityCallNotificationBinding
 
@@ -34,9 +34,9 @@ class CallNotificationActivity : AppCompatActivity() {
 
     companion object {
         private const val DEFAULT_CHANNEL_ID =
-            "com.kaleyra.collaboration_suite_core_ui.call_notification_channel_default"
+            "com.kaleyra.video_common_ui.call_notification_channel_default"
         private const val IMPORTANT_CHANNEL_ID =
-            "com.kaleyra.collaboration_suite_core_ui.call_notification_channel_important"
+            "com.kaleyra.video_common_ui.call_notification_channel_important"
 
         private const val FULL_SCREEN_REQUEST_CODE = 123
         private const val CONTENT_REQUEST_CODE = 456
@@ -87,13 +87,13 @@ class CallNotificationActivity : AppCompatActivity() {
     ): Notification {
         val context = ContextRetainer.context
 
-        val userText = if (isGroupCall) context.resources.getString(com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_incoming_call) else username
-        val tapToReturnText = context.getString(if (isGroupCall) com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_group_call else com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_call)
+        val userText = if (isGroupCall) context.resources.getString(com.kaleyra.video_common_ui.R.string.kaleyra_notification_incoming_call) else username
+        val tapToReturnText = context.getString(if (isGroupCall) com.kaleyra.video_common_ui.R.string.kaleyra_notification_tap_to_return_to_group_call else com.kaleyra.video_common_ui.R.string.kaleyra_notification_tap_to_return_to_call)
         val builder = CallNotification
             .Builder(
                 context = context,
                 channelId = if (isHighPriority) IMPORTANT_CHANNEL_ID else DEFAULT_CHANNEL_ID,
-                channelName = context.resources.getString(if (isHighPriority) com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_call_channel_high_priority_name else com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_call_channel_low_priority_name),
+                channelName = context.resources.getString(if (isHighPriority) com.kaleyra.video_common_ui.R.string.kaleyra_notification_call_channel_high_priority_name else com.kaleyra.video_common_ui.R.string.kaleyra_notification_call_channel_low_priority_name),
                 type = CallNotification.Type.INCOMING
             )
             .user(userText)
@@ -114,13 +114,13 @@ class CallNotificationActivity : AppCompatActivity() {
     ): Notification {
         val context = ContextRetainer.context
         val userText =
-            if (isGroupCall) context.resources.getString(com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_outgoing_call) else username
-        val tapToReturnText = context.getString(if (isGroupCall) com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_group_call else com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_call)
+            if (isGroupCall) context.resources.getString(com.kaleyra.video_common_ui.R.string.kaleyra_notification_outgoing_call) else username
+        val tapToReturnText = context.getString(if (isGroupCall) com.kaleyra.video_common_ui.R.string.kaleyra_notification_tap_to_return_to_group_call else com.kaleyra.video_common_ui.R.string.kaleyra_notification_tap_to_return_to_call)
         val builder = CallNotification
             .Builder(
                 context = context,
                 channelId = DEFAULT_CHANNEL_ID,
-                channelName = context.resources.getString(com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_call_channel_low_priority_name),
+                channelName = context.resources.getString(com.kaleyra.video_common_ui.R.string.kaleyra_notification_call_channel_low_priority_name),
                 type = CallNotification.Type.OUTGOING
             )
             .user(userText)
@@ -142,19 +142,19 @@ class CallNotificationActivity : AppCompatActivity() {
     ): Notification {
         val context = ContextRetainer.context
         val userText =
-            if (isGroupCall || isLink) context.resources.getString(com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_ongoing_call) else username
+            if (isGroupCall || isLink) context.resources.getString(com.kaleyra.video_common_ui.R.string.kaleyra_notification_ongoing_call) else username
         val contentText = context.resources.getString(
             when {
-                isConnecting -> com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_connecting_call
-                isCallRecorded -> com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_call_recorded
-                else -> if (isGroupCall) com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_group_call else com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_call
+                isConnecting -> com.kaleyra.video_common_ui.R.string.kaleyra_notification_connecting_call
+                isCallRecorded -> com.kaleyra.video_common_ui.R.string.kaleyra_notification_call_recorded
+                else -> if (isGroupCall) com.kaleyra.video_common_ui.R.string.kaleyra_notification_tap_to_return_to_group_call else com.kaleyra.video_common_ui.R.string.kaleyra_notification_tap_to_return_to_call
             }
         )
         val builder = CallNotification
             .Builder(
                 context = context,
                 channelId = DEFAULT_CHANNEL_ID,
-                channelName = context.resources.getString(com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_call_channel_low_priority_name),
+                channelName = context.resources.getString(com.kaleyra.video_common_ui.R.string.kaleyra_notification_call_channel_low_priority_name),
                 type = CallNotification.Type.ONGOING
             )
             .user(userText)

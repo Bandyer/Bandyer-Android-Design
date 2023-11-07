@@ -47,7 +47,7 @@
             android:paddingTop="@dimen/kaleyra_dimen_space32"
             android:paddingBottom="@dimen/kaleyra_dimen_space32">
 
-            <com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView
+            <com.kaleyra.video_glasses_sdk.common.HorizontalAutoScrollView
                 android:id="@+id/kaleyra_horizontalAutoScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-            </com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView>
+            </com.kaleyra.video_glasses_sdk.common.HorizontalAutoScrollView>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_kaleyra_snackbar"
