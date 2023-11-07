@@ -53,11 +53,14 @@ class CallRecordingTextToSpeechNotifierTest {
         val recordingMock = mockk<Call.Recording>(relaxed = true)
         every { recordingMock.type } returns Call.Recording.Type.OnDemand
         every { callMock.recording } returns MutableStateFlow(recordingMock)
+        every { contextMock.getString(R.string.kaleyra_utterance_recording_call_may_be_recorded) } returns "text"
         notifier.start(backgroundScope)
         advanceTimeBy(CallRecordingTextToSpeechNotifier.CALL_RECORDING_DEBOUNCE_MILLIS)
         verify(exactly = 0) { contextMock.getString(R.string.kaleyra_utterance_recording_call_may_be_recorded) }
+        verify(exactly = 0) { callTextToSpeechMock.speak("text") }
         advanceTimeBy(1)
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_utterance_recording_call_may_be_recorded) }
+        verify(exactly = 1) { callTextToSpeechMock.speak("text") }
     }
 
     @Test
@@ -65,11 +68,25 @@ class CallRecordingTextToSpeechNotifierTest {
         val recordingMock = mockk<Call.Recording>(relaxed = true)
         every { recordingMock.type } returns Call.Recording.Type.OnConnect
         every { callMock.recording } returns MutableStateFlow(recordingMock)
+        every { contextMock.getString(R.string.kaleyra_utterance_recording_call_will_be_recorded) } returns "text"
         notifier.start(backgroundScope)
         advanceTimeBy(CallRecordingTextToSpeechNotifier.CALL_RECORDING_DEBOUNCE_MILLIS)
         verify(exactly = 0) { contextMock.getString(R.string.kaleyra_utterance_recording_call_will_be_recorded) }
+        verify(exactly = 0) { callTextToSpeechMock.speak("text") }
         advanceTimeBy(1)
         verify(exactly = 1) { contextMock.getString(R.string.kaleyra_utterance_recording_call_will_be_recorded) }
+        verify(exactly = 1) { callTextToSpeechMock.speak("text") }
+    }
+
+    @Test
+    fun `test recording never utterance`() = runTest {
+        val recordingMock = mockk<Call.Recording>(relaxed = true)
+        every { recordingMock.type } returns Call.Recording.Type.Never
+        every { callMock.recording } returns MutableStateFlow(recordingMock)
+        notifier.start(backgroundScope)
+        advanceTimeBy(CallRecordingTextToSpeechNotifier.CALL_RECORDING_DEBOUNCE_MILLIS)
+        runCurrent()
+        verify(exactly = 0) { callTextToSpeechMock.speak(any()) }
     }
 
     @Test
