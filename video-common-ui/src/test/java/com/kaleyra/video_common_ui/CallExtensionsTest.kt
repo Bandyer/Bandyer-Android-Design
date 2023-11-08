@@ -30,7 +30,6 @@ import io.mockk.unmockkAll
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -43,7 +42,7 @@ import org.junit.Test
 class CallExtensionsTest {
 
     @get:Rule
-    val mainCoroutineDispatcherRule = MainDispatcherRule(UnconfinedTestDispatcher())
+    val mainCoroutineDispatcherRule = MainDispatcherRule()
 
     private val call = mockk<CallUI>(relaxed = true)
 
