@@ -37,7 +37,7 @@ class CallStateMapperTest {
 
     private val participantMock = mockk<CallParticipant>()
 
-    private val callParticipantsMock = mockk<CallParticipants>()
+    private val callParticipantsMock = mockk<CallParticipants>(relaxed = true)
 
     private val callFlow = MutableStateFlow(callMock)
 
@@ -132,6 +132,14 @@ class CallStateMapperTest {
         }
         val result = callFlow.toCallStateUi()
         Assert.assertEquals(CallStateUi.Ringing(true), result.first())
+    }
+
+    @Test
+    fun callCreatorNull_toCallStateUi_callStateDialing() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
+        every { callParticipantsMock.creator() } returns null
+        val result = callFlow.toCallStateUi()
+        Assert.assertEquals(CallStateUi.Dialing, result.first())
     }
 
     @Test

@@ -129,6 +129,14 @@ class StreamMapperTest {
     }
 
     @Test
+    fun meParticipantIsNull_doAnyOfMyStreamsIsLive_false() = runTest {
+        every { callParticipantsMock.me } returns null
+        val callFlow = flowOf(callMock)
+        val actual = callFlow.doAnyOfMyStreamsIsLive().first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
     fun noStreamIsLive_doAnyOfMyStreamsIsLive_false() = runTest {
         every { myStreamMock1.state } returns MutableStateFlow(Stream.State.Open)
         every { myStreamMock2.state } returns MutableStateFlow(Stream.State.Closed)

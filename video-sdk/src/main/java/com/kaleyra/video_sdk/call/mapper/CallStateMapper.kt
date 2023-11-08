@@ -54,7 +54,8 @@ internal object CallStateMapper {
     }
 
     private fun isDialing(state: Call.State, participants: CallParticipants) =
-        state is Call.State.Connecting && participants.me == participants.creator()
+        (state is Call.State.Connecting && participants.me == participants.creator()) ||
+            participants.creator() == null
 
     private fun isRinging(state: Call.State, participants: CallParticipants) =
         (state == Call.State.Disconnected || state is Call.State.Connecting) && participants.me != participants.creator()

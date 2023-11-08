@@ -6,10 +6,10 @@ import com.kaleyra.video_common_ui.mapper.ParticipantMapper.toInCallParticipants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.transform
 
@@ -17,8 +17,8 @@ object StreamMapper {
 
     fun Flow<Call>.doAnyOfMyStreamsIsLive(): Flow<Boolean> =
         this.flatMapLatest { it.participants }
-            .mapNotNull { it.me }
-            .flatMapLatest { it.streams }
+            .map { it.me }
+            .flatMapLatest { it?.streams ?: flowOf(listOf()) }
             .flatMapLatest { streams ->
                 val map = mutableMapOf<String, Boolean>()
                 if (streams.isEmpty()) flowOf(false)
