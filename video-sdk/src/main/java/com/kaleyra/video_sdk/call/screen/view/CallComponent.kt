@@ -220,7 +220,7 @@ internal fun CallComponent(
                                     }
                                 )
 
-                                if (callUiState.amIAlone) {
+                                if (callUiState.amILeftAlone) {
                                     val padding by animateDpAsState(targetValue = if (stream.video?.view == null || !stream.video.isEnabled) YouAreAloneAvatarPadding else 0.dp, label = "avatarPadding")
                                     Text(
                                         text = stringResource(id = R.string.kaleyra_call_left_alone),

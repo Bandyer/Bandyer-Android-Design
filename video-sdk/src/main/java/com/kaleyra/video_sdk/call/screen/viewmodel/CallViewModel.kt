@@ -11,6 +11,7 @@ import com.kaleyra.video_common_ui.CompanyUI
 import com.kaleyra.video_common_ui.DisplayModeEvent
 import com.kaleyra.video_common_ui.mapper.ParticipantMapper.toInCallParticipants
 import com.kaleyra.video_common_ui.mapper.StreamMapper.amIAlone
+import com.kaleyra.video_common_ui.mapper.StreamMapper.doOthersHaveStreams
 import com.kaleyra.video_common_ui.theme.CompanyThemeManager.combinedTheme
 import com.kaleyra.video_sdk.call.mapper.CallStateMapper.isConnected
 import com.kaleyra.video_sdk.call.mapper.CallStateMapper.toCallStateUi
@@ -152,9 +153,10 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .onEach { isGroupCall -> _uiState.update { it.copy(isGroupCall = isGroupCall) } }
             .launchIn(viewModelScope)
 
-        call.amIAlone()
-            .debounce { if (it) 5000L else 0L }
-            .onEach { amIAlone -> _uiState.update { it.copy(amIAlone = amIAlone) } }
+        call
+            .doOthersHaveStreams()
+            .debounce { if (it) AM_I_LEFT_ALONE_DEBOUNCE_MILLIS else 0L }
+            .onEach { amILeftAlone -> _uiState.update { it.copy(amILeftAlone = amILeftAlone) } }
             .launchIn(viewModelScope)
 
         call
@@ -274,6 +276,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
         const val DEFAULT_FEATURED_STREAMS_COUNT = 2
         const val SINGLE_STREAM_DEBOUNCE_MILLIS = 5000L
+        const val AM_I_LEFT_ALONE_DEBOUNCE_MILLIS = 5000L
         const val NULL_CALL_TIMEOUT = 1000L
 
         fun provideFactory(configure: suspend () -> Configuration) =

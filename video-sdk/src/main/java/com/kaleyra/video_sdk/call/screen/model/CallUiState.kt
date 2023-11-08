@@ -17,7 +17,7 @@ data class CallUiState(
     val recording: RecordingUi? = null,
     val isAudioOnly: Boolean = false,
     val isGroupCall: Boolean = false,
-    val amIAlone: Boolean = false,
+    val amILeftAlone: Boolean = false,
     val showFeedback: Boolean = false,
     val shouldAutoHideSheet: Boolean = false
 ) : UiState

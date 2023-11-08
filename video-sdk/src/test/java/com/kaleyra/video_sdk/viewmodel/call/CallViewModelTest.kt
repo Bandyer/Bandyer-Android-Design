@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.*
 import org.junit.Assert.assertEquals
@@ -350,13 +351,36 @@ class CallViewModelTest {
     }
 
     @Test
-    fun testCallUiState_amIAloneUpdated() = runTest {
-        every { myStreamMock.state } returns MutableStateFlow(Stream.State.Open)
-        val current = viewModel.uiState.first().amIAlone
+    fun testCallUiState_amILeftAloneUpdated() = runTest {
+        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+        val current = viewModel.uiState.first().amILeftAlone
         assertEquals(false, current)
         advanceUntilIdle()
-        val new = viewModel.uiState.first().amIAlone
+        val new = viewModel.uiState.first().amILeftAlone
         assertEquals(true, new)
+    }
+
+    @Test
+    fun testCallUiState_amILeftAloneUpdatedAfterDebounceIfValueIsTrue() = runTest {
+        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+        advanceTimeBy(CallViewModel.AM_I_LEFT_ALONE_DEBOUNCE_MILLIS)
+        assertEquals(false, viewModel.uiState.first().amILeftAlone)
+        advanceTimeBy(1)
+        assertEquals(true, viewModel.uiState.first().amILeftAlone)
+    }
+
+    @Test
+    fun testCallUiState_amILeftAloneUpdatedImmediatelyIfValueIsFalse() = runTest {
+        val participants1StreamsFlow = MutableStateFlow(listOf(streamMock1, streamMock2))
+        every { participantMock1.streams } returns participants1StreamsFlow
+        every { participantMock2.streams } returns MutableStateFlow(listOf())
+        advanceTimeBy(CallViewModel.AM_I_LEFT_ALONE_DEBOUNCE_MILLIS)
+        runCurrent()
+        assertEquals(true, viewModel.uiState.first().amILeftAlone)
+
+        participants1StreamsFlow.value = listOf()
+        advanceTimeBy(1)
+        assertEquals(false, viewModel.uiState.first().amILeftAlone)
     }
 
     @Test
