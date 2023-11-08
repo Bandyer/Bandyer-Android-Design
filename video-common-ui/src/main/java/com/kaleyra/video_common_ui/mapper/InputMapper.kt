@@ -35,8 +35,7 @@ object InputMapper {
         this.toAudio()
             .filterNotNull()
             .flatMapLatest { it.events }
-            .filterIsInstance<Input.Audio.Event.Request.Mute>()
-            .distinctUntilChanged()
+            .filterIsInstance()
 
     fun Flow<Call>.toAudio(): Flow<Input.Audio?> =
         this.toMe()

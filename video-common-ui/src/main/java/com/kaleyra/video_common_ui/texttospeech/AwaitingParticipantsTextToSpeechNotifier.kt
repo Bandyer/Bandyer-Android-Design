@@ -30,8 +30,8 @@ internal class AwaitingParticipantsTextToSpeechNotifier(
         currentJob = flowOf(call)
             .amIWaitingOthers()
             .debounce(AM_I_WAITING_FOR_OTHERS_DEBOUNCE_MILLIS)
-            .onEach {
-                if (!shouldNotify) return@onEach
+            .onEach { amIAwaiting ->
+                if (!amIAwaiting || !shouldNotify) return@onEach
                 val text = context.getString(R.string.kaleyra_call_waiting_for_other_participants)
                 callTextToSpeech.speak(text)
             }
