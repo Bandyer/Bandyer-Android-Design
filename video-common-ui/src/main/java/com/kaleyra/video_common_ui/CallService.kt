@@ -165,7 +165,7 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
             application.registerActivityLifecycleCallbacks(this)
             this@CallService.call = call
 
-            addCameraStream(call)
+            addCameraStream(call, lifecycleScope)
             handleCameraStreamAudio(call, lifecycleScope)
             handleCameraStreamVideo(call, lifecycleScope)
             openParticipantsStreams(call.participants, lifecycleScope)
