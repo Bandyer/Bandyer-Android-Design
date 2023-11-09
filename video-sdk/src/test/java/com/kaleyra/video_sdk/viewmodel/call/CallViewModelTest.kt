@@ -352,7 +352,8 @@ class CallViewModelTest {
 
     @Test
     fun testCallUiState_amILeftAloneUpdated() = runTest {
-        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+        every { participantMock1.streams } returns MutableStateFlow(listOf())
+        every { participantMock2.streams } returns MutableStateFlow(listOf())
         val current = viewModel.uiState.first().amILeftAlone
         assertEquals(false, current)
         advanceUntilIdle()
@@ -362,7 +363,8 @@ class CallViewModelTest {
 
     @Test
     fun testCallUiState_amILeftAloneUpdatedAfterDebounceIfValueIsTrue() = runTest {
-        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+        every { participantMock1.streams } returns MutableStateFlow(listOf())
+        every { participantMock2.streams } returns MutableStateFlow(listOf())
         advanceTimeBy(CallViewModel.AM_I_LEFT_ALONE_DEBOUNCE_MILLIS)
         assertEquals(false, viewModel.uiState.first().amILeftAlone)
         advanceTimeBy(1)
@@ -371,14 +373,14 @@ class CallViewModelTest {
 
     @Test
     fun testCallUiState_amILeftAloneUpdatedImmediatelyIfValueIsFalse() = runTest {
-        val participants1StreamsFlow = MutableStateFlow(listOf(streamMock1, streamMock2))
+        val participants1StreamsFlow = MutableStateFlow(listOf<Stream>())
         every { participantMock1.streams } returns participants1StreamsFlow
         every { participantMock2.streams } returns MutableStateFlow(listOf())
         advanceTimeBy(CallViewModel.AM_I_LEFT_ALONE_DEBOUNCE_MILLIS)
         runCurrent()
         assertEquals(true, viewModel.uiState.first().amILeftAlone)
 
-        participants1StreamsFlow.value = listOf()
+        participants1StreamsFlow.value = listOf(streamMock1)
         advanceTimeBy(1)
         assertEquals(false, viewModel.uiState.first().amILeftAlone)
     }

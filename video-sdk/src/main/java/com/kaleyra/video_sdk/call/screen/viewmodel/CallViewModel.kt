@@ -155,8 +155,8 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
 
         call
             .doOthersHaveStreams()
-            .debounce { if (it) AM_I_LEFT_ALONE_DEBOUNCE_MILLIS else 0L }
-            .onEach { amILeftAlone -> _uiState.update { it.copy(amILeftAlone = amILeftAlone) } }
+            .debounce { if (!it) AM_I_LEFT_ALONE_DEBOUNCE_MILLIS else 0L }
+            .onEach { amILeftAlone -> _uiState.update { it.copy(amILeftAlone = !amILeftAlone) } }
             .launchIn(viewModelScope)
 
         call
