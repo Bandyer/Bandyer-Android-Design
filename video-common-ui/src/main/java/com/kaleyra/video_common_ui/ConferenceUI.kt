@@ -127,8 +127,7 @@ class ConferenceUI(
                 call.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope, isLink = call.isLink)
                 when {
                     !withUI -> Unit
-                    call.isLink -> call.showOnAppResumed(callScope)
-                    call.shouldShowAsActivity() -> call.show()
+                    call.shouldShowAsActivity() -> call.showOnAppResumed(callScope)
                 }
                 currentCall = call
             }
