@@ -19,6 +19,7 @@ import com.kaleyra.video_sdk.call.mapper.InputMapper.hasUsbCamera
 import com.kaleyra.video_sdk.call.mapper.InputMapper.isMyCameraEnabled
 import com.kaleyra.video_sdk.call.mapper.InputMapper.isMyMicEnabled
 import com.kaleyra.video_sdk.call.mapper.InputMapper.isSharingScreen
+import com.kaleyra.video_sdk.call.mapper.ParticipantMapper.isMeParticipantInitialized
 import com.kaleyra.video_sdk.call.mapper.VirtualBackgroundMapper.isVirtualBackgroundEnabled
 import com.kaleyra.video_sdk.call.screenshare.viewmodel.ScreenShareViewModel.Companion.SCREEN_SHARE_STREAM_ID
 import com.kaleyra.video_sdk.call.viewmodel.BaseViewModel
@@ -72,6 +73,10 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         .isVirtualBackgroundEnabled()
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
+    private val isMeParticipantsInitialed = call
+        .isMeParticipantInitialized()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
     private val availableInputs: Set<Input>?
         get() = call.getValue()?.inputs?.availableInputs?.value
 
@@ -88,11 +93,12 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
             isSharingScreen,
             currentAudioOutput,
             isVirtualBackgroundEnabled,
-            hasUsbCamera
-        ) { callActions, isCallConnected, isMyCameraEnabled, isMyMicEnabled, isSharingScreen, currentAudioOutput, isVirtualBackgroundEnabled, hasUsbCamera ->
+            hasUsbCamera,
+            isMeParticipantsInitialed
+        ) { callActions, isCallConnected, isMyCameraEnabled, isMyMicEnabled, isSharingScreen, currentAudioOutput, isVirtualBackgroundEnabled, hasUsbCamera, isMeParticipantsInitialed ->
             val actions = callActions
-                .updateActionIfExists(CallAction.Microphone(isToggled = !isMyMicEnabled))
-                .updateActionIfExists(CallAction.Camera(isToggled = !isMyCameraEnabled))
+                .updateActionIfExists(CallAction.Microphone(isToggled = !isMyMicEnabled, isEnabled = isMeParticipantsInitialed))
+                .updateActionIfExists(CallAction.Camera(isToggled = !isMyCameraEnabled, isEnabled = isMeParticipantsInitialed))
                 .updateActionIfExists(CallAction.Audio(device = currentAudioOutput))
                 .updateActionIfExists(CallAction.FileShare(isEnabled = isCallConnected))
                 .updateActionIfExists(CallAction.ScreenShare(isToggled = isSharingScreen, isEnabled = isCallConnected))

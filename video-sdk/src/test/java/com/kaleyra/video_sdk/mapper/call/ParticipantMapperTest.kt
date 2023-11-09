@@ -9,6 +9,7 @@ import com.kaleyra.video_common_ui.contactdetails.ContactDetailsManager.combined
 import com.kaleyra.video_common_ui.contactdetails.ContactDetailsManager.combinedDisplayName
 import com.kaleyra.video_sdk.MainDispatcherRule
 import com.kaleyra.video_sdk.call.mapper.ParticipantMapper.isGroupCall
+import com.kaleyra.video_sdk.call.mapper.ParticipantMapper.isMeParticipantInitialized
 import com.kaleyra.video_sdk.call.mapper.ParticipantMapper.toMyParticipantState
 import com.kaleyra.video_sdk.call.mapper.ParticipantMapper.toOtherDisplayImages
 import com.kaleyra.video_sdk.call.mapper.ParticipantMapper.toOtherDisplayNames
@@ -60,6 +61,22 @@ class ParticipantMapperTest {
             every { combinedDisplayName } returns MutableStateFlow("displayName2")
             every { combinedDisplayImage } returns MutableStateFlow(uriMock2)
         }
+    }
+
+    @Test
+    fun meParticipantNull_isMeParticipantInitialized_false() = runTest {
+        every { callParticipantsMock.me } returns null
+        val call = flowOf(callMock)
+        val result = call.isMeParticipantInitialized()
+        Assert.assertEquals(false, result.first())
+    }
+
+    @Test
+    fun meParticipantNotNull_isMeParticipantInitialized_true() = runTest {
+        every { callParticipantsMock.me } returns mockk()
+        val call = flowOf(callMock)
+        val result = call.isMeParticipantInitialized()
+        Assert.assertEquals(true, result.first())
     }
 
     @Test

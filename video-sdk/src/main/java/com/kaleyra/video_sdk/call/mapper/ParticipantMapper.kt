@@ -17,6 +17,9 @@ import kotlinx.coroutines.flow.transform
 
 object ParticipantMapper {
 
+    fun Flow<Call>.isMeParticipantInitialized(): Flow<Boolean> =
+        flatMapLatest { it.participants }.map { it.me != null }
+
     fun Flow<Call>.isGroupCall(companyId: Flow<String>): Flow<Boolean> =
         combine(this.flatMapLatest { it.participants }, companyId) { participants, companyId ->
             participants.others.filter { it.userId != companyId }.size > 1

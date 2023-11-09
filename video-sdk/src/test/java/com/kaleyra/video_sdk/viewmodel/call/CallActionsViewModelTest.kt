@@ -324,6 +324,19 @@ class CallActionsViewModelTest {
     }
 
     @Test
+    fun testCallActionsUiState_callStateDisconnecting_actionsNotUpdated() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
+        callState.value = Call.State.Disconnecting
+
+        advanceUntilIdle()
+        val actual = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), actual)
+    }
+
+    @Test
     fun callIsNotConnected_callActionsUiState_fileShareIsDisabled() = runTest {
         val result = viewModel.uiState
         val current = result.first().actionList.value
@@ -408,6 +421,62 @@ class CallActionsViewModelTest {
     }
 
     @Test
+    fun meParticipantIsNull_callActionsUiState_microphoneIsDisabled() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
+        every { callParticipantsMock.me } returns null
+        every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.ToggleMicrophone))
+
+        advanceUntilIdle()
+        val actual = result.first().actionList.value.first().isEnabled
+        assertEquals(false, actual)
+    }
+
+    @Test
+    fun meParticipantIsNull_callActionsUiState_cameraIsDisabled() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
+        every { callParticipantsMock.me } returns null
+        every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.ToggleCamera))
+
+        advanceUntilIdle()
+        val actual = result.first().actionList.value.first().isEnabled
+        assertEquals(false, actual)
+    }
+
+    @Test
+    fun meParticipantIsNotNull_callActionsUiState_microphoneIsEnabled() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
+        every { callParticipantsMock.me } returns meMock
+        every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.ToggleMicrophone))
+
+        advanceUntilIdle()
+        val actual = result.first().actionList.value.first().isEnabled
+        assertEquals(true, actual)
+    }
+
+    @Test
+    fun meParticipantIsNotNull_callActionsUiState_cameraIsEnabled() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
+        every { callParticipantsMock.me } returns meMock
+        every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.ToggleCamera))
+
+        advanceUntilIdle()
+        val actual = result.first().actionList.value.first().isEnabled
+        assertEquals(true, actual)
+    }
+
+    @Test
     fun usbCameraConnected_callActionsUiState_switchCameraIsDisabled() = runTest {
         every { callMock.inputs.availableInputs } returns MutableStateFlow(setOf(mockk<Input.Video.Camera.Usb>()))
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.SwitchCamera))
@@ -448,7 +517,6 @@ class CallActionsViewModelTest {
 
     @Test
     fun testToggleMicOn() = runTest {
-        inputsMock
         every { audioMock.enabled } returns MutableStateFlow(false)
         runCurrent()
         viewModel.toggleMic(activity)
