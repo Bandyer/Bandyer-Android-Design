@@ -20,17 +20,14 @@ internal object CallStateMapper {
             .distinctUntilChanged()
 
     fun Flow<Call>.toCallStateUi(): Flow<CallStateUi> {
-        var previousState: Call.State = Call.State.Disconnected.Ended
         return combine(
             flatMapLatest { it.state },
             flatMapLatest { it.participants },
             amIAlone()
         ) { state, participants, amIAlone ->
             when {
-                previousState !is Call.State.Connected && isWaitingOthers(state, amIAlone) && participants.me == participants.creator() -> CallStateUi.Dialing
-                previousState !is Call.State.Connected && isWaitingOthers(state, amIAlone) && participants.me != participants.creator() -> CallStateUi.Ringing(isConnecting = state != Call.State.Disconnected)
-                isDialing(state, participants) -> CallStateUi.Dialing
-                isRinging(state, participants) -> CallStateUi.Ringing(isConnecting = state != Call.State.Disconnected)
+                isDialing(state, participants, amIAlone) -> CallStateUi.Dialing
+                isRinging(state, participants, amIAlone) -> CallStateUi.Ringing(isConnecting = state != Call.State.Disconnected)
                 state is Call.State.Connected -> CallStateUi.Connected
                 state is Call.State.Reconnecting -> CallStateUi.Reconnecting
                 state is Call.State.Disconnecting -> CallStateUi.Disconnecting
@@ -49,17 +46,14 @@ internal object CallStateMapper {
                 state == Call.State.Disconnected.Ended.Error -> CallStateUi.Disconnected.Ended.Error
                 state == Call.State.Disconnected.Ended -> CallStateUi.Disconnected.Ended
                 else -> CallStateUi.Disconnected
-            }.also { previousState = state }
+            }
         }.distinctUntilChanged()
     }
 
-    private fun isDialing(state: Call.State, participants: CallParticipants) =
-        (state is Call.State.Connecting && participants.me == participants.creator()) ||
-            participants.creator() == null
+    private fun isDialing(state: Call.State, participants: CallParticipants, amIAlone: Boolean): Boolean =
+        (participants.creator() == null || participants.me == participants.creator()) && (state is Call.State.Connecting || (state is Call.State.Connected && amIAlone))
 
-    private fun isRinging(state: Call.State, participants: CallParticipants) =
-        (state == Call.State.Disconnected || state is Call.State.Connecting) && participants.me != participants.creator()
-
-    private fun isWaitingOthers(state: Call.State, amIAlone: Boolean) = state is Call.State.Connected && amIAlone
+    private fun isRinging(state: Call.State, participants: CallParticipants, amIAlone: Boolean) =
+        participants.me != participants.creator() && (state == Call.State.Disconnected || state is Call.State.Connecting || (state is Call.State.Connected && amIAlone))
 
 }
