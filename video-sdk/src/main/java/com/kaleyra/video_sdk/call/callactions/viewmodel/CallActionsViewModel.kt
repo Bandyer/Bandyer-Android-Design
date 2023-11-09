@@ -44,7 +44,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
 
     private val isCallEnded = call
         .flatMapLatest { it.state }
-        .map { it is Call.State.Disconnected.Ended }
+        .map { it is Call.State.Disconnecting || it is Call.State.Disconnected.Ended }
         .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     private val isMyCameraEnabled = call
