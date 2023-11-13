@@ -49,18 +49,18 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
         .flatMapLatest { it.combinedTheme }
         .stateIn(viewModelScope, SharingStarted.Eagerly, CompanyUI.Theme())
 
-    private val streams: Flow<List<StreamUi>> =
-        combine(call.toInCallParticipants(), call.toStreamsUi()) { participants, streams -> participants to streams }
-        .debounce { (participants: List<CallParticipant>, streams: List<StreamUi>) ->
-            if (participants.size != 1 && streams.size == 1) SINGLE_STREAM_DEBOUNCE_MILLIS
-            else 0L
-        }
-        .map { (_: List<CallParticipant>, streams: List<StreamUi>) -> streams }
-        .shareInEagerly(viewModelScope)
-
     private val callState = call
         .toCallStateUi()
         .shareInEagerly(viewModelScope)
+
+    private val streams: Flow<List<StreamUi>> =
+        combine(call.toInCallParticipants(), call.toStreamsUi(), call.flatMapLatest { it.state }) { participants, streams, callState -> Triple(participants, streams, callState) }
+            .debounce { (participants: List<CallParticipant>, streams: List<StreamUi>, callState: Call.State) ->
+                if (participants.size != 1 && streams.size == 1 && callState == Call.State.Connected) SINGLE_STREAM_DEBOUNCE_MILLIS
+                else 0L
+            }
+            .map { (_: List<CallParticipant>, streams: List<StreamUi>, _: Call.State) -> streams }
+            .shareInEagerly(viewModelScope)
 
     private val maxNumberOfFeaturedStreams = MutableStateFlow(DEFAULT_FEATURED_STREAMS_COUNT)
 

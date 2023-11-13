@@ -28,6 +28,7 @@ import com.kaleyra.video_sdk.call.screen.viewmodel.CallViewModel
 import com.kaleyra.video_sdk.call.screen.viewmodel.CallViewModel.Companion.SINGLE_STREAM_DEBOUNCE_MILLIS
 import com.kaleyra.video_sdk.call.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.video_sdk.call.stream.arrangement.StreamsHandler
+import com.kaleyra.video_sdk.call.stream.arrangement.StreamsHandler.Companion.STREAMS_HANDLER_UPDATE_DEBOUNCE
 import com.kaleyra.video_sdk.call.stream.model.StreamUi
 import com.kaleyra.video_sdk.common.immutablecollections.ImmutableList
 import com.kaleyra.video_sdk.common.usermessages.model.MutedMessage
@@ -195,17 +196,22 @@ class CallViewModelTest {
     }
 
     @Test
-    fun `test streams updated after a debounce time if there is only my stream and there are still participants in call`() = runTest {
+    fun `test streams updated after a debounce time if there is only one stream, there are still participants in call and the call is connected`() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
         every { participantMock1.streams } returns MutableStateFlow(listOf())
         every { participantMock2.streams } returns MutableStateFlow(listOf())
         every { participantMeMock.streams } returns MutableStateFlow(listOf(myStreamMock))
-        advanceTimeBy(SINGLE_STREAM_DEBOUNCE_MILLIS + 500)
+        advanceTimeBy(STREAMS_HANDLER_UPDATE_DEBOUNCE + 1)
         val current = viewModel.uiState.first().featuredStreams.value.map { it.id }
-        assertEquals(listOf(myStreamMock.id), current)
+        assertEquals(listOf<String>(), current)
+        advanceTimeBy(SINGLE_STREAM_DEBOUNCE_MILLIS)
+        val new = viewModel.uiState.first().featuredStreams.value.map { it.id }
+        assertEquals(listOf(myStreamMock.id), new)
     }
 
     @Test
-    fun `test streams updated immediately if there is only my stream and there are no other participants in call`() = runTest {
+    fun `test streams updated immediately if there is more than one participant in call`() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
         with(participantMock1) {
             every { streams } returns MutableStateFlow(listOf())
             every { state } returns MutableStateFlow(CallParticipant.State.NotInCall)
@@ -218,9 +224,51 @@ class CallViewModelTest {
             every { streams } returns MutableStateFlow(listOf(myStreamMock))
             every { state } returns MutableStateFlow(CallParticipant.State.InCall)
         }
-        advanceTimeBy(500)
+        advanceTimeBy(STREAMS_HANDLER_UPDATE_DEBOUNCE + 1)
         val current = viewModel.uiState.first().featuredStreams.value.map { it.id }
         assertEquals(listOf(myStreamMock.id), current)
+    }
+
+    @Test
+    fun `test streams updated immediately if the call is not connected`() = runTest {
+        every { callMock.state } returns MutableStateFlow(mockk(relaxed = true))
+        with(participantMock1) {
+            every { streams } returns MutableStateFlow(listOf())
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+        }
+        with(participantMock2) {
+            every { streams } returns MutableStateFlow(listOf())
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+        }
+        with(participantMeMock) {
+            every { streams } returns MutableStateFlow(listOf(myStreamMock))
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+        }
+        advanceTimeBy(STREAMS_HANDLER_UPDATE_DEBOUNCE + 1)
+        val current = viewModel.uiState.first().featuredStreams.value.map { it.id }
+        assertEquals(listOf(myStreamMock.id), current)
+    }
+
+    @Test
+    fun `test streams updated immediately if there are more than one stream`() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
+        with(participantMock1) {
+            every { streams } returns MutableStateFlow(listOf())
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+        }
+        with(participantMock2) {
+            every { streams } returns MutableStateFlow(listOf(streamMock2))
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+        }
+        with(participantMeMock) {
+            every { streams } returns MutableStateFlow(listOf(myStreamMock))
+            every { state } returns MutableStateFlow(CallParticipant.State.InCall)
+        }
+        advanceTimeBy(STREAMS_HANDLER_UPDATE_DEBOUNCE + 1)
+        val currentFeatured = viewModel.uiState.first().featuredStreams.value.map { it.id }
+        val currentThumbnail = viewModel.uiState.first().thumbnailStreams.value.map { it.id }
+        assertEquals(listOf(streamMock2.id), currentFeatured)
+        assertEquals(listOf(myStreamMock.id), currentThumbnail)
     }
 
     @Test

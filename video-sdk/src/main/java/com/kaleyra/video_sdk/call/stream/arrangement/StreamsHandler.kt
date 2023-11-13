@@ -20,6 +20,10 @@ internal class StreamsHandler(
     private val coroutineScope: CoroutineScope
 ) {
 
+    companion object {
+        const val STREAMS_HANDLER_UPDATE_DEBOUNCE = 100L
+    }
+
     private val mutex = Mutex()
 
     private var featuredStreams = listOf<StreamUi>()
@@ -32,7 +36,7 @@ internal class StreamsHandler(
 
     init {
         combine(
-            streams.debounce(100),
+            streams.debounce(STREAMS_HANDLER_UPDATE_DEBOUNCE),
             nOfMaxFeatured
         ) { newStreams, nOfMaxFeatured ->
             mutex.withLock {
