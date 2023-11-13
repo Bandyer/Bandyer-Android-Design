@@ -46,7 +46,7 @@ internal class StreamsHandler(
                 val removedThumbnailsStreams = findRemovedThumbnailsStreams(newStreamsIds).toSet()
 
                 var newFeaturedStreams =
-                    (addedScreenShareStreams + featuredStreams + cameraStreams + thumbnailsStreams - removedFeaturedStreams).take(
+                    (addedScreenShareStreams + featuredStreams + cameraStreams - removedFeaturedStreams + thumbnailsStreams - removedThumbnailsStreams).take(
                         nOfMaxFeatured
                     )
                 val movedToThumbnails =

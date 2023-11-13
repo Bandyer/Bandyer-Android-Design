@@ -33,23 +33,23 @@ class StreamsHandlerTest {
         every { id } returns "streamId1"
     }
 
-    private val streamMock2 = mockk<StreamUi>(relaxed = true)  {
+    private val streamMock2 = mockk<StreamUi>(relaxed = true) {
         every { id } returns "streamId2"
     }
 
-    private val streamMock3 = mockk<StreamUi>(relaxed = true)  {
+    private val streamMock3 = mockk<StreamUi>(relaxed = true) {
         every { id } returns "streamId3"
     }
 
-    private val streamMock4 = mockk<StreamUi>(relaxed = true)  {
+    private val streamMock4 = mockk<StreamUi>(relaxed = true) {
         every { id } returns "streamId4"
     }
 
-    private val streamMock5 = mockk<StreamUi>(relaxed = true)  {
+    private val streamMock5 = mockk<StreamUi>(relaxed = true) {
         every { id } returns "streamId5"
     }
 
-    private val streamMock6 = mockk<StreamUi>(relaxed = true)  {
+    private val streamMock6 = mockk<StreamUi>(relaxed = true) {
         every { id } returns "streamId6"
     }
 
@@ -331,6 +331,25 @@ class StreamsHandlerTest {
         val (newFeaturedStreams, newThumbnailsStreams) = streamsHandler.streamsArrangement.first()
         assertEquals(listOf(streamMock3, streamMock1), newFeaturedStreams)
         assertEquals(listOf(streamMock2), newThumbnailsStreams)
+    }
+
+    @Test
+    fun testLastThumbnailStreamRemoved() = runTest {
+        val streams = listOf(streamMock1, streamMock2)
+        streamsFlow.value = streams
+
+        advanceUntilIdle()
+        val (featuredStreams, thumbnailsStreams) = streamsHandler.streamsArrangement.first()
+        assertEquals(listOf(streamMock1), featuredStreams)
+        assertEquals(listOf(streamMock2), thumbnailsStreams)
+
+        streamsFlow.value = listOf(streamMock1)
+
+        advanceUntilIdle()
+        val (newFeaturedStreams, newThumbnailsStreams) = streamsHandler.streamsArrangement.first()
+
+        assertEquals(listOf(streamMock1), newFeaturedStreams)
+        assertEquals(listOf<StreamUi>(), newThumbnailsStreams)
     }
 
     companion object {
