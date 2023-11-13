@@ -200,6 +200,7 @@ internal fun CallComponent(
                                 FeaturedStream(
                                     stream = stream,
                                     isFullscreen = callUiState.fullscreenStream != null,
+                                    showOverlay = with(callUiState) { featuredStreams.count() + thumbnailStreams.count() } < 2,
                                     fullscreenVisible = callUiState.callState is CallStateUi.Connected,
                                     onBackPressed = if (index == 0 && !(shouldShowCallInfo)) onBackPressed else null,
                                     onFullscreenClick = remember(onStreamFullscreenClick, callUiState.fullscreenStream) {

@@ -43,6 +43,7 @@ internal fun FeaturedStream(
     stream: StreamUi,
     isFullscreen: Boolean = false,
     fullscreenVisible: Boolean = false,
+    showOverlay: Boolean = false,
     onFullscreenClick: () -> Unit,
     onBackPressed: (() -> Unit)? = null,
     headerModifier: Modifier = Modifier,
@@ -63,7 +64,8 @@ internal fun FeaturedStream(
                             if (shouldFit) StreamView.ScaleType.Fit else StreamView.ScaleType.Fill()
                         ) ?: ImmutableView(View(LocalContext.current)),
                         avatar = stream.avatar,
-                        avatarVisible = stream.video?.view == null || !stream.video.isEnabled
+                        avatarVisible = stream.video?.view == null || !stream.video.isEnabled,
+                        showOverlay = showOverlay
                     )
                 }
             }
