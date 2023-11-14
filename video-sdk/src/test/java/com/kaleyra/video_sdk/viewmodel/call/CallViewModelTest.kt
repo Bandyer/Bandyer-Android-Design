@@ -399,6 +399,18 @@ class CallViewModelTest {
     }
 
     @Test
+    fun testCallUiState_amILeftAloneNotUpdatedIfCallIsEnded() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended)
+        every { participantMock1.streams } returns MutableStateFlow(listOf())
+        every { participantMock2.streams } returns MutableStateFlow(listOf())
+        val current = viewModel.uiState.first().amILeftAlone
+        assertEquals(false, current)
+        advanceUntilIdle()
+        val new = viewModel.uiState.first().amILeftAlone
+        assertEquals(false, new)
+    }
+
+    @Test
     fun testCallUiState_amILeftAloneUpdated() = runTest {
         every { participantMock1.streams } returns MutableStateFlow(listOf())
         every { participantMock2.streams } returns MutableStateFlow(listOf())

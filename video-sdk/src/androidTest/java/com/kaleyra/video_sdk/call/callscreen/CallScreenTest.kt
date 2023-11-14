@@ -7,7 +7,6 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
 import com.kaleyra.video_sdk.R
 import com.kaleyra.video_sdk.call.screen.CallScreen
 import com.kaleyra.video_sdk.call.screen.view.CallScreenAppBarTag
