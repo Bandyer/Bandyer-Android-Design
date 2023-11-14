@@ -7,8 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.audiooutput.model.AudioDeviceUi
 import com.kaleyra.video_sdk.call.audiooutput.model.AudioOutputUiState
 import com.kaleyra.video_sdk.common.immutablecollections.ImmutableList
 import org.junit.After

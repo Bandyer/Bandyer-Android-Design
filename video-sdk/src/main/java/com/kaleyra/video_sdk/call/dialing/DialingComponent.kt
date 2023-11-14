@@ -32,7 +32,7 @@ internal fun DialingComponent(
 
     DialingComponent(
         uiState = uiState,
-        userMessage =userMessage ,
+        userMessage = userMessage,
         onBackPressed = onBackPressed,
         modifier = modifier
     )

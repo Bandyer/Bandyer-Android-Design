@@ -8,8 +8,8 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.video_sdk.MockCallViewModelsStatesRule
-import import com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.*
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.*
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before

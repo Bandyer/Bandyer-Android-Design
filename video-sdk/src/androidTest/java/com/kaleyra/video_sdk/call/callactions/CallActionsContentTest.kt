@@ -11,7 +11,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.callactions.model.CallAction
 import com.kaleyra.video_sdk.call.callactions.view.CallActionsContent
 import com.kaleyra.video_sdk.common.immutablecollections.ImmutableList
 import org.junit.After

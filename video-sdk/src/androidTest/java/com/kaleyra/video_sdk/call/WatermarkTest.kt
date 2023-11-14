@@ -9,8 +9,8 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.callinfowidget.view.Watermark
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.callinfowidget.view.Watermark
 import com.kaleyra.video_sdk.call.callinfowidget.model.Logo
 import com.kaleyra.video_sdk.call.callinfowidget.model.WatermarkInfo
 import org.junit.After

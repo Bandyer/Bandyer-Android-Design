@@ -8,7 +8,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.screen.CallScreen
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.screen.CallScreen
 import com.kaleyra.video_sdk.call.screen.view.CallScreenAppBarTag
 import com.kaleyra.video_sdk.call.screen.CallScreenState
 import com.kaleyra.video_sdk.call.screen.model.CallStateUi

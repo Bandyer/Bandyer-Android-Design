@@ -11,7 +11,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.feedback.UserFeedbackDialog
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.feedback.UserFeedbackDialog
 import com.kaleyra.video_sdk.call.feedback.view.FeedbackFormTag
 import com.kaleyra.video_sdk.call.feedback.view.FeedbackSentTag
 import junit.framework.TestCase

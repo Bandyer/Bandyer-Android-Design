@@ -8,7 +8,8 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.callactions.model.CallAction
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.callactions.model.CallAction
 import com.kaleyra.video_sdk.call.callactions.view.CallAction
 import org.junit.After
 import org.junit.Before

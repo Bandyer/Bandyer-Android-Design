@@ -12,7 +12,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.screen.model.CallStateUi
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.screen.model.CallStateUi
 import com.kaleyra.video_sdk.call.stream.model.ImmutableView
 import com.kaleyra.video_sdk.call.screen.PipScreen
 import com.kaleyra.video_sdk.call.stream.model.StreamUi

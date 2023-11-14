@@ -13,12 +13,14 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.stream.model.ImmutableView
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.stream.model.ImmutableView
 import com.kaleyra.video_sdk.call.stream.model.VideoUi
 import com.kaleyra.video_sdk.call.dialing.DialingComponent
 import com.kaleyra.video_sdk.call.dialing.view.DialingUiState
 import com.kaleyra.video_sdk.call.stream.model.streamUiMock
 import com.kaleyra.video_sdk.call.callinfowidget.CallInfoWidgetTag
+import com.kaleyra.video_sdk.call.stream.view.core.StreamOverlayTestTag
 import com.kaleyra.video_sdk.call.stream.view.core.StreamViewTestTag
 import com.kaleyra.video_sdk.common.usermessages.model.RecordingMessage
 import com.kaleyra.video_sdk.common.usermessages.model.UserMessage

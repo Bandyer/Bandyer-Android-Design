@@ -16,7 +16,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.video_common_ui.utils.TimestampUtils
 
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.common.avatar.model.ImmutableUri
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.common.avatar.model.ImmutableUri
 import com.kaleyra.video_sdk.call.fileshare.model.SharedFileUi
 import com.kaleyra.video_sdk.call.fileshare.model.mockDownloadSharedFile
 import com.kaleyra.video_sdk.call.fileshare.model.mockUploadSharedFile

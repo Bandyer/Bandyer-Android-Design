@@ -7,7 +7,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import import com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.fileshare.view.FileShareAppBar
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.fileshare.view.FileShareAppBar
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

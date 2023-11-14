@@ -9,7 +9,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.common.usermessages.model.AudioConnectionFailureMessage
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.common.usermessages.model.AudioConnectionFailureMessage
 import com.kaleyra.video_sdk.common.usermessages.model.CameraRestrictionMessage
 import com.kaleyra.video_sdk.common.usermessages.model.MutedMessage
 import com.kaleyra.video_sdk.common.usermessages.model.RecordingMessage

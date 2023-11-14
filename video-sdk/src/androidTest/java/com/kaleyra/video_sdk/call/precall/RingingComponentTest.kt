@@ -10,7 +10,8 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.dialing.view.DialingUiState
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.dialing.view.DialingUiState
 import com.kaleyra.video_sdk.call.stream.model.ImmutableView
 import com.kaleyra.video_sdk.call.stream.model.VideoUi
 import com.kaleyra.video_sdk.call.recording.model.RecordingTypeUi

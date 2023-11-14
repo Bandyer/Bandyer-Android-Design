@@ -16,7 +16,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.video_common_ui.utils.extensions.ContextExtensions
 import com.kaleyra.video_common_ui.utils.extensions.ContextExtensions.tryToOpenFile
 
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.fileshare.filepick.FilePickActivity
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.fileshare.filepick.FilePickActivity
 import com.kaleyra.video_sdk.common.avatar.model.ImmutableUri
 import com.kaleyra.video_sdk.call.fileshare.model.FileShareUiState
 import com.kaleyra.video_sdk.call.fileshare.model.SharedFileUi

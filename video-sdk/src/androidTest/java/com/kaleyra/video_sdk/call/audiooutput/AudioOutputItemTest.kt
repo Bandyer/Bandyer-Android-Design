@@ -9,8 +9,8 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
-com.kaleyra.video_sdk.Rimport com.kaleyra.collaboration_suite_phone_ui.call.audiooutput.model.AudioDeviceUi
+import com.kaleyra.video_sdk.R
+import com.kaleyra.video_sdk.call.audiooutput.model.AudioDeviceUi
 import com.kaleyra.video_sdk.call.audiooutput.model.BluetoothDeviceState
 import com.kaleyra.video_sdk.call.audiooutput.view.AudioOutputItem
 import org.junit.After
