@@ -35,6 +35,7 @@ import com.kaleyra.video_sdk.common.avatar.model.ImmutableUri
 import com.kaleyra.video_sdk.common.avatar.view.Avatar
 import com.kaleyra.video_sdk.theme.KaleyraTheme
 
+const val StreamOverlayTestTag = "StreamOverlayTestTag"
 const val StreamViewTestTag = "StreamTestTag"
 val DefaultStreamAvatarSize = 128.dp
 
@@ -77,9 +78,12 @@ internal fun Stream(
                     )
                 }
                 if (showOverlay) {
-                    Spacer(Modifier
-                        .fillMaxSize()
-                        .background(colorResource(id = R.color.kaleyra_color_featured_stream_overlay)))
+                    Spacer(
+                        Modifier
+                            .fillMaxSize()
+                            .background(colorResource(id = R.color.kaleyra_color_featured_stream_overlay))
+                            .testTag(StreamOverlayTestTag)
+                    )
                 }
             } else {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

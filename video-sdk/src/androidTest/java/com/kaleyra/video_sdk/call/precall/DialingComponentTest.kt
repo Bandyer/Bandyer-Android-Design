@@ -176,6 +176,12 @@ class DialingComponentTest {
     }
 
     @Test
+    fun streamViewNotNullAndVideoEnabled_overlayIsDisplayed() {
+        uiState = uiState.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
+        composeTestRule.onNodeWithTag(StreamOverlayTestTag).assertIsDisplayed()
+    }
+
+    @Test
     fun userMessage_userMessageSnackbarIsDisplayed() {
         userMessage = RecordingMessage.Started
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)

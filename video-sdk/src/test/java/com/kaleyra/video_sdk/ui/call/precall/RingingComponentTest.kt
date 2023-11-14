@@ -15,6 +15,7 @@ import com.kaleyra.video_sdk.call.recording.model.RecordingTypeUi
 import com.kaleyra.video_sdk.call.ringing.RingingComponent
 import com.kaleyra.video_sdk.call.ringing.model.RingingUiState
 import com.kaleyra.video_sdk.call.stream.model.streamUiMock
+import com.kaleyra.video_sdk.call.stream.view.core.StreamOverlayTestTag
 import com.kaleyra.video_sdk.call.stream.view.core.StreamViewTestTag
 import com.kaleyra.video_sdk.common.usermessages.model.RecordingMessage
 import com.kaleyra.video_sdk.common.usermessages.model.UserMessage
@@ -249,6 +250,12 @@ class RingingComponentTest {
         userMessage = RecordingMessage.Started
         val title = composeTestRule.activity.getString(R.string.kaleyra_recording_started)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun streamViewNotNullAndVideoEnabled_overlayIsDisplayed() {
+        uiState = uiState.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
+        composeTestRule.onNodeWithTag(StreamOverlayTestTag).assertIsDisplayed()
     }
 
     private fun ComposeTestRule.assertRingingButtonIsDisplayed(text: String) {

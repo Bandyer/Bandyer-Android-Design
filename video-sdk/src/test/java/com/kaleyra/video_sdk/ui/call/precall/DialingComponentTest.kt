@@ -18,6 +18,7 @@ import com.kaleyra.video_sdk.call.dialing.DialingComponent
 import com.kaleyra.video_sdk.call.dialing.view.DialingUiState
 import com.kaleyra.video_sdk.call.stream.model.streamUiMock
 import com.kaleyra.video_sdk.call.callinfowidget.CallInfoWidgetTag
+import com.kaleyra.video_sdk.call.stream.view.core.StreamOverlayTestTag
 import com.kaleyra.video_sdk.call.stream.view.core.StreamViewTestTag
 import com.kaleyra.video_sdk.common.usermessages.model.RecordingMessage
 import com.kaleyra.video_sdk.common.usermessages.model.UserMessage
@@ -171,6 +172,12 @@ class DialingComponentTest {
     fun videoIsEnabled_avatarIsNotDisplayed() {
         uiState = uiState.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
         composeTestRule.findAvatar().assertDoesNotExist()
+    }
+
+    @Test
+    fun streamViewNotNullAndVideoEnabled_overlayIsDisplayed() {
+        uiState = uiState.copy(video = VideoUi(id = "videoId", view = ImmutableView(View(composeTestRule.activity)), isEnabled = true))
+        composeTestRule.onNodeWithTag(StreamOverlayTestTag).assertIsDisplayed()
     }
 
     @Test

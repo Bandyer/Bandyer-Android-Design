@@ -43,7 +43,8 @@ internal fun <T: PreCallUiState<T>> PreCallComponent(
                     avatar = if (isGroupCall) ImmutableUri(Uri.EMPTY) else uiState.avatar,
                     avatarPlaceholder = if (isGroupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
                     avatarError = if (isGroupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
-                    avatarVisible = uiState.participants.value.isNotEmpty() && ((uiState.video == null && !uiState.isVideoIncoming) || (uiState.video != null && uiState.video?.view == null && uiState.video?.isEnabled == false) || uiState.video?.isEnabled == false)
+                    avatarVisible = uiState.participants.value.isNotEmpty() && ((uiState.video == null && !uiState.isVideoIncoming) || (uiState.video != null && uiState.video?.view == null && uiState.video?.isEnabled == false) || uiState.video?.isEnabled == false),
+                    showOverlay = true
                 )
             }
 
