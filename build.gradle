@@ -36,7 +36,6 @@ buildscript {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${catalog.plugins.androidxNavigationSafeArgs.get().version}"
         classpath "com.mxalbert.gradle:jacoco-android:${catalog.plugins.jacoco.get().version}"
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${catalog.plugins.sonarqube.get().version}"
-//        classpath "com.dicedmelon.gradle:jacoco-android:0.1.5"
         classpath "com.mxalbert.gradle:jacoco-android:${catalog.plugins.jacoco.get().version}"
     }
 }
