@@ -1,6 +1,4 @@
 ext {
-    sdkVersion = 32
-    buildToolsVersion = "31.0.0"
     moduleVersion = "4.0.0"
     moduleGroupId = "com.kaleyra"
 }
