@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Bandyer S.r.l. All Rights Reserved.
+ * Copyright (C) 2023 Kaleyra S.p.A. All Rights Reserved.
  * See LICENSE.txt for licensing information
  */
 
