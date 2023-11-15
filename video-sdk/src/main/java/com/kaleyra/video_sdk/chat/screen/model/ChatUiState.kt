@@ -13,7 +13,7 @@ import com.kaleyra.video_sdk.common.uistate.UiState
 import kotlinx.coroutines.flow.flowOf
 
 @Stable
-sealed interface ChatUiState : UiState {
+internal sealed interface ChatUiState : UiState {
 
     val actions: ImmutableSet<ChatAction>
 
