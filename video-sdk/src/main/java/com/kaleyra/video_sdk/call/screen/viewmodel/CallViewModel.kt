@@ -156,7 +156,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
         call
             .doOthersHaveStreams()
             .combine(callState) { doOthersHaveStreams, callState -> doOthersHaveStreams to callState }
-            .takeWhile { (_, callState) -> callState !is CallStateUi.Disconnected.Ended  }
+            .takeWhile { (_, callState) -> callState !is CallStateUi.Disconnecting && callState !is CallStateUi.Disconnected.Ended }
             .debounce { (doOthersHaveStreams, _) -> if (!doOthersHaveStreams) AM_I_LEFT_ALONE_DEBOUNCE_MILLIS else 0L }
             .onEach { (doOthersHaveStreams, _) -> _uiState.update { it.copy(amILeftAlone = !doOthersHaveStreams) } }
             .launchIn(viewModelScope)
@@ -175,7 +175,7 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
                 onDisplayMode.invoke(event.displayMode)
             }
             .combine(callState) { _, callState -> callState}
-            .takeWhile { it !is CallStateUi.Disconnected.Ended  }
+            .takeWhile { it !is CallStateUi.Disconnected.Ended }
             .launchIn(viewModelScope)
 
         call
