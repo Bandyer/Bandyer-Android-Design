@@ -33,6 +33,7 @@ import com.kaleyra.video_common_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.video_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
@@ -114,8 +115,8 @@ interface CallNotificationDelegate {
         val isGroupCall = participants.others.count() > 1
 
         val enableCallStyle = !DeviceUtils.isSmartGlass
-        val callerDescription = participants.creator()?.combinedDisplayName?.firstOrNull() ?: ""
-        val calleeDescription = participants.others.map { it.combinedDisplayName.firstOrNull() ?: Uri.EMPTY }.joinToString()
+        val callerDescription = participants.creator()?.combinedDisplayName?.filterNotNull()?.firstOrNull() ?: ""
+        val calleeDescription = participants.others.map { it.combinedDisplayName.filterNotNull().firstOrNull() ?: Uri.EMPTY }.joinToString()
 
         return when {
             isIncoming(callState, participants) -> {
