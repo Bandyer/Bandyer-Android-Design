@@ -66,7 +66,7 @@ import kotlinx.coroutines.plus
  */
 internal class CallService : LifecycleService(), CameraStreamPublisher, CameraStreamInputsDelegate,
     StreamsOpeningDelegate, StreamsVideoViewDelegate, CallNotificationDelegate,
-    FileShareNotificationDelegate, ScreenShareOverlayDelegate, ActivityLifecycleCallbacks {
+    FileShareNotificationDelegate, ScreenShareOverlayDelegate, DefaultCameraDelegate, ActivityLifecycleCallbacks {
 
     companion object {
         fun start() = with(ContextRetainer.context) {
@@ -171,6 +171,7 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
             openParticipantsStreams(call.participants, lifecycleScope)
             setStreamsVideoView(this@CallService, call.participants, lifecycleScope)
             syncCallNotification(call, call.activityClazz, lifecycleScope)
+            if (call.backCameraAsDefault) setBackCameraAsDefault(call, lifecycleScope)
 
             call.participants
                 .onEach { participants ->
