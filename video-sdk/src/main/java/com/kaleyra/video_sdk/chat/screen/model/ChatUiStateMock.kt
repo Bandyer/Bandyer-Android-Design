@@ -7,7 +7,7 @@ import com.kaleyra.video_sdk.chat.appbar.model.mockActions
 import com.kaleyra.video_sdk.common.avatar.model.ImmutableUri
 import kotlinx.coroutines.flow.flowOf
 
-val mockChatUiState = ChatUiState.OneToOne(
+internal val mockChatUiState = ChatUiState.OneToOne(
     recipientDetails = ChatParticipantDetails("John Smith", ImmutableUri(), flowOf()),
     connectionState = ConnectionState.Connecting,
     actions = mockActions,

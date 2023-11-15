@@ -73,7 +73,7 @@ private data class PhoneChatViewModelState(
     }
 }
 
-class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure), UserMessageViewModel {
+internal class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure), UserMessageViewModel {
 
     private val firstUnreadMessageId = MutableStateFlow<String?>(null)
 

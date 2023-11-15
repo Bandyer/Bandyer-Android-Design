@@ -56,8 +56,7 @@ dependencies {
     coreLibraryDesugaring catalog.desugar
 
     /*** Testing ***/
-    //    testImplementation kaleyra.collaboration
-    testImplementation project(":video")
+    testImplementation kaleyraCatalog.kaleyraVideo
     testImplementation catalog.roboelectric
     testImplementation catalog.junit
     testImplementation catalog.androidxComposeUiTestJunit4
@@ -77,12 +76,9 @@ dependencies {
     implementation catalog.coilCompose
     api project(':video-common-ui')
 
-
     /** Kaleyra **/
-//    compileOnly kaleyraCatalog.kaleyraCollaborationSuite
-//    compileOnly kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
-    api project(":video")
-    api project(":video-extension-audio")
+    api kaleyraCatalog.kaleyraVideo
+    api kaleyraCatalog.kaleyraVideoExtensionAudio
 }
 
 licenseReport {

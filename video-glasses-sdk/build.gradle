@@ -55,10 +55,8 @@ dependencies {
     api project(':video-common-ui')
 
     /** Kaleyra **/
-//    implementation kaleyraCatalog.kaleyraCollaborationSuite
-//    implementation kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
-    api project(":video")
-    api project(":video-extension-audio")
+    api kaleyraCatalog.kaleyraVideo
+    api kaleyraCatalog.kaleyraVideoExtensionAudio
 }
 
 licenseReport {

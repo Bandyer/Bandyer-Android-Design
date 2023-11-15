@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2023 Kaleyra S.p.A. All Rights Reserved.
+  ~ See LICENSE.txt for licensing information
+  -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/searchMain"
+        android:icon="@drawable/ic_outline_search_24"
+        android:title="@string/search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="collapseActionView|always" />
+
+    <item
+        android:id="@+id/call_configuration"
+        android:title="@string/default_call_configuration"
+        android:visible="true"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/chat_configuration"
+        android:title="@string/default_chat_configuration"
+        android:visible="true"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/logout"
+        android:title="@string/logout"
+        android:visible="true"
+        app:showAsAction="never" />
+</menu>

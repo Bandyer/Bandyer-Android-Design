@@ -13,31 +13,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-include ':video-common-ui',
+include ':app',
+        ':app-configuration',
+        ':app-utilities',
+        ':app-design',
+        ':video-common-ui',
         ':video-sdk',
-        ':video-glasses-sdk',
-        ':video',
-        ':video-extension-audio'
-//        ':communication_center'
-//        ':extension_live_pointer',
-//        ':extension_file_share',
-//        ':video-networking',
-//        ':collaboration-suite-utils',
-//        ':bandyer-android-chat',
-//        ':collaboration-suite-utils'
-//        ':macrobenchmark',
-//        ':app'
+        ':video-glasses-sdk'
 
-project(':video').projectDir = file('../bandyer-android-collaborationcenter/video/')
-project(':video-extension-audio').projectDir = file('../bandyer-android-collaborationcenter/video-extension-audio/')
-//project(':bandyer-android-chat').projectDir = file('../Bandyer-Android-Chat-SDK/bandyer-android-chat/')
-//project(':collaboration-suite-utils').projectDir = file('../Collaboration-Suite-Utils/collaboration-suite-utils')
-//project(':communication_center').projectDir = file('../Bandyer-Android-CommunicationCenter/communication_center/')
-//project(':extension_live_pointer').projectDir = file('../Bandyer-Android-CommunicationCenter/extension_live_pointer/')
-//project(':extension_file_share').projectDir = file('../Bandyer-Android-CommunicationCenter/extension_file_share')
-//project(':video-networking').projectDir = file('../Collaboration-Suite-Networking/video-networking/')
-//project(':collaboration-suite-utils').projectDir = file('../Collaboration-Suite-Utils/collaboration-suite-utils')
-
+project(':app-utilities').projectDir = file('app-extensions/app-utilities')
+project(':app-configuration').projectDir = file('app-extensions/app-configuration')
+project(':app-design').projectDir = file('app-extensions/app-design')
 
 dependencyResolutionManagement {
     repositories {
@@ -52,13 +38,13 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("kaleyraCatalog") {
-            from("com.kaleyra:kaleyra-libs-version-catalog:2023.10.00")
+            from("com.kaleyra:kaleyra-libs-version-catalog:2023.11.00")
         }
         create("catalog") {
-            from("com.kaleyra:video-sdk-version-catalog:2023.10.00")
+            from("com.kaleyra:video-sdk-version-catalog:2023.11.00")
         }
         create("sampleAppCatalog") {
-            from("com.kaleyra:video-app-version-catalog:2023.10.00")
+            from("com.kaleyra:video-app-version-catalog:2023.11.00")
         }
     }
 }

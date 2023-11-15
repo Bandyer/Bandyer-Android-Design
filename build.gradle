@@ -16,27 +16,68 @@
 
 buildscript {
 
+    ext.keyStoreAlias = { buildType -> return " " }
+    ext.keyStorePassword = { buildType -> return " " }
+    ext.keyStoreFilePath = { buildType -> return " " }
+    ext.keyStorePassword = { buildType -> return " " }
+
+    ext.playStoreCredentialsFilePath = { return " " }
+    ext.crashlyticsAppId = { -> return "" }
+
+    ext.getDistributionAppId = { -> return "" }
+    ext.getDistributionCredentialsFilePath = { buildType -> return " " }
+    ext.getDistributionReleaseNotes = { version -> return "" }
+    ext.getDistributionTestGroup = { -> return "" }
+
+    ext.useLeakCanary = { -> return false }
+    ext.useMockUserDetailsProvider = { -> return false }
+
+    ext.getHmsDistributionCredentialsFilePath = { -> return " " }
+
     repositories {
         mavenLocal()
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url 'https://jitpack.io' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'https://repo1.maven.org/maven2/' }
+        maven { url "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven" }
         maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url 'https://jitpack.io' }
+        maven { url 'https://developer.huawei.com/repo/' }
+        maven { url 'https://maven.bandyer.com/prebuilts' }
         maven { url 'https://maven.bandyer.com/releases' }
-        maven { url "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven" }
-        maven { url "https://plugins.gradle.org/m2/" }
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${catalog.versions.jetbrainsKotlinVersion.get()}"
+        // Platform
         classpath "com.android.tools.build:gradle:${catalog.versions.gradleVersion.get()}"
+
+        // Kotlin
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${catalog.versions.jetbrainsKotlinVersion.get()}"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions-runtime:${catalog.versions.jetbrainsKotlinVersion.get()}"
+
+        // UI
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${catalog.plugins.androidxNavigationSafeArgs.get().version}"
+
+        // Code analysis
         classpath "com.mxalbert.gradle:jacoco-android:${catalog.plugins.jacoco.get().version}"
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${catalog.plugins.sonarqube.get().version}"
-        classpath "com.mxalbert.gradle:jacoco-android:${catalog.plugins.jacoco.get().version}"
+
+        // Documentation
+        classpath "org.jetbrains.dokka:dokka-core:${catalog.versions.jetbrainsDokkaVersion.get()}"
+
+        // Firebase crashlytics
+        classpath "com.google.firebase:firebase-crashlytics-gradle:${sampleAppCatalog.plugins.firebaseCrashlytics.get().version}"
+
+        // Push notifications
+        classpath "com.google.gms:google-services:${sampleAppCatalog.plugins.gmsGoogleServices.get().version}"
+
+        // Publish on store
+        classpath "com.google.firebase:firebase-appdistribution-gradle:${sampleAppCatalog.plugins.firebaseAppDistribution.get().version}"
+        classpath "ru.cian:huawei-publish-gradle-plugin:${sampleAppCatalog.plugins.huaweiPublish.get().version}"
+        classpath "com.github.triplet.gradle:play-publisher:${sampleAppCatalog.plugins.tripletPlay.get().version}"
     }
 }
 
@@ -46,12 +87,15 @@ allprojects {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url 'https://jitpack.io' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'https://repo1.maven.org/maven2/' }
+        maven { url "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven" }
         maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url 'https://jitpack.io' }
+        maven { url 'https://developer.huawei.com/repo/' }
+        maven { url 'https://maven.bandyer.com/prebuilts' }
         maven { url 'https://maven.bandyer.com/releases' }
-        maven { url "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven" }
-        maven { url "https://plugins.gradle.org/m2/" }
     }
 }
 

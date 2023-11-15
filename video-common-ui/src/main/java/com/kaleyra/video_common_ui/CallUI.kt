@@ -227,7 +227,7 @@ class CallUI(
             data object ViewOnly : OpenWhiteboard()
 
             @Parcelize
-            data object Full : OpenChat()
+            data object Full : OpenWhiteboard()
         }
     }
 }

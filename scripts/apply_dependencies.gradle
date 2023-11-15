@@ -1,0 +1,53 @@
+dependencies {
+
+    /*** Platform ***/
+    // FOR API < 26
+    coreLibraryDesugaring sampleAppCatalog.desugar
+
+    implementation sampleAppCatalog.kotlinStdLibJdk8
+    implementation sampleAppCatalog.coroutines
+    implementation sampleAppCatalog.coroutinesAndroid
+    implementation sampleAppCatalog.androidxLifecycleRuntime
+    implementation sampleAppCatalog.androidxLifecycleViewModel
+    implementation sampleAppCatalog.androidxLifecycleCommonJava8
+    implementation sampleAppCatalog.appcompat
+    implementation sampleAppCatalog.androidxCoreKtx
+
+    implementation sampleAppCatalog.androidxCoordinatorLayout
+    implementation sampleAppCatalog.androidxRecyclerview
+    implementation sampleAppCatalog.androidxRecyclerviewSelection
+    implementation sampleAppCatalog.gotevRecyclerAdapter
+    implementation sampleAppCatalog.gotevRecyclerAdapterExtensions
+    implementation sampleAppCatalog.material
+    implementation sampleAppCatalog.androidxFragment
+    implementation sampleAppCatalog.androidxNavigationUiKtx
+    implementation sampleAppCatalog.androidxNavigationFragmentKtx
+
+
+    /*** Testing ***/
+    testImplementation sampleAppCatalog.junit
+
+    /*** Utilities & Debug Tools ***/
+    debugImplementation sampleAppCatalog.squareupLeakCanary
+
+    /*** Notification ***/
+    implementation sampleAppCatalog.firebaseMessaging
+    implementation sampleAppCatalog.firebaseIid
+    implementation sampleAppCatalog.firebaseCrashlyticsNdk
+    implementation sampleAppCatalog.androidxWorkRuntime
+    implementation sampleAppCatalog.androidxWorkRuntimeKtx
+
+    /*** Notification alternative ***/
+    implementation sampleAppCatalog.pushy
+    implementation sampleAppCatalog.huaweiHmsPush
+
+    /*** Networking ***/
+    implementation sampleAppCatalog.okhttp
+
+    /** Utilities **/
+    implementation sampleAppCatalog.androidxBiometric
+    implementation project(":app-utilities")
+    implementation project(":app-configuration")
+    implementation project(":app-design")
+
+}

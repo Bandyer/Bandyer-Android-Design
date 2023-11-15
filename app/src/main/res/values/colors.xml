@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2023 Kaleyra S.p.A. All Rights Reserved.
+  ~ See LICENSE.txt for licensing information
+  -->
+<resources>
+    <color name="stateError">#c70000</color>
+    <color name="stateConnected">#7ED321</color>
+    <color name="stateConnecting">#FFAB00</color>
+    <color name="stateDisconnecting">#cfd8dc</color>
+    <color name="stateDisconnected">#434343</color>
+</resources>

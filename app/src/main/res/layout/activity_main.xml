@@ -1,271 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
+  ~ Copyright (C) 2023 Kaleyra S.p.A. All Rights Reserved.
+  ~ See LICENSE.txt for licensing information
   -->
-
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="@string/app_name">
-
-        </com.google.android.material.appbar.MaterialToolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ongoing_call_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/ongoing_call_description"
+            android:focusableInTouchMode="false"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/selected_users_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space16"
+            android:layout_marginLeft="@dimen/space16"
+            android:layout_marginTop="@dimen/space16"
+            android:layout_marginEnd="@dimen/space16"
+            android:layout_marginRight="@dimen/space16"
+            android:text="@string/selected_users"
+            android:textSize="@dimen/text_h3" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/selected_users_chipgroup"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space48"
+            android:layout_marginTop="@dimen/space16"
+            android:layout_marginBottom="@dimen/space16"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/space16"
+            android:paddingLeft="@dimen/space16"
+            android:paddingEnd="@dimen/space16"
+            android:paddingRight="@dimen/space16" />
+
+        <TextView
+            android:id="@+id/no_results"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space56"
+            android:gravity="center_horizontal"
+            android:text="@string/no_user_found"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/space56"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/contactsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/kaleyra_dimen_space32"
-            android:paddingBottom="@dimen/kaleyra_dimen_space32">
+            android:cacheColorHint="@android:color/white"
+            android:nextFocusRight="@+id/chat"
+            android:requiresFadingEdge="vertical" />
 
-            <com.kaleyra.video_glasses_sdk.common.HorizontalAutoScrollView
-                android:id="@+id/kaleyra_horizontalAutoScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+    </LinearLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:text="Stefano Brusadelli, Andrea Giuliacci, Mario Draghi, Krystian Petrov, Mara Maionchi, Elisa Codara"
-                    style="@style/KaleyraCollaborationSuiteUI.TextView.Title"
-                    android:textSize="20sp"
-                    android:paddingStart="@dimen/kaleyra_dimen_space32"
-                    android:paddingEnd="@dimen/kaleyra_dimen_space32"
-                    android:maxLines="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_margin="@dimen/space16"
+        android:clickable="true"
+        android:contentDescription="@string/chat"
+        android:focusable="true"
+        android:focusableInTouchMode="false"
+        android:nextFocusLeft="@+id/checkbox"
+        android:nextFocusRight="@+id/call"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_kaleyra_chat"
+        app:backgroundTint="@color/stateDisconnected"
+        app:fabSize="normal"
+        android:onClick="onChatClicked"
+        app:layout_anchor="@+id/spacer"
+        app:layout_anchorGravity="start|left|bottom"
+        app:maxImageSize="32dp"
+        app:tint="#ffffff" />
 
-            </com.kaleyra.video_glasses_sdk.common.HorizontalAutoScrollView>
+    <View
+        android:id="@+id/chat_info_api_21"
+        android:layout_width="@dimen/space72"
+        android:layout_height="@dimen/space72"
+        android:layout_gravity="start"
+        android:layout_margin="@dimen/space16"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:nextFocusLeft="@+id/checkbox"
+        android:nextFocusRight="@+id/call"
+        android:scaleType="centerCrop"
+        app:layout_anchor="@+id/spacer"
+        app:layout_anchorGravity="start|left|bottom" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_kaleyra_snackbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/kaleyra_snackbar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/kaleyra_horizontalAutoScrollView"/>
+    <Space
+        android:id="@+id/spacer"
+        android:layout_width="@dimen/space16"
+        android:layout_height="@dimen/space16"
+        android:layout_gravity="start"
+        app:layout_anchor="@+id/call"
+        app:layout_anchorGravity="start|left|bottom" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_user_consent_agreement"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/user_consent_agreement_notification"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_kaleyra_snackbar" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space16"
+        android:clickable="true"
+        android:contentDescription="@string/call"
+        android:focusable="true"
+        android:focusableInTouchMode="false"
+        android:nextFocusLeft="@+id/chat"
+        android:scaleType="centerCrop"
+        android:onClick="onCallClicked"
+        android:src="@drawable/ic_kaleyra_audio_call"
+        app:backgroundTint="@color/stateDisconnected"
+        app:fabSize="normal"
+        app:layout_anchor="@+id/content"
+        app:layout_anchorGravity="bottom|right|end"
+        app:maxImageSize="32dp"
+        app:tint="#ffffff" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_call_notification"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/call_notifications"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_user_consent_agreement" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_chat"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/chat"
-                app:layout_constraintEnd_toStartOf="@id/btn_call"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/btn_call"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_call_notification" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_call"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/call"
-                app:layout_constraintBottom_toBottomOf="@id/btn_chat"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/btn_chat"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_chat"
-                app:layout_constraintTop_toTopOf="@id/btn_chat" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_smartglasses_menu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/smart_glass_menu"
-                app:layout_constraintTop_toBottomOf="@id/btn_chat" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_whiteboard_editor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/whiteboard_editor"
-                app:layout_constraintTop_toBottomOf="@id/btn_smartglasses_menu" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_live_pointer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/live_pointer"
-                app:layout_constraintTop_toBottomOf="@id/btn_whiteboard_editor" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_bluetooth_audioroute"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/bluetooth_audio_route"
-                app:layout_constraintTop_toBottomOf="@id/btn_live_pointer" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_whiteboard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/whiteboard"
-                app:layout_constraintTop_toBottomOf="@id/btn_bluetooth_audioroute" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_ringing"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginBottom="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/ringing"
-                app:layout_constraintTop_toBottomOf="@id/btn_whiteboard" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_file_share"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginBottom="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/file_share"
-                app:layout_constraintTop_toBottomOf="@id/btn_ringing" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_feedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginBottom="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/feedback"
-                app:layout_constraintTop_toBottomOf="@id/btn_file_share" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_kick_participant"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginBottom="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/kick_participant"
-                app:layout_constraintTop_toBottomOf="@id/btn_feedback" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_mute_participant"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
-                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
-                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
-                android:layout_marginBottom="@dimen/kaleyra_dimen_space16"
-                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
-                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:text="@string/mute_participant"
-                app:layout_constraintTop_toBottomOf="@id/btn_kick_participant" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</merge>

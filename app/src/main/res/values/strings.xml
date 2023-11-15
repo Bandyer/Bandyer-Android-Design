@@ -1,50 +1,84 @@
 <!--
-  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
+  ~ Copyright (C) 2023 Kaleyra S.p.A. All Rights Reserved.
+  ~ See LICENSE.txt for licensing information
   -->
-
 <resources>
-    <string name="app_name">Demo SDK Design</string>
-    <string name="kaleyra" translatable="false">Kaleyra</string>
-    <string name="call_notifications">Call notifications</string>
-    <string name="chat">Chat</string>
-    <string name="call">Call</string>
-    <string name="whiteboard_editor">Whiteboard text editor</string>
-    <string name="snapshot_preview">Snapshot preview</string>
-    <string name="whiteboard">Whiteboard</string>
-    <string name="ringing">Call Ringing</string>
-    <string name="bluetooth_audio_route">Bluetooth device states</string>
-    <string name="live_pointer">Live pointer</string>
-    <string name="kaleyra_snackbar" translatable="false">Kaleyra Snackbar</string>
-    <string name="night_mode">Night mode on/off</string>
-    <string name="kaleyra_start_audio_call">Call</string>
-    <string name="kaleyra_start_video_call">Video call</string>
-    <string name="kaleyra_start_audio_upgrade_call">Call</string>
-    <string name="kaleyra_start_audio_call_description">Start call</string>
-    <string name="kaleyra_start_video_call_description">Start video call</string>
-    <string name="kaleyra_start_audio_upgrade_call_description">Start audio upgradable call</string>
-    <string name="smart_glass_menu">Smartglass menu</string>
-    <string name="screen_share_picker">Screen share picker</string>
-    <string name="file_share">File share</string>
-    <string name="feedback">Feedback</string>
-    <string name="kick_participant">Call participant removed dialog</string>
-    <string name="mute_participant">Call participant muted snackbar</string>
-    <string name="notification">Call notification</string>
-    <string name="add_upload">Add upload</string>
-    <string name="add_download">Add download</string>
-    <string name="add_download_available">Add download available</string>
-    <string name="file_share_dialog">File Share Dialog</string>
-    <string name="user_consent_agreement_notification">Terms agreement notification</string>
+
+    <string name="app_name" translatable="false">Kaleyra Video SDK Showcase</string>
+
+    <!-- ACTIVITIES -->
+
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="title_activity_login" translatable="false">LoginActivity</string>
+
+    <string name="show_camera" translatable="false">Show camera preview</string>
+    <string name="permission_camera_rationale" translatable="false">Camera permission is needed to show the camera preview.</string>
+    <string name="permission_camera_denied" translatable="false">Camera permission was denied. Please consider granting it in order to access the camera!</string>
+    <string name="permission_camera_never_ask_again" translatable="false">Camera permission was denied with never ask again.</string>
+    <string name="oto_call_error_no_selected_user" translatable="false">You must provide at least one valid user alias to start a call.</string>
+    <string name="oto_chat_error_no_selected_user" translatable="false">You must provide at least one valid user alias to start a chat.</string>
+    <string name="oto_chat_error_group_selected" translatable="false">Group chats are not yet supported.</string>
+    <string name="hang_up" translatable="false">Hang up</string>
+    <string name="calling_user" translatable="false">Calling user…</string>
+    <string name="decline" translatable="false">Decline</string>
+    <string name="answer" translatable="false">Answer</string>
+    <string name="selected_users" translatable="false">Selected users:</string>
+    <string name="logout" translatable="false">Logout</string>
+    <string name="logout_confirmation" translatable="false">Do you want to logout?</string>
+    <string name="caller_name" translatable="false">Caller name</string>
+    <string name="preparing_call" translatable="false">Call is loading…</string>
+    <string name="no_user_found" translatable="false">No user found.</string>
+
+    <string name="join_call_url" translatable="false">Join call in Bandyer</string>
+    <string name="biometric_notification_title" translatable="false">User authentication request.</string>
+    <string name="biometric_notification_description" translatable="false">Please click on notification to verify your identity.</string>
+
+
+    <string name="search" translatable="false">Search&#8230;</string>
+    <string name="button_allow" translatable="false">Allow</string>
+
+    <string name="app_name_with_version" translatable="false">Showcase %1$s</string>
+
+    <!-- CALL OPTIONS -->
+
+    <string name="call_type_audio_only" translatable="false">AUDIO_ONLY</string>
+    <string name="call_type_audio_upgradable" translatable="false">AUDIO_UPGRADABLE</string>
+    <string name="call_type_audio_video" translatable="false">AUDIO_VIDEO</string>
+    <string name="call_type_audio_only_name" translatable="false">Audio only</string>small
+    <string name="call_type_audio_upgradable_name" translatable="false">Audio upgradable</string>
+    <string name="call_type_audio_video_name" translatable="false">Audio video</string>
+    <string name="default_call_configuration" translatable="false">Default call configuration</string>
+    <string name="default_chat_configuration" translatable="false">Default chat configuration</string>
+    <string name="select_call_type" translatable="false">Select call type:</string>
+    <string name="audio_only" translatable="false">Audio only</string>
+    <string name="audio_upgradable" translatable="false">Audio upgradable</string>
+    <string name="audio_video" translatable="false">Audio video</string>
+    <string name="call" translatable="false">Call</string>
+    <string name="select_call_capabilities_from_chat_ui" translatable="false">Select call types that can be started from chat UI:</string>
+    <string name="chat" translatable="false">Chat</string>
+    <string name="save" translatable="false">Save</string>
+
+    <string name="select_in_call_capabilities" translatable="false">Select in-call capabilities:</string>
+    <string name="select_in_call_options_audio" translatable="false">Select in-call options:</string>
+    <string name="select_all_call_capabilities" translatable="false">Select all call capabilities</string>
+    <string name="deselect_all_call_capabilities" translatable="false">Deselect all call capabilities</string>
+    <string name="select_all_call_options" translatable="false">Select all call options</string>
+    <string name="deselect_all_call_options" translatable="false">Deselect all call options</string>
+    <string name="no_users_selected" translatable="false">No users selected.</string>
+    <string name="settings_have_been_changed_alert" translatable="false">Settings have been changed, restarting app&#8230;</string>
+    <string name="ongoing_call_description" translatable="false">Tap to go back in call</string>
+
+    <string name="pref_call_type_title" translatable="false">Default call type</string>
+    <string name="pref_call_capabilities_title" translatable="false">In-call default capabilities</string>
+    <string name="pref_call_options_title" translatable="false">In-call default options</string>
+
+    <string name="pref_call_options_experimental" translatable="false">Experimental</string>
+
+    <string name="pick_users" translatable="false">Hello %1$s!\nWho do you want to call or chat with?</string>
+    <string name="login_title" translatable="false">Choose the user to login with:</string>
+
+    <string name="missed_call" translatable="false">Missed call</string>
+    <string name="callback" translatable="false">Call back</string>
+    <string name="chatback" translatable="false">Chat</string>
 
 </resources>

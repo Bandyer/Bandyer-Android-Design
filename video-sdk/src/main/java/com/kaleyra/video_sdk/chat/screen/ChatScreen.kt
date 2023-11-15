@@ -62,7 +62,7 @@ import kotlinx.coroutines.launch
 internal const val ConversationComponentTag = "ConversationComponentTag"
 
 @Composable
-fun ChatScreen(
+internal fun ChatScreen(
     onBackPressed: () -> Unit,
     viewModel: PhoneChatViewModel
 ) {
@@ -94,7 +94,7 @@ fun ChatScreen(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ChatScreen(
+internal fun ChatScreen(
     uiState: ChatUiState,
     userMessage: UserMessage? = null,
     onBackPressed: () -> Unit,

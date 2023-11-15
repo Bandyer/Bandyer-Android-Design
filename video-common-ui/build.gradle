@@ -60,21 +60,17 @@ dependencies {
     testImplementation catalog.roboelectric
     testImplementation catalog.coroutines
     testImplementation catalog.coroutinesTest
-    testImplementation project(":video-extension-audio")
-    testImplementation project(":video")
+    testImplementation kaleyraCatalog.kaleyraVideo
+    testImplementation kaleyraCatalog.kaleyraVideoExtensionAudio
 
     androidTestImplementation catalog.mockkAndroid
     androidTestImplementation catalog.androidxTestEspressoIntents
     androidTestImplementation catalog.junitTestExt
 
     /** Kaleyra **/
-//    implementation project(':video-utils')
     implementation kaleyraCatalog.kaleyraVideoUtils
-
-    compileOnly project(":video")
-    compileOnly project(":video-extension-audio")
-//    compileOnly kaleyraCatalog.kaleyraCollaborationSuite
-//    compileOnly kaleyraCatalog.kaleyraCollaborationSuiteExtensionAudio
+    compileOnly kaleyraCatalog.kaleyraVideo
+    compileOnly kaleyraCatalog.kaleyraVideoExtensionAudio
 }
 
 licenseReport {

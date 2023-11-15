@@ -6,7 +6,7 @@ AWS_ACCESS_KEY = sys.argv[1]
 AWS_SECRET_ACCESS_KEY = sys.argv[2]
 AWS_CF_DISTRIBUTION_ID = sys.argv[3]
 AWS_PATH = sys.argv[4]  # such as releases/
-PACKAGE_NAME = sys.argv[5]  # such as com.bandyer.library
+PACKAGE_NAME = sys.argv[5]  # such as com.kaleyra.library
 PACKAGE_VERSION = sys.argv[6]  # such as 1.0
 
 aws_package_path = PACKAGE_NAME.replace(".", "/")

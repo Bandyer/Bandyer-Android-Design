@@ -1,0 +1,127 @@
+/*
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+    alias(sampleAppCatalog.plugins.kotlinxSerialization)
+}
+
+android {
+
+    namespace "com.kaleyra.app_utilities"
+    compileSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
+    buildToolsVersion sampleAppCatalog.versions.sampleAppToolsVersion.get()
+
+    defaultConfig {
+        minSdkVersion sampleAppCatalog.versions.sampleAppMinSdkVersion.get().toInteger()
+        targetSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    publishing {
+        singleVariant('release') {
+            withJavadocJar()
+        }
+    }
+}
+
+dependencies {
+
+    /*** Platform ***/
+    implementation sampleAppCatalog.kotlinStdLib
+    implementation sampleAppCatalog.kotlinReflect
+    implementation sampleAppCatalog.androidxLifecycleCommonJava8
+    implementation sampleAppCatalog.kotlinSerializationJson
+    api sampleAppCatalog.androidxCoreKtx
+    api sampleAppCatalog.appcompat
+    api sampleAppCatalog.androidxFragment
+    api sampleAppCatalog.androidxMultidex
+    api sampleAppCatalog.material
+
+    /*** UI ***/
+    api sampleAppCatalog.androidxRecyclerview
+    api sampleAppCatalog.fastadapter
+    api "com.mikepenz:fastadapter-extensions-binding:${sampleAppCatalog.versions.fastadapterVersion.get()}"
+    api (sampleAppCatalog.materialExpansionPanel) {
+        exclude module: 'constraintlayout'
+    }
+    api sampleAppCatalog.androidxSwipeRefreshLayout
+
+    /*** Testing ***/
+    testImplementation sampleAppCatalog.junit
+    androidTestImplementation sampleAppCatalog.junitTestExt
+    androidTestImplementation sampleAppCatalog.androidxTestEspressoCore
+
+    /*** Networking ***/
+    api sampleAppCatalog.okhttp
+    implementation sampleAppCatalog.ktorClientCore
+    implementation sampleAppCatalog.ktorClientCio
+    implementation sampleAppCatalog.ktorClientContentNegotiation
+    implementation sampleAppCatalog.ktorSerializationKotlinxJson
+    implementation sampleAppCatalog.ktorClientOkhttp
+
+    /*** Utility ***/
+    implementation sampleAppCatalog.processPhoenix
+    debugImplementation sampleAppCatalog.facebookFlipper
+    debugImplementation sampleAppCatalog.facebookSoloader
+    debugImplementation sampleAppCatalog.facebookFlipperLeakCanary
+    debugImplementation sampleAppCatalog.kaleyraFlipperSocketIo
+    debugImplementation sampleAppCatalog.facebookFlipperNetwork
+    releaseImplementation sampleAppCatalog.facebookFlipperNoop
+
+    /*** Debug leaks ***/
+    debugImplementation sampleAppCatalog.squareupLeakCanary
+
+    /*** Crashlytics ***/
+    compileOnly sampleAppCatalog.firebaseCrashlyticsNdk
+
+
+    /*** FCM setup ***/
+    compileOnly sampleAppCatalog.firebaseMessaging
+
+    /*** Pushy notification service, useful for China ***/
+    compileOnly sampleAppCatalog.pushy
+    compileOnly sampleAppCatalog.huaweiHmsPush
+
+    implementation project(':app-configuration')
+    implementation project(":app-design")
+}

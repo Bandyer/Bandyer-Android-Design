@@ -153,12 +153,11 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .onEach { isGroupCall -> _uiState.update { it.copy(isGroupCall = isGroupCall) } }
             .launchIn(viewModelScope)
 
-        call
-            .doOthersHaveStreams()
-            .combine(callState) { doOthersHaveStreams, callState -> doOthersHaveStreams to callState }
-            .takeWhile { (_, callState) -> callState !is CallStateUi.Disconnecting && callState !is CallStateUi.Disconnected.Ended }
-            .debounce { (doOthersHaveStreams, _) -> if (!doOthersHaveStreams) AM_I_LEFT_ALONE_DEBOUNCE_MILLIS else 0L }
-            .onEach { (doOthersHaveStreams, _) -> _uiState.update { it.copy(amILeftAlone = !doOthersHaveStreams) } }
+        callState
+            .takeWhile { it !is CallStateUi.Disconnecting && it !is CallStateUi.Disconnected.Ended }
+            .combine(call.doOthersHaveStreams()) { _, doOthersHaveStreams -> doOthersHaveStreams }
+            .debounce { doOthersHaveStreams -> if (!doOthersHaveStreams) AM_I_LEFT_ALONE_DEBOUNCE_MILLIS else 0L }
+            .onEach { doOthersHaveStreams -> _uiState.update { it.copy(amILeftAlone = !doOthersHaveStreams) } }
             .launchIn(viewModelScope)
 
         call
