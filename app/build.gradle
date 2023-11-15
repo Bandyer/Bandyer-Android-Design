@@ -6,10 +6,12 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
+    id 'kotlin-parcelize'
     id "com.github.triplet.play"
     id "com.google.firebase.appdistribution"
     id "ru.cian.huawei-publish"
     id "com.google.firebase.crashlytics"
+    id 'org.jetbrains.kotlin.plugin.serialization' version sampleAppCatalog.versions.jetbrainsKotlinVersion
 }
 
 apply from: 'versions.gradle'
@@ -116,11 +118,12 @@ huaweiPublish {
 dependencies {
     /*** Kaleyra Video SDK ***/
 //    implementation(platform("com.kaleyra:video-sdk-bom:$kaleyraVideoSdkVersion"))
+    implementation catalog.kotlinSerializationJson
 
     implementation project(":video-sdk")
 
     // define this dependency only if you desire to handle usb camera input in a video call
-//    implementation "com.kaleyra:video-extension-external-camera"
+    implementation kaleyraCatalog.kaleyraVideoCoreAvExtensionExternalCamera
 
     // define this dependency only if you desire to handle virtual backgrounds in a video call
 //    implementation "com.kaleyra:video-extension-virtual-background"

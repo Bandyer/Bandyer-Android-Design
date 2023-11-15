@@ -49,14 +49,15 @@ import com.kaleyra.demo_video_sdk.ui.adapter_items.SelectedUserItem
 import com.kaleyra.demo_video_sdk.ui.adapter_items.UserSelectionItem
 import com.kaleyra.demo_video_sdk.ui.custom_views.CallConfiguration
 import com.kaleyra.demo_video_sdk.ui.custom_views.ChatConfiguration
-import com.kaleyra.ui.custom_views.CustomConfigurationDialog
+import com.kaleyra.demo_video_sdk.ui.custom_views.CustomConfigurationDialog
+import com.kaleyra.demo_video_sdk.ui.custom_views.mapToCallUIActions
 import com.kaleyra.video.State
 import com.kaleyra.video.State.Disconnected
 import com.kaleyra.video.Synchronization
 import com.kaleyra.video.conference.Call
 import com.kaleyra.video.conference.Call.PreferredType
-import com.kaleyra.video.conference.Call.Recording
 import com.kaleyra.video_common_ui.CallUI
+import com.kaleyra.video_common_ui.ChatUI
 import com.kaleyra.video_common_ui.KaleyraVideo
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IAdapter
@@ -139,8 +140,6 @@ class MainActivity : CollapsingToolbarActivity(), OnQueryTextListener, OnRefresh
 
         DemoAppKaleyraVideoService.configure(this)
         DemoAppKaleyraVideoService.connect(this)
-
-        KaleyraVideo.conference.callActions
 
         // Update the button colors based on their current module status to avoid interaction before the modules are ready.
         KaleyraVideo.conference.state.combine(KaleyraVideo.synchronization) { state, sync -> binding?.let { setButtonColor(it.call, state, sync) } }.launchIn(lifecycleScope)
@@ -423,7 +422,14 @@ class MainActivity : CollapsingToolbarActivity(), OnQueryTextListener, OnRefresh
             return
         }
         hideKeyboard(this)
-        KaleyraVideo.conversation.chat(this, calleeSelected[0])
+        val configuration = DefaultConfigurationManager.getDefaultChatConfiguration()
+        val chat = KaleyraVideo.conversation.chat(this, calleeSelected[0]).getOrNull()
+        val actions = mutableSetOf<ChatUI.Action>().apply {
+            if (configuration.audioConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioOnly()))
+            if (configuration.audioUpgradableConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioUpgradable()))
+            if (configuration.audioVideoConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioVideo()))
+        }
+        chat?.actions?.value = actions
     }
 
     /**
@@ -448,10 +454,11 @@ class MainActivity : CollapsingToolbarActivity(), OnQueryTextListener, OnRefresh
             CallOptionsType.AUDIO_VIDEO      -> PreferredType.audioVideo()
         }
 
+        val configuration = DefaultConfigurationManager.getDefaultCallConfiguration()
         KaleyraVideo.conference.call(calleeSelected) {
             preferredType = type
-            recordingType = Recording.manual()
-        }
+            recordingType = if (configuration.options.recordingEnabled) Call.Recording.automatic() else Call.Recording.disabled()
+        }.getOrNull()
     }
 
     private fun setButtonColor(view: FloatingActionButton, state: State?, synchronization: Synchronization?) {

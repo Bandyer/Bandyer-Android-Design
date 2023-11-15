@@ -29,13 +29,9 @@ import androidx.appcompat.widget.AppCompatButton
 import com.kaleyra.app_configuration.model.CallOptionsType
 import com.kaleyra.demo_video_sdk.R
 import com.kaleyra.demo_video_sdk.storage.DefaultConfigurationManager
-import com.kaleyra.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType
-import com.kaleyra.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType.CALL
-import com.kaleyra.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType.CHAT
-import com.kaleyra.video_common_ui.CallUI.Action.FileShare
-import com.kaleyra.video_common_ui.CallUI.Action.OpenChat
-import com.kaleyra.video_common_ui.CallUI.Action.OpenWhiteboard
-import com.kaleyra.video_common_ui.CallUI.Action.ScreenShare
+import com.kaleyra.demo_video_sdk.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType
+import com.kaleyra.demo_video_sdk.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType.CALL
+import com.kaleyra.demo_video_sdk.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType.CHAT
 import com.robertlevonyan.views.expandable.Expandable
 
 @SuppressLint("ViewConstructor")
@@ -266,10 +262,10 @@ class CallOptionsDialogView(
         private fun setCallCapabilities(callConfiguration: CallConfiguration) = with(callConfiguration) {
             actions.forEach {
                 when (it) {
-                    is OpenWhiteboard -> setChecked(R.id.call_options_whiteboard, true)
-                    is FileShare      -> setChecked(R.id.call_options_file_share, true)
-                    is OpenChat       -> setChecked(R.id.call_options_chat, true)
-                    is ScreenShare    -> setChecked(R.id.call_options_screen_sharing, true)
+                    is ConfigAction.OpenWhiteboard -> setChecked(R.id.call_options_whiteboard, true)
+                    is ConfigAction.FileShare      -> setChecked(R.id.call_options_file_share, true)
+                    is ConfigAction.OpenChat       -> setChecked(R.id.call_options_chat, true)
+                    is ConfigAction.ScreenShare    -> setChecked(R.id.call_options_screen_sharing, true)
                     else              -> Unit
                 }
             }

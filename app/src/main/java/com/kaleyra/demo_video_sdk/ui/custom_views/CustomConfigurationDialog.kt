@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.kaleyra.ui.custom_views
+package com.kaleyra.demo_video_sdk.ui.custom_views
 
 import android.os.Build
 import android.os.Bundle
@@ -35,15 +35,10 @@ import com.kaleyra.demo_video_sdk.R
 import com.kaleyra.demo_video_sdk.storage.DefaultConfigurationManager
 import com.kaleyra.app_configuration.model.CallOptionsType
 import com.kaleyra.app_utilities.storage.ConfigurationPrefsManager
-import com.kaleyra.demo_video_sdk.ui.custom_views.CallConfiguration
-import com.kaleyra.demo_video_sdk.ui.custom_views.CallOptionsDialogView
 import com.kaleyra.demo_video_sdk.ui.custom_views.CallOptionsDialogView.CallOptions
-import com.kaleyra.demo_video_sdk.ui.custom_views.ChatConfiguration
-import com.kaleyra.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType.CALL
-import com.kaleyra.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType.CHAT
-import com.kaleyra.video.conference.Call.PreferredType
+import com.kaleyra.demo_video_sdk.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType.CALL
+import com.kaleyra.demo_video_sdk.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType.CHAT
 import com.kaleyra.video_common_ui.CallUI
-
 
 class CustomConfigurationDialog : DialogFragment() {
 
@@ -174,7 +169,7 @@ class CustomConfigurationDialog : DialogFragment() {
             callOptionsDialogView.isAudioOnlyCallChecked       -> getCallCapabilities(callOptionsDialogView.audioOnlyCallOptionsView!!)
             callOptionsDialogView.isAudioUpgradableCallChecked -> getCallCapabilities(callOptionsDialogView.audioUpgradableCallOptionsView!!)
             callOptionsDialogView.isAudioVideoCallChecked      -> getCallCapabilities(callOptionsDialogView.audioVideoCallOptionsView!!)
-            else                                               -> CallUI.Action.default
+            else                                               -> CallUI.Action.default.mapToConfigActions()
         }, when {
             callOptionsDialogView.isAudioOnlyCallChecked       -> getOptions(callOptionsDialogView.audioOnlyCallOptionsView!!)
             callOptionsDialogView.isAudioUpgradableCallChecked -> getOptions(callOptionsDialogView.audioUpgradableCallOptionsView!!)
@@ -189,14 +184,14 @@ class CustomConfigurationDialog : DialogFragment() {
         if (callOptionsDialogView.isAudioVideoCallChecked) getCallConfiguration(callOptionsDialogView) else null
     )
 
-    private fun getCallCapabilities(optionView: CallOptions): Set<CallUI.Action> {
+    private fun getCallCapabilities(optionView: CallOptions): Set<ConfigAction> {
         val actions = mutableSetOf<CallUI.Action>()
         actions += CallUI.Action.default
-        if (optionView.isChatChecked) actions + CallUI.Action.OpenChat.Full
-        if (optionView.isFileShareChecked) actions + CallUI.Action.FileShare
-        if (optionView.isScreenShareChecked) actions + CallUI.Action.ScreenShare
-        if (optionView.isWhiteboardChecked) actions + CallUI.Action.OpenWhiteboard.Full
-        return actions
+        if (optionView.isChatChecked) actions += CallUI.Action.OpenChat.Full
+        if (optionView.isFileShareChecked) actions += CallUI.Action.FileShare
+        if (optionView.isScreenShareChecked) actions += CallUI.Action.ScreenShare
+        if (optionView.isWhiteboardChecked) actions += CallUI.Action.OpenWhiteboard.Full
+        return actions.mapToConfigActions()
     }
 
     private fun getOptions(optionView: CallOptions) = CallConfiguration.CallOptions(
