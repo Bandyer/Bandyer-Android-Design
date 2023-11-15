@@ -1,0 +1,93 @@
+/*
+ * Copyright 2023 Kaleyra @ https://www.kaleyra.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+    alias(sampleAppCatalog.plugins.kotlinxSerialization)
+}
+
+android {
+
+    namespace "com.kaleyra.app_configuration"
+    compileSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
+    buildToolsVersion sampleAppCatalog.versions.sampleAppToolsVersion.get()
+
+    defaultConfig {
+        minSdkVersion sampleAppCatalog.versions.sampleAppMinSdkVersion.get().toInteger()
+        targetSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "USE_LEAK_CANARY", "false"
+            buildConfigField "boolean", "USE_SIMPLIFIED_VERSION", "true"
+            buildConfigField "boolean", "MOCK_USER_AUTHENTICATION_REQUEST", "false"
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "USE_LEAK_CANARY", "$useLeakCanary"
+
+            buildConfigField "boolean", "USE_SIMPLIFIED_VERSION", "false"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+
+    publishing {
+        singleVariant('release') {
+            withJavadocJar()
+        }
+    }
+}
+
+dependencies {
+    implementation sampleAppCatalog.kotlinStdLib
+    implementation sampleAppCatalog.kotlinReflect
+    implementation sampleAppCatalog.kotlinSerializationJson
+    implementation sampleAppCatalog.androidxActivity
+    implementation sampleAppCatalog.appcompat
+    implementation sampleAppCatalog.androidxCoreKtx
+    implementation sampleAppCatalog.androidxLifecycleViewModel
+    api sampleAppCatalog.googleGson
+    testImplementation sampleAppCatalog.junit
+    androidTestImplementation sampleAppCatalog.junitTestExt
+    androidTestImplementation sampleAppCatalog.androidxTestEspressoCore
+    api sampleAppCatalog.cameraView
+    implementation sampleAppCatalog.zxing
+    implementation project(":app-design")
+}

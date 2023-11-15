@@ -1,48 +1,81 @@
 /*
- * Copyright 2023 Kaleyra @ https://www.kaleyra.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (C) 2023 Kaleyra S.p.A. All Rights Reserved.
+ * See LICENSE.txt for licensing information
  */
+
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs.kotlin'
+    id "com.android.application"
+    id "kotlin-android"
+    id "com.github.triplet.play"
+    id "com.google.firebase.appdistribution"
+    id "ru.cian.huawei-publish"
+    id "com.google.firebase.crashlytics"
 }
 
-android {
+apply from: 'versions.gradle'
+apply from: '../scripts/apply_dependencies.gradle'
 
-    namespace "com.kaleyra.demo_collaboration_suite_ui"
+def kaleyraVideoSdkVersion = "4.0.0-rc01"
+
+android {
+    namespace "com.kaleyra.demo_video_sdk"
     compileSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
     buildToolsVersion sampleAppCatalog.versions.sampleAppToolsVersion.get()
 
     defaultConfig {
-        applicationId "com.kaleyra.demo_collaboration_suite_ui"
+        applicationId "com.kaleyra.demo_video_sdk"
         minSdkVersion sampleAppCatalog.versions.sampleAppMinSdkVersion.get().toInteger()
         targetSdkVersion sampleAppCatalog.versions.sampleAppSdkVersion.get().toInteger()
-        versionCode 1
-        versionName "1.0"
-        multiDexEnabled true
+        versionCode VERSION_CODE.toInteger()
+        versionName kaleyraVideoSdkVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    signingConfigs {
+        debug {
+            if (keyStoreFilePath(name)?.trim()) {
+                keyAlias keyStoreAlias(name)
+                keyPassword keyStorePassword(name)
+                storeFile file(keyStoreFilePath(name))
+                storePassword keyStorePassword(name)
+            }
+        }
+        release {
+            if (keyStoreFilePath(name)?.trim()) {
+                keyAlias keyStoreAlias(name)
+                keyPassword keyStorePassword(name)
+                storeFile file(keyStoreFilePath(name))
+                storePassword keyStorePassword(name)
+            }
+        }
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (keyStoreFilePath(name)?.trim()) signingConfig signingConfigs.release
+            firebaseCrashlytics {
+                mappingFileUploadEnabled false
+            }
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix '-DEBUG'
+            if (keyStoreFilePath(name)?.trim()) signingConfig signingConfigs.debug
+
+            // Firebase distribution
+            if (getDistributionCredentialsFilePath(name)?.trim()) firebaseAppDistribution {
+                appId getDistributionAppId(name)
+                serviceCredentialsFile getDistributionCredentialsFilePath(name)
+                releaseNotes getDistributionReleaseNotes(bandyerLibVersion)
+                groups getDistributionTestGroup()
+            }
+            firebaseCrashlytics {
+                mappingFileUploadEnabled false
+            }
         }
     }
 
@@ -57,39 +90,38 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
+    }
+
+    ndkVersion "23.1.7779620"
+}
+
+play {
+    def canPublish = !playStoreCredentialsFilePath()?.trim().allWhitespace
+    if (canPublish) serviceAccountCredentials = file(playStoreCredentialsFilePath())
+    track.set("beta")
+    enabled.set(canPublish)
+    defaultToAppBundles.set(true)
+}
+
+huaweiPublish {
+    instances {
+        release {
+            credentialsPath = getHmsDistributionCredentialsFilePath()
+            buildFormat = "aab"
+        }
     }
 }
 
 dependencies {
-    /*** Platform ***/
-    implementation sampleAppCatalog.kotlinStdLib
-    implementation sampleAppCatalog.androidxMultidex
-    implementation sampleAppCatalog.appcompat
-    implementation sampleAppCatalog.androidxRecyclerview
-    implementation sampleAppCatalog.androidxCoreKtx
-    implementation sampleAppCatalog.material
-    implementation sampleAppCatalog.androidxConstraintLayout
-    implementation sampleAppCatalog.coroutines
-    implementation sampleAppCatalog.androidxFragment
-    implementation sampleAppCatalog.androidxActivity
-    coreLibraryDesugaring sampleAppCatalog.desugar
+    /*** Kaleyra Video SDK ***/
+//    implementation(platform("com.kaleyra:video-sdk-bom:$kaleyraVideoSdkVersion"))
 
-    /*** Test implementation ***/
-    testImplementation sampleAppCatalog.junit
-    androidTestImplementation sampleAppCatalog.junitTestExt
-    androidTestImplementation sampleAppCatalog.androidxTestEspressoCore
+    implementation project(":video-sdk")
 
-    /*** UI ***/
-    implementation sampleAppCatalog.zoomy
+    // define this dependency only if you desire to handle usb camera input in a video call
+//    implementation "com.kaleyra:video-extension-external-camera"
 
-    /***  Leak Canary ***/
-    debugImplementation sampleAppCatalog.squareupLeakCanary
-
-    /***  KaleyraCollaborationSuiteUI ***/
-    implementation project(':collaboration-suite-phone-ui')
-    implementation project(':collaboration-suite-glass-ui')
-    implementation project(':collaboration-suite-core-ui')
-    implementation kaleyraCatalog.kaleyraCollaborationSuiteUtils
-    implementation kaleyraCatalog.kaleyraAudioSession
+    // define this dependency only if you desire to handle virtual backgrounds in a video call
+//    implementation "com.kaleyra:video-extension-virtual-background"
 }
