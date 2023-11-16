@@ -143,7 +143,7 @@ class PhoneCallActivity : FragmentActivity(), ProximityCallActivity {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        if (handleIntentAction(intent)) return
+        handleIntentAction(intent)
         restartActivityIfCurrentCallIsEnded(intent)
     }
 
