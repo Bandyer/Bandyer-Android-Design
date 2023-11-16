@@ -55,6 +55,7 @@ import com.kaleyra.video.State.Disconnected
 import com.kaleyra.video.Synchronization
 import com.kaleyra.video.conference.Call
 import com.kaleyra.video.conference.Call.PreferredType
+import com.kaleyra.video.conference.Call.Recording
 import com.kaleyra.video_common_ui.CallUI
 import com.kaleyra.video_common_ui.KaleyraVideo
 import com.mikepenz.fastadapter.FastAdapter
@@ -66,6 +67,7 @@ import com.mikepenz.fastadapter.listeners.ItemFilterListener
 import com.mikepenz.fastadapter.select.SelectExtension
 import com.mikepenz.fastadapter.select.SelectExtensionFactory
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
@@ -149,9 +151,13 @@ class MainActivity : CollapsingToolbarActivity(), OnQueryTextListener, OnRefresh
             if (it is Call.State.Connecting) showOngoingCallLabel()
         }.launchIn(lifecycleScope)
 
-        KaleyraVideo.conference.call.flatMapLatest { it.recording }.flatMapLatest { it.state }.onEach {
-            Snackbar.make(searchView!!, it.toString(), Snackbar.LENGTH_SHORT).show()
-        }
+        KaleyraVideo.conference.call
+            .flatMapLatest { it.recording }
+            .flatMapLatest { it.state }
+            .dropWhile { it is Recording.State.Stopped }
+            .onEach {
+                Snackbar.make(searchView!!, it.toString(), Snackbar.LENGTH_SHORT).show()
+            }.launchIn(lifecycleScope)
     }
 
     override fun onPause() {
