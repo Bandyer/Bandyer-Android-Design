@@ -10,10 +10,8 @@ import com.kaleyra.video_common_ui.CallUI
 import com.kaleyra.video_common_ui.CompanyUI
 import com.kaleyra.video_common_ui.DisplayModeEvent
 import com.kaleyra.video_common_ui.mapper.ParticipantMapper.toInCallParticipants
-import com.kaleyra.video_common_ui.mapper.StreamMapper.amIAlone
 import com.kaleyra.video_common_ui.mapper.StreamMapper.doOthersHaveStreams
 import com.kaleyra.video_common_ui.theme.CompanyThemeManager.combinedTheme
-import com.kaleyra.video_sdk.call.mapper.CallStateMapper.isConnected
 import com.kaleyra.video_sdk.call.mapper.CallStateMapper.toCallStateUi
 import com.kaleyra.video_sdk.call.mapper.CallUiStateMapper.toPipAspectRatio
 import com.kaleyra.video_sdk.call.mapper.InputMapper.isAudioOnly
@@ -88,6 +86,12 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             result ?: onCallEnded.first().invoke(false, false, false)
         }
 
+        var hasCallBeenConnected = false
+        viewModelScope.launch {
+            val connected = callState.firstOrNull { it is CallStateUi.Connected }
+            hasCallBeenConnected = connected != null
+        }
+
         CallUserMessagesProvider.start(call)
 
         streamsHandler.streamsArrangement
@@ -121,8 +125,9 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
         callState
             .filter { it is CallStateUi.Disconnecting || it is CallStateUi.Disconnected.Ended }
             .combine(onCallEnded) { callState, onCallEnded ->
+                val withFeedback = call.getValue()?.withFeedback ?: false
                 onCallEnded.invoke(
-                    uiState.value.showFeedback,
+                    hasCallBeenConnected && withFeedback,
                     callState is CallStateUi.Disconnected.Ended.Error,
                     callState is CallStateUi.Disconnected.Ended.Kicked
                 )
@@ -177,14 +182,13 @@ internal class CallViewModel(configure: suspend () -> Configuration) : BaseViewM
             .takeWhile { it !is CallStateUi.Disconnected.Ended }
             .launchIn(viewModelScope)
 
-        call
-            .map { it.withFeedback }
-            .combine(call.isConnected()) { withFeedback, isConnected ->
-                val showFeedback = withFeedback && isConnected
+        callState
+            .dropWhile { it !is CallStateUi.Connected }
+            .onEach { callState ->
+                if (callState !is CallStateUi.Disconnected.Ended.HungUp && callState !is CallStateUi.Disconnected.Ended.Error) return@onEach
+                val showFeedback = call.getValue()?.withFeedback ?: false
                 _uiState.update { it.copy(showFeedback = showFeedback) }
-                isConnected
             }
-            .takeWhile { !it }
             .launchIn(viewModelScope)
 
         combine(

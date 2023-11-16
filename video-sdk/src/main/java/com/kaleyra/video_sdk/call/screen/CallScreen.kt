@@ -621,7 +621,7 @@ internal fun DefaultCallScreen(
         )
 
         val callState = callUiState.callState
-        if (callUiState.showFeedback && (callState is CallStateUi.Disconnected.Ended.HungUp || callState is CallStateUi.Disconnected.Ended.Error)) {
+        if (callUiState.showFeedback) {
             val activity = LocalContext.current.findActivity() as ComponentActivity
             if (activity.isAtLeastResumed()) {
                 UserFeedbackDialog(onUserFeedback = onUserFeedback, onDismiss = onCallEndedBack)

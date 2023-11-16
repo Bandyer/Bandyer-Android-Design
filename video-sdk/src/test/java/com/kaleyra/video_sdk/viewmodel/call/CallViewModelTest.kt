@@ -388,14 +388,60 @@ class CallViewModelTest {
     }
 
     @Test
-    fun testCallUiState_showFeedbackUpdated() = runTest {
+    fun testCallUiState_callEndedHungUp_showFeedbackUpdated() = runTest {
+        val callState = MutableStateFlow<Call.State>(Call.State.Connected)
         with(callMock) {
             every { withFeedback } returns true
-            every { state } returns MutableStateFlow(Call.State.Connected)
+            every { state } returns callState
         }
         advanceUntilIdle()
-        val actual = viewModel.uiState.first().showFeedback
-        assertEquals(true, actual)
+
+        val previous = viewModel.uiState.first().showFeedback
+        assertEquals(false, previous)
+
+        callState.value = Call.State.Disconnected.Ended.HungUp()
+        advanceUntilIdle()
+
+        val current = viewModel.uiState.first().showFeedback
+        assertEquals(true, current)
+    }
+
+    @Test
+    fun testCallUiState_callEndedError_showFeedbackUpdated() = runTest {
+        val callState = MutableStateFlow<Call.State>(Call.State.Connected)
+        with(callMock) {
+            every { withFeedback } returns true
+            every { state } returns callState
+        }
+        advanceUntilIdle()
+
+        val previous = viewModel.uiState.first().showFeedback
+        assertEquals(false, previous)
+
+        callState.value = Call.State.Disconnected.Ended.Error
+        advanceUntilIdle()
+
+        val current = viewModel.uiState.first().showFeedback
+        assertEquals(true, current)
+    }
+
+    @Test
+    fun testCallUiState_callEndedGeneric_showFeedbackNotUpdated() = runTest {
+        val callState = MutableStateFlow<Call.State>(Call.State.Connected)
+        with(callMock) {
+            every { withFeedback } returns true
+            every { state } returns callState
+        }
+        advanceUntilIdle()
+
+        val previous = viewModel.uiState.first().showFeedback
+        assertEquals(false, previous)
+
+        callState.value = Call.State.Disconnected.Ended
+        advanceUntilIdle()
+
+        val current = viewModel.uiState.first().showFeedback
+        assertEquals(false, current)
     }
 
     @Test
