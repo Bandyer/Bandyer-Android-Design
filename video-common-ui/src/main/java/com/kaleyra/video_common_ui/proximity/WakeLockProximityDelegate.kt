@@ -66,7 +66,6 @@ internal class WakeLockProximityDelegateImpl(
     private fun shouldAcquireProximityLock(): Boolean {
         val isDeviceInLandscape = application.isOrientationLandscape()
         return when {
-            call.disableProximitySensor -> false
             isDeviceInLandscape && call.isNotConnected() && call.isMyInternalCameraEnabled() -> false
             isDeviceInLandscape && call.hasUsersWithCameraEnabled() -> false
             call.isMyScreenShareEnabled() -> false

@@ -49,16 +49,11 @@ class CallUI(
      * A property that returns true if the call is a link call.
      **/
     val isLink: Boolean get() = call is Call.Link
-
+    
     /**
      * A property that indicates whether the user feedback is asked at the end of call.
      **/
     var withFeedback: Boolean = false
-
-    /**
-     * A property that indicates whether to enable or disable the proximity sensor in call behaviour.
-     **/
-    var disableProximitySensor: Boolean = false
 
     /**
      * A property that indicates whether to set the back camera as default one
