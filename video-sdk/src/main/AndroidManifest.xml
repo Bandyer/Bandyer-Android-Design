@@ -22,7 +22,7 @@
 
         <activity
             android:name=".termsandconditions.PhoneTermsAndConditionsActivity"
-            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.termsandconditions.PhoneTermsAndConditionsActivity"
+            android:taskAffinity="com.kaleyra.video_sdk.termsandconditions.PhoneTermsAndConditionsActivity"
             android:launchMode="singleTop"
             android:exported="false" />
 
@@ -43,7 +43,7 @@
             android:showWhenLocked="true"
             android:turnScreenOn="true"
             android:supportsPictureInPicture="true"
-            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.PhoneCallActivity"
+            android:taskAffinity="com.kaleyra.video_sdk.call.PhoneCallActivity"
             tools:targetApi="o_mr1" />
         <activity
             android:name=".chat.PhoneChatActivity"
