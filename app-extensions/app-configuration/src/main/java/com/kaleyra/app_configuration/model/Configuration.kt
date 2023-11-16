@@ -19,7 +19,6 @@ import android.content.Context
 import com.kaleyra.app_configuration.BuildConfig
 import com.kaleyra.app_configuration.R
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -42,7 +41,6 @@ data class Configuration(
     var userDetailsProviderMode: UserDetailsProviderMode = UserDetailsProviderMode.REMOTE,
     var useLeakCanary: Boolean = BuildConfig.USE_LEAK_CANARY,
     var defaultCallType: CallOptionsType = CallOptionsType.AUDIO_VIDEO,
-    var withMockAuthentication: Boolean = false,
     var firebaseProjectId: String? = null,
     var firebaseMobileAppId: String? = null,
     var firebaseApiKey: String? = null,
