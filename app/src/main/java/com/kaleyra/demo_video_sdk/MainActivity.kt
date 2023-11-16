@@ -455,14 +455,10 @@ class MainActivity : CollapsingToolbarActivity(), OnQueryTextListener, OnRefresh
         }
 
         val configuration = DefaultConfigurationManager.getDefaultCallConfiguration()
-        KaleyraVideo.conference.callActions = configuration.actions.mapToCallUIActions()
-        val call = KaleyraVideo.conference.call(calleeSelected) {
+        KaleyraVideo.conference.call(calleeSelected) {
             preferredType = type
             recordingType = if (configuration.options.recordingEnabled) Call.Recording.automatic() else Call.Recording.disabled()
         }.getOrNull()
-        call?.withFeedback = configuration.options.feedbackEnabled
-        call?.disableProximitySensor = configuration.options.disableProximitySensor
-        call?.backCameraAsDefault = configuration.options.backCameraAsDefault
     }
 
     private fun setButtonColor(view: FloatingActionButton, state: State?, synchronization: Synchronization?) {
