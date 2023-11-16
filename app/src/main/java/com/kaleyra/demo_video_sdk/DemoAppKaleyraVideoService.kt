@@ -9,12 +9,12 @@ import com.kaleyra.app_utilities.storage.ConfigurationPrefsManager
 import com.kaleyra.app_utilities.storage.LoginManager
 import com.kaleyra.demo_video_sdk.storage.DefaultConfigurationManager
 import com.kaleyra.demo_video_sdk.ui.custom_views.mapToCallUIActions
-import com.kaleyra.video_common_ui.ChatUI
 import com.kaleyra.video_common_ui.CompanyUI
 import com.kaleyra.video_common_ui.KaleyraVideo
 import com.kaleyra.video_common_ui.KaleyraVideoService
 import com.kaleyra.video_common_ui.model.UserDetails
 import com.kaleyra.video_common_ui.model.UserDetailsProvider
+import com.kaleyra.video_common_ui.utils.InputsExtensions.useBackCamera
 import com.kaleyra.video_sdk.extensions.configure
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
@@ -41,7 +41,9 @@ class DemoAppKaleyraVideoService : KaleyraVideoService() {
                     val callConfiguration = DefaultConfigurationManager.getDefaultCallConfiguration()
                     it.actions.value = callConfiguration.actions.mapToCallUIActions()
                     it.withFeedback = callConfiguration.options.feedbackEnabled
-                    it.backCameraAsDefault = callConfiguration.options.backCameraAsDefault
+                    if (callConfiguration.options.backCameraAsDefault) {
+                        it.inputs.useBackCamera()
+                    }
                 }.launchIn(MainScope())
             }
         }

@@ -56,11 +56,6 @@ class CallUI(
     var withFeedback: Boolean = false
 
     /**
-     * A property that indicates whether to set the back camera as default one
-     **/
-    var backCameraAsDefault: Boolean = false
-
-    /**
      * The display events successfully sent
      */
     val displayModeEvent: SharedFlow<DisplayModeEvent> = _displayModeEvent.asSharedFlow()
