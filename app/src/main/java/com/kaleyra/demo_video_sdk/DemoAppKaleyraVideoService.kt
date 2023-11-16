@@ -37,13 +37,14 @@ class DemoAppKaleyraVideoService : KaleyraVideoService() {
                         day = CompanyUI.Theme.Style(colors = CompanyUI.Theme.Colors(secondary = Color(0xFF0087E2))),
                         night = CompanyUI.Theme.Style(colors = CompanyUI.Theme.Colors(secondary = Color.Yellow))
                     )
-                KaleyraVideo.conversation.chatActions = ChatUI.Action.default
-                KaleyraVideo.conference.call.onEach {
+                KaleyraVideo.conference.call.onEach { call ->
+                    if (call.participants.value.creator() == call.participants.value.me) return@onEach
+
                     val callConfiguration = DefaultConfigurationManager.getDefaultCallConfiguration()
-                    it.actions.value = callConfiguration.actions.mapToCallUIActions()
-                    it.withFeedback = callConfiguration.options.feedbackEnabled
-                    it.disableProximitySensor = callConfiguration.options.disableProximitySensor
-                    it.backCameraAsDefault = callConfiguration.options.backCameraAsDefault
+                    call.actions.value = callConfiguration.actions.mapToCallUIActions()
+                    call.withFeedback = callConfiguration.options.feedbackEnabled
+                    call.disableProximitySensor = callConfiguration.options.disableProximitySensor
+                    call.backCameraAsDefault = callConfiguration.options.backCameraAsDefault
                 }.launchIn(MainScope())
             }
         }
