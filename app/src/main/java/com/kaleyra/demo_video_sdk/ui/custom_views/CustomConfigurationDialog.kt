@@ -179,9 +179,9 @@ class CustomConfigurationDialog : DialogFragment() {
     )
 
     private fun getChatConfiguration(callOptionsDialogView: CallOptionsDialogView): ChatConfiguration = ChatConfiguration(
-        if (callOptionsDialogView.isAudioOnlyCallChecked) getCallConfiguration(callOptionsDialogView) else null,
-        if (callOptionsDialogView.isAudioUpgradableCallChecked) getCallConfiguration(callOptionsDialogView) else null,
-        if (callOptionsDialogView.isAudioVideoCallChecked) getCallConfiguration(callOptionsDialogView) else null
+        if (callOptionsDialogView.isAudioOnlyCallChecked) CallConfiguration(getCallCapabilities(callOptionsDialogView.audioOnlyCallOptionsView!!), getOptions(callOptionsDialogView.audioOnlyCallOptionsView!!)) else null,
+        if (callOptionsDialogView.isAudioUpgradableCallChecked) CallConfiguration(getCallCapabilities(callOptionsDialogView.audioUpgradableCallOptionsView!!), getOptions(callOptionsDialogView.audioUpgradableCallOptionsView!!)) else null,
+        if (callOptionsDialogView.isAudioVideoCallChecked) CallConfiguration(getCallCapabilities(callOptionsDialogView.audioVideoCallOptionsView!!), getOptions(callOptionsDialogView.audioVideoCallOptionsView!!)) else null
     )
 
     private fun getCallCapabilities(optionView: CallOptions): Set<ConfigAction> {

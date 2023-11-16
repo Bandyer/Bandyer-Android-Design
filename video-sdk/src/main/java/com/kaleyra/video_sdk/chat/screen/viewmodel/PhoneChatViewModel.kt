@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.video.conference.Call
 import com.kaleyra.video.conversation.Message
+import com.kaleyra.video_common_ui.CallUI
 import com.kaleyra.video_common_ui.ChatViewModel
 import com.kaleyra.video_common_ui.CompanyUI
 import com.kaleyra.video_common_ui.theme.CompanyThemeManager.combinedTheme
@@ -129,7 +130,7 @@ internal class PhoneChatViewModel(configure: suspend () -> Configuration) : Chat
         }
 
         actions
-            .map { it.mapToChatActions(call = { pt -> call(pt) }) }
+            .map { it.mapToChatActions(call = { pt, a -> call(pt, a) }) }
             .onEach { actions -> viewModelState.update { it.copy(actions = ImmutableSet(actions)) } }
             .launchIn(viewModelScope)
 
@@ -222,13 +223,14 @@ internal class PhoneChatViewModel(configure: suspend () -> Configuration) : Chat
         }
     }
 
-    private fun call(preferredType: Call.PreferredType) {
+    private fun call(preferredType: Call.PreferredType, callActions: Set<CallUI.Action>) {
         val conference = conference.getValue() ?: return
         val chat = chat.getValue() ?: return
         val userId = chat.participants.value.others.first().userId
-        conference.call(listOf(userId)) {
+        val call = conference.call(listOf(userId)) {
             this.preferredType = preferredType
-        }
+        }.getOrNull()
+        call?.actions?.value = callActions
     }
 
     companion object {
