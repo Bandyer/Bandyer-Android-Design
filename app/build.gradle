@@ -118,7 +118,7 @@ huaweiPublish {
 dependencies {
     /*** Kaleyra Video SDK ***/
 //    implementation(platform("com.kaleyra:video-sdk-bom:$kaleyraVideoSdkVersion"))
-    implementation catalog.kotlinSerializationJson
+    implementation sampleAppCatalog.kotlinSerializationJson
 
     implementation project(":video-sdk")
 
