@@ -87,7 +87,7 @@ class ChatUI(
          * @constructor
          */
         @Parcelize
-        data class CreateCall(val preferredType: Call.PreferredType = Call.PreferredType.audioVideo(), val callActions: Set<CallUI.Action> = CallUI.Action.default) : Action()
+        data class CreateCall(val preferredType: Call.PreferredType = Call.PreferredType.audioVideo()) : Action()
 
         /**
          * Show participants action

@@ -425,9 +425,9 @@ class MainActivity : CollapsingToolbarActivity(), OnQueryTextListener, OnRefresh
         val configuration = DefaultConfigurationManager.getDefaultChatConfiguration()
         val chat = KaleyraVideo.conversation.chat(this, calleeSelected[0]).getOrNull()
         val actions = mutableSetOf<ChatUI.Action>().apply {
-            if (configuration.audioConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioOnly(), callActions = configuration.audioConfiguration.actions.mapToCallUIActions()))
-            if (configuration.audioUpgradableConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioUpgradable(), callActions = configuration.audioUpgradableConfiguration.actions.mapToCallUIActions()))
-            if (configuration.audioVideoConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioVideo(), callActions = configuration.audioVideoConfiguration.actions.mapToCallUIActions()))
+            if (configuration.audioConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioOnly()))
+            if (configuration.audioUpgradableConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioUpgradable()))
+            if (configuration.audioVideoConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioVideo()))
         }
         chat?.actions?.value = actions
     }
