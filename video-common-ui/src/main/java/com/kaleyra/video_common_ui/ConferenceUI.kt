@@ -123,7 +123,7 @@ class ConferenceUI(
                     return@onEach
                 }
 
-                com.kaleyra.video_common_ui.CallService.start()
+                CallService.start()
                 call.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope, isLink = call.isLink)
                 when {
                     !withUI -> Unit
@@ -131,7 +131,7 @@ class ConferenceUI(
                 }
                 currentCall = call
             }
-            .onCompletion { com.kaleyra.video_common_ui.CallService.stop() }
+            .onCompletion { CallService.stop() }
             .launchIn(callScope)
     }
 

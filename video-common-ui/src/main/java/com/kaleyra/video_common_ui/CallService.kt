@@ -70,13 +70,13 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
 
     companion object {
         fun start() = with(ContextRetainer.context) {
-            com.kaleyra.video_common_ui.CallService.Companion.stop()
-            val intent = Intent(this, com.kaleyra.video_common_ui.CallService::class.java)
+            stop()
+            val intent = Intent(this, CallService::class.java)
             startService(intent)
         }
 
         fun stop() = with(ContextRetainer.context) {
-            stopService(Intent(this, com.kaleyra.video_common_ui.CallService::class.java))
+            stopService(Intent(this, CallService::class.java))
         }
     }
 
@@ -90,7 +90,7 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
 
     private var proximityCallActivity: ProximityCallActivity? = null
 
-    private var call: com.kaleyra.video_common_ui.CallUI? = null
+    private var call: CallUI? = null
 
     private var onCallNewActivity: ((Context) -> Unit)? = null
 
@@ -105,7 +105,7 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
      */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        Thread.setDefaultUncaughtExceptionHandler(com.kaleyra.video_common_ui.CallUncaughtExceptionHandler)
+        Thread.setDefaultUncaughtExceptionHandler(CallUncaughtExceptionHandler)
         setUpCall()
         return START_NOT_STICKY
     }
@@ -161,7 +161,7 @@ internal class CallService : LifecycleService(), CameraStreamPublisher, CameraSt
      *
      */
     private fun setUpCall() {
-        com.kaleyra.video_common_ui.KaleyraVideo.onCallReady(lifecycleScope) { call ->
+        KaleyraVideo.onCallReady(lifecycleScope) { call ->
             application.registerActivityLifecycleCallbacks(this)
             this@CallService.call = call
 
