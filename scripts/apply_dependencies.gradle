@@ -22,6 +22,7 @@ dependencies {
     implementation sampleAppCatalog.androidxFragment
     implementation sampleAppCatalog.androidxNavigationUiKtx
     implementation sampleAppCatalog.androidxNavigationFragmentKtx
+    implementation sampleAppCatalog.kotlinSerializationJson
 
 
     /*** Testing ***/

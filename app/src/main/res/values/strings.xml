@@ -48,13 +48,11 @@
     <string name="call_type_audio_upgradable_name" translatable="false">Audio upgradable</string>
     <string name="call_type_audio_video_name" translatable="false">Audio video</string>
     <string name="default_call_configuration" translatable="false">Default call configuration</string>
-    <string name="default_chat_configuration" translatable="false">Default chat configuration</string>
     <string name="select_call_type" translatable="false">Select call type:</string>
     <string name="audio_only" translatable="false">Audio only</string>
     <string name="audio_upgradable" translatable="false">Audio upgradable</string>
     <string name="audio_video" translatable="false">Audio video</string>
     <string name="call" translatable="false">Call</string>
-    <string name="select_call_capabilities_from_chat_ui" translatable="false">Select call types that can be started from chat UI:</string>
     <string name="chat" translatable="false">Chat</string>
     <string name="save" translatable="false">Save</string>
 

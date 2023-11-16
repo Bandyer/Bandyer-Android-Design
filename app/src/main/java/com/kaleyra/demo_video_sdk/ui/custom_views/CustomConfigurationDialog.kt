@@ -31,35 +31,27 @@ import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.kaleyra.demo_video_sdk.R
-import com.kaleyra.demo_video_sdk.storage.DefaultConfigurationManager
 import com.kaleyra.app_configuration.model.CallOptionsType
 import com.kaleyra.app_utilities.storage.ConfigurationPrefsManager
+import com.kaleyra.demo_video_sdk.R
+import com.kaleyra.demo_video_sdk.storage.DefaultConfigurationManager
 import com.kaleyra.demo_video_sdk.ui.custom_views.CallOptionsDialogView.CallOptions
-import com.kaleyra.demo_video_sdk.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType.CALL
-import com.kaleyra.demo_video_sdk.ui.custom_views.CustomConfigurationDialog.CallOptionsDialogType.CHAT
 import com.kaleyra.video_common_ui.CallUI
 
 class CustomConfigurationDialog : DialogFragment() {
 
     private var callConfiguration: CallConfiguration? = null
     private var callOptionsType: CallOptionsType? = null
-    private var chatConfiguration: ChatConfiguration? = null
     private val appConfiguration by lazy {
         ConfigurationPrefsManager.getConfiguration(dialog!!.context)
     }
 
-    private var callOptionsDialogType = CALL
     private val lifecycleObserver: LifecycleObserver = object : LifecycleObserver {
         @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         fun disconnectListener() {
             removeLifecycleObserver()
             dismiss()
         }
-    }
-
-    enum class CallOptionsDialogType {
-        CALL, CHAT
     }
 
     enum class CallType {
@@ -69,16 +61,8 @@ class CustomConfigurationDialog : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        callOptionsDialogType = CallOptionsDialogType.valueOf(requireArguments().getString("type")!!)
-        when (callOptionsDialogType) {
-            CALL -> {
-                callConfiguration = DefaultConfigurationManager.getDefaultCallConfiguration()
-                callOptionsType = CallOptionsType.valueOf(requireArguments().getString("call_type", "AUDIO_VIDEO"))
-            }
-
-            CHAT ->
-                chatConfiguration = DefaultConfigurationManager.getDefaultChatConfiguration()
-        }
+        callConfiguration = DefaultConfigurationManager.getDefaultCallConfiguration()
+        callOptionsType = CallOptionsType.valueOf(requireArguments().getString("call_type", "AUDIO_VIDEO"))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -106,7 +90,7 @@ class CustomConfigurationDialog : DialogFragment() {
     }
 
     private fun setup(): View {
-        val callOptionsDialogView = CallOptionsDialogView(requireContext(), callOptionsDialogType, callOptionsType, callConfiguration, chatConfiguration)
+        val callOptionsDialogView = CallOptionsDialogView(requireContext(), callOptionsType, callConfiguration)
         val textViewTitle = callOptionsDialogView.findViewById<TextView>(R.id.title)
         if (Build.VERSION.SDK_INT >= 23) textViewTitle.text = title else textViewTitle.visibility = View.GONE
 
@@ -114,30 +98,21 @@ class CustomConfigurationDialog : DialogFragment() {
         actionButton.setOnClickListener {
             dismiss()
             setFragmentResult(
-                "customize_configuration", bundleOf(
-                    when (callOptionsDialogType) {
-                        CALL -> "call_configuration" to getCallConfiguration(callOptionsDialogView)
-                        CHAT -> "chat_configuration" to getChatConfiguration(callOptionsDialogView)
-                    },
-                    "call_type" to when (callOptionsDialogType) {
-                        CALL -> when {
-                            callOptionsDialogView.isAudioOnlyCallChecked       -> CallType.AUDIO_ONLY.name
-                            callOptionsDialogView.isAudioUpgradableCallChecked -> CallType.AUDIO_UPGRADABLE.name
-                            callOptionsDialogView.isAudioVideoCallChecked      -> CallType.AUDIO_VIDEO.name
-                            else                                               -> null
-                        }
-                        CHAT -> null
-                    },
-                    "app_configuration" to appConfiguration.apply {
-                        if (callOptionsDialogType == CALL) {
-                            this.defaultCallType = when {
-                                callOptionsDialogView.isAudioOnlyCallChecked       -> CallOptionsType.AUDIO_ONLY
-                                callOptionsDialogView.isAudioUpgradableCallChecked -> CallOptionsType.AUDIO_UPGRADABLE
-                                callOptionsDialogView.isAudioVideoCallChecked      -> CallOptionsType.AUDIO_VIDEO
-                                else                                               -> this.defaultCallType
-                            }
-                        }
-                    }
+                "customize_configuration", bundleOf("call_configuration" to getCallConfiguration(callOptionsDialogView),
+                                                    "call_type" to when {
+                                                        callOptionsDialogView.isAudioOnlyCallChecked       -> CallType.AUDIO_ONLY.name
+                                                        callOptionsDialogView.isAudioUpgradableCallChecked -> CallType.AUDIO_UPGRADABLE.name
+                                                        callOptionsDialogView.isAudioVideoCallChecked      -> CallType.AUDIO_VIDEO.name
+                                                        else                                               -> null
+                                                    },
+                                                    "app_configuration" to appConfiguration.apply {
+                                                        this.defaultCallType = when {
+                                                            callOptionsDialogView.isAudioOnlyCallChecked       -> CallOptionsType.AUDIO_ONLY
+                                                            callOptionsDialogView.isAudioUpgradableCallChecked -> CallOptionsType.AUDIO_UPGRADABLE
+                                                            callOptionsDialogView.isAudioVideoCallChecked      -> CallOptionsType.AUDIO_VIDEO
+                                                            else                                               -> this.defaultCallType
+                                                        }
+                                                    }
                 )
             )
         }
@@ -147,17 +122,11 @@ class CustomConfigurationDialog : DialogFragment() {
             setFragmentResult("customize_configuration", bundleOf())
         }
 
-        val mockBiometricCheckbox = callOptionsDialogView.findViewById<CheckBox>(R.id.mock_biometric_authentication_request)
-        mockBiometricCheckbox.isChecked = appConfiguration.withMockAuthentication
-        mockBiometricCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            appConfiguration.withMockAuthentication = isChecked
-        }
-
         return callOptionsDialogView
     }
 
     private val title: String
-        get() = if (callOptionsDialogType == CHAT) "Chat configuration" else "Call configuration"
+        get() = "Call configuration"
 
     override fun dismiss() {
         removeLifecycleObserver()
@@ -178,12 +147,6 @@ class CustomConfigurationDialog : DialogFragment() {
         }
     )
 
-    private fun getChatConfiguration(callOptionsDialogView: CallOptionsDialogView): ChatConfiguration = ChatConfiguration(
-        if (callOptionsDialogView.isAudioOnlyCallChecked) getCallConfiguration(callOptionsDialogView) else null,
-        if (callOptionsDialogView.isAudioUpgradableCallChecked) getCallConfiguration(callOptionsDialogView) else null,
-        if (callOptionsDialogView.isAudioVideoCallChecked) getCallConfiguration(callOptionsDialogView) else null
-    )
-
     private fun getCallCapabilities(optionView: CallOptions): Set<ConfigAction> {
         val actions = mutableSetOf<CallUI.Action>()
         actions += CallUI.Action.default
@@ -197,7 +160,6 @@ class CustomConfigurationDialog : DialogFragment() {
     private fun getOptions(optionView: CallOptions) = CallConfiguration.CallOptions(
         recordingEnabled = optionView.isRecordingChecked,
         backCameraAsDefault = optionView.isBackCameraChecked,
-        disableProximitySensor = optionView.isProximitySensorDisabled,
         feedbackEnabled = optionView.isFeedbackChecked
     )
 
@@ -210,19 +172,7 @@ class CustomConfigurationDialog : DialogFragment() {
         ) {
             val f = CustomConfigurationDialog()
             val args = Bundle()
-            args.putString("type", CALL.toString())
             args.putString("call_type", callOptionsType.toString())
-            f.arguments = args
-            f.show(context.supportFragmentManager, "configuration")
-        }
-
-        @JvmStatic
-        fun showChatConfigurationDialog(
-            context: AppCompatActivity
-        ) {
-            val f = CustomConfigurationDialog()
-            val args = Bundle()
-            args.putString("type", CHAT.toString())
             f.arguments = args
             f.show(context.supportFragmentManager, "configuration")
         }

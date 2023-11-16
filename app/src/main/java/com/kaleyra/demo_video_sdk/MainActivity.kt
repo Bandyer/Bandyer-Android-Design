@@ -48,7 +48,6 @@ import com.kaleyra.demo_video_sdk.ui.adapter_items.NoUserSelectedItem
 import com.kaleyra.demo_video_sdk.ui.adapter_items.SelectedUserItem
 import com.kaleyra.demo_video_sdk.ui.adapter_items.UserSelectionItem
 import com.kaleyra.demo_video_sdk.ui.custom_views.CallConfiguration
-import com.kaleyra.demo_video_sdk.ui.custom_views.ChatConfiguration
 import com.kaleyra.demo_video_sdk.ui.custom_views.CustomConfigurationDialog
 import com.kaleyra.demo_video_sdk.ui.custom_views.mapToCallUIActions
 import com.kaleyra.video.State
@@ -57,7 +56,6 @@ import com.kaleyra.video.Synchronization
 import com.kaleyra.video.conference.Call
 import com.kaleyra.video.conference.Call.PreferredType
 import com.kaleyra.video_common_ui.CallUI
-import com.kaleyra.video_common_ui.ChatUI
 import com.kaleyra.video_common_ui.KaleyraVideo
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IAdapter
@@ -276,7 +274,6 @@ class MainActivity : CollapsingToolbarActivity(), OnQueryTextListener, OnRefresh
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             id.call_configuration -> showCallConfigurationDialog()
-            id.chat_configuration -> showChatConfigurationDialog()
             id.logout             -> logout()
         }
         return super.onOptionsItemSelected(item)
@@ -288,15 +285,6 @@ class MainActivity : CollapsingToolbarActivity(), OnQueryTextListener, OnRefresh
         supportFragmentManager.setFragmentResultListener("customize_configuration", this) { requestKey: String?, result: Bundle ->
             val callConfiguration: CallConfiguration = result.getParcelable("call_configuration") ?: return@setFragmentResultListener
             DefaultConfigurationManager.saveDefaultCallConfiguration(callConfiguration)
-            saveAppConfiguration(result.getSerializable("app_configuration") as Configuration)
-        }
-    }
-
-    private fun showChatConfigurationDialog() {
-        CustomConfigurationDialog.showChatConfigurationDialog(this)
-        supportFragmentManager.setFragmentResultListener("customize_configuration", this) { requestKey: String?, result: Bundle ->
-            val chatConfiguration: ChatConfiguration = result.getParcelable("chat_configuration") ?: return@setFragmentResultListener
-            DefaultConfigurationManager.saveDefaultChatConfiguration(chatConfiguration)
             saveAppConfiguration(result.getSerializable("app_configuration") as Configuration)
         }
     }
@@ -422,14 +410,7 @@ class MainActivity : CollapsingToolbarActivity(), OnQueryTextListener, OnRefresh
             return
         }
         hideKeyboard(this)
-        val configuration = DefaultConfigurationManager.getDefaultChatConfiguration()
-        val chat = KaleyraVideo.conversation.chat(this, calleeSelected[0]).getOrNull()
-        val actions = mutableSetOf<ChatUI.Action>().apply {
-            if (configuration.audioConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioOnly()))
-            if (configuration.audioUpgradableConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioUpgradable()))
-            if (configuration.audioVideoConfiguration != null) add(ChatUI.Action.CreateCall(preferredType = Call.PreferredType.audioVideo()))
-        }
-        chat?.actions?.value = actions
+        KaleyraVideo.conversation.chat(this, calleeSelected[0]).getOrNull()
     }
 
     /**

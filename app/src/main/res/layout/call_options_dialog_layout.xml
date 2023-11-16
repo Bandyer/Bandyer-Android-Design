@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/space16"
-                android:text="@string/select_call_capabilities_from_chat_ui"
+                android:text="@string/select_in_call_capabilities"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -117,34 +117,6 @@
                     android:textAllCaps="false"
                     android:textColor="@color/colorAccent" />
             </LinearLayout>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space32"
-                android:layout_marginBottom="@dimen/space16"
-                android:text="@string/pref_call_options_experimental"
-                android:textStyle="bold" />
-
-            <CheckBox
-                android:id="@+id/mock_biometric_authentication_request"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/call_options_mock_user_authentication_request"
-                app:summary="@string/call_options_mock_user_authentication_request_summary" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_margin="@dimen/space8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/space8"
-                    android:text="@string/call_options_mock_user_authentication_request_summary" />
-
-            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

@@ -118,7 +118,6 @@ huaweiPublish {
 dependencies {
     /*** Kaleyra Video SDK ***/
 //    implementation(platform("com.kaleyra:video-sdk-bom:$kaleyraVideoSdkVersion"))
-    implementation sampleAppCatalog.kotlinSerializationJson
 
     implementation project(":video-sdk")
 
@@ -126,5 +125,5 @@ dependencies {
     implementation kaleyraCatalog.kaleyraVideoCoreAvExtensionExternalCamera
 
     // define this dependency only if you desire to handle virtual backgrounds in a video call
-//    implementation "com.kaleyra:video-extension-virtual-background"
+    // implementation "com.kaleyra:video-extension-virtual-background"
 }

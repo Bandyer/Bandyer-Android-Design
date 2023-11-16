@@ -19,8 +19,7 @@ data class CallConfiguration(
     data class CallOptions(
         val recordingEnabled: Boolean = false,
         val feedbackEnabled: Boolean = false,
-        val backCameraAsDefault: Boolean = false,
-        val disableProximitySensor: Boolean = false
+        val backCameraAsDefault: Boolean = false
     ): Parcelable
 
     fun encode(): String = Json.encodeToString(this)

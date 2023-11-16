@@ -19,12 +19,6 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/chat_configuration"
-        android:title="@string/default_chat_configuration"
-        android:visible="true"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/logout"
         android:title="@string/logout"
         android:visible="true"
