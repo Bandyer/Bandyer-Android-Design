@@ -39,7 +39,6 @@ internal class WakeLockProximityDelegateTest {
         mockkObject(CallExtensions)
         mockkObject(ContextExtensions)
         with(CallExtensions) {
-            every { callMock.disableProximitySensor } returns false
             every { callMock.isNotConnected() } returns false
             every { callMock.isMyInternalCameraEnabled() } returns false
             every { callMock.hasUsersWithCameraEnabled() } returns false
@@ -82,13 +81,6 @@ internal class WakeLockProximityDelegateTest {
         wakeLockProximityDelegate!!.bind()
         wakeLockProximityDelegate!!.tryTurnScreenOff()
         verify(exactly = 1) { proximityWakeLock.acquire(any()) }
-    }
-
-    @Test
-    fun `call disable proximity sensor flag is true, screen is not turned off`() {
-        every { callMock.disableProximitySensor } returns true
-        wakeLockProximityDelegate!!.tryTurnScreenOff()
-        verify(exactly = 0) { proximityWakeLock.acquire(any()) }
     }
 
     @Test
