@@ -2,6 +2,8 @@ package com.kaleyra.video_sdk.call.feedback
 
 import android.content.res.Configuration
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -15,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.kaleyra.video_sdk.call.feedback.view.FeedbackForm
 import com.kaleyra.video_sdk.call.feedback.view.FeedbackSent
 import com.kaleyra.video_sdk.theme.KaleyraTheme
@@ -24,7 +27,7 @@ private const val AutoDismissMs = 3000L
 
 @Composable
 internal fun UserFeedbackDialog(onUserFeedback: (Float, String) -> Unit, onDismiss: () -> Unit) {
-    Dialog(onDismissRequest = onDismiss) {
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         var isFeedbackSent by remember { mutableStateOf(false) }
 
         if (isFeedbackSent) {
@@ -34,22 +37,25 @@ internal fun UserFeedbackDialog(onUserFeedback: (Float, String) -> Unit, onDismi
             }
         }
 
-        Surface(
-            shape = RoundedCornerShape(12.dp),
-            modifier = Modifier
-                .wrapContentSize()
-                .animateContentSize()
-        ) {
-            if (!isFeedbackSent) {
-                FeedbackForm(
-                    onUserFeedback = { value: Float, text: String ->
-                        onUserFeedback(value, text)
-                        isFeedbackSent = true
-                    },
-                    onDismiss = onDismiss
-                )
-            } else FeedbackSent(onDismiss)
+        Box(Modifier.padding(24.dp)) {
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .wrapContentSize()
+                    .animateContentSize()
+            ) {
+                if (!isFeedbackSent) {
+                    FeedbackForm(
+                        onUserFeedback = { value: Float, text: String ->
+                            onUserFeedback(value, text)
+                            isFeedbackSent = true
+                        },
+                        onDismiss = onDismiss
+                    )
+                } else FeedbackSent(onDismiss)
+            }
         }
+
     }
 }
 
