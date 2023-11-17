@@ -25,6 +25,7 @@ android {
         versionCode 1
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
