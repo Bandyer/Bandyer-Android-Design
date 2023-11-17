@@ -31,9 +31,6 @@ import com.kaleyra.video_common_ui.termsandconditions.constants.Constants.EXTRA_
 import com.kaleyra.video_common_ui.termsandconditions.extensions.TermsAndConditionsExt.decline
 import com.kaleyra.video_common_ui.utils.DeviceUtils
 import com.kaleyra.video_common_ui.utils.extensions.ActivityExtensions.turnScreenOn
-import com.kaleyra.video_glasses_sdk.GlassTouchEventManager
-import com.kaleyra.video_glasses_sdk.TouchEvent
-import com.kaleyra.video_glasses_sdk.TouchEventListener
 import com.kaleyra.video_glasses_sdk.common.OnDestinationChangedListener
 import com.kaleyra.video_glasses_sdk.status_bar_views.StatusBarView
 import com.kaleyra.video_glasses_sdk.utils.currentNavigationFragment

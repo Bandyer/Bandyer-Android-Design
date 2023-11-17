@@ -1,5 +1,0 @@
-ext {
-    moduleVersion = "4.0.0"
-    moduleGroupId = "com.kaleyra"
-}
-

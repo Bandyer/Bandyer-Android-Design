@@ -6,7 +6,6 @@ def outputAarUnzipedDir = file('build/outputs/aar/unziped')
 def aarReleaseFile = file('build/outputs/aar/' + projName + '-release.aar')
 
 task unzipAar(type: Copy, dependsOn: 'bundleReleaseAar') {
-    if (project.getName() != "bandyer-android-chat") return
     from zipTree(aarReleaseFile)
     into outputAarUnzipedDir
     doLast { println("unzipAar task completed.") }
@@ -33,6 +32,6 @@ task reZipAar(type: Zip, dependsOn: 'generateThirdPartiesLicenses') {
 }
 
 afterEvaluate {
-//    tasks["generateMetadataFileForReleasePublication"].dependsOn(tasks.getByName("reZipAar"))
+    tasks["generateMetadataFileForReleasePublication"].dependsOn(tasks.getByName("reZipAar"))
     bundleReleaseAar.finalizedBy(reZipAar)
 }

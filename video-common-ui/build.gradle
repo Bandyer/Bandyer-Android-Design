@@ -25,10 +25,9 @@ plugins {
     alias(catalog.plugins.licenseReport)
 }
 
-apply from: '../versions.gradle'
-apply from: '../licenses.gradle'
 apply from: '../android.gradle'
 apply from: '../publish.gradle'
+apply from: '../licenses.gradle'
 apply from: '../downloadIcons.gradle'
 apply from: '../moveIcons.gradle'
 
@@ -60,8 +59,8 @@ dependencies {
     testImplementation catalog.roboelectric
     testImplementation catalog.coroutines
     testImplementation catalog.coroutinesTest
-    testImplementation kaleyraCatalog.kaleyraVideo
     testImplementation kaleyraCatalog.kaleyraVideoExtensionAudio
+    testImplementation kaleyraCatalog.kaleyraVideo
 
     androidTestImplementation catalog.mockkAndroid
     androidTestImplementation catalog.androidxTestEspressoIntents

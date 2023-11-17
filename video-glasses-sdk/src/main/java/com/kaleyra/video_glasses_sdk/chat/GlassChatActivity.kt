@@ -27,9 +27,6 @@ import com.kaleyra.video_common_ui.requestConfiguration
 import com.kaleyra.video_common_ui.utils.DeviceUtils
 import com.kaleyra.video_common_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.video_common_ui.utils.extensions.ActivityExtensions.turnScreenOn
-import com.kaleyra.video_glasses_sdk.GlassTouchEventManager
-import com.kaleyra.video_glasses_sdk.TouchEvent
-import com.kaleyra.video_glasses_sdk.TouchEventListener
 import com.kaleyra.video_glasses_sdk.status_bar_views.StatusBarView
 import com.kaleyra.video_glasses_sdk.utils.currentNavigationFragment
 import com.kaleyra.video_glasses_sdk.utils.extensions.ActivityExtensions.enableImmersiveMode

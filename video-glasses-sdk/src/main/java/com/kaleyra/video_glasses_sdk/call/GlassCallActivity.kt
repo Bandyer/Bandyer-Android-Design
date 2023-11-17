@@ -48,9 +48,6 @@ import com.kaleyra.video_common_ui.utils.DeviceUtils
 import com.kaleyra.video_common_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.video_common_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.video_common_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
-import com.kaleyra.video_glasses_sdk.GlassTouchEventManager
-import com.kaleyra.video_glasses_sdk.TouchEvent
-import com.kaleyra.video_glasses_sdk.TouchEventListener
 import com.kaleyra.video_glasses_sdk.WhiteboardItem
 import com.kaleyra.video_glasses_sdk.call.adapter_items.MyStreamItem
 import com.kaleyra.video_glasses_sdk.call.adapter_items.OtherStreamItem
