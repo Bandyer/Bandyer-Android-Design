@@ -15,7 +15,6 @@ import com.kaleyra.video_common_ui.KaleyraVideoService
 import com.kaleyra.video_common_ui.model.UserDetails
 import com.kaleyra.video_common_ui.model.UserDetailsProvider
 import com.kaleyra.video_common_ui.utils.InputsExtensions.useBackCamera
-import com.kaleyra.video_sdk.extensions.configure
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

@@ -23,6 +23,8 @@ import com.kaleyra.video.State
 import com.kaleyra.video.Synchronization
 import com.kaleyra.video.User
 import com.kaleyra.video.configuration.Configuration
+import com.kaleyra.video_common_ui.activityclazzprovider.GlassActivityClazzProvider
+import com.kaleyra.video_common_ui.activityclazzprovider.PhoneActivityClazzProvider
 import com.kaleyra.video_common_ui.model.UserDetailsProvider
 import com.kaleyra.video_common_ui.termsandconditions.TermsAndConditionsRequester
 import com.kaleyra.video_common_ui.utils.CORE_UI
@@ -121,32 +123,31 @@ object KaleyraVideo {
      * Configure
      *
      * @param configuration representing a set of info necessary to instantiate the communication
-     * @param callActivityClazz class of the call activity
-     * @param chatActivityClazz class of the chat activity
-     * @param termsAndConditionsActivityClazz class of the terms and conditions activity
-     * @param chatNotificationActivityClazz class of the chat notification fullscreen activity
      * @return Boolean true if KaleyraVideo has been configured, false if already configured
      */
-    fun configure(
-        configuration: Configuration,
-        callActivityClazz: Class<*>,
-        chatActivityClazz: Class<*>,
-        termsAndConditionsActivityClazz: Class<*>? = null,
-        chatNotificationActivityClazz: Class<*>? = null
-    ): Boolean = synchronized(this) {
+    fun configure(configuration: Configuration): Boolean = synchronized(this) {
         kotlin.runCatching { ContextRetainer.context }.onFailure {
             configuration.logger?.error(logTarget = CORE_UI, message = "You are trying to configure KaleyraVideo SDK in a multi-process application.\nPlease call enableMultiProcess method.")
             return false
         }
 
         if (isConfigured) return false
+
+        val activityConfiguration = PhoneActivityClazzProvider.getActivityClazzConfiguration() ?: GlassActivityClazzProvider.getActivityClazzConfiguration()
+        if (activityConfiguration != null) {
+            callActivityClazz = activityConfiguration.callClazz
+            chatActivityClazz = activityConfiguration.chatClazz
+            termsAndConditionsActivityClazz = activityConfiguration.termsAndConditionsClazz
+            chatNotificationActivityClazz = activityConfiguration.customChatNotificationClazz
+        } else {
+            configuration.logger?.error(logTarget = CORE_UI, message = "No video sdk module included")
+            return false
+        }
+
         Collaboration.create(configuration).apply {
             collaboration = this
         }
-        this.chatActivityClazz = chatActivityClazz
-        this.callActivityClazz = callActivityClazz
-        this.termsAndConditionsActivityClazz = termsAndConditionsActivityClazz
-        this.chatNotificationActivityClazz = chatNotificationActivityClazz
+
         termsAndConditionsActivityClazz?.also {
             termsAndConditionsRequester = TermsAndConditionsRequester(it)
         }
