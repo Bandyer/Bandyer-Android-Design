@@ -17,9 +17,9 @@
 
     <!-- Base application theme. -->
     <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight">
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">?attr/colorSurface</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnPrimary">?attr/colorOnSurface</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="colorAccent">@color/colorSecondary</item>
@@ -28,24 +28,32 @@
         <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="titleTextColor">@color/colorOnPrimary</item>
+        <item name="titleTextColor">?attr/colorOnSurface</item>
     </style>
 
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="android:buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
-        <item name="android:buttonBarNegativeButtonStyle">@style/DialogButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DialogNegativeButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogNegativeButtonStyle</item>
     </style>
 
     <style name="DialogButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/colorSecondary</item>
     </style>
 
+    <style name="DialogNegativeButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorOnPrimary</item>
+    </style>
+
+
     <style name="BaseTheme.SplashScreen" parent="BaseTheme">
         <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>
 
     <style name="BaseTheme.Dark.CollapsedToolBar" parent="Widget.Design.CollapsingToolbar">
-        <item name="colorControlNormal">@color/colorOnPrimary</item>
+        <item name="colorControlNormal">?attr/colorOnSurface</item>
+        <item name="colorOnPrimary">?attr/colorOnSurface</item>
         <item name="collapsedTitleTextAppearance">
             @style/TextAppearance.BaseTheme.Dark.CollapsingToolbar.Collapsed
         </item>
@@ -53,7 +61,7 @@
     </style>
 
     <style name="TextAppearance.BaseTheme.Dark.CollapsingToolbar.Collapsed" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
 </resources>
