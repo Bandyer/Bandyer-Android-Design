@@ -24,7 +24,7 @@ import com.mikepenz.fastadapter.binding.AbstractBindingItem
 /**
  * A simple RecyclerView item used to display the user userAlias as a cell in the list.
  */
-class UserItem(@JvmField val userAlias: String) : AbstractBindingItem<ItemUserLayoutBinding>() {
+class UserItem(val userAlias: String) : AbstractBindingItem<ItemUserLayoutBinding>() {
 
     override var identifier: Long = userAlias.hashCode().toLong()
     override val type: Int = R.id.user_item_id

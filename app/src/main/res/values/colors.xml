@@ -14,9 +14,9 @@
   ~ limitations under the License.
   -->
 <resources>
-    <color name="stateError">#c70000</color>
-    <color name="stateConnected">#7ED321</color>
-    <color name="stateConnecting">#FFAB00</color>
-    <color name="stateDisconnecting">#cfd8dc</color>
-    <color name="stateDisconnected">#434343</color>
+    <color name="stateError">#E11900</color>
+    <color name="stateConnected">#149957</color>
+    <color name="stateConnecting">#FF6937</color>
+    <color name="stateDisconnecting">#92979D</color>
+    <color name="stateDisconnected">#92979D</color>
 </resources>

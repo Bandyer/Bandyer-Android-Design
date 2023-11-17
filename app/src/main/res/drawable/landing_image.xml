@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +14,15 @@
   ~ limitations under the License.
   -->
 
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="translucent">
-    <item
-        android:drawable="@drawable/landing_collaboration"
-        android:gravity="center" />
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="translucent">
     <item>
-        <shape android:shape="rectangle">
-            <solid android:color="#34000000" />
+        <shape>
+            <size android:width="400dp"
+                android:height="200dp" />
+            <solid android:color="@color/colorBackgroundLogo" />
         </shape>
     </item>
+    <item android:drawable="@drawable/corner_logo"
+        android:gravity="end|bottom" />
 </layer-list>

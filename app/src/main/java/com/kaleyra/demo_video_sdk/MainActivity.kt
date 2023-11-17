@@ -116,8 +116,6 @@ class MainActivity : CollapsingToolbarActivity(), OnQueryTextListener, OnRefresh
 
         // If the user is already logged, setup the activity.
         setUpRecyclerView()
-        val header: ImageView = findViewById<ImageView>(id.headerView)
-        header.setImageResource(drawable.landing_image)
 
         // get the user that is currently logged in the sample app
         val userAlias: String = LoginManager.getLoggedUser(this)

@@ -17,6 +17,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/space16"
-    android:textColor="@color/colorAccent"
+    android:textColor="@color/colorSecondary"
     android:textSize="@dimen/text_h3"
     android:textStyle="bold" />

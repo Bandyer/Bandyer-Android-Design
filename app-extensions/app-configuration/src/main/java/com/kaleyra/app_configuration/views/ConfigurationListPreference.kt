@@ -69,7 +69,7 @@ class ConfigurationListPreference @JvmOverloads constructor(context: Context, at
         }
 
         setOnClickListener {
-            AlertDialog.Builder(context).setTitle(binding.configurationListTitle.text)
+            AlertDialog.Builder(context, R.style.ThemeOverlay_App_MaterialAlertDialog).setTitle(binding.configurationListTitle.text)
                     .setSingleChoiceItems(entries.toTypedArray(), entryValues.indexOf(binding.configurationListValue.text
                             ?: 0)) { dialogInterface, value ->
                         val newValue = entryValues[value]

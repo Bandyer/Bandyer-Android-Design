@@ -76,6 +76,7 @@ class DemoAppKaleyraVideoService : KaleyraVideoService() {
                 })
             }
         }
+
         fun connect(context: Context) {
             val loggedUserId = LoginManager.getLoggedUser(context)
             if (!LoginManager.isUserLogged(context)) return

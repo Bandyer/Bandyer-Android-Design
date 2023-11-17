@@ -112,7 +112,7 @@ class ImageTextEditActivity : ScrollAwareToolbarActivity() {
 
     override fun onBackPressed() {
         if (hasChangedSettings()) {
-            AlertDialog.Builder(this)
+            AlertDialog.Builder(this, R.style.ThemeOverlay_App_MaterialAlertDialog)
                 .setMessage(R.string.pref_settings_save_confirmation_message)
                 .setPositiveButton(R.string.pref_settings_save_confirmation_message_confirmation) { dialog, _ ->
                     dialog.dismiss()

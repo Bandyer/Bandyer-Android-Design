@@ -18,20 +18,20 @@ package com.kaleyra.demo_video_sdk.ui.activities
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.style.AbsoluteSizeSpan
+import android.text.style.StyleSpan
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
-import com.kaleyra.demo_video_sdk.R
-import com.kaleyra.demo_video_sdk.databinding.ActivityCollapsingToolbarBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
@@ -39,7 +39,10 @@ import com.kaleyra.app_utilities.MultiDexApplication
 import com.kaleyra.app_utilities.activities.BaseActivity
 import com.kaleyra.app_utilities.storage.ConfigurationPrefsManager
 import com.kaleyra.app_utilities.utils.DPadNavigationHelper
+import com.kaleyra.demo_video_sdk.R
+import com.kaleyra.demo_video_sdk.databinding.ActivityCollapsingToolbarBinding
 import kotlin.math.abs
+
 
 abstract class CollapsingToolbarActivity : BaseActivity(), OnRefreshListener {
 
@@ -62,9 +65,9 @@ abstract class CollapsingToolbarActivity : BaseActivity(), OnRefreshListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         titleSpan = SpannableString(String.format(resources.getString(R.string.app_name_with_version), "v$version"))
-        titleSpan!!.setSpan(AbsoluteSizeSpan(textSizeH1), 0, titleSpan!!.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+        val boldSpan = StyleSpan(Typeface.BOLD)
+        titleSpan!!.setSpan(boldSpan, 0, titleSpan!!.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
     @SuppressLint("SetTextI18n")
@@ -78,7 +81,6 @@ abstract class CollapsingToolbarActivity : BaseActivity(), OnRefreshListener {
         layoutParams.behavior = ScrollingViewBehavior(this, null)
         findViewById<View>(R.id.content).layoutParams = layoutParams
         binding = ActivityCollapsingToolbarBinding.bind(container)
-        customizeSwipeRefreshLayout()
         customizeAppBarLayout()
 
         binding.refreshUsersView.setOnRefreshListener(this)
@@ -108,14 +110,6 @@ abstract class CollapsingToolbarActivity : BaseActivity(), OnRefreshListener {
         binding.collapsingToolbar.title = if (isPortrait()) appTitle else collapsedTitle
     }
 
-    private fun customizeSwipeRefreshLayout() {
-        binding.refreshUsersView.setColorSchemeColors(
-                ContextCompat.getColor(this, R.color.colorPrimaryDark),
-                ContextCompat.getColor(this, R.color.colorPrimary),
-                ContextCompat.getColor(this, R.color.colorPrimaryLight)
-        )
-    }
-
     private fun customizeAppBarLayout() {
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setHomeButtonEnabled(false)
@@ -126,10 +120,8 @@ abstract class CollapsingToolbarActivity : BaseActivity(), OnRefreshListener {
             binding.refreshUsersView.isEnabled = verticalOffset == 0
             if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
                 binding.collapsingToolbar.title = if (isPortrait()) appTitle else collapsedTitle
-                binding.toolbar.background = ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimary))
             } else {
                 binding.collapsingToolbar.title = ""
-                binding.toolbar.background = ColorDrawable(Color.TRANSPARENT)
             }
             val offsetAlpha = 1 - appBarLayout.y / appBarLayout.totalScrollRange * -1
             binding.fader.alpha = 1 - offsetAlpha

@@ -97,7 +97,7 @@ abstract class BaseConfigurationActivity(override var withToolbar: Boolean = tru
     protected fun showErrorDialog(text: String?) {
         if (dialog != null) dialog!!.dismiss()
         if (isFinishing) return
-        dialog = AlertDialog.Builder(this)
+        dialog = AlertDialog.Builder(this, R.style.ThemeOverlay_App_MaterialAlertDialog)
             .setTitle(getString(R.string.title_error))
             .setMessage(text)
             .setPositiveButton(R.string.settings_dialog_positive_button) { dialog, _ -> dialog?.dismiss() }

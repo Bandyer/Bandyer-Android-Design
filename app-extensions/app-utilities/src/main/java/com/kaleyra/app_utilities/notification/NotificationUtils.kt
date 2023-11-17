@@ -44,7 +44,7 @@ fun AppCompatActivity.requestPushNotificationPermissionApi33() {
         hideKeyboard.postDelayed({ hideKeyboard() }, 4000)
         if (result) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                AlertDialog.Builder(this)
+                AlertDialog.Builder(this, R.style.ThemeOverlay_App_MaterialAlertDialog)
                     .setTitle(R.string.notification_permission)
                     .setMessage(R.string.notification_permission_message)
                     .setPositiveButton(R.string.button_ok) { _, _ -> showTestNotification() }
@@ -54,7 +54,7 @@ fun AppCompatActivity.requestPushNotificationPermissionApi33() {
                 showTestNotification()
             }
         } else {
-            AlertDialog.Builder(this)
+            AlertDialog.Builder(this, R.style.ThemeOverlay_App_MaterialAlertDialog)
                 .setTitle(R.string.notification_permission)
                 .setMessage(R.string.notification_permission_app_settings)
                 .setPositiveButton(R.string.button_ok) { _, _ ->

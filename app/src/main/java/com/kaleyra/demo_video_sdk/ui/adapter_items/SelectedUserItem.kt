@@ -26,13 +26,16 @@ import com.mikepenz.fastadapter.binding.AbstractBindingItem
 /**
  * A simple RecyclerView item used to display the user userAlias as a Chip in the list.
  */
-class SelectedUserItem(@JvmField val userAlias: String,@JvmField val position: Int) : AbstractBindingItem<SelectedUserItemLayoutBinding>() {
+class SelectedUserItem(
+    @JvmField val userAlias: String,
+    @JvmField val position: Int
+) : AbstractBindingItem<SelectedUserItemLayoutBinding>() {
 
     override var identifier: Long = userAlias.hashCode().toLong()
     override val type: Int = R.id.user_selected_item
 
     override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?): SelectedUserItemLayoutBinding {
-       return SelectedUserItemLayoutBinding.inflate(inflater, parent, false)
+        return SelectedUserItemLayoutBinding.inflate(inflater, parent, false)
     }
 
     override fun bindView(binding: SelectedUserItemLayoutBinding, payloads: List<Any>) {

@@ -39,7 +39,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/space16"
-                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_h1"
                 android:textStyle="bold" />
 
@@ -63,12 +62,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/space8"
-                    android:layout_marginRight="@dimen/space8"
                     android:layout_weight="1"
                     android:gravity="start|center_vertical"
                     android:text="@string/select_all_call_capabilities"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/colorSecondary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/deselect_all_call_capabilities"
@@ -76,12 +74,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space8"
-                    android:layout_marginLeft="@dimen/space8"
                     android:layout_weight="1"
                     android:gravity="start|center_vertical"
                     android:text="@string/deselect_all_call_capabilities"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/colorSecondary" />
             </LinearLayout>
 
             <LinearLayout
@@ -97,12 +94,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/space8"
-                    android:layout_marginRight="@dimen/space8"
                     android:layout_weight="1"
                     android:gravity="start|center_vertical"
                     android:text="@string/select_all_call_options"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/colorSecondary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/deselect_all_call_options"
@@ -110,12 +106,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/space8"
-                    android:layout_marginLeft="@dimen/space8"
                     android:layout_weight="1"
                     android:gravity="start|center_vertical"
                     android:text="@string/deselect_all_call_options"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorAccent" />
+                    android:textColor="@color/colorSecondary" />
             </LinearLayout>
 
         </LinearLayout>
@@ -133,24 +128,28 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel_action"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space16"
             android:layout_marginBottom="@dimen/space16"
             android:layout_weight="1"
             android:text="@string/cancel_action"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorOnPrimary"
+            android:textAllCaps="false"
+             />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/action"
-            style="@style/Widget.MaterialComponents.Button"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/space16"
             android:layout_weight="1"
             android:text="@string/save"
-            app:backgroundTint="@color/colorAccent" />
+            android:textAllCaps="false"
+            android:textColor="@color/colorOnSecondary"
+            app:backgroundTint="@color/colorSecondary" />
 
     </LinearLayout>
 

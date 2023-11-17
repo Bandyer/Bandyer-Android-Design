@@ -21,7 +21,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.lifecycle.lifecycleScope
@@ -29,18 +28,17 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.kaleyra.app_configuration.activities.ConfigurationActivity.Companion.show
-import com.kaleyra.app_utilities.BuildConfig
 import com.kaleyra.app_utilities.storage.ConfigurationPrefsManager.getConfiguration
 import com.kaleyra.app_utilities.storage.LoginManager.getLoggedUser
 import com.kaleyra.app_utilities.storage.LoginManager.isUserLogged
 import com.kaleyra.app_utilities.storage.LoginManager.login
-import com.kaleyra.demo_video_sdk.R.drawable
 import com.kaleyra.demo_video_sdk.R.id
 import com.kaleyra.demo_video_sdk.R.layout
 import com.kaleyra.demo_video_sdk.R.string
 import com.kaleyra.demo_video_sdk.databinding.ActivityLoginBinding
 import com.kaleyra.demo_video_sdk.ui.activities.CollapsingToolbarActivity
 import com.kaleyra.demo_video_sdk.ui.adapter_items.UserItem
+import com.kaleyra.video_common_ui.KaleyraVideo
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -48,7 +46,8 @@ import com.mikepenz.fastadapter.extensions.ExtensionsFactories.register
 import com.mikepenz.fastadapter.listeners.ItemFilterListener
 import com.mikepenz.fastadapter.select.SelectExtension
 import com.mikepenz.fastadapter.select.SelectExtensionFactory
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -75,9 +74,6 @@ class LoginActivity : CollapsingToolbarActivity(), OnQueryTextListener {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_login)
         binding = ActivityLoginBinding.bind(window.decorView)
-        val header = findViewById<ImageView>(R.id.headerView)
-        if (!BuildConfig.DEBUG) header.setImageResource(drawable.landing_image)
-
         // customize toolbar
         val title = resources.getString(string.login_title)
         setCollapsingToolbarTitle(title, title)

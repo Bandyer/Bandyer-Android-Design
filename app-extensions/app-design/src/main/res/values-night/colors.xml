@@ -16,5 +16,5 @@
   -->
 
 <resources>
-    <color name="colorSecondary">@color/colorSecondary_night</color>
+    <color name="colorBackgroundLogo">#121314</color>
 </resources>

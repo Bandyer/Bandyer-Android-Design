@@ -72,7 +72,7 @@ android {
             if (getDistributionCredentialsFilePath(name)?.trim()) firebaseAppDistribution {
                 appId getDistributionAppId(name)
                 serviceCredentialsFile getDistributionCredentialsFilePath(name)
-                releaseNotes getDistributionReleaseNotes(bandyerLibVersion)
+                releaseNotes getDistributionReleaseNotes(kaleyraVideoSdkVersion)
                 groups getDistributionTestGroup()
             }
             firebaseCrashlytics {

@@ -30,8 +30,7 @@ import com.kaleyra.app_configuration.model.ConfigurationFieldChangeListener
 import com.kaleyra.app_configuration.model.EditableConfigurationPreference
 import com.kaleyra.app_configuration.utils.dp2px
 
-class ConfigurationEditTextPreference @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : LinearLayout(context, attrs, defStyleAttr), EditableConfigurationPreference<String> {
+class ConfigurationEditTextPreference @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : LinearLayout(context, attrs, defStyleAttr), EditableConfigurationPreference<String> {
 
     private lateinit var binding: ConfigurationEdittextBinding
 
@@ -54,17 +53,20 @@ class ConfigurationEditTextPreference @JvmOverloads constructor(context: Context
         summaryTextViewHolder = binding.configurationEdittextSummaryCardView
 
         context.theme.obtainStyledAttributes(
-                attrs,
-                R.styleable.ConfigurationEditTextStyleable,
-                defStyleAttr,
-                0).apply {
+            attrs,
+            R.styleable.ConfigurationEditTextStyleable,
+            defStyleAttr,
+            0
+        ).apply {
 
             try {
                 val title = getString(R.styleable.ConfigurationEditTextStyleable_title)
                 setTitle(title)
                 val hintText = getString(R.styleable.ConfigurationEditTextStyleable_hint)
-                setSubtitle(getString(R.styleable.ConfigurationEditTextStyleable_subtitle)
-                        ?: hintText)
+                setSubtitle(
+                    getString(R.styleable.ConfigurationEditTextStyleable_subtitle)
+                        ?: hintText
+                )
                 setSummary(getString(R.styleable.ConfigurationEditTextStyleable_summary))
 
                 val subtitleView = binding.configurationEdittextSubtitle
@@ -79,17 +81,17 @@ class ConfigurationEditTextPreference @JvmOverloads constructor(context: Context
                         val padding = context.dp2px(16f)
                         setPadding(padding, padding, padding, padding)
                     }
-                    AlertDialog.Builder(context).setTitle(title)
-                            .setView(customView)
-                            .setPositiveButton(context.getString(R.string.settings_dialog_positive_button)) { dialogInterface, _ ->
-                                setValue(editText.text.toString())
-                                configurationFieldChangeListener?.onConfigurationFieldChanged(editText.text.toString())
-                                dialogInterface.dismiss()
-                            }
-                            .setNegativeButton(context.getString(R.string.settings_dialog_negative_button)) { dialogInterface, _ ->
-                                dialogInterface.dismiss()
-                            }
-                            .show()
+                    AlertDialog.Builder(context, R.style.ThemeOverlay_App_MaterialAlertDialog).setTitle(title)
+                        .setView(customView)
+                        .setPositiveButton(context.getString(R.string.settings_dialog_positive_button)) { dialogInterface, _ ->
+                            setValue(editText.text.toString())
+                            configurationFieldChangeListener?.onConfigurationFieldChanged(editText.text.toString())
+                            dialogInterface.dismiss()
+                        }
+                        .setNegativeButton(context.getString(R.string.settings_dialog_negative_button)) { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                        }
+                        .show()
                     editText.post { editText.requestFocus() }
                 }
             } finally {
