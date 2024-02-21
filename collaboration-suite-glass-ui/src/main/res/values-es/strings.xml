@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="kaleyra_glass_accept">aceptar</string>
+    <string name="kaleyra_glass_alone">Estás solo aquí. Espera a que otros se unan.</string>
+    <string name="kaleyra_glass_answered_on_another_device">Respondido en otro dispositivo</string>
+    <string name="kaleyra_glass_back">atrás</string>
+    <string name="kaleyra_glass_browse">navegar</string>
+    <string name="kaleyra_glass_call">Llamar</string>
+    <string name="kaleyra_glass_call_declined">Rechazada</string>
+    <string name="kaleyra_glass_call_ended">Llamada finalizada</string>
+    <string name="kaleyra_glass_call_error_occurred">Se produjo un error</string>
+    <string name="kaleyra_glass_call_hung_up">Colgó</string>
+    <string name="kaleyra_glass_call_timeout">Tiempo de conexión agotado</string>
+    <string name="kaleyra_glass_cam_blocked">La cámara está bloqueada</string>
+    <string name="kaleyra_glass_cam_not_active">La cámara no está activa</string>
+    <string name="kaleyra_glass_camera_off">Tu cámara está apagada</string>
+    <string name="kaleyra_glass_cancel">cancelar</string>
+    <string name="kaleyra_glass_close">cerrar</string>
+    <string name="kaleyra_glass_confirm">confirmar</string>
+    <string name="kaleyra_glass_confirm_end_call">¿Confirmas que deseas finalizar la conversación?</string>
+    <string name="kaleyra_glass_connecting">conectando…</string>
+    <string name="kaleyra_glass_decline">rechazar</string>
+    <string name="kaleyra_glass_decrease">disminuir</string>
+    <string name="kaleyra_glass_dialing">marcando…</string>
+    <string name="kaleyra_glass_dialing_group">llamada grupal sonando…</string>
+    <string name="kaleyra_glass_end">finalizar</string>
+    <string name="kaleyra_glass_group_contacts_pattern">+%1$d</string>
+    <string name="kaleyra_glass_hangup">colgar</string>
+    <string name="kaleyra_glass_hide_notification">descartar</string>
+    <string name="kaleyra_glass_increase">aumentar</string>
+    <string name="kaleyra_glass_invited">Invitado</string>
+    <string name="kaleyra_glass_last_seen_never">Última vez: nunca</string>
+    <string name="kaleyra_glass_last_seen_pattern">Última vez: %1$s</string>
+    <string name="kaleyra_glass_line_busy">Línea ocupada</string>
+    <string name="kaleyra_glass_loading_messages">Cargando mensajes</string>
+    <string name="kaleyra_glass_menu_camera">Activar cámara</string>
+    <string name="kaleyra_glass_menu_camera_toggled">Silenciar cámara</string>
+    <string name="kaleyra_glass_menu_chat">Chat</string>
+    <string name="kaleyra_glass_menu_flashlight">Desactivar linterna</string>
+    <string name="kaleyra_glass_menu_flashlight_toggled">Activar linterna</string>
+    <string name="kaleyra_glass_menu_microphone">Activar micrófono</string>
+    <string name="kaleyra_glass_menu_microphone_toggled">Silenciar micrófono</string>
+    <string name="kaleyra_glass_menu_participants">Participantes</string>
+    <string name="kaleyra_glass_menu_switch_camera">Cambiar cámara</string>
+    <string name="kaleyra_glass_menu_volume">Volumen</string>
+    <string name="kaleyra_glass_menu_whiteboard">Pizarra</string>
+    <string name="kaleyra_glass_menu_zoom">Zoom</string>
+    <string name="kaleyra_glass_message_counter_pattern">+%1$d</string>
+    <string name="kaleyra_glass_mic_and_cam_blocked">El micrófono y la cámara están bloqueados</string>
+    <string name="kaleyra_glass_mic_and_cam_not_active">El micrófono y la cámara no están activos</string>
+    <string name="kaleyra_glass_mic_blocked">El micrófono está bloqueado</string>
+    <string name="kaleyra_glass_mic_not_active">El micrófono no está activo</string>
+    <string name="kaleyra_glass_n_of_participants_pattern">%1$d participantes</string>
+    <string name="kaleyra_glass_new_messages_pattern">%1$d nuevos mensajes</string>
+    <string name="kaleyra_glass_no_messages">Sin mensajes</string>
+    <string name="kaleyra_glass_now">Ahora</string>
+    <string name="kaleyra_glass_offline">Estás fuera de línea</string>
+    <string name="kaleyra_glass_online">En línea</string>
+    <string name="kaleyra_glass_open_menu">menú</string>
+    <string name="kaleyra_glass_participants_camera">participantes</string>
+    <string name="kaleyra_glass_read">leído</string>
+    <string name="kaleyra_glass_rec">Grabación</string>
+    <string name="kaleyra_glass_ringing">está llamando…</string>
+    <string name="kaleyra_glass_ringing_group">llamada grupal entrante…</string>
+    <string name="kaleyra_glass_ringing_pattern">, %1$s</string>
+    <string name="kaleyra_glass_ringing_rtl_pattern">%1$s ،</string>
+    <string name="kaleyra_glass_scroll_left">deslizar hacia la izquierda</string>
+    <string name="kaleyra_glass_scroll_right">deslizar hacia la derecha</string>
+    <string name="kaleyra_glass_scroll_right_left">deslizar hacia la derecha/izquierda</string>
+    <string name="kaleyra_glass_select">seleccionar</string>
+    <string name="kaleyra_glass_slider_volume_pattern">Volumen: %1$d</string>
+    <string name="kaleyra_glass_slider_zoom_pattern">Zoom: %1$d%%</string>
+    <string name="kaleyra_glass_swipe">Deslizar</string>
+    <string name="kaleyra_glass_tap">Tocar</string>
+    <string name="kaleyra_glass_user_joined_pattern">%1$s se unió</string>
+    <string name="kaleyra_glass_user_left_pattern">%1$s se fue</string>
+    <string name="kaleyra_glass_videocall">Videollamada</string>
+    <string name="kaleyra_glass_volume">Volumen</string>
+    <string name="kaleyra_glass_want_end_call">Finalizar llamada</string>
+    <string name="kaleyra_glass_you_pattern">%1$s (Tú)</string>
+    <string name="kaleyra_glass_zoom">Zoom</string>
+    <plurals name="kaleyra_glass_muted_by_admin">
+        <item quantity="one">%s te ha silenciado</item>
+        <item quantity="other">El administrador te ha silenciado</item>
+    </plurals>
+    <plurals name="kaleyra_glass_removed_from_call">
+        <item quantity="one">%s te ha eliminado de la llamada</item>
+        <item quantity="other">El administrador te ha eliminado de la llamada</item>
+    </plurals>
+    <plurals name="kaleyra_glass_ttl_expiration_pattern">
+        <item quantity="one">%d minuto restante para el final de la llamada</item>
+        <item quantity="other">%d minutos restantes para el final de la llamada</item>
+    </plurals>
+    <plurals name="kaleyra_glass_users_in_call_pattern">
+        <item quantity="one">%d participante</item>
+        <item quantity="other">%d participantes</item>
+    </plurals>
+</resources>
