@@ -1,0 +1,174 @@
+<!--
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="kaleyra_action_cancel">Cancelar</string>
+    <string name="kaleyra_action_confirm">Confirmar</string>
+    <string name="kaleyra_action_discard_changes">Descartar cambios</string>
+    <string name="kaleyra_action_dismiss">Descartar</string>
+    <string name="kaleyra_alert_discard_snapshot_message">Esta captura no estará disponible si no la guardas localmente.</string>
+    <string name="kaleyra_alert_discard_snapshot_title">¿Deseas descartar la captura?</string>
+    <string name="kaleyra_alert_save_snapshot_message">Esta captura no estará disponible si no la guardas localmente.</string>
+    <string name="kaleyra_alert_save_snapshot_title">¿Deseas guardar la imagen localmente?</string>
+    <string name="kaleyra_automatic_recording_disclaimer">La llamada será grabada</string>
+    <string name="kaleyra_back">Atrás</string>
+    <string name="kaleyra_bluetooth_battery_info">| %1$s %2$d %%</string>
+    <string name="kaleyra_bluetooth_connecting_status_info">| %1$s</string>
+    <string name="kaleyra_bluetooth_info">%1$s%2$s%3$s</string>
+    <string name="kaleyra_button_ok">Aceptar</string>
+    <string name="kaleyra_call_action_audio_route">Ruta de audio</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth">Bluetooth</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_activating">Activando …</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_available">Disponible</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_battery_level">Nivel de batería:</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_connected">Conectado</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_deactivating">Desactivando …</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_disconnected">Desconectado</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_failed">No se puede conectar al dispositivo. Intenta apagarlo y encenderlo nuevamente.</string>
+    <string name="kaleyra_call_action_audio_route_earpiece">Auricular</string>
+    <string name="kaleyra_call_action_audio_route_loudspeaker">Altavoz</string>
+    <string name="kaleyra_call_action_audio_route_muted">Silenciado</string>
+    <string name="kaleyra_call_action_audio_route_wired_headset">Auriculares con cable</string>
+    <string name="kaleyra_call_action_chat">Chat</string>
+    <string name="kaleyra_call_action_disable_camera_description">Desactivar cámara</string>
+    <string name="kaleyra_call_action_disable_mic_description">Silenciar micrófono</string>
+    <string name="kaleyra_call_action_enable_camera_description">Activar cámara</string>
+    <string name="kaleyra_call_action_enable_mic_description">Activar micrófono</string>
+    <string name="kaleyra_call_action_file_share">Compartir archivo</string>
+    <string name="kaleyra_call_action_mic_mute">Silenciar</string>
+    <string name="kaleyra_call_action_muted">Silenciado</string>
+    <string name="kaleyra_call_action_options">Opciones</string>
+    <string name="kaleyra_call_action_participants">Participantes</string>
+    <string name="kaleyra_call_action_screen_share">Compartir pantalla</string>
+    <string name="kaleyra_call_action_switch_camera">Cambiar</string>
+    <string name="kaleyra_call_action_switch_camera_description">Cambiar cámara</string>
+    <string name="kaleyra_call_action_video_disable">Desactivar</string>
+    <string name="kaleyra_call_action_virtual_background">Fondo virtual</string>
+    <string name="kaleyra_call_action_whiteboard">Pizarra</string>
+    <string name="kaleyra_call_hangup">Colgar</string>
+    <string name="kaleyra_call_info_ongoing_recording">Esta llamada está siendo grabada</string>
+    <string name="kaleyra_call_info_rec">Rec</string>
+    <string name="kaleyra_call_info_recording">Esta llamada será grabada</string>
+    <string name="kaleyra_call_left_alone">Te han dejado solo</string>
+    <string name="kaleyra_call_offline">Estás fuera de línea</string>
+    <string name="kaleyra_call_status_answered_on_other_device">Has respondido en otro dispositivo.</string>
+    <string name="kaleyra_call_status_connecting">Conectando …</string>
+    <string name="kaleyra_call_status_dialing">Llamando …</string>
+    <string name="kaleyra_call_status_ended">Llamada finalizada</string>
+    <string name="kaleyra_call_status_ringing">Timbrando …</string>
+    <string name="kaleyra_call_status_user_disconnected">La conexión a Internet se ha interrumpido.</string>
+    <string name="kaleyra_call_waiting_for_other_participants">Esperando a otros participantes…</string>
+    <string name="kaleyra_cancel_message">No</string>
+    <string name="kaleyra_chat_channel_loading">Cargando …</string>
+    <string name="kaleyra_chat_msg_status_pending">Mensaje pendiente</string>
+    <string name="kaleyra_chat_msg_status_seen">Mensaje visto</string>
+    <string name="kaleyra_chat_msg_status_sent">Mensaje enviado</string>
+    <string name="kaleyra_chat_scroll_to_last_message">Desplazarse hasta el último mensaje</string>
+    <string name="kaleyra_chat_send">Enviar mensaje</string>
+    <string name="kaleyra_chat_state_connecting">conectando …</string>
+    <string name="kaleyra_chat_state_waiting_for_network">esperando la red …</string>
+    <string name="kaleyra_chat_user_status_last_login">último inicio de sesión:</string>
+    <string name="kaleyra_chat_user_status_offline">visto recientemente</string>
+    <string name="kaleyra_chat_user_status_online">en línea</string>
+    <string name="kaleyra_chat_user_status_typing">escribiendo</string>
+    <string name="kaleyra_click_to_share_file">Haz clic en el botón &quot;+&quot; para comenzar a compartir documentos e imágenes</string>
+    <string name="kaleyra_collaborate_button">Collaborar</string>
+    <string name="kaleyra_confirm_message">Sí</string>
+    <string name="kaleyra_data_loss_confirm_message">¿Estás seguro?\nTodos los datos se perderán.</string>
+    <string name="kaleyra_download">Guardar</string>
+    <string name="kaleyra_edit_text_input_placeholder">Escribe aquí …</string>
+    <string name="kaleyra_error_button_reload">Recargar</string>
+    <string name="kaleyra_error_subtitle">Toque para recargar</string>
+    <string name="kaleyra_error_title">Se ha producido un error</string>
+    <string name="kaleyra_feedback_bad">Malo</string>
+    <string name="kaleyra_feedback_close">Cerrar</string>
+    <string name="kaleyra_feedback_excellent">Excelente</string>
+    <string name="kaleyra_feedback_good">Bueno</string>
+    <string name="kaleyra_feedback_leave_a_comment">Dejar un comentario …</string>
+    <string name="kaleyra_feedback_neutral">Neutral</string>
+    <string name="kaleyra_feedback_poor">Malo</string>
+    <string name="kaleyra_feedback_rating_bar_descr">Calificación</string>
+    <string name="kaleyra_feedback_see_you_soon">Esperamos verte pronto de nuevo.</string>
+    <string name="kaleyra_feedback_thank_you">¡Gracias por tu opinión!</string>
+    <string name="kaleyra_feedback_vote">Votar</string>
+    <string name="kaleyra_file_upload_percentage">%1$d %%</string>
+    <string name="kaleyra_fileshare_add">Subir</string>
+    <string name="kaleyra_fileshare_add_description">Subir un nuevo archivo</string>
+    <string name="kaleyra_fileshare_archive">Archivar archivo</string>
+    <string name="kaleyra_fileshare_cancel">Cancelar</string>
+    <string name="kaleyra_fileshare_chooser_title">Elegir una aplicación</string>
+    <string name="kaleyra_fileshare_download">Descargar</string>
+    <string name="kaleyra_fileshare_download_descr">Iniciar descarga</string>
+    <string name="kaleyra_fileshare_download_error">La descarga falló - Reintentar</string>
+    <string name="kaleyra_fileshare_file">Archivo genérico</string>
+    <string name="kaleyra_fileshare_file_cancelled">Archivo cancelado</string>
+    <string name="kaleyra_fileshare_impossible_open_file">No se puede abrir el archivo</string>
+    <string name="kaleyra_fileshare_media">Archivo multimedia</string>
+    <string name="kaleyra_fileshare_na">N/D</string>
+    <string name="kaleyra_fileshare_progress">%1$d %%</string>
+    <string name="kaleyra_fileshare_retry">Reintentar</string>
+    <string name="kaleyra_fileshare_success">Archivo compartido</string>
+    <string name="kaleyra_fileshare_upload">Subir</string>
+    <string name="kaleyra_fileshare_upload_error">Error al cargar la imagen del archivo</string>
+    <string name="kaleyra_fileshare_you">Tú</string>
+    <string name="kaleyra_fullscreen_button">Entrar/salir del modo de pantalla completa</string>
+    <string name="kaleyra_fullscreen_info">Modo de pantalla completa</string>
+    <string name="kaleyra_manual_recording_disclaimer">La llamada puede ser grabada</string>
+    <string name="kaleyra_max_bytes_dialog_descr">Se permite compartir archivos de hasta 150 MB</string>
+    <string name="kaleyra_max_bytes_dialog_title">Límite de compartición de archivos</string>
+    <string name="kaleyra_no_file_shared">Todavía no se ha compartido ningún archivo …</string>
+    <string name="kaleyra_ongoing_call_label">Toca para volver a la llamada</string>
+    <string name="kaleyra_recording_failed">Error de grabación</string>
+    <string name="kaleyra_recording_failed_message">Se produjo un error al grabar la llamada. Cuelga y vuelve a intentarlo.</string>
+    <string name="kaleyra_recording_started">Grabación iniciada</string>
+    <string name="kaleyra_recording_started_message">La grabación de la llamada ha comenzado.</string>
+    <string name="kaleyra_recording_stopped">Grabación detenida</string>
+    <string name="kaleyra_recording_stopped_message">La grabación de la llamada se ha detenido.</string>
+    <string name="kaleyra_ringing_answer">Responder</string>
+    <string name="kaleyra_ringing_decline">Rechazar</string>
+    <string name="kaleyra_screenshare_app_only">Solo aplicación en pantalla</string>
+    <string name="kaleyra_screenshare_full_device">Toda la pantalla del dispositivo</string>
+    <string name="kaleyra_screenshare_picker_title">¿Qué deseas compartir?</string>
+    <string name="kaleyra_share_whiteboard">Compartir en pizarra</string>
+    <string name="kaleyra_snapshot_close">Cerrar diálogo de captura</string>
+    <string name="kaleyra_snapshot_save">Guardar captura de pantalla</string>
+    <string name="kaleyra_snapshot_saved_in_gallery">Guardado en la galería</string>
+    <string name="kaleyra_upload_file">Subir archivo</string>
+    <string name="kaleyra_upload_file_error">Error al cargar la imagen del archivo</string>
+    <string name="kaleyra_utterance_recording_call_may_be_recorded">Esta llamada puede ser grabada</string>
+    <string name="kaleyra_utterance_recording_call_will_be_recorded">Esta llamada será grabada</string>
+    <string name="kaleyra_utterance_recording_failed">Falló la grabación. Cuelga y vuelve a intentarlo</string>
+    <string name="kaleyra_utterance_recording_started">La grabación comienza ahora</string>
+    <string name="kaleyra_utterance_recording_stopped">Grabación detenida</string>
+    <string name="kaleyra_virtual_background_blur">Desenfocar</string>
+    <string name="kaleyra_virtual_background_image">Imagen</string>
+    <string name="kaleyra_virtual_background_none">Ninguno</string>
+    <string name="kaleyra_virtual_background_picker_title">Seleccionar fondo virtual</string>
+    <string name="kaleyra_write_permission_dialog_descr">Se necesita permiso de memoria para descargar archivos</string>
+    <string name="kaleyra_write_permission_dialog_title">Permiso de memoria denegado</string>
+    <plurals name="kaleyra_call_incoming_status_ringing">
+        <item quantity="one">Te está llamando …</item>
+        <item quantity="other">Te están llamando …</item>
+    </plurals>
+    <plurals name="kaleyra_call_status_declined">
+        <item quantity="one">El usuario ha rechazado.</item>
+        <item quantity="other">Todos los usuarios han rechazado.</item>
+    </plurals>
+    <plurals name="kaleyra_call_status_no_answer">
+        <item quantity="one">El usuario no ha respondido.</item>
+        <item quantity="other">Ningún usuario ha respondido.</item>
+    </plurals>
+</resources>

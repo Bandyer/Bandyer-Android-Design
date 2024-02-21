@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2023 Kaleyra @ https://www.kaleyra.com
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="kaleyra_call_participant_removed_understood_message">Cerrar</string>
+    <string name="kaleyra_call_participant_utterance_muted_by_admin">Silenciado</string>
+    <string name="kaleyra_notification_answer">Responder</string>
+    <string name="kaleyra_notification_call_channel_high_priority_name">Llamadas Prioridad Alta</string>
+    <string name="kaleyra_notification_call_channel_low_priority_name">Llamadas Prioridad Baja</string>
+    <string name="kaleyra_notification_call_recorded">Esta llamada está siendo grabada</string>
+    <string name="kaleyra_notification_chat_channel_name">Chat</string>
+    <string name="kaleyra_notification_chat_mark_as_read">Marcar como leído</string>
+    <string name="kaleyra_notification_chat_reply">Responder</string>
+    <string name="kaleyra_notification_connecting_call">Conectando…</string>
+    <string name="kaleyra_notification_decline">Rechazar</string>
+    <string name="kaleyra_notification_hangup">Colgar</string>
+    <string name="kaleyra_notification_incoming_call">Llamada entrante</string>
+    <string name="kaleyra_notification_incoming_group_call">Llamada de grupo entrante</string>
+    <string name="kaleyra_notification_ongoing_call">Llamada en curso</string>
+    <string name="kaleyra_notification_ongoing_group_call">Llamada de grupo en curso</string>
+    <string name="kaleyra_notification_outgoing_call">Llamada saliente</string>
+    <string name="kaleyra_notification_outgoing_group_call">Llamada de grupo saliente</string>
+    <string name="kaleyra_notification_stop_screen_share">Detener Compartir Pantalla</string>
+    <string name="kaleyra_notification_tap_to_return_to_call">Toca para regresar a la llamada</string>
+    <string name="kaleyra_notification_tap_to_return_to_group_call">Toca para regresar a la llamada de grupo</string>
+    <string name="kaleyra_notification_terms_and_conditions_channel_name">Acuerdo de Consentimiento de Datos del Usuario</string>
+    <string name="kaleyra_today">hoy</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_message">Debes aceptar los términos y condiciones para continuar</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_title">Términos y condiciones</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_call">Llamada entrante</string>
+    <string name="kaleyra_user_data_consent_agreement_notification_title_incoming_message">Tienes un nuevo mensaje</string>
+    <string name="kaleyra_yesterday">ayer</string>
+    <plurals name="kaleyra_call_participant_muted_by_admin">
+        <item quantity="one">%s te ha silenciado</item>
+        <item quantity="other">El administrador te ha silenciado</item>
+    </plurals>
+    <plurals name="kaleyra_call_participant_removed">
+        <item quantity="one">%s te ha eliminado de la llamada</item>
+        <item quantity="other">El administrador te ha eliminado de la llamada</item>
+    </plurals>
+</resources>

@@ -167,7 +167,7 @@
     <string name="kaleyra_fileshare_download_descr">Start download</string>
     <string name="kaleyra_fileshare_success">File shared</string>
     <string name="kaleyra_fileshare_retry">Retry</string>
-    <string name="kaleyra_no_file_shared">Still no file shared &#8230;</string>
+    <string name="kaleyra_no_file_shared">Still no file shared&#8230;</string>
     <string name="kaleyra_click_to_share_file">Click on “+” button to start sharing documents and images</string>
     <string name="kaleyra_write_permission_dialog_descr">Memory permission needed to download files</string>
     <string name="kaleyra_write_permission_dialog_title">Memory permission denied</string>
