@@ -1,4 +1,4 @@
 ext {
-    moduleVersion = "4.0.2"
+    moduleVersion = "4.1.0"
     moduleGroupId = "com.kaleyra"
 }
