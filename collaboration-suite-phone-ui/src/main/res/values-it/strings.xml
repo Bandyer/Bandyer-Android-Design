@@ -167,7 +167,7 @@
     <string name="kaleyra_fileshare_download_descr">Avvia download</string>
     <string name="kaleyra_fileshare_success">File condiviso</string>
     <string name="kaleyra_fileshare_retry">Riprova</string>
-    <string name="kaleyra_no_file_shared">Ancora nessun file scambiato &#8230;</string>
+    <string name="kaleyra_no_file_shared">Ancora nessun file scambiato&#8230;</string>
     <string name="kaleyra_click_to_share_file">Clicca il tasto “+” per iniziare a condividere documenti e immagini</string>
     <string name="kaleyra_write_permission_dialog_descr">Permessi di memora necessari per condividere i file</string>
     <string name="kaleyra_write_permission_dialog_title">Permesso di memoria negato</string>
