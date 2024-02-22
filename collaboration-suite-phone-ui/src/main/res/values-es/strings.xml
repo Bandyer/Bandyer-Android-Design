@@ -93,7 +93,7 @@
     <string name="kaleyra_error_button_reload">Recargar</string>
     <string name="kaleyra_error_subtitle">Toque para recargar</string>
     <string name="kaleyra_error_title">Se ha producido un error</string>
-    <string name="kaleyra_feedback_bad">Malo</string>
+    <string name="kaleyra_feedback_bad">Muy malo</string>
     <string name="kaleyra_feedback_close">Cerrar</string>
     <string name="kaleyra_feedback_evaluate_call">Por favor, califique la calidad de su llamada</string>
     <string name="kaleyra_feedback_excellent">Excelente</string>
