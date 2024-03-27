@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+import com.google.android.material.textview.MaterialTextView
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ColorIntExtensions.requiresLightColor
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
@@ -45,17 +46,15 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.s
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.behaviours.KaleyraBottomSheetBehaviour
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.AdapterActionItem
-import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.view.KaleyraBottomSheetLayout
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.view.BottomSheetLayoutContent
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.view.BottomSheetLayoutType
+import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.view.KaleyraBottomSheetLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.buttons.KaleyraLineButton
 import com.kaleyra.collaboration_suite_phone_ui.extensions.checkIsInMultiWindowMode
 import com.kaleyra.collaboration_suite_phone_ui.extensions.checkIsInPictureInPictureMode
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getCoordinates
-import com.kaleyra.collaboration_suite_phone_ui.utils.item_adapter_animators.AlphaCrossFadeAnimator
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
-import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
@@ -309,8 +308,9 @@ open class BaseKaleyraBottomSheet(
         bottomSheetLayoutContent.backgroundView?.tag = this::class.java.name
         when (parent) {
             is RelativeLayout, is FrameLayout, is androidx.constraintlayout.widget.ConstraintLayout, is androidx.coordinatorlayout.widget.CoordinatorLayout -> {
-                val position = (parent.indexOfChild(coordinatorLayout).takeIf { it > 0 } ?: 1)
                 bottomSheetLayoutContent.post {
+                    val position = (parent.indexOfChild(coordinatorLayout).takeIf { it > 0 } ?: 1)
+
                     bottomSheetLayoutContent.navigationBarHeight = bottomMarginNavigation
 
                     with(bottomSheetLayoutContent.backgroundView) {
